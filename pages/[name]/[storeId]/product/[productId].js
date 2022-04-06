@@ -20,7 +20,7 @@ import { productDetailsFetchStart, similarProductFetchStart, getAdditionalInfoSt
 // Components
 import Rating from "@components/rating-stars/rating";
 import PageWrapper from "@components/page-wrapper/page-wrapper";
-
+import {GoPrimitiveDot} from 'react-icons/go'
 const visualsStructure = {
     view: false, // true if want to view on page otherwise false till product details are not fiiled in this object
     name: '',
@@ -171,7 +171,7 @@ const ProductDetails = ({
                                     </div>
                                     <div className="relative overflow-auto no-scrollbar w-full h-full">
                                         <div className=" lg:absolute w-full top-0">
-                                            <span className="text-sm md:text-lg black-color-75 capitalize ">{visuals.item.item_status.toLowerCase()}</span>
+                                            {/* <span className="text-sm md:text-lg black-color-75 capitalize ">{visuals.item.item_status.toLowerCase()}</span> */}
                                             <h1 className="text-base md:text-lg xl:text-3xl my-6 font-semibold md:font-bold capitalize">{visuals.name.toLowerCase()}</h1>
                                             <div>
                                                 <Rating />
@@ -182,18 +182,18 @@ const ProductDetails = ({
                                                     visuals.price.sale_price != visuals.price.price &&
                                                     <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹{visuals.price.price}</span>
                                                 }
-                                                {
+                                                {/* {
                                                     Boolean(visuals.price.price - visuals.price.sale_price) &&
                                                     <span className="mx-2 md:mx-6 success-color text-sm md:text-lg font-light">save ₹{visuals.price.price - visuals.price.sale_price}</span>
-                                                }
+                                                } */}
                                             </div>
                                             <div className="my-6">
-                                                <p className={`text-sm md:text-base black-color-75 text-justify md:text-left font-normal normal-case ${!viewdscmore && visuals.desc.length > 200 && 'product-truncate'} transition`}>
+                                                <p className={`text-sm md:text-base text-gray-500 font-bold text-justify md:text-left  normal-case ${!viewdscmore && visuals.desc.length > 200 && 'product-truncate'} transition`}>
                                                     {visuals.desc}
                                                 </p>
                                                 {
                                                     visuals.desc.length > 200 &&
-                                                    <Button className="btn-color-revers" onClick={() => setViewdscmore(!viewdscmore)}>{viewdscmore ? 'hide' : 'more'}.</Button>
+                                                    <Button style={{color:"#F58634"}} className="btn-color-revers" onClick={() => setViewdscmore(!viewdscmore)}>{viewdscmore ? 'hide' : 'more'}.</Button>
                                                 }
                                             </div>
                                             <div>
@@ -207,7 +207,7 @@ const ProductDetails = ({
                                                         })()}
                                                             onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                                                         :
-                                                        <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={() => addToCart(productDataForCart)} >Add</Button>
+                                                        <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" style={{backgroundColor:"#F58634"}} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
                                                 }
                                             </div>
                                             {
@@ -229,20 +229,20 @@ const ProductDetails = ({
                                             }
                                             <div className="my-6">
                                                 {
-                                                    console.log(defaultVariant)
-                                                    // defaultVariant.map(varient => (<>
-                                                    //     <h6 className="text-base font-semibold md:text-xl md:font-medium">Size</h6>
-                                                    //     <div className="flex mt-6">
-                                                    //         {
-                                                    //             varient.map(() => (
-                                                    //                 <div className="mr-6 size-tab-active rounded flex items-center justify-center border-2 w-12 h-12 ">
-                                                    //                     <span className="text-base md:text-xl font-medium">S</span>
-                                                    //                 </div>
 
-                                                    //             ))
-                                                    //         }
-                                                    //     </div>
-                                                    // </>))
+                                                    defaultVariant.map(varient => (<>
+                                                        <h6 className="text-base font-semibold md:text-xl md:font-medium">Size</h6>
+                                                        <div className="flex mt-6">
+                                                            {
+                                                                varient.map(() => (
+                                                                    <div className="mr-6 size-tab-active rounded flex items-center justify-center border-2 w-12 h-12 ">
+                                                                        <span className="text-base md:text-xl font-medium">S</span>
+                                                                    </div>
+
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </>))
                                                 }
                                                 {/* <h6 className="text-base font-semibold md:text-xl md:font-medium">Size</h6>
                                             <div className="flex mt-6">
@@ -257,11 +257,46 @@ const ProductDetails = ({
                                                 </div>
                                             </div> */}
                                             </div>
-                                            {
+
+                                        </div></div>
+                                </div>
+                            </div>
+                        </div>
+                        {
                                                 !!visuals.specifications.length &&
-                                                <div className="mt-14">
-                                                    <div className="border-l-8 border-static additional-info mb-8">
-                                                        <h3 className="ml-4 md:ml-8 text-base md:text-xl">
+                                                <div className="w-full  bg-white ">
+                                                <div className="wrapper mx-auto">
+                                                    <div className="py-20">
+                                                <div className="mt-6">
+                                                    <div className=" border-static additional-info mb-8">
+                                                        <h2 className=" lg:text-2xl md:text-xl">
+                                                        Highlights
+                                                        </h2>
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-4">
+                                                        {
+                                                            visuals.specifications.map((item, i) => (
+                                                                <div className="py-3 flex flex items-center" key={i}>
+                                                                  <GoPrimitiveDot/>
+                                                                    <p className="text-xl font-thin text-gray-500 mx-2 ">{item.attribute_value}</p>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                            }
+
+                        {
+                                                !!visuals.specifications.length &&
+                                                <div className="w-full  bg-white ">
+                                                <div className="wrapper mx-auto">
+                                                    <div className="py-20">
+                                                <div className="mt-6">
+                                                    <div className=" border-static additional-info mb-8">
+                                                        <h3 className="lg:text-2xl text-base md:text-xl">
                                                             Product Specification
                                                         </h3>
                                                     </div>
@@ -276,16 +311,18 @@ const ProductDetails = ({
                                                         }
                                                     </div>
                                                 </div>
+                                                </div>
+                                                </div>
+                                                </div>
                                             }
-                                        </div></div>
-                                </div>
-                            </div>
-                        </div>
+
+
+
                         {
                             visuals.additionalinfo.length ?
-                                <div className="w-full mt-3 bg-white ">
+                                <div className="w-full  bg-white ">
                                     <div className="wrapper mx-auto">
-                                        <div className="py-20">
+                                        <div className="mt-6">
                                             <div className="border-l-8 border-static additional-info">
                                                 <h3 className="ml-4 md:ml-8 text-base md:text-xl">
                                                     Additional Info
@@ -305,8 +342,8 @@ const ProductDetails = ({
                                                                 }
                                                             </div>
                                                             <div className="mt-8">
-                                                                <h2 className="text-base md:text-xl font-semibold capitalize">{item.title}{item.title.toLowerCase()}</h2>
-                                                                <p className="mt-6 text-sm md:text-lg black-color-75 leading-7 tracking-tight normal-case">
+                                                                {/* <h2 className="text-base md:text-xl font-semibold capitalize">{item.title}{item.title.toLowerCase()}</h2> */}
+                                                                <p className="mt-6 text-sm md:text-lg text-gray-500 leading-7 tracking-tight normal-case">
                                                                     {
                                                                         item.description
                                                                     }

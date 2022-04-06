@@ -20,7 +20,7 @@ function products({products,status}) {
                <p className="flex items-center">Filter / Sort By</p>
             </div>
           </div>
-        <div className="  grid  grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4">
+        <div className="  grid  grid-cols-1 lg:grid-cols-5 md:grid-cols-2 gap-4">
 
   {
           status == 'success'

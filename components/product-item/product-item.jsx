@@ -10,6 +10,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
     const  truncate=(str, no_words)=> {
       return str.split(" ").splice(0,no_words).join(" ");
   }
+  console.log(data,'line 13 profuct')
     if (!data) {
         return (
             <div className="h-full  flex border-gray-200 rounded-lg overflow-hidden">
@@ -64,29 +65,32 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
 
 
                 <>
-    <div className="border-2 border-green-900 ">
+    <div className="border-2 border-gray-300  "style={{height:'281px'}}>
      <div className="flex justify-between w-full">
        <img  className="m-2" src="/img/square.png"/>
        <AiOutlineHeart className="m-2" size={18} />
      </div>
-     <div className="w-10/12  mx-6 " style={{height:'200px'}}>
+     <Button className="block " type="link" href={'#'} style={{ height: '-webkit-fill-available' }}>
+     <div className="w-8/12  mx-10 mt-6 cursor-pointer " style={{height:'160px'}}>
      <img className="w-full h-full " src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`}/>
 
      </div>
+     </Button>
+
      {
   offer?
- <div className="w-8/12 rounded-r-full h-8  relative -top-2  white-color flex items-center justify-center" style={{backgroundColor:"#44ADF4"}}>
+ <div className="w-8/12 rounded-r-full h-8  relative -top-8  white-color flex items-center justify-center" style={{backgroundColor:"#44ADF4"}}>
   <p className="md:text-sm lg:text-base">Flat Rs. 200 OFF</p>
   </div>
   :
-  <div className="lg:w-8/12 w-full rounded-r-full h-8 bg-white  relative -top-2  white-color flex items-center justify-center" >
+  <div className=" hidden lg:w-8/12 w-full rounded-r-full h-8 bg-transparent  relative -top-40 -left-2  white-color flex items-center justify-center" >
   <p>Flat Rs. 200 OFF</p>
   </div>
 
 }
 
     </div>
-    <div className="flex justify-between my-2 mx-1">
+    <div className="flex justify-between my-2 mx-1 ">
     <div className="flex">
       <p className="font-bold text-lg">₹ {data.sale_price}</p>
       <p className="text-gray-400 font-thinner text-sm mx-4 flex items-center"> (MPR.{data.price})</p>
@@ -102,13 +106,15 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
 
     </div>
     <div className="w-11/12 mx-1">
-    <p className="text-sm">
+    <p className="text-sm font-semibold">
       {
-        truncate('Maggie combo of 4 | 52g each I Aproduct from Nestle in india ',20)
-      }...
+
+        truncate(`${data.item_desc}`,15)
+
+      }{data.item_desc.split(" ").length>15&&"..."}
 </p>
      </div>
-    <div className="my-2 white-color">
+    <div className="my-2 white-color ">
     <Button  className="w-full py-2 rounded" style={{backgroundColor:"#F58634"}} type="button" href="/" title="ADD TO CART"/>
 
     </div>

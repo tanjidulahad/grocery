@@ -99,8 +99,8 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
 
     <div id='' className={(router.pathname == "/[name]/[storeId] " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-white` : 'hidden'} >
 
-         <div className="flex flex-row  py-4 ">
-        <div class="basis-1/5  md:1/6 lg:1/5 h-20 md:w-max lg:w-full  md:mx-2 lg:mx-0 lg:w-full flex items-center">
+         <div className="flex flex-row  py-4 w-full">
+        <div class="basis-1/12  md:basis-1/12 lg:basis-1/6 h-20 md:w-max lg:w-full  md:mx-2 lg:mx-0 lg:w-full flex items-center">
           <Button className="md:w-max lg:w-full" type="link" href="/">
             <div className="flex  justify-center md:w-max lg:w-full  items-center ">
               <div className="h-20 w-20  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
@@ -135,7 +135,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
             </div>
           </div>
         </div>
-        <div class="basis-1/4     justify-between items-center">
+        <div class="md:basis-3/4 lg:basis-1/4    items-center">
           <div className=" flex flex-row justify-between items-center text-black mt-4">
             <div className=" w-full flex justify-around">
               <span className="whitespace-nowrap font-bold inline-block tracking-tight md:text-sm lg:text-lg">
@@ -171,7 +171,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
             {
               !isLogin && !user ?
               <div className="w-32 ml-8 shrink-0 flex items-center">
-                <Button onClick={openAuth} className=" bg-white text-black max-h-min text-base font-medium rounded py-3 px-8 hover:bg-rose-600 hover:text-white " title="Sign In"></Button>
+                <Button onClick={'openAuth'} className=" bg-white text-black max-h-min text-base font-medium rounded py-3 px-8 hover:bg-rose-600 hover:text-white " title="Sign In"></Button>
               </div>
               :
               <div className=" w-max flex relative text-black items-center justify-end ml-4 cursor-pointer account">
@@ -194,14 +194,14 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
                   <AiFillCaretDown className="" size={18} />
                 </div>
 
-                <div className="absolute w-full hidden account-options top-full z-10">
+                <div className="absolute w-40 hidden  account-options top-full -right-12 z-10">
                   <div
-                    className="p-6 mt-6 bg-white w-full rounded account-options-c"
+                    className="py-6 px-4 mt-6 bg-white w-full rounded account-options"
                     style={{ boxShadow: '0px 4px 8px #2424243F' }}
                   >
                     <ul className="list-none black-color-75 text-base font-medium space-y-6">
                       <li className="btn-hover-color">
-                        <Link href="/account">
+                        <Link href="#">
                           <a>Account</a>
                         </Link>
                       </li>
@@ -211,7 +211,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
                         </Link>
                       </li>
                       <li className="btn-hover-color">
-                        <Link href="/account/savedplaces">
+                        <Link href="#">
                           <a>Saved Places</a>
                         </Link>
                       </li>
