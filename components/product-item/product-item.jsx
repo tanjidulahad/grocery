@@ -13,7 +13,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
   console.log(data,'line 13 profuct')
     if (!data) {
         return (
-            <div className="h-full  flex border-gray-200 rounded-lg overflow-hidden">
+            <div className="h-full   border-gray-200 rounded-lg overflow-hidden">
                 <div className=" w-32 h-32 sm:w-40 sm:h-40 animate-pulse bg-gray-400 shrink-0 object-cover object-center"></div>
                 <div className="px-6 pt-6">
                     <h1 className="w-1/2 mb-3 sm:mb-4 h-4 sm:h-6 animate-pulse bg-gray-500"></h1>
@@ -55,7 +55,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
                     })()}
                         onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                     :
-                    <Button className={`btn-color btn-bg max-h-min text-base font-medium rounded py-2.5 px-9 sm:py-3 sm:px-12 ${className}`} onClick={() => addToCart(productDataForCart)} >Add</Button>
+                    <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-2  ${className}`}  style={{backgroundColor:"#F58634"}} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
             }
         </>
     )
@@ -70,7 +70,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
        <img  className="m-2" src="/img/square.png"/>
        <AiOutlineHeart className="m-2" size={18} />
      </div>
-     <Button className="block " type="link" href={'#'} style={{ height: '-webkit-fill-available' }}>
+     <Button className="block " type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
      <div className="w-8/12  mx-10 mt-6 cursor-pointer " style={{height:'160px'}}>
      <img className="w-full h-full " src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`}/>
 
@@ -83,7 +83,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
   <p className="md:text-sm lg:text-base">Flat Rs. 200 OFF</p>
   </div>
   :
-  <div className=" hidden lg:w-8/12 w-full rounded-r-full h-8 bg-transparent  relative -top-40 -left-2  white-color flex items-center justify-center" >
+  <div className=" hidden lg:w-8/12 w-full rounded-r-full h-8 bg-transparent   relative -top-40 -left-2  white-color flex items-center justify-center" >
   <p>Flat Rs. 200 OFF</p>
   </div>
 
@@ -115,8 +115,8 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
 </p>
      </div>
     <div className="my-2 white-color ">
-    <Button  className="w-full py-2 rounded" style={{backgroundColor:"#F58634"}} type="button" href="/" title="ADD TO CART"/>
-
+    {/* <Button  className="w-full py-2 rounded" style={{backgroundColor:"#F58634"}} type="button" href="/" title="ADD TO CART"/> */}
+    <LocalQuantityID/>
     </div>
     </>
                 {

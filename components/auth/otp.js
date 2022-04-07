@@ -2,21 +2,29 @@ import { useState, useEffect } from 'react'
 import { connect } from "react-redux";
 import { Button, Input } from '../inputs';
 import { otpVerificationStart, authShowToggle } from '../../redux/user/user-action';
+import { set } from 'nprogress';
 
 const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, userId, setUser, info }) => {
     const [otp, setOtp] = useState('');
     const [error, setError] = useState("") // ""
     const [status, setStatus] = useState("")
+    const [timer, settimer] = useState(60)
+    const [trigger, setTrigger] = useState(0)
+
+
     const [isLoading, setIsLoading] = useState(false)
     // const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
     const storeId = info.store_id;
     const onChangeHandler = (e) => {
+
         const { value } = e.target;
+
         if (error) setError(null);
         if (!(/^\d*$/.test(value))) return;
-        setOtp(value)
+        setOtp(otp.toString()+value.toString())
     }
     const onSubmitHandler = () => {
+
         if (!otp) return setError("Enter valid OTP.");
         otpVerify({
             otp,
@@ -27,6 +35,8 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
             setUser,
             mode: username.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ? 'email' : 'phone',
         })
+
+       setTrigger(1)
         setError('')
         setIsLoading(true)
     }
@@ -43,6 +53,7 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
         }
     }, [status, error])
 
+
     // Componentdidmount
     useEffect(() => {
         return () => {
@@ -52,25 +63,61 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
             setIsLoading(false)
         }
     }, [])
+    const star=(number)=>{
+      return `${number[0]}*******${number[number.length-2]}${number[number.length-1]} `
+    }
+    function clickEvent(first,last){
+
+			if(first.value.length){
+				document.getElementById(last).focus();
+			}
+		}
+    function countdown() {
+
+      var timeleft = timer;
+      var downloadTimer = setInterval(function(){
+      timeleft--;
+      settimer( timeleft);
+      if(timeleft <= 0)
+          clearInterval(downloadTimer);
+      },1000);
+
+    }
+    useEffect(() => {countdown()},[trigger])
+
     return (
         <div className="auth">
-            <div className="p-6 auth-form-container rounded" >
-                <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-semibold">Enter OTP</h2>
-                    <Button className='bg-transparent dark-blue p-2' onClick={() => { setPage(true); showToggle() }} >
+              <div className="p-6 auth-form-container rounded " style={{border:"2px solid #F58634"}} >
+
+                <div className="flex justify-end items-center">
+
+                    <Button className='bg-transparent dark-blue ' onClick={() => { setPage(true); showToggle() }} >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                             <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
                             <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                         </svg>
                     </Button>
                 </div>
-                <div className='mt-3' style={{ maxWidth: 'fit-content' }} >
+
+                <div className="w-full  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
+                <img
+                  className="w-20 h-20 object-contain"
+                  src={
+                    info.logo_img_url
+                    ||
+                    '/img/default.png'
+                  }
+                  alt="..."
+                />
+              </div>
+                <div className='mt-3 mx-12 w-full flex  justify-center' style={{ maxWidth: 'fit-content' }} >
                     {error ? <></> :
-                        <span className='text-lg font-medium black-color-75'>OTP sent to
+                        <span className='flex justify-center text-lg font-bold black-color'>An OTP sent to your registered mobile number
+
                             {
                                 username.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ?
-                                    ` ${username}`
-                                    : ` +91 ${username}`
+                                    ` ${star(username)}`
+                                    : ` +91 ${star(username)}`
                             }
                         </span>
                     }
@@ -83,18 +130,28 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
                                 : null
                         }
                     </div>
-                    <div>
-                        <Input name='otp' className={`auth-input ${error && 'input-danger'}`} type="text" placeholder="Enter OTP" value={otp} onChange={onChangeHandler} disabled={isLoading} />
+                    <div className="flex mx-10">
+         <div className={`  flex auth-input ${error && 'input-danger'} `}>
+  <input className="h-20 w-20 mx-2 p-4 outline-none border-2  rounded-lg  w-full custom-input text-center"  onChange={onChangeHandler} type="text" id="ist" maxLength={1} onKeyUp={(e)=>{clickEvent(e.target,'sec')}} />
+  <input  className="h-20 w-20 mx-2 p-4 outline-none border-2  rounded-lg  w-full custom-input text-center" onChange={onChangeHandler} type="text" id="sec" maxLength={1} onKeyUp={(e)=>{clickEvent(e.target,'third')}}/>
+  <input  className="h-20 w-20 mx-2 p-4 outline-none border-2 rounded-lg   w-full custom-input text-center" onChange={onChangeHandler} type="text" id="third" maxLength={1} onKeyUp= {(e)=>{clickEvent(e.target,'fourth')}} />
+  <input className="h-20 w-20 mx-2 p-4 outline-none border-2  rounded-lg  w-full custom-input text-center" onChange={onChangeHandler} type="text" id="fourth" maxLength={1} onKeyUp={(e)=>{clickEvent(e.target,'fifth')}} />
+  <input  className="h-20 w-20 mx-2 p-4 outline-none border-2  rounded-lg  w-full custom-input text-center" onChange={onChangeHandler} type="text" id="fifth" maxlength={1} />
+
+</div>
+
+
+                        {/* <Input name='otp' className={`auth-input ${error && 'input-danger'}`} type="text" placeholder="Enter OTP" value={otp} onChange={onChangeHandler} disabled={isLoading} /> */}
                     </div>
                 </div>
-                <div className="auth-redirect text-lg my-8 flex justify-between items-center black-color-75" >
-                    <span className='font-semibold'>01:25</span>
-                    <span >Didn't receive OTP? <Button className="red-color px-2" onClick={resend} >Resend</Button> </span>
+                <div className="auth-redirect text-lg my-8 mx-10 flex justify-between items-center black-color-75" >
+                    <span className='font-semibold mx-2 ' id="timerCont">{timer} sec</span>
+                    <span >Didn't receive OTP? <Button className="red-color px-2"style={{color:"#F58634"}} onClick={resend} >Resend</Button> </span>
                 </div>
-                <div >
-                    <Button className={`w-full btn-bg btn-color py-4 rounded`} type="button" onClick={onSubmitHandler} disabled={isLoading}
+                <div className="flex justify-around w-full">
+                    <Button className={`w-10/12 btn-bg btn-color py-4 rounded `} type="button" onClick={onSubmitHandler} disabled={isLoading}
                         style={{
-                            ...isLoading && {
+                          backgroundColor:"#F58634",...isLoading && {
                                 opacity: 0.7,
                                 cursor: "not-allowed"
                             },

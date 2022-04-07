@@ -21,6 +21,7 @@ import { productDetailsFetchStart, similarProductFetchStart, getAdditionalInfoSt
 import Rating from "@components/rating-stars/rating";
 import PageWrapper from "@components/page-wrapper/page-wrapper";
 import {GoPrimitiveDot} from 'react-icons/go'
+import RecommendedCard from "@components/Cards/Home/RecommendedCard";
 const visualsStructure = {
     view: false, // true if want to view on page otherwise false till product details are not fiiled in this object
     name: '',
@@ -62,7 +63,7 @@ const ProductDetails = ({
         fetchProductDetails({ id: productId, onSuccess, onFailure })
         getAdditionalInfo({ setAdditionalInfo, id: productId })
         getSpecifications({ setSpecifications, id: productId })
-        // fetchSimilarProducts({ setSimilarProducts, id: productId })
+        fetchSimilarProducts({ setSimilarProducts, id: productId })
     }, [router.isReady])
     useEffect(() => {
         // Run with Product change
@@ -141,7 +142,7 @@ const ProductDetails = ({
     }
     const quantityInCart = cart.filter((item) => item.item_id == visuals.id)[0]?.quantity
     // console.log(quantityInCart, failure);
-    console.log(specifications);
+    console.log(visuals);
     return (
         <>
             <Head>
@@ -161,9 +162,12 @@ const ProductDetails = ({
             </div>
             {
                 visuals.view ?
+                <div className="flex flex-row wrapper w-full ">
+                <div className="basis-1/12 "></div>
+                <div className=" basis-10/12">
                     <section className="bg-black-color-lighter pdp">
                         <div className="w-full bg-white relative">
-                            <div className="wrapper mx-auto">
+                            <div className="">
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 py-20 overflow-x-hidden">
                                     <div className="w-full ">
                                         {/* <img src={visuals.images[0]} alt={visuals.name} /> */}
@@ -172,9 +176,9 @@ const ProductDetails = ({
                                     <div className="relative overflow-auto no-scrollbar w-full h-full">
                                         <div className=" lg:absolute w-full top-0">
                                             {/* <span className="text-sm md:text-lg black-color-75 capitalize ">{visuals.item.item_status.toLowerCase()}</span> */}
-                                            <h1 className="text-base md:text-lg xl:text-3xl my-6 font-semibold md:font-bold capitalize">{visuals.name.toLowerCase()}</h1>
+                                            <h1 className="text-base md:text-lg xl:text-3xl mb-4 font-semibold md:font-bold capitalize">{visuals.name.toLowerCase()}</h1>
                                             <div>
-                                                <Rating />
+                                                <Rating value={visuals.rating.value} count={visuals.rating.count}/>
                                             </div>
                                             <div className="my-4 md:my-6">
                                                 <span className="text-lg md:text-xl my-6 black-color font-semibold">₹{visuals.price.sale_price}</span>
@@ -265,7 +269,7 @@ const ProductDetails = ({
                         {
                                                 !!visuals.specifications.length &&
                                                 <div className="w-full  bg-white ">
-                                                <div className="wrapper mx-auto">
+                                                <div className="">
                                                     <div className="py-20">
                                                 <div className="mt-6">
                                                     <div className=" border-static additional-info mb-8">
@@ -292,7 +296,7 @@ const ProductDetails = ({
                         {
                                                 !!visuals.specifications.length &&
                                                 <div className="w-full  bg-white ">
-                                                <div className="wrapper mx-auto">
+                                                <div className="">
                                                     <div className="py-20">
                                                 <div className="mt-6">
                                                     <div className=" border-static additional-info mb-8">
@@ -316,15 +320,55 @@ const ProductDetails = ({
                                                 </div>
                                             }
 
+{
+                                                !!!visuals.similarProducts.length &&
+                                                <div className="w-full  bg-white ">
+                                                <div className="">
+                                                    <div className="py-20">
+                                                <div className="mt-6">
+                                                    <div className=" border-static additional-info mb-8">
+                                                        <h3 className="lg:text-2xl text-base md:text-xl">
+                                                            Similar Products
+                                                        </h3>
+                                                    </div>
+                                                    <div className="grid grid-cols-5 gap-4">
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                            }
+
 
 
                         {
                             visuals.additionalinfo.length ?
                                 <div className="w-full  bg-white ">
-                                    <div className="wrapper mx-auto">
-                                        <div className="mt-6">
-                                            <div className="border-l-8 border-static additional-info">
-                                                <h3 className="ml-4 md:ml-8 text-base md:text-xl">
+                                    <div className="">
+                                        <div className="">
+                                            <div className=" border-static additional-info ">
+                                                <h3 className=" lg:text-2xl md:text-xl">
                                                     Additional Info
                                                 </h3>
                                             </div>
@@ -359,7 +403,50 @@ const ProductDetails = ({
                                 </div>
                                 : <></>
                         }
+
+{
+                                                !!!visuals.similarProducts.length &&
+                                                <div className="w-full  bg-white ">
+                                                <div className="">
+                                                    <div className="py-20">
+                                                <div className="mt-6">
+                                                    <div className=" border-static additional-info mb-8">
+                                                        <h3 className="lg:text-2xl text-base md:text-xl">
+                                                            Recommended Products
+                                                        </h3>
+                                                    </div>
+                                                    <div className="grid grid-cols-5 gap-4">
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+                                                            <div>
+                                                            <RecommendedCard/>
+
+                                                            </div>
+
+                                                    </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                                </div>
+                                            }
                     </section >
+                    </div>
+                    <div className="basis-1/12 "></div>
+                    </div>
                     : failure
                         ?
                         <ErrorPage message="failure.message" />

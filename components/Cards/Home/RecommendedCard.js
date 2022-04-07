@@ -8,7 +8,7 @@ function RecommendedCard({offer}) {
 }
   return (
     <>
-    <div className="border-2 border-green-900 ">
+    <div className="border-2 border-gray-400 ">
      <div className="flex justify-between w-full">
        <img  className="m-2" src="/img/square.png"/>
        <AiOutlineHeart className="m-2" size={18} />

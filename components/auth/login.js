@@ -38,44 +38,71 @@ const Login = ({ showToggle, getLoginOtp, userloginSuccess, setPage, info }) => 
             setStatus('')
         }
     }, [error, user])
-
+console.log(info,'line41')
     return (
         <>
             {
                 !user ?
                     <div className="auth">
-                        <div className="p-6 auth-form-container rounded" >
-                            <div className="flex justify-between items-center">
-                                <h2 className="text-2xl font-semibold">Login</h2>
-                                <Button className='bg-transparent dark-blue p-2' onClick={showToggle} >
+                        <div className="p-6 auth-form-container rounded " style={{border:"2px solid #F58634"}} >
+                            <div className="flex justify-end items-center">
+                                {/* <h2 className="text-2xl font-semibold">Login</h2> */}
+                                <Button className='bg-transparent dark-blue ' onClick={showToggle} >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
                                         <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                                     </svg>
                                 </Button>
                             </div>
-                            <div className="mt-10">
-                                <div className='' style={{ maxWidth: 'fit-content' }} >
+
+                            <div className="w-full  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
+                <img
+                  className="w-20 h-20 object-contain"
+                  src={
+                    info.logo_img_url
+                    ||
+                    '/img/default.png'
+                  }
+                  alt="..."
+                />
+              </div>
+
+                             <div className="mt-6 flex justify-center">
+                             <div className=' flex-col ' style={{ maxWidth: 'fit-content' }} >
                                     {
                                         !!error &&
                                         <span className='text-base red-color'>{error}</span>
 
                                     }
                                 </div>
-                                <Input name='otp' className={`auth-input ${error && 'input-danger'}`} type="text" placeholder="Phone Number or Email" onChange={onChangeHandler} value={phone} disabled={status == 'loading'} />
+                             </div>
+                            <div className=" flex justify-center">
+
+                                <Input name='otp' className={`auth-input ${error && 'input-danger'} w-3/4 rounded-lg`} type="text" placeholder="Phone Number or Email" onChange={onChangeHandler} value={phone} disabled={status == 'loading'} />
                             </div>
-                            <div className="py-8 border-b-2 ">
-                                <Button className={`w-full btn-color text-lg font-medium btn-bg py-4 rounded ${status == 'loading' ? 'loading-btn' : ""}`} type="button" onClick={onSubmitHandler} disabled={status == 'loading'}
+                            <div className="mt-6 flex justify-center">
+                                {/* <div className=' flex-col ' style={{ maxWidth: 'fit-content' }} >
+                                    {
+                                        !!error &&
+                                        <span className='text-base red-color'>{error}</span>
+
+                                    } */}
+                                {/* </div> */}
+                                {/* <Input name='otp' className={`auth-input ${error && 'input-danger'} w-3/4 rounded-lg`} type="text" placeholder="Enter Password" onChange={onChangeHandler} value={phone} disabled={status == 'loading'}        /> */}
+                            </div>
+                            <div className="py-8 border-b-2 flex  justify-center ">
+                                <Button className={`w-3/4 btn-color text-lg font-medium btn-bg py-4 rounded ${status == 'loading' ? 'loading-btn' : ""}`} type="button" onClick={onSubmitHandler} disabled={status == 'loading'}
                                     style={{
-                                        ...(status == 'loading') && {
+                                      backgroundColor:"#F58634",...(status == 'loading') && {
                                             opacity: 0.7,
-                                            cursor: "not-allowed"
+                                            cursor: "not-allowed",
+
                                         },
                                     }}
                                 >{status == 'loading' ? 'Loading...' : 'Get OTP'}</Button>
                             </div>
-                            <div className="auth-redirect  black-color mt-8 text-lg" >
-                                <span>New User? <Button className=" bg-transparent red-color px-1" onClick={() => setPage(false)}>Create Account</Button> </span>
+                            <div className="auth-redirect  black-color mt-8 text-lg " >
+                                <span className="font-bold">New User? <Button className=" bg-transparent red-color px-1"  style={{color:"#F58634"}}onClick={() => setPage(false)}>Create Account</Button> </span>
                             </div>
 
                         </div>

@@ -8,7 +8,7 @@
 
 import ReactStars from "react-rating-stars-component";
 
-const Rating = ({ value = 4.5, size = 30, edit = false, count = 5.00, ...params }) => {
+const Rating = ({ value, size = 30, edit = false, count = 5, ...params }) => {
     return (
         <div className='stars rating flex items-center align-items-center' data-stars="4">
             <ReactStars

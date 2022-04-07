@@ -135,9 +135,9 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
             </div>
           </div>
         </div>
-        <div class="md:basis-3/4 lg:basis-1/4    items-center">
+        <div class="md:basis-2/4 lg:basis-1/4    items-center">
           <div className=" flex flex-row justify-between items-center text-black mt-4">
-            <div className=" w-full flex justify-around">
+            <div className=" w-full flex justify-around ">
               <span className="whitespace-nowrap font-bold inline-block tracking-tight md:text-sm lg:text-lg">
                 Home
               </span>
@@ -148,7 +148,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
                 About
               </span>
             </div>
-            <div className=" flex justify-end ">
+            <div className="  flex justify-end ">
               <Button
                 className="flex items-center text-black"
                 type="link"
@@ -171,10 +171,10 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
             {
               !isLogin && !user ?
               <div className="w-32 ml-8 shrink-0 flex items-center">
-                <Button onClick={'openAuth'} className=" bg-white text-black max-h-min text-base font-medium rounded py-3 px-8 hover:bg-rose-600 hover:text-white " title="Sign In"></Button>
+                <Button onClick={openAuth} className=" bg-white text-black max-h-min text-base font-medium rounded py-3 px-8 hover:bg-orange-400 hover:text-white " title="Sign In"></Button>
               </div>
               :
-              <div className=" w-max flex relative text-black items-center justify-end ml-4 cursor-pointer account">
+              <div className=" w-max flex relative text-black items-center justify-end lg:ml-4 md:mx-4  cursor-pointer account">
                 <div className=" w-6 h-6 bg-gray-100 text-gray-400 p-5 overflow-hidden flex justify-center items-center rounded-full">
                   <span className="text-sm font-extrabold	">
                     {(() => {
@@ -206,7 +206,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
                         </Link>
                       </li>
                       <li className="btn-hover-color">
-                        <Link href="/account/myorders">
+                        <Link href="#">
                           <a>My Orders</a>
                         </Link>
                       </li>
@@ -310,7 +310,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
 
       {/* Navbar for mobile */}
       <MediaQuery maxWidth={640}>
-        <div id='mob-navbar' className="mob-navbar z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-0 left-0 right-0 bg-white sm:bg-transparent " style={{ boxShadow: '0px -1px 4px #00000033' }}>
+        {/* <div id='mob-navbar' className="mob-navbar z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-0 left-0 right-0 bg-white sm:bg-transparent " style={{ boxShadow: '0px -1px 4px #00000033' }}>
           <div className='text-black w-1/5'>
             <Button type='link' href='/' className={`block sm:hidden text-center text-xs ${router.asPath == '/' || router.pathname == '/[name]/[storeId]' && 'btn-nav-color-active'}`}>
               <svg className='mx-auto' id="home" xmlns="http://www.w3.org/2000/svg" width="24" height="24" style={{ fill: 'inherit', color: 'inherit' }} viewBox="0 0 24 24">
@@ -375,7 +375,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
               <span className=' text-xs font-medium tracking-tight'>Profile</span>
             </Button>
           </div>
-        </div>
+        </div> */}
       </MediaQuery>
     </nav >
   )
