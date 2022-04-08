@@ -177,7 +177,7 @@ const ProductDetails = ({
                                         <div className=" lg:absolute w-full top-0">
                                             {/* <span className="text-sm md:text-lg black-color-75 capitalize ">{visuals.item.item_status.toLowerCase()}</span> */}
                                             <h1 className="text-base md:text-lg xl:text-3xl mb-4 font-semibold md:font-bold capitalize">{visuals.name.toLowerCase()}</h1>
-                                            <div>
+                                            <div >
                                                 <Rating value={visuals.rating.value} count={visuals.rating.count}/>
                                             </div>
                                             <div className="my-4 md:my-6">

@@ -92,7 +92,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
     </div>
     <div className="flex justify-between my-2 mx-1 ">
     <div className="flex">
-      <p className="font-bold text-lg">₹ {data.sale_price}</p>
+      <p className="font-bold text-sm">₹ {data.sale_price}</p>
       <p className="text-gray-400 font-thinner text-sm mx-4 flex items-center"> (MPR.{data.price})</p>
 
     </div>
@@ -114,7 +114,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
       }{data.item_desc.split(" ").length>15&&"..."}
 </p>
      </div>
-    <div className="my-2 white-color ">
+    <div className="my-2  ">
     {/* <Button  className="w-full py-2 rounded" style={{backgroundColor:"#F58634"}} type="button" href="/" title="ADD TO CART"/> */}
     <LocalQuantityID/>
     </div>
