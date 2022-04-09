@@ -285,11 +285,11 @@ const Cart = ({
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-arrow-left"
+              className="bi bi-arrow-left"
               viewBox="0 0 16 16"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
               />
             </svg>
@@ -334,11 +334,11 @@ const Cart = ({
             width="16"
             height="16"
             fill="currentColor"
-            class="bi bi-arrow-left"
+            className="bi bi-arrow-left"
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
             />
           </svg>
@@ -596,7 +596,7 @@ const Cart = ({
                           </div>
                           <div className="pt-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
                             {userAddress.map((item, i) => (
-                              <div className="address flex h-full" key={i}>
+                              <div className="address flex h-full" key={i+i}>
                                 <div className="p-0 sm:p-8 delivery-inputs border-color border-dashed sm:border-2 rounded block w-full">
                                   <Radio
                                     className="hidden"
@@ -651,18 +651,18 @@ const Cart = ({
                                       </h3>
                                       <div className="my-4">
                                         <span className="home">
-                                          {item.address_line_1},{' '}
-                                          {item.address_line_2}
+                                          {item?.address_line_1},{' '}
+                                          {item?.address_line_2}
                                         </span>
                                         <span className="state-pin">
-                                          {item.city}, {item.state}{' '}
-                                          {item.zip_code},
+                                          {item?.city}, {item?.state}{' '}
+                                          {item?.zip_code},
                                         </span>
                                         <span className="country">
-                                          {item.country},
+                                          {item?.country},
                                         </span>
                                         <span className="country font-w-bold">
-                                          +91 {item.phone}
+                                          +91 {item?.phone}
                                         </span>
                                       </div>
                                       <button className="btn-color-revese my-2">
@@ -749,29 +749,34 @@ const Cart = ({
                             className="bg-transparent border-none  focus:outline-none"
                             placeholder="Apply coupon code"
                             value={coupon}
+                            onChange={(e)=>{setcoupon(e.target.value)}}
                           />
                           <AiFillCaretDown className="mx-4" size={24} />
                         </div>
                         <div
                           id="dropdownDefault"
-                          class=" mt-4  hidden z-10 w-44 bg-white border-2 border-gray-400 rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                          className=" mt-4  hidden z-10 w-44 bg-white border-2 border-gray-400 rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+
                         >
                           <ul
-                            class="m-4 border-2 border-gray-300 rounded  text-sm  text-gray-700 dark:text-gray-200"
+                            className="m-4 border-2 border-gray-300 rounded  text-sm  text-gray-700 dark:text-gray-200"
                             aria-labelledby="dropdownInformationButton"
+                            onClick={()=>{alert("hiii")}}
                           >
-                            <li>
-                              <p
+                            <li   key={'Dashboard'} >
+                              <a href="/"
                                 className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                 value="Dashboard"
-                                onClick={(e) => {
-                                  clicked()
+                                onFocus={(e) => {
+                                  // setcoupon(e.target.value )
+                                  alert("hii")
                                 }}
+
                               >
                                 Dashboard
-                              </p>
+                              </a>
                             </li>
-                            <li>
+                            <li >
                               <p
                                 className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                                 value="Settings"
@@ -809,17 +814,17 @@ const Cart = ({
                                 </span>
 
                                 <span className="home">
-                                  {userAddress[0].address_line_1},{' '}
-                                  {userAddress[0].address_line_2}
+                                  {userAddress[0]?.address_line_1},{' '}
+                                  {userAddress[0]?.address_line_2}
                                 </span>
                                 <br></br>
                                 <span className="state-pin">
-                                  {userAddress[0].city}, {userAddress[0].state}{' '}
-                                  {userAddress[0].zip_code},
+                                  {userAddress[0]?.city}, {userAddress[0]?.state}{' '}
+                                  {userAddress[0]?.zip_code},
                                 </span>
                                 <br></br>
                                 <span className="country">
-                                  {userAddress[0].country},
+                                  {userAddress[0]?.country},
                                 </span>
                                 <br />
                                 <span className="country font-w-bold">

@@ -100,7 +100,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
     <div id='' className={(router.pathname == "/[name]/[storeId] " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-white` : 'hidden'} >
 
          <div className="flex flex-row  py-4 w-full">
-        <div class="basis-1/12  md:basis-1/12 lg:basis-1/6 h-20 md:w-max lg:w-full  md:mx-2 lg:mx-0 lg:w-full flex items-center">
+        <div className="basis-1/12  md:basis-1/12 lg:basis-1/6 h-20 md:w-max lg:w-full  md:mx-2 lg:mx-0 lg:w-full flex items-center">
           <Button className="md:w-max lg:w-full" type="link" href="/">
             <div className="flex  justify-center md:w-max lg:w-full  items-center ">
               <div className="h-20 w-20  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
@@ -113,7 +113,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
             </div>
           </Button>
         </div>
-        <div class="basis-1/2 flex items-center h-20">
+        <div className="basis-1/2 flex items-center h-20">
           <div className=" flex flex-row justify-between w-full ">
             <div className="basis-1/4 border-white  h-10 text-black flex items-center">
               <GrLocation size={20} />
@@ -135,7 +135,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
             </div>
           </div>
         </div>
-        <div class="md:basis-2/4 lg:basis-1/4    items-center">
+        <div className="md:basis-2/4 lg:basis-1/4    items-center">
           <div className=" flex flex-row justify-between items-center text-black mt-4">
             <div className=" w-full flex justify-around ">
               <span className="whitespace-nowrap font-bold inline-block tracking-tight md:text-sm lg:text-lg">
