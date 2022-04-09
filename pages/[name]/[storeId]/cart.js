@@ -828,7 +828,7 @@ const Cart = ({
                                 </span>
                                 <br />
                                 <span className="country font-w-bold">
-                                  +91 {userAddress[0].phone}
+                                  +91 {userAddress[0]?.phone}
                                 </span>
                               </div>
                               <span className="font-semibold">
