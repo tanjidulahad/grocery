@@ -10,7 +10,7 @@ import { CgBorderStyleDotted } from 'react-icons/cg'
 import moment from 'moment'
 
 export default function Tracker({ details }) {
-  
+
   const [active, setactive] = useState({
     step1: 'active',
     step2:
@@ -24,12 +24,13 @@ export default function Tracker({ details }) {
           ? 'pending'
           : 'active'
         : 'inactive',
-    mobupdate: true,
+    mobupdate: false,
   })
 
   return (
     <>
-      <div
+    <div>
+ {/* <div
         id="tracker"
         className=" hidden md:flex lg:flex bg-white  justify-center items-center"
       >
@@ -134,8 +135,8 @@ export default function Tracker({ details }) {
             )}
           </div>
         </div>
-      </div>
-      <div className=" hidden md:flex lg:flex bg-white  justify-center items-center">
+      </div> */}
+      {/* <div className=" hidden md:flex lg:flex bg-white  justify-center items-center">
         <div className="flex relative right-2 flex-col justify-center items-center text-center">
           <p className="flex text-sm   my-1">Order Placed</p>
           <p
@@ -188,9 +189,14 @@ export default function Tracker({ details }) {
               : '24th Sept 2020, 12:08 Pm'}
           </p>
         </div>
-      </div>
+      </div> */}
+    </div>
+
       {/* Mobile vieew */}
-      <div className="block md:hidden lg:hidden flex-col justify-start ">
+      <div className="mx-6">
+
+
+      <div className=" flex-col justify-start ">
         <div
           className={` ${
             active.mobupdate
@@ -203,16 +209,17 @@ export default function Tracker({ details }) {
           <div
             className="w-10 h-10  ml-4 rounded-full flex justify-center items-center  "
             style={{
-              backgroundColor:
+
+                  border:
                 active.step1 === 'active'
-                  ? '#D85A5A'
+                  ? ' 2px solid #48887B'
                   : active.step1 === 'pending'
                   ? 'rgb(239 207 207)'
                   : '#2424243F',
             }}
           >
             {active.step1 === 'active' ? (
-              <TiTick color={'white'} size={20} />
+              <BsDot color={'#48887B'} size={60} />
             ) : (
               active.step1 === 'pending' && (
                 <BsDot size={40} color={'#D85A5A'} />
@@ -237,9 +244,9 @@ export default function Tracker({ details }) {
                 ? 'flex'
                 : 'hidden'
               : 'block'
-          } mx-4`}
+          } w-1 mx-7 ml-8  h-20 border-4 border-[#48887B] border-dashed border-r-white border-t border-b`}
         >
-          <HiOutlineDotsVertical
+          {/* <HiOutlineDotsVertical
             size={40}
             color={active.step1 === 'active' ? '#D85A5A' : '#2424243F'}
           />
@@ -250,7 +257,7 @@ export default function Tracker({ details }) {
           <HiOutlineDotsVertical
             size={40}
             color={active.step1 === 'active' ? '#D85A5A' : '#2424243F'}
-          />
+          /> */}
         </div>
         <div
           className={` ${
@@ -262,18 +269,19 @@ export default function Tracker({ details }) {
           } ml-4 justify-start items-center text-center`}
         >
           <div
-            className="w-10 h-10 bg-red-600  rounded-full flex justify-center items-center "
+            className="w-10 h-10   rounded-full flex justify-center items-center "
             style={{
-              backgroundColor:
-                active.step2 === 'active'
-                  ? '#D85A5A'
-                  : active.step2 === 'pending'
-                  ? 'rgb(239 207 207)'
-                  : '#2424243F',
-            }}
+
+              border:
+            active.step1 === 'active'
+              ? ' 2px solid #48887B'
+              : active.step1 === 'pending'
+              ? 'rgb(239 207 207)'
+              : '#2424243F',
+        }}
           >
             {active.step2 === 'active' ? (
-              <TiTick color={'white'} size={20} />
+              <BsDot color={'#48887B'} size={60} />
             ) : (
               active.step2 === 'pending' && (
                 <BsDot size={40} color={'#D85A5A'} />
@@ -309,13 +317,13 @@ export default function Tracker({ details }) {
         <div
           className={`${
             active.mobupdate
-              ? active.step2 === 'pending'
+              ? active.step1 === 'pending'
                 ? 'flex'
                 : 'hidden'
               : 'block'
-          } mx-4`}
+          } w-1 mx-8  h-20 border-4 border-[#48887B] border-dashed border-r-white border-t border-b`}
         >
-          <HiOutlineDotsVertical
+          {/* <HiOutlineDotsVertical
             size={40}
             color={active.step2 === 'active' ? '#D85A5A' : '#2424243F'}
           />
@@ -326,7 +334,7 @@ export default function Tracker({ details }) {
           <HiOutlineDotsVertical
             size={40}
             color={active.step2 === 'active' ? '#D85A5A' : '#2424243F'}
-          />
+          /> */}
         </div>
         <div
           className={` ${
@@ -338,18 +346,19 @@ export default function Tracker({ details }) {
           } ml-4 justify-start items-center text-center`}
         >
           <div
-            className="w-10 h-10 bg-red-600 text-white rounded-full flex justify-center items-center "
+            className="w-10 h-10 text-white rounded-full flex justify-center items-center "
             style={{
-              backgroundColor:
-                active.step3 === 'active'
-                  ? '#D85A5A'
-                  : active.step3 === 'pending'
-                  ? 'rgb(239 207 207)'
-                  : '#2424243F',
-            }}
+
+              border:
+            active.step1 === 'active'
+              ? ' 2px solid #48887B'
+              : active.step1 === 'pending'
+              ? 'rgb(239 207 207)'
+              : '#2424243F',
+        }}
           >
             {active.step3 === 'active' ? (
-              <TiTick color={'white'} size={20} />
+              <BsDot color={'#48887B'} size={60} />
             ) : (
               active.step3 === 'pending' && (
                 <BsDot size={40} color={'#D85A5A'} />
@@ -372,6 +381,7 @@ export default function Tracker({ details }) {
             </p>
           </div>
         </div>
+        </div>
 
         <p
           className=" mx-16 text-base text-red-800 cursor-pointer"
@@ -379,7 +389,7 @@ export default function Tracker({ details }) {
             setactive({ ...active, mobupdate: !active.mobupdate })
           }}
         >
-          {active.mobupdate ? 'See all updates' : 'See less update'}
+          {/* {active.mobupdate ? 'See all updates' : 'See less update'} */}
         </p>
       </div>
     </>

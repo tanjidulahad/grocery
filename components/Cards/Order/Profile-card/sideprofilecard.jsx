@@ -10,16 +10,11 @@ function Sideprofilecard({ user, logout }) {
 
   return (
     <div className="w-full  h-full hidden md:block lg:block rounded-t-xl bg-white shadow-lg md:pb-20">
-      <div className="w-full h-40  rounded-t-xl bg-gray-900 ">
-        <img
-          className="w-full rounded-t-xl  h-full opacity-70"
-          src="https://im1.dineout.co.in/images/uploads/restaurant/sharpen/5/k/w/p5605-15644763495d4003bdce387.jpg?tr=tr:n-xlarge"
-        />
-      </div>
+
       <div className="w-full  ">
         <div className=" flex justify-between relative">
-          <div className="w-full px-6">
-            <div className="w-full flex justify-center relative  -top-8">
+          <div className="w-full p-4">
+            <div className="w-full flex justify-center  my-4">
               <div className="rounded-full border-4 border-white w-20 h-20 bg-gray-100 text-gray-400 m-8 lg:mx-8 md:mx-8 lg:my-0 md:my-0 z-100 flex justify-center items-center">
                 <span className='text-3xl font-extrabold	' >
                   {(() => {
@@ -47,13 +42,7 @@ function Sideprofilecard({ user, logout }) {
 
               </p>
             </div>
-            <div className="absolute top-0 right-4 ">
-              <Link href='/account/profile ' >
-                <p className=" cursor-pointer text-lg m-2 font-medium btn-color-revers  relative ">
-                  Edit
-                </p>
-              </Link>
-            </div>
+
           </div>
         </div>
       </div>

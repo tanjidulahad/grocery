@@ -8,9 +8,49 @@
 
 import ReactStars from "react-rating-stars-component";
 
-const Rating = ({ value, size = 30, edit = false, count = 5, ...params }) => {
+const Rating = ({ value, size = 30, edit = false, count = 5, place, changevalue,...params }) => {
+  const secondExample = {
+    size: 30,
+    count: 5,
+    color: "black",
+    activeColor: "red",
+    value: value,
+    a11y: true,
+    isHalf: true,
+    emptyIcon: <i className="far fa-star" />,
+    halfIcon: <i className="fa fa-star-half-alt" />,
+    filledIcon: <i className="fa fa-star" />,
+    onChange: newValue => {
+      console.log(`Example 2: new value is ${newValue}`);
+    }
+  };
     return (
-        <div className='stars rating flex items-center align-items-center' data-stars="4">
+        <div className='stars rating flex items-center align-items-center' data-stars="4" >
+
+          {
+            place==="order"?
+
+            <ReactStars
+            count={count}
+            value={value}
+            edit={true}
+
+            size={size}
+            isHalf={true}
+            emptyIcon={<i className="far fa-star"></i>}
+            halfIcon={<i className="fa fa-star-half-alt"></i>}
+            fullIcon={<i className="fa fa-star"></i>}
+            activeColor="#FFC120"
+            a11y= {true}
+            onChange={newValue => {
+              changevalue(newValue);
+            }}
+
+
+
+        />
+            :
+
             <ReactStars
                 count={count}
                 value={value}
@@ -24,7 +64,9 @@ const Rating = ({ value, size = 30, edit = false, count = 5, ...params }) => {
                 activeColor="#FFC120"
                 {...params}
             />
-            <span style={{ marginLeft: '8px ' }} className="text-sm font-medium black-color-75">{Number(value).toFixed(2)}</span>
+          }
+
+            <span style={{ marginLeft: '8px ' }} className={`text-sm font-medium black-color-75 ${place==='order'?"hidden":""}`}>{Number(value).toFixed(2)}</span>
         </div>
     )
 }
