@@ -52,6 +52,7 @@ function Savedplaces({ user, address, getAddress, addAddress, removeAddress, upd
     setNewAddress({ ...newAddress, [name]: value });
   }
   const onSave = () => {
+ 
     if (!newAddress.full_name || !newAddress.phone || !newAddress.address_line_1 || !newAddress.city || !newAddress.state || !newAddress.country || !newAddress.zip_code) {
       setFormError("Please fill all Required(*) field")
       return;
@@ -74,25 +75,100 @@ function Savedplaces({ user, address, getAddress, addAddress, removeAddress, upd
         isLoadding ?
           <div className='w-full'>
             {/* <Header display={true} topic="Saved Address" /> */}
-            <p className="text-xl hidden md:block lg:block text-gray-900 font-bold">
+            <p className="text-xl hidden md:block lg:block text-gray-900 font-bold bg-white p-4">
               {' '}
-              Delivery Address
+              Saved Places
             </p>
-            <div className="grid lg:grid-cols-2 md:grid-cols-1  gap-6 my-0 md:my-5 lg:my-5  ">
+            <div className="grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 my-0 md:my-5 lg:my-5  ">
               {
                 [...address].map((item, i) => (
-                  <div className="w-full rounded-lg shadow" key={i}>
+                  <div className="w-full mt-4" key={i}>
                     <Address type={item.address_tag == `Home` ? 'Home' : 'Work'} data={item} onEdit={() => { setNewAddress(item); setIsAddressActive(true) }} onRemove={() => removeAddress({ userId: user.customer_id, addressId: item.address_id, setError })} />
                   </div>
                 ))
               }
             </div>
             <div className="flex cursor-pointer mt-24 justify-center md:mt-0 lg:mt-0 md:justify-start lg:justify-start ">
-              <BsPlusCircle className="btn-color-revers" size={30} />
+              {/* <BsPlusCircle className="btn-color-revers" size={30} />
               <Button className="text-lg btn-color-revese btn-color-revers font-semibold ml-4 " onClick={() => setIsAddressActive(true)}>
                 Add New Address
-              </Button>
+              </Button> */}
+                  <p className="text-xl w-full hidden md:block lg:block text-gray-900 font-bold bg-white p-4">
+              {' '}
+             Add New Address
+            </p>
             </div>
+
+
+              <div className="my-4 bg-white">
+                <div className="p-4 px-8   w-1/2  ">
+                  <span className=" font-bold text-lg  ">Country*</span>
+                  <Input onChange={onChangeAddress} type="text" name='country' placeholder="Your Country/Region..." value={newAddress.country} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
+                </div>
+                <div className="p-4 px-8   w-1/2  ">
+                  <span className=" font-bold text-lg  ">Name*</span>
+                  <Input onChange={onChangeAddress} type="text" name='full_name' placeholder="Your full name..." value={newAddress.full_name} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
+                </div>
+
+                <div className="p-4 px-8   w-1/2  ">
+                  <span className=" font-bold text-lg  ">Mobile Number ( Commonly Used to Assist Delivery ) *</span>
+                  <Input onChange={onChangeAddress} type="text" name='phone' placeholder="Enter Your 10 digit Mobile Number" value={newAddress.phone} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
+                </div>
+                <div className="p-4 px-8  w-1/2  ">
+                  <span className=" font-bold text-lg  ">Flat no., House no./ House Name, Road no.*</span>
+                  <Input onChange={onChangeAddress} type="text" name='address_line_1' placeholder="Address" value={newAddress.address_line_1} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
+                </div>
+                <div className="w-full flex">
+                <div className="p-4 px-8   w-1/2  ">
+                  <span className=" font-bold text-lg  ">Colony, Area, Street, Village</span>
+                  <Input onChange={onChangeAddress} type="text" name='address_line_2' placeholder="More Address Details" value={newAddress.address_line_2} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
+                </div>
+                <div className="p-4 px-8  w-1/2  ">
+                  <span className=" font-bold text-lg  ">City*</span>
+                  <Input onChange={onChangeAddress} type="text" name='city' placeholder="City" value={newAddress.city} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
+                </div>
+                </div>
+
+                <div className=" w-full flex">
+                <div className="p-4 px-8  w-1/2  ">
+                  <span className=" font-bold text-lg  ">State*</span>
+                  <Input onChange={onChangeAddress} type="text" name='state' placeholder="state" value={newAddress.state} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
+                </div>
+                <div className="p-4 px-8  w-1/2   ">
+                <div className="   ">
+                  <span className="  font-bold text-lg  ">Zip Code*</span>
+                  <Input onChange={onChangeAddress} type="text" name='zip_code' placeholder="zip_code" value={newAddress.zip_code} className="h-[48px] my-2  rounded border-2 border-gray-300 " />
+                </div>
+
+
+                </div>
+                </div>
+
+
+
+
+                <div className="p-4 px-8 ">
+                  <span className=" font-bold text-lg  ">Address Type*</span>
+                  <div className=" justify-start items-start  p-2">
+                    <div>
+                      <input type="radio" name="address_tag" id="add-t-1" value='Home' onChange={onChangeAddress} checked={newAddress.address_tag == 'Home'} />
+                      <label className={`font-12 ml-4 font-w-600 type-of-address ${newAddress.address_tag == 'Home' ? "selected" : ""}`} htmlFor='add-t-1'> <span className="font-bold text-black">Home Address </span> ( product will be delivered between 7 am to 9 pm) </label></div>
+                    <div className="mt-4">
+                      <input type="radio" name="address_tag" value='Work' id="add-t-2" onChange={onChangeAddress} checked={newAddress.address_tag == 'Work'} />
+                      <label className={`font-12 ml-4 font-w-600 type-of-address ${newAddress.address_tag == 'Work' ? "selected" : ""}`} htmlFor='add-t-2' > <span className="font-bold text-black">Office/ Work Address </span> ( product will be delivered between 10 am - 6 pm) </label></div>
+                  </div>
+                </div>
+                <div className="col-12 mt-4">
+                  <span className="red-color">{formError ? formError : ""}</span>
+                </div>
+                <div className=" p-4 px-8 flex justify-end items-center space-x-4">
+                  <Button className="w-1/4  bg-[#48887B] py-4 rounded text-lg font-bold white-color" onClick={onSave} >Save</Button>
+                  {/* <Button className="w-full bg-red-color py-4 rounded white-color" onClick={() => { setIsAddressActive(false); setNewAddress(addressStructure) }}>Cancel</Button> */}
+                </div>
+              </div>
+
+
+
           </div>
           : error ?
             <ErrorPage message={error.message} statusCode={404} />
@@ -112,16 +188,20 @@ function Savedplaces({ user, address, getAddress, addAddress, removeAddress, upd
                 }
               </div>
               <div className="flex cursor-pointer mt-24 justify-center md:mt-0 lg:mt-0 md:justify-start lg:justify-start ">
-                <BsPlusCircle className="text-red-500" size={30} />
+                {/* <BsPlusCircle className="text-red-500" size={30} />
 
                 <Button className="text-lg btn-color-revese  font-semibold ml-4 " onClick={() => setIsAddressActive(true)}>
                   Add New Address
-                </Button>
+                </Button> */}
+                <p className="text-xl hidden md:block lg:block text-gray-900 font-bold bg-white p-4">
+              {' '}
+              Saved Places
+            </p>
               </div>
             </>
         // <Loader />
       }
-      {
+      {/* {
         isAddressActive &&
         <div className="fixed inset-0 px-4 sm:px-8 md:px-20 bg-black-color-lighter address-form">
           <div className='py-6 md:px-20 flex justify-end '>
@@ -186,7 +266,7 @@ function Savedplaces({ user, address, getAddress, addAddress, removeAddress, upd
             </div>
           </div>
         </div>
-      }
+      } */}
     </>
   )
 }

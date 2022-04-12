@@ -37,14 +37,15 @@ function Myorders({ user, getCurrentOrders, getPastOrders }) {
             <>
               {/* <Header display={true} topic="My Orders" /> */}
 
-              <p className="text-xl mx-2 mt-4 md:mt-0 lg:mt-0 md:mx-0 lg:mx-0 text-gray-900 font-bold">
-                {' '}
-                Current Orders
-              </p>
-              <div className="grid lg:grid-cols-2 md-grid-cols-1  gap-6 my-5">
+
+              <div className="grid  grid-cols-1  gap-6 mb-5">
                 {
                   orderList.length ? orderList.map((item, i) => (
                     <div className="w-full rounded-lg shadow " key={i}>
+
+                      {
+
+                      }
                       <OrderCard data={item} />
                     </div>
                   ))
@@ -54,8 +55,8 @@ function Myorders({ user, getCurrentOrders, getPastOrders }) {
                     </div>
                 }
               </div>
-              <p className="text-xl mx-2 mt-4 md:mt-0 lg:mt-0 md:mx-0 lg:mx-0 text-gray-900 font-bold"> Past Orders</p>
-              <div className="grid lg:grid-cols-2 md-grid-cols-1  gap-6 my-5">
+
+              <div className="grid grid-cols-1  ">
                 {
                   orderListPast.length ?
                     orderListPast.map((item, i) => (

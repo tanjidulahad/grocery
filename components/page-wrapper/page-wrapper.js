@@ -198,9 +198,13 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
                         border-color : ${themeColors.bgColor}
                     }
                     input[type=radio]:checked:after {
-                        background-color : ${themeColors.bgColor};
-                        box-shadow : 0px 0px 0px 2px ${themeColors.bgColor};
+                        background-color : #48887B;
+                        box-shadow : 0px 0px 0px 1px #48887B;
                     }
+                    input[type=radio]:after {
+                      // background-color : #48887B;
+                      box-shadow : 0px 0px 0px 1px #48887B;
+                  }
                 </style>`)
             head.innerHTML = style
         }

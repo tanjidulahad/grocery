@@ -6,7 +6,9 @@ import { connect } from "react-redux";
 
 function Sideprofilecard({ user, logout }) {
 
-  const active = Router?.router?.state?.pathname.split('/')[2]
+  let active = Router?.router?.state?.pathname.split('/')[4]
+ active=active===undefined? 'account' :active
+
 
   return (
     <div className="w-full  h-full hidden md:block lg:block rounded-t-xl bg-white shadow-lg md:pb-20">
@@ -18,9 +20,9 @@ function Sideprofilecard({ user, logout }) {
               <div className="rounded-full border-4 border-white w-20 h-20 bg-gray-100 text-gray-400 m-8 lg:mx-8 md:mx-8 lg:my-0 md:my-0 z-100 flex justify-center items-center">
                 <span className='text-3xl font-extrabold	' >
                   {(() => {
-                    const name = user.full_name.split(' ')
-                    if (name.length) {
-                      if (name.length > 1) {
+                    const name = user?.full_name.split(' ')
+                    if (name?.length) {
+                      if (name?.length > 1) {
                         return `${name[0][0]}${name[name.length - 1][0]}`.toUpperCase()
                       }
                       return `${name[0][0]}${name[0][1]}`.toUpperCase()
@@ -50,9 +52,9 @@ function Sideprofilecard({ user, logout }) {
         <div className="mt-12  ">
           {
             active === 'account' ?
-              <div className="border-l-4 border-static  h-10 my-6">
+              <div className=" h-10 my-6">
                 <Link href='/account ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold btn-color-revers ">
+                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold text-[#48887B] ">
                     {" "}
                     Account
                   </p>
@@ -70,9 +72,9 @@ function Sideprofilecard({ user, logout }) {
           }
           {
             active === 'myorders' ?
-              <div className="border-l-4 border-static h-10 my-6">
+              <div className="h-10 my-6">
                 <Link href='/account/myorders ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold btn-color-revers ">
+                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold text-[#48887B] ">
                     {" "}
                     My Orders
                   </p>
@@ -91,10 +93,10 @@ function Sideprofilecard({ user, logout }) {
 
           {
             // active === 'wishlist' ?
-            //   <div className="border-l-4 border-static  h-10 my-6">
+            //   <div className=" h-10 my-6">
 
             //     <Link href='/account/wishlist ' >
-            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  btn-color-revers ">
+            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  text-[#48887B] ">
 
             //         Wishlist
 
@@ -114,10 +116,10 @@ function Sideprofilecard({ user, logout }) {
 
           {
             // active === 'wallet' ?
-            //   <div className="border-l-4 border-static  h-10 my-6">
+            //   <div className=" h-10 my-6">
 
             //     <Link href='/account/wallet ' >
-            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  btn-color-revers ">
+            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  text-[#48887B] ">
 
             //         Wallet
 
@@ -136,9 +138,9 @@ function Sideprofilecard({ user, logout }) {
           }
           {
             active === 'savedplaces' ?
-              <div className="border-l-4 border-static  h-10 my-6">
+              <div className=" h-10 my-6">
                 <Link href='/account/savedplaces ' >
-                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  btn-color-revers ">
+                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  text-[#48887B] ">
                     Saved Places
                   </p>
                 </Link>
@@ -153,10 +155,10 @@ function Sideprofilecard({ user, logout }) {
           }
           {
             // active === 'subscription' ?
-            //   <div className="border-l-4 border-static  h-10 my-6">
+            //   <div className=" h-10 my-6">
 
             //     <Link href='/account/subscription ' >
-            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  btn-color-revers ">
+            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  text-[#48887B] ">
 
             //         Subscription
 

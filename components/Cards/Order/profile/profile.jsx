@@ -90,6 +90,7 @@ function Profile({ type, fullname, email_id, phone, id }) {
 
 </div>
 
+
       </div>
 
     </div>

@@ -178,7 +178,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
                 <div className=" w-6 h-6 bg-gray-100 text-gray-400 p-5 overflow-hidden flex justify-center items-center rounded-full">
                   <span className="text-sm font-extrabold	">
                     {(() => {
-                      const name = user.full_name.split(' ')
+                      const name = user?.full_name.split(' ')
                       if (name.length) {
                         if (name.length > 1) {
                           return `${name[0][0]}${name[name.length - 1][0]}`.toUpperCase()
@@ -201,17 +201,17 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
                   >
                     <ul className="list-none black-color-75 text-base font-medium space-y-6">
                       <li className="btn-hover-color">
-                        <Link href="#">
+                        <Link href="/account">
                           <a>Account</a>
                         </Link>
                       </li>
                       <li className="btn-hover-color">
-                        <Link href="#">
+                        <Link href="/account/myorders">
                           <a>My Orders</a>
                         </Link>
                       </li>
                       <li className="btn-hover-color">
-                        <Link href="#">
+                        <Link href="/account/savedplaces">
                           <a>Saved Places</a>
                         </Link>
                       </li>

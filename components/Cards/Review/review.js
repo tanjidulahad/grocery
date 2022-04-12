@@ -10,9 +10,7 @@ function Review() {
     setfirst(value)
 
   }
-  const onchange=()=>{
-
-  }
+ 
   return (
     <div className="w-full  border-2 rounded-lg  bg-white">
     <div className="my-4  w-full flex justify-between">
@@ -31,7 +29,7 @@ function Review() {
                <p className="text-left m-4 font-bold text-base  text-dark ">Review</p>
 
 {
-  text.length>500?               <textarea className={`rounded mx-4 mr-8 border-2 border-gray-200 focus:outline-none p-2   `} disabled  value={text} onChange={(e)=>{settext(e.target.value)}} name="w3review" rows="8" style={{minWidth:"90%"}}>
+  text.length>=500?               <textarea className={`rounded mx-4 mr-8 border-2 border-gray-200 focus:outline-none p-2   `} disabled  value={text} onChange={(e)=>{settext(e.target.value)}} name="w3review" rows="8" style={{minWidth:"90%"}}>
 
   </textarea>:
             <textarea className={`rounded mx-4 mr-8 border-2 border-gray-200 focus:outline-none p-2   `}   value={text} onChange={(e)=>{settext(e.target.value)}} name="w3review" rows="8" style={{minWidth:"90%"}}>

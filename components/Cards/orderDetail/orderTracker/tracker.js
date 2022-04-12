@@ -19,11 +19,11 @@ export default function Tracker({ details }) {
         ? 'pending'
         : 'active',
     step3:
-      details.orderStatus !== ''
-        ? details.isDelivery === 'N'
+      details.orderStatus ==='PAYMENT_COMPLETED'
+        ?"pending" :details.isDelivery === 'N'
           ? 'pending'
-          : 'active'
-        : 'inactive',
+          : 'active',
+
     mobupdate: false,
   })
 
@@ -246,18 +246,7 @@ export default function Tracker({ details }) {
               : 'block'
           } w-1 mx-7 ml-8  h-20 border-4 border-[#48887B] border-dashed border-r-white border-t border-b`}
         >
-          {/* <HiOutlineDotsVertical
-            size={40}
-            color={active.step1 === 'active' ? '#D85A5A' : '#2424243F'}
-          />
-          <HiOutlineDotsVertical
-            size={40}
-            color={active.step1 === 'active' ? '#D85A5A' : '#2424243F'}
-          />
-          <HiOutlineDotsVertical
-            size={40}
-            color={active.step1 === 'active' ? '#D85A5A' : '#2424243F'}
-          /> */}
+
         </div>
         <div
           className={` ${
@@ -317,24 +306,13 @@ export default function Tracker({ details }) {
         <div
           className={`${
             active.mobupdate
-              ? active.step1 === 'pending'
+              ? active.step3 === 'pending'
                 ? 'flex'
                 : 'hidden'
               : 'block'
-          } w-1 mx-8  h-20 border-4 border-[#48887B] border-dashed border-r-white border-t border-b`}
+          } w-1 mx-8  h-20 border-4 border-[${active.step3==='pending'?'#2424243F':"#48887B"}] border-dashed border-r-white border-t border-b`}
         >
-          {/* <HiOutlineDotsVertical
-            size={40}
-            color={active.step2 === 'active' ? '#D85A5A' : '#2424243F'}
-          />
-          <HiOutlineDotsVertical
-            size={40}
-            color={active.step2 === 'active' ? '#D85A5A' : '#2424243F'}
-          />
-          <HiOutlineDotsVertical
-            size={40}
-            color={active.step2 === 'active' ? '#D85A5A' : '#2424243F'}
-          /> */}
+
         </div>
         <div
           className={` ${
@@ -350,10 +328,10 @@ export default function Tracker({ details }) {
             style={{
 
               border:
-            active.step1 === 'active'
+            active.step3 === 'active'
               ? ' 2px solid #48887B'
-              : active.step1 === 'pending'
-              ? 'rgb(239 207 207)'
+              : active.step3 === 'pending'
+              ? ' 2px solid #2424243F'
               : '#2424243F',
         }}
           >
@@ -361,7 +339,7 @@ export default function Tracker({ details }) {
               <BsDot color={'#48887B'} size={60} />
             ) : (
               active.step3 === 'pending' && (
-                <BsDot size={40} color={'#D85A5A'} />
+                <BsDot size={40} color={'#B6B6B6'} />
               )
             )}
           </div>
