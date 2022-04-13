@@ -171,20 +171,20 @@ const ProductDetails = ({
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 py-20 overflow-x-hidden">
                                     <div className="w-full ">
                                         {/* <img src={visuals.images[0]} alt={visuals.name} /> */}
-                                        <PdpImage name={visuals.name} list={visuals.images} />
+                                        <PdpImage name={visuals?.name} list={visuals?.images} />
                                     </div>
                                     <div className="relative overflow-auto no-scrollbar w-full h-full">
                                         <div className=" lg:absolute w-full top-0">
                                             {/* <span className="text-sm md:text-lg black-color-75 capitalize ">{visuals.item.item_status.toLowerCase()}</span> */}
-                                            <h1 className="text-base md:text-lg xl:text-3xl mb-4 font-semibold md:font-bold capitalize">{visuals.name.toLowerCase()}</h1>
+                                            <h1 className="text-base md:text-lg xl:text-3xl mb-4 font-semibold md:font-bold capitalize">{visuals?.name.toLowerCase()}</h1>
                                             <div >
-                                                <Rating value={visuals.rating.value} count={visuals.rating.count}/>
+                                                <Rating value={visuals?.rating.value} count={visuals?.rating.count}/>
                                             </div>
                                             <div className="my-4 md:my-6">
-                                                <span className="text-lg md:text-xl my-6 black-color font-semibold">₹{visuals.price.sale_price}</span>
+                                                <span className="text-lg md:text-xl my-6 black-color font-semibold">₹{visuals?.price?.sale_price}</span>
                                                 {
-                                                    visuals.price.sale_price != visuals.price.price &&
-                                                    <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹{visuals.price.price}</span>
+                                                    visuals.price.sale_price != visuals?.price?.price &&
+                                                    <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹{visuals?.price?.price}</span>
                                                 }
                                                 {/* {
                                                     Boolean(visuals.price.price - visuals.price.sale_price) &&
@@ -192,11 +192,11 @@ const ProductDetails = ({
                                                 } */}
                                             </div>
                                             <div className="my-6">
-                                                <p className={`text-sm md:text-base text-gray-500 font-bold text-justify md:text-left  normal-case ${!viewdscmore && visuals.desc.length > 200 && 'product-truncate'} transition`}>
-                                                    {visuals.desc}
+                                                <p className={`text-sm md:text-base text-gray-500 font-bold text-justify md:text-left  normal-case ${!viewdscmore && visuals?.desc?.length > 200 && 'product-truncate'} transition`}>
+                                                    {visuals?.desc}
                                                 </p>
                                                 {
-                                                    visuals.desc.length > 200 &&
+                                                    visuals?.desc?.length > 200 &&
                                                     <Button style={{color:"#F58634"}} className="btn-color-revers" onClick={() => setViewdscmore(!viewdscmore)}>{viewdscmore ? 'hide' : 'more'}.</Button>
                                                 }
                                             </div>
@@ -204,8 +204,8 @@ const ProductDetails = ({
                                                 {
                                                     quantityInCart ?
                                                         <QuantityID value={quantityInCart} disabledPlush={(() => {
-                                                            if (visuals.inventoryDetails) {
-                                                                return visuals.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
+                                                            if (visuals?.inventoryDetails) {
+                                                                return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
                                                             }
                                                             return false
                                                         })()}

@@ -61,11 +61,11 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
     )
     return (
         <>
-            <div className="w-100 block product-item">
+            <div className=" border-[#B6B6B6] w-[221.85px]   block product-item">
 
 
                 <>
-    <div className="border-2 border-gray-300  "style={{height:'281px'}}>
+    <div className="w-100 border-[0.5px] h-[264.49px]">
      <div className="flex justify-between w-full">
        <img  className="m-2" src="/img/square.png"/>
        <AiOutlineHeart className="m-2" size={18} />
@@ -90,10 +90,10 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
 }
 
     </div>
-    <div className="flex justify-between my-2 mx-1 ">
+    <div className="flex justify-between my-2  w-full ">
     <div className="flex">
       <p className="font-bold text-sm">₹ {data.sale_price}</p>
-      <p className="text-gray-400 font-thinner text-sm mx-4 flex items-center"> (MPR.{data.price})</p>
+      <span className="text-gray-400 font-thinner text-sm ml-2 flex items-center line-through"> (MPR.{data.price})</span>
 
     </div>
     <div className="flex">
@@ -105,14 +105,20 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
     </div>
 
     </div>
-    <div className="w-11/12 mx-1">
-    <p className="text-sm font-semibold">
+    <div >
+      {
+        data.item_desc?<div className="h-10 ">
+
+<p className="text-sm font-semibold">
       {
 
-        truncate(`${data.item_desc}`,15)
+        truncate(`${data.item_desc}`,5)
 
       }{data.item_desc.split(" ").length>15&&"..."}
 </p>
+        </div>:<div className=" w-full h-10 "></div>
+      }
+
      </div>
     <div className="my-2  ">
     {/* <Button  className="w-full py-2 rounded" style={{backgroundColor:"#F58634"}} type="button" href="/" title="ADD TO CART"/> */}

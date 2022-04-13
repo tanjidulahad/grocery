@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import MediaQuery from 'react-responsive';
 import { Router, useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
-
+import { redirect } from '@components/link';
 import { AiFillCaretDown } from 'react-icons/ai'
 
 import { IoMdCart } from 'react-icons/io'
@@ -45,7 +45,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
   useEffect(() => {
     setIsLogin(!!user)
   }, [user])
-  const data = (Router?.router?.state?.query)
+
   const onInputChangeHandler = (e) => {
     setQuery(e.target.value)
     if (!searchHandler) {
@@ -91,9 +91,21 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
       // setq('') // Cleaning query string of search
     }
   }, [Router.query])
+  const [lists,setlists]=useState([])
+  useEffect(() => {
+   setlists(categories.length>0&& categories)
+  },[categories.length])
 
-  const lists=categories.length > 0 && categories
+  const name=Router?.query?.name
+  const storeid=Router?.query?.storeId
+  const categoryid=Router?.query?.category
 
+const [cathover,setcathover]=useState({
+  id:[],
+  active:true
+})
+
+console.log(lists[0],categoryid)
   return (
     <nav className='sticky top-0 ' ref={ref} style={{ backgroundColor: `white` }}>
 
@@ -232,73 +244,99 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
           </div>
         </div>
       </div>
-      <div
-        style={{ backgroundColor: '#48887B' }}
-        className="    white-color   wrapper mx-auto "
-      >
+      <div style={{ backgroundColor: '#48887B' }}
+        className="    white-color   wrapper mx-auto " onMouseLeave={()=>{setcathover({...cathover,active:false}),console.log(cathover)}}>
         <div className="flex justify-around w-11/12 mx-12">
           {
-          categories.length > 0 && categories && categories.map((item,i)=>{
+          lists.length>0&&lists.map((item,i)=>(
+             i<6?
+             <div>
+         <div key={i} className="flex  items-center cursor-pointer"  onMouseOver={()=>{setcathover({...cathover,id:item.category_id,active:true})}} >
 
-              <div key={i} className="flex justify-center  items-center">
+<span className=" inline text-sm  mx-1 ">{item.category_name}</span>
+<span>
+<BsChevronDown className="" size={10} />
 
-            <p className="text-sm">{item.category_name}</p>
-            <BsChevronDown className="ml-1" size={10} />
+</span>
+</div>
+
+              <div  className={`flex  absolute top-[95%]   items-center  ` } onMouseLeave={()=>{setcathover({...cathover,id:[],active:false})}}>
+
+
+
+  <ul className={` ${cathover.id===item.category_id ? cathover.active ?"":  'hidden':"hidden"} cursor-pointer text-gray-700 white-color
+   relative `}>
+
+
+{
+    item.subCategories.map((item,i)=>(
+      <Link href={`/?category=${item.category_id }&subCategoryId=${item.sub_category_id}`}>
+      <li key={i+i} ><a className=" bg-[#48887B] hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"  >{item.sub_category_name}</a></li>
+
+      </Link>
+
+
+    ))
+  }
+
+
+     </ul>
+
+
           </div>
-              // <Link href={`/?category=${item.category_id}`}>
-              //                       <a>
-              //                           {/* {parseInt(data?.category, 10) === item.category_id ?
-              //                                 <div className="flex justify-center cursor-pointer items-center">
-
-              //                               <p className="text-sm ">jgjhgjhghj</p>
-              //                               <BsChevronDown className="ml-1" size={10} />
-              //                             </div> */}
-
-              //                             <div className="flex justify-center cursor-pointer items-center">
-              //                             <p className="text-sm ">{item.category_name}</p>
-              //                             <BsChevronDown className="ml-1" size={10} />
-              //                           </div>
 
 
 
+             </div>
+             :
+             i===6&&
+             <div>
+             <div key={i} className="flex  items-center" onMouseOver={()=>{setcathover({...cathover,id:'other',active:true})}}>
 
-              //                       </a>
-              //                   </Link>
-            })
+    <span className=" inline text-sm  mx-1">others</span>
+    <span>
+    <BsChevronDown className="" size={10} />
+
+    </span>
+    </div>
+
+                  <div key={i+"llll"} className={`flex  absolute top-[93%]   items-center  `}onMouseLeave={()=>{setcathover({...cathover,id:[],active:false})}} >
+
+
+
+      <ul className={`  ${cathover.id==='other' ? cathover.active ?"":  'hidden':"hidden"}  text-gray-700 white-color
+       relative `}  >
+
+
+    {
+        lists.length > 0 &&lists.map((item,i)=>(
+          i>=6&&
+          <li key={i+'lll'} class=""><a className=" bg-[#48887B] hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">{item.category_name}</a></li>
+
+
+        ))
+      }
+
+
+          {/* <li class=""><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">Three is the magic number</a></li> */}
+        </ul>
+
+
+              </div>
+
+
+
+                 </div>
+     ))
 
           }
-          <div className="flex justify-center  items-center">
 
-            <p className="text-sm">Packaged food</p>
-            <BsChevronDown className="ml-1" size={10} />
-          </div>
-          <div className="flex justify-center  items-center">
-            <p className="text-sm">Drinnks & Snacks</p>
-            <BsChevronDown className="ml-1" size={10} />
-          </div>
-          <div className="flex justify-center  items-center">
-            <p className="text-sm">Coocking Essentials</p>
-            <BsChevronDown className="ml-1" size={10} />
-          </div>
-          <div className="flex justify-center  items-center">
-            <p className="text-sm">Personal & Baby Care</p>
-            <BsChevronDown className="ml-1" size={10} />
-          </div>
-          <div className="flex justify-center  items-center">
-            <p className="text-sm">Cleaning & Hygiene</p>
-            <BsChevronDown className="ml-1" size={10} />
-          </div>
-          <div className="flex justify-center  items-center">
-            <p className="text-sm">Home & Kitchen</p>
-            <BsChevronDown className="ml-1" size={10} />
-          </div>
-          <div className="flex justify-center  items-center">
-            <p className="text-sm">Other</p>
-            <BsChevronDown className="ml-1" size={10} />
-          </div>
-        </div>
+         </div>
+
 
     </div>
+
+
 
 
 
