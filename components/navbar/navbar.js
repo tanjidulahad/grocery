@@ -51,8 +51,14 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
     if (!searchHandler) {
       router.push(`/`);
     }
-    searchHandler(e) // This handler function comming from PLP page via redux
+
+
+    searchHandler(e)
+    // This handler function comming from PLP page via redux
   }
+   const onSearched=()=>{
+
+   }
   // console.log(router);
 
   const [searchResult, setSearchResult] = useState([])
@@ -63,7 +69,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
   useEffect(() => { // Componentdidmount
     if (!categories.length) getCategoryStart(storeId);
     setSearchHandler((e) => {
-      const { value } = e.target;
+      const  {value}  = e.target
       if (value.trim().length > 0) {
         setStatus('loading')
         redirect(`/?search=${value}`)
@@ -107,9 +113,9 @@ const [cathover,setcathover]=useState({
 
 
   return (
-    <nav className='sticky top-0 ' ref={ref} style={{ backgroundColor: `white` }}>
+    <nav className='sticky top-0 ' ref={ref} style={{ backgroundColor: `#F9F6ED` }}>
 
-    <div id='' className={(router.pathname == "/[name]/[storeId] " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-white` : 'hidden'} >
+    <div id='' className={(router.pathname == "/[name]/[storeId] " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-[#F9F6ED]` : 'hidden'} >
 
          <div className="flex flex-row  py-4 w-full">
         <div className="basis-1/12  md:basis-1/12 lg:basis-1/6 h-20 md:w-max lg:w-full  md:mx-2 lg:mx-0 lg:w-full flex items-center">
@@ -141,7 +147,7 @@ const [cathover,setcathover]=useState({
 
             <div className=" basis-3/4 mx-4 w-full flex rounded">
               <Input className=" h-10 " placeholder='Search for items' onChange={onInputChangeHandler} />
-              <div className="bg-green-900 lg:px-8 md:px-2  rounded-r flex items-center ">
+              <div className="bg-[#48887B] lg:px-8 md:px-2  cursor-pointer rounded-r flex items-center " onClick={onSearched}>
                 <AiOutlineSearch color={'white'} size={20} />
               </div>
             </div>
@@ -191,9 +197,9 @@ const [cathover,setcathover]=useState({
                   <span className="text-sm font-extrabold	">
                     {(() => {
                       const name = user?.full_name.split(' ')
-                      if (name.length) {
-                        if (name.length > 1) {
-                          return `${name[0][0]}${name[name.length - 1][0]}`.toUpperCase()
+                      if (name?.length) {
+                        if (name?.length > 1) {
+                          return `${name[0][0]}${name[name?.length - 1][0]}`.toUpperCase()
                         }
                         return `${name[0][0]}${name[0][1]}`.toUpperCase()
                       }
