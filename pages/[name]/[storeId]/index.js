@@ -46,7 +46,7 @@ const Home = ({ products, pageCount,getPageCount,info, cart,clearProductList, ch
         setSearchResult([])
         redirect(`/`)
       }
-      alert(value)
+      
       setq(value)
     })
   }, [])
