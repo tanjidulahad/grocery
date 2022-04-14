@@ -51,7 +51,7 @@ function Profile({ user}) {
     <>
       {/* <Header display={false} topic="Edit Profile" /> */}
       <div className="grid lg:grid-cols-1   ">
-        <div className="w-full hidden md:block lg:block bg-white md:rounded-lg lg:rounded-lg shadow">
+        <div className="w-full hidden md:block lg:block bg-white rounded shadow">
           <Edit user={user} />
         </div>
         <div className="w-full block md:hidden lg:hidden bg-white md:rounded-lg lg:rounded-lg shadow">

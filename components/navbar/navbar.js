@@ -105,7 +105,7 @@ const [cathover,setcathover]=useState({
   active:true
 })
 
-console.log(lists[0],categoryid)
+
   return (
     <nav className='sticky top-0 ' ref={ref} style={{ backgroundColor: `white` }}>
 
@@ -212,23 +212,23 @@ console.log(lists[0],categoryid)
                     style={{ boxShadow: '0px 4px 8px #2424243F' }}
                   >
                     <ul className="list-none black-color-75 text-base font-medium space-y-6">
-                      <li className="btn-hover-color">
+                      <li className="btn-hover-colors hover:text-[#48887B]">
                         <Link href="/account">
                           <a>Account</a>
                         </Link>
                       </li>
-                      <li className="btn-hover-color">
+                      <li className="btn-hover-colors cursor-pointer hover:text-[#48887B]">
                         <Link href="/account/myorders">
                           <a>My Orders</a>
                         </Link>
                       </li>
-                      <li className="btn-hover-color">
+                      <li className="btn-hover-colors cursor-pointer hover:text-[#48887B]">
                         <Link href="/account/savedplaces">
                           <a>Saved Places</a>
                         </Link>
                       </li>
                       <li
-                        className="btn-hover-color cursor-pointer"
+                        className="btn-hover-colors cursor-pointer hover:text-[#48887B]"
                         onClick={() => {
                           logOut()
                           setIsLogin(false)
@@ -245,13 +245,13 @@ console.log(lists[0],categoryid)
         </div>
       </div>
       <div style={{ backgroundColor: '#48887B' }}
-        className="    white-color   wrapper mx-auto " onMouseLeave={()=>{setcathover({...cathover,active:false}),console.log(cathover)}}>
+        className="    white-color   wrapper mx-auto " onMouseLeave={()=>{setcathover({...cathover,active:false})}}>
         <div className="flex justify-around w-11/12 mx-12">
           {
           lists.length>0&&lists.map((item,i)=>(
              i<6?
-             <div>
-         <div key={i} className="flex  items-center cursor-pointer"  onMouseOver={()=>{setcathover({...cathover,id:item.category_id,active:true})}} >
+             <div key={i}>
+         <div  className="flex  items-center cursor-pointer"  onMouseOver={()=>{setcathover({...cathover,id:item.category_id,active:true})}} >
 
 <span className=" inline text-sm  mx-1 ">{item.category_name}</span>
 <span>
@@ -270,8 +270,8 @@ console.log(lists[0],categoryid)
 
 {
     item.subCategories.map((item,i)=>(
-      <Link href={`/?category=${item.category_id }&subCategoryId=${item.sub_category_id}`}>
-      <li key={i+i} ><a className=" bg-[#48887B] hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"  >{item.sub_category_name}</a></li>
+      <Link key={i+i} href={`/?category=${item.category_id }&subCategoryId=${item.sub_category_id}`}>
+      <li  ><a className=" bg-[#48887B] hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"  >{item.sub_category_name}</a></li>
 
       </Link>
 
@@ -290,8 +290,8 @@ console.log(lists[0],categoryid)
              </div>
              :
              i===6&&
-             <div>
-             <div key={i} className="flex  items-center" onMouseOver={()=>{setcathover({...cathover,id:'other',active:true})}}>
+             <div key={i}>
+             <div  className="flex  items-center" onMouseOver={()=>{setcathover({...cathover,id:'other',active:true})}}>
 
     <span className=" inline text-sm  mx-1">others</span>
     <span>
@@ -311,7 +311,7 @@ console.log(lists[0],categoryid)
     {
         lists.length > 0 &&lists.map((item,i)=>(
           i>=6&&
-          <li key={i+'lll'} class=""><a className=" bg-[#48887B] hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">{item.category_name}</a></li>
+          <li key={i+'lll'} className=""><a className=" bg-[#48887B] hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">{item.category_name}</a></li>
 
 
         ))

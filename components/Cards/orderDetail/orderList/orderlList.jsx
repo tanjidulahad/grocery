@@ -24,10 +24,10 @@ function orderlList({ list, storeName, orderId, createTime, openReturn }) {
       </div>
       {
             list?.map((item, i) => (
-      <div className="mt-1 rounded bg-white ">
+      <div key={i} className="mt-1 rounded bg-white ">
         <div className=' px-4 md:px-0  py-6'>
 
-              <div className="grid grid-cols-2 items-center" key={i}>
+              <div className="grid grid-cols-2 items-center" >
                 <div className="flex justify-start">
                   <div className=" lg:mx-6  md:mx-6 flex max-w-fill ">
                     <Button className=" mt-2 rounded bg-gray-900 md:w-[131px] md:h-[131px] w-20 h-20 shrink-0 block" type='link' href={`/product/${item.orderItemId}`}>

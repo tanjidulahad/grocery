@@ -13,13 +13,14 @@ import checkoutReducer from "./checkout/checkout-reducer";
 import productDetailsReducer from "./product-details/product-reducer";
 import globalErrorReducer from "./global-error-handler/global-error-handler-reducer";
 import searchReducer from "./search/search-reducer";
-
+import uiReducer from "./UI/ui-reducer";
 // Configs
 
 const persistConfig = {
     key: 'root',
     storage,
     whitelist: ['cart', 'user', 'checkout'],
+    blacklist: ['isDetailsLoading']
     // whitelist: ['cart', 'checkout']
 }
 const rootReducer = combineReducers({
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
     wishlist: wishlistReducer,
     globalError: globalErrorReducer,
     search: searchReducer,
+    ui: uiReducer
 })
 
 export default persistReducer(persistConfig, rootReducer);

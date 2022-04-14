@@ -12,6 +12,9 @@ export const getLoginOtpSuccess = (userId) => ({
     type: userActionType.GET_LOGIN_OTP_SSUCCESS,
     payload: userId
 })
+export const logOut = () => ({
+    type: userActionType.LOG_OUT
+})
 
 // Register
 export const getRegisterOtpStart = (phone) => ({

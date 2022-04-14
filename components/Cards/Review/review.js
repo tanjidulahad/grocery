@@ -10,9 +10,9 @@ function Review() {
     setfirst(value)
 
   }
- 
+
   return (
-    <div className="w-full  border-2 rounded-lg  bg-white">
+    <div className="w-full mb-2   rounded  bg-white">
     <div className="my-4  w-full flex justify-between">
 
 

@@ -4,7 +4,7 @@ import { FiHome } from 'react-icons/fi'
 function adress({ address, place, orderDetails }) {
 
   return (
-    <div className="w-full  border-2 rounded-lg  bg-white">
+    <div className="w-full mt-1  rounded  bg-white">
       <div className="my-4 mb-2  w-full flex justify-between">
 
         {
@@ -63,7 +63,7 @@ function adress({ address, place, orderDetails }) {
                    }
                  </div>
                </div>
-      
+
              </div>
            </div>
           </>:

@@ -15,7 +15,7 @@ const [first, setfirst] = useState(0)
   }
 
   return (
-    <div className="w-full  border-2 md:rounded-lg lg:rounded-lg  bg-white">
+    <div className="w-full  rounded  bg-white">
 
       <div className="my-4 mx-2 md:mx-0 lg:mx-0   border-gray-200   w-full flex justify-between">
         <div className='w-full flex my-6'>

@@ -7,7 +7,9 @@ import {
     getCategorySuccess, getSubCategorySuccess, getShopProductsSuccess, getSearchProductsSuccess, getSubCategoryStart,
     getShopDisplaySettingsSuccess,
     getPageCountSuccess,
-    getBannerSuccess
+    getBannerSuccess,
+    getShopProductsPaginationSuccess,
+    errorInGo
 } from "./shop-action";
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
 
@@ -21,11 +23,12 @@ function* getShopInfoStart() {
             if (!res.data) return;
             yield put(getShopInfoSuccess(res.data))
         } catch (error) {
-            if (error.message == 'Network Error') {
-                yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
-            } else {
-                yield put(riseError({ name: error.name, message: error.message, onOk: () => { Router.reload() }, onOkName: "Reload" }))
-            }
+            yield put(errorInGo(error))
+            // if (error.message == 'Network Error') {
+            //     yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
+            // } else {
+            //     yield put(riseError({ name: error.name, message: error.message, onOk: () => { Router.reload() }, onOkName: "Reload" }))
+            // }
             // console.log(error);
         }
     })
@@ -55,9 +58,10 @@ function* getShopBannerStart() {
     })
 }
 function* getShopPageCountStart() {
-    yield takeLatest(shopActionType.GET_PAGE_COUNT_START, function* ({ payload: storeId }) {
+    yield takeLatest(shopActionType.GET_PAGE_COUNT_START, function* ({ payload }) {
+        const { categoryId, storeId } = payload;
         try {
-            const res = yield fetcher('GET', `?r=catalog/get-page-count&storeId=${storeId}`)
+            const res = yield fetcher('GET', `?r=catalog/get-page-count&storeId=${storeId}${categoryId && 'categoryId=' + categoryId}`)
             if (!res.data) return;
             yield put(getPageCountSuccess(res.data))
         } catch (error) {
@@ -75,11 +79,12 @@ function* getShopSettingsStart() {
             if (!res.data) return;
             yield put(getShopSettingsSuccess(res.data))
         } catch (error) {
-            if (error.message == 'Network Error') {
-                yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
-            } else {
-                yield put(riseError({ name: error.name, message: "Unable to get store Settings!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
-            }
+            yield put(errorInGo(error))
+            // if (error.message == 'Network Error') {
+            //     yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
+            // } else {
+            //     yield put(riseError({ name: error.name, message: "Unable to get store Settings!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
+            // }
             // console.log(error);
         }
     })
@@ -150,14 +155,19 @@ function* onGetSubCategoriesStart() {
 
 function* onGetShopProductsStart() {
     yield takeLatest(shopActionType.GET_SHOP_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, setStatus } = payload;
+        const { storeId, page, setStatus } = payload;
         try {
-            const res = yield fetcher('GET', `?r=catalog/get-items&storeId=${storeId}`)
+            const res = yield fetcher('GET', `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : ""}`)
             if (Array.isArray(res.data)) {
-                yield put(getShopProductsSuccess(res.data))
+                if (page > 1 && typeof page != 'undefined') {
+                    yield put(getShopProductsPaginationSuccess(res.data))
+                } else {
+                    yield put(getShopProductsSuccess(res.data))
+                }
                 setStatus('success')
             }
         } catch (error) {
+            if (setStatus) setStatus('failed')
             if (error.message == 'Network Error') {
                 yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
             } else {
@@ -171,10 +181,15 @@ function* onGetCategoryProductsStart() {
     yield takeLatest(shopActionType.GET_CATEGORY_PRODUCTS_START, function* ({ payload }) {
         const { storeId, categoryId, subCategoryId, page, setStatus } = payload //status == loading || failed || success
         try {
-            const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId && `&subCategoryId=${subCategoryId}`}${page && `&pageNum=${page}`}&sortOrder=ASC`
+            const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}&sortOrder=ASC`
             const res = yield fetcher('GET', query)
             if (Array.isArray(res.data)) {
-                yield put(getShopProductsSuccess(res.data))
+                if (page > 1 && typeof page != 'undefined') {
+                    yield put(getShopProductsPaginationSuccess(res.data))
+                } else {
+                    yield put(getShopProductsSuccess(res.data))
+                }
+                // yield put(getShopProductsSuccess(res.data))
                 if (setStatus) setStatus('success')
             }
         } catch (error) {

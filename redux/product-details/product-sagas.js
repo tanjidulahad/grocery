@@ -1,7 +1,7 @@
 import { take, put, call, fork, all, takeEvery, takeLatest } from "redux-saga/effects";
 import Router from 'next/router'
 import productActionType from "./product-action-type";
-import fetcher from "../utility";
+import fetcher, { nodefetcher } from "../utility";
 import {
     productDetailsFetchSuccess, similarProductFetchSuccess, errorOnProductDetailPage, getSpecificationsSuccess, getAdditionalInfoSuccess
 } from "./product-actions";
@@ -32,12 +32,16 @@ function* onProductFetchStart() {
 // Similar Products
 function* onSimilarProductFetchStart() {
     yield takeLatest(productActionType.SIMILAR_PRODUCT_FETCH_START, function* ({ payload }) {
+        const { setSimilarProducts, id } = payload
+
         try {
-            const res = yield fetcher('GET', `/widgets/get-related-items?item_id=${payload}`);
-            if (res.data) {
+            const res = yield nodefetcher('GET', `/widgets/get-related-items?item_id=${id}`);
+            if (Array.isArray(res.data)) {
                 yield put(similarProductFetchSuccess(res.data))
+                setSimilarProducts(res.data)
             }
         } catch (error) {
+            console.log(error);
             // if (error.message == 'Network Error') {
             //     yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { Router.reload() }, onOkName: "Reload" }))
             // } else {

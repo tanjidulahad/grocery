@@ -26,7 +26,7 @@ export default function Tracker({ details }) {
 
     mobupdate: false,
   })
-
+console.log(active)
   return (
     <>
     <div>
@@ -262,18 +262,17 @@ export default function Tracker({ details }) {
             style={{
 
               border:
-            active.step1 === 'active'
+            active.step2 === 'active'
               ? ' 2px solid #48887B'
-              : active.step1 === 'pending'
-              ? 'rgb(239 207 207)'
-              : '#2424243F',
+              : active.step2 === 'pending'
+              && '2px solid #2424243F',
         }}
           >
             {active.step2 === 'active' ? (
               <BsDot color={'#48887B'} size={60} />
             ) : (
               active.step2 === 'pending' && (
-                <BsDot size={40} color={'#D85A5A'} />
+                <BsDot size={40} color={'#2424243F'} />
               )
             )}
           </div>
@@ -310,7 +309,7 @@ export default function Tracker({ details }) {
                 ? 'flex'
                 : 'hidden'
               : 'block'
-          } w-1 mx-8  h-20 border-4 border-[${active.step3==='pending'?'#2424243F':"#48887B"}] border-dashed border-r-white border-t border-b`}
+          } w-1 mx-8  h-20 border-4 border-[${active.step3==='pending'?'#2424243F':"#48887B"}] ${details.orderStatus === 'CANCELLED_BY_CUSTOMER'&&'hidden'} border-dashed border-r-white border-t border-b`}
         >
 
         </div>
@@ -321,7 +320,7 @@ export default function Tracker({ details }) {
                 ? 'flex'
                 : 'hidden'
               : 'flex'
-          } ml-4 justify-start items-center text-center`}
+          } ml-4 justify-start items-center text-center ${details.orderStatus === 'CANCELLED_BY_CUSTOMER'&&'hidden'}`}
         >
           <div
             className="w-10 h-10 text-white rounded-full flex justify-center items-center "

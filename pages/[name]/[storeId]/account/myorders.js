@@ -38,10 +38,10 @@ function Myorders({ user, getCurrentOrders, getPastOrders }) {
               {/* <Header display={true} topic="My Orders" /> */}
 
 
-              <div className="grid  grid-cols-1  gap-6 mb-5">
+              <div className="grid  grid-cols-1  gap-6 mb-4">
                 {
                   orderList.length ? orderList.map((item, i) => (
-                    <div className="w-full rounded-lg shadow " key={i}>
+                    <div className="w-full rounded shadow bg-white " key={i}>
 
                       {
 
@@ -56,11 +56,11 @@ function Myorders({ user, getCurrentOrders, getPastOrders }) {
                 }
               </div>
 
-              <div className="grid grid-cols-1  ">
+              <div className="grid grid-cols-1 gap-6 mb-4 ">
                 {
                   orderListPast.length ?
                     orderListPast.map((item, i) => (
-                      <div className="w-full rounded-lg shadow" key={i}>
+                      <div className="w-full rounded shadow   bg-white" key={i}>
                         <OrderCard data={item} status={'past'} message={'Delivery Success'} />
                       </div>
                     ))

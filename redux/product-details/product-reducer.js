@@ -4,8 +4,8 @@ import productActionType from "./product-action-type";
 const INITISL_STATE = {
     product: {},
     similarProducts: [],
-    specifications: [],
-    additionalinfo: [],
+    // specifications: [],
+    // additionalinfo: [],
     error: null
 }
 const productDetailsReducer = (state = INITISL_STATE, { type, payload }) => {

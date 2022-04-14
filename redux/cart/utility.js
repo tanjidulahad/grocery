@@ -1,3 +1,5 @@
+import orderlList from "@components/Cards/orderDetail/orderList/orderlList";
+
 export const addCartItem = (cartItems, cartItemToAdd) => {
     const extingCartItem = cartItems.find(cartItem => cartItem.item_id === cartItemToAdd.item_id);
 
@@ -30,8 +32,12 @@ export const deleteFromCart = (cartItems, cartItemToRemove) => {
     }
 }
 
-export const filterCart = (cartItems, orderDetais) => {
-    const backendCart = Object.values(Object.values(orderDetais.orders)[0].orderItems).map(item => ({
+export const filterCart = (cartItems, orderDetails) => {
+    // const backendCart = Object.values(Object.values(orderDetails.orders)[0].orderItems).map(item => ({
+    //Retriving items from Order details ***it is very mess
+    let storeName = "";
+    const ordersList = Object.values(orderDetails.orders)
+    const backendCart = ordersList.map(item => item.orderItems).reduce((rv, item) => [...rv, ...Object.values(item)], []).map(item => ({
         item_id: Number(item.itemId),
         quantity: item.itemQuantity,
         category_id: item.categoryId,
@@ -42,6 +48,9 @@ export const filterCart = (cartItems, orderDetais) => {
         sub_category_id: 98,
         primary_img: item.itemImg,
         is_veg: item.isVeg,
+        orderId: item.orderId,
+        store_name: orderDetails.orders[item.orderId]?.storeName,
+        store_logo: '/img/default.webp'
     })) // Item id and quantity filter
     console.log(backendCart);
     if (backendCart.length) {

@@ -51,6 +51,14 @@ export const addItemTopurchaseSuccess = (data) => ({
     type: checkoutActionType.ADD_ITEM_TO_PUCHASE_SUCCESS,
     payload: data
 })
+// CartError
+export const setCartError = (data) => ({
+    type: checkoutActionType.SET_CART_ERROR,
+    payload: data
+})
+export const clearCartError = () => ({
+    type: checkoutActionType.CLEARE_CART_ERROR,
+})
 
 // Update Quantity to purchase
 export const updateQuantityToPurchaseStart = (data) => ({
@@ -74,6 +82,10 @@ export const deleteFromPurchaseSuccess = () => ({
 // Backend Cart
 export const setBackendCartStart = (data) => ({
     type: checkoutActionType.SET_BACKEND_CART_START,
+    payload: data
+})
+export const setBackendCartStoreStart = (data) => ({
+    type: checkoutActionType.SET_BACKEND_CART_STORE_START,
     payload: data
 })
 export const setBackendCartSuccess = (data) => ({

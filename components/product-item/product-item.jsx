@@ -10,7 +10,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
     const  truncate=(str, no_words)=> {
       return str.split(" ").splice(0,no_words).join(" ");
   }
-  console.log(data,'line 13 profuct')
+
     if (!data) {
         return (
             <div className="h-full   border-gray-200 rounded-lg overflow-hidden">

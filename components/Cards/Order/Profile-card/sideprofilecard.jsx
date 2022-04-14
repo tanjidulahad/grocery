@@ -11,7 +11,7 @@ function Sideprofilecard({ user, logout }) {
 
 
   return (
-    <div className="w-full  h-full hidden md:block lg:block rounded-t-xl bg-white shadow-lg md:pb-20">
+    <div className="w-full  h-full hidden md:block lg:block rounded-t-md bg-white shadow-lg md:pb-20">
 
       <div className="w-full  ">
         <div className=" flex justify-between relative">
@@ -71,7 +71,7 @@ function Sideprofilecard({ user, logout }) {
 
           }
           {
-            active === 'myorders' ?
+            active === 'myorders'||'orderdetail' ?
               <div className="h-10 my-6">
                 <Link href='/account/myorders ' >
                   <p className=" flex mx-8 py-2 text-lg relative  font-semibold text-[#48887B] ">

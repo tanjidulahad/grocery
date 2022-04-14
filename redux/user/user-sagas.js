@@ -35,6 +35,9 @@ function* onGetLoginOtpStart() {
                     throw new Error(res.data.message)
                 }
             } else {
+                if (!(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(phone))) {
+                    throw new Error("Please provide us a valid phone number or email id!")
+                }
                 const res = yield fetcher('GET', `?r=customer/phone-login-register&phone=${phone}`)
                 if (res.data) {
                     setUser(res.data)
@@ -64,6 +67,9 @@ function* onGetRegisterOtpStart() {
                     throw new Error(res.data.message)
                 }
             } else {
+                if (!(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im.test(state.phone))) {
+                    throw new Error("Please provide us a valid phone number or email id!")
+                }
                 const res = yield fetcher('GET', `?r=customer/phone-login-register&phone=${state.phone}&name=${state.name}`)
                 if (res.data && (typeof (res.data) == 'string' || typeof (res.data) == 'number')) {
                     setUserId(res.data)
@@ -208,7 +214,9 @@ function* onRemoveAddressStart() {
                 yield put(getAddressStart({ userId, setError }))
             }
         } catch (error) {
-            setError(error)
+            if (setError) {
+                setError(error.message)
+            }
             // if (error.message == 'Network Error') {
             //     yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { return }, onOkName: "Close" }))
             // } else {

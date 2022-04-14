@@ -9,7 +9,7 @@ import {
     createNewRzpOrderSuccess, getPurchaseFailure,
     clearCheckout,
 } from './checkout-action'
-import { clearCart } from "../cart/cart-actions";
+import { clearCart, updateCartSuccess } from "../cart/cart-actions";
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
 // setDeliveryAddressToPurcheseSuccess, setDeliveryMethodToPurcheseSuccess, setPaymentMethodToPurcheseStart, setPaymentMethodToPurcheseSuccess } from "./checkout-action";
 
@@ -18,9 +18,11 @@ function* onSetBackendCartStart() {
         const { userId, groupId, data } = payload;
         try {
             const res = yield fetcher('POST', `?r=orders/add-items-to-cart&customerId=${userId}&groupId=${groupId}`, data)
+            yield put(updateCartSuccess())
             yield put(setBackendCartSuccess(res.data));
             yield put((getPurchageStart(res.data?.purchase_id)))
         } catch (error) {
+            yield put(updateCartSuccess())
             if (error.message == 'Network Error') {
                 yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { setBackendCartStart({ userId, groupId, data }) }, onOkName: "Reload" }))
             } else {
@@ -30,6 +32,28 @@ function* onSetBackendCartStart() {
         }
     })
 }
+
+function* onSetBackendCartStoreStart() {
+    yield takeLatest(checkoutActionType.SET_BACKEND_CART_STORE_START, function* ({ payload }) {
+        const { userId, groupId, data, purchaseId } = payload;
+        try {
+            // const res = yield fetcher('POST', `?r=orders/add-items-to-cart&customerId=${userId}&groupId=${groupId}&purchaseId=${purchaseId}`, data)
+            const res = yield fetcher('POST', `?r=orders/add-items-to-cart&customerId=${userId}&groupId=${groupId}&purchaseId=${purchaseId}`, data)
+            yield put(updateCartSuccess())
+            yield put(setBackendCartSuccess(res.data));
+            yield put((getPurchageStart(res.data?.purchase_id)))
+        } catch (error) {
+            yield put(updateCartSuccess())
+            // if (error.message == 'Network Error') {
+            //     yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { setBackendCartStart({ userId, groupId, data }) }, onOkName: "Reload" }))
+            // } else {
+            //     yield put(riseError({ name: error.name, message: "Unable to get cart products!", onOk: () => { return }, onOkName: "CLOSE" }))
+            // }
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
+
 function* onGetPurchageStart() {
     yield takeLatest(checkoutActionType.GET_PURCHASE_START, function* ({ payload }) {
         try {
@@ -162,6 +186,7 @@ function* onAddItemToPurchaseStart() {
         const { purchaseId, groupId, customerId, storeId, itemId, orderId } = payload; // cod ==  N, Online Pay == Y
         try {
             const res = yield fetcher('GET', `?r=orders/add-item&groupId=${groupId}&storeId=${storeId}&purchaseId=${purchaseId}&itemId=${itemId}&quantity=1&orderId=${orderId}&customerId=${customerId}&clientId=011`)
+            yield put(updateCartSuccess())
             if (res.data) {
                 yield put((getPurchageStart(purchaseId)))
                 console.log('Update successfull');
@@ -169,6 +194,7 @@ function* onAddItemToPurchaseStart() {
         } catch (error) {
             console.log(error);
             yield put((getPurchageStart(purchaseId)))
+            yield put(updateCartSuccess())
             if (error.message == 'Network Error') {
                 yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { return }, onOkName: "GO Back" }))
             } else {
@@ -184,11 +210,13 @@ function* onUpdateQuantityStart() {
         try {
             const res = yield fetcher('GET', `?r=orders/update-quantity&orderItemId=${orderItemId}&quantity=${quantity}`)
             if (res.data) {
+                yield put(updateCartSuccess())
                 yield put((getPurchageStart(purchaseId)))
                 console.log(res, 'Update successfull');
             }
         } catch (error) {
             console.log(error);
+            yield put(updateCartSuccess())
             yield put((getPurchageStart(purchaseId)))
             if (error.message == 'Network Error') {
                 yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { return }, onOkName: "GO Back" }))
@@ -204,10 +232,14 @@ function* onDeleteItemFromPurchaseStart() {
         const { orderItemId, purchaseId } = payload;
         try {
             const res = yield fetcher('GET', `?r=orders/delete-order-item&orderItemId=${orderItemId}`)
+            yield put(updateCartSuccess())
             if (res.data) {
                 yield put((getPurchageStart(purchaseId)))
             }
         } catch (error) {
+            yield put(updateCartSuccess())
+            yield put((getPurchageStart(purchaseId)))
+            console.log(error);
             // console.log(error);
             // yield put((getPurchageStart(purchaseId)))
             // yield put(orderPaymentConfirmError(error))
@@ -247,16 +279,16 @@ function* onCouponCodeApplyStart() {
         try {
             const res = yield fetcher('GET', `/?r=orders/validate-coupon&storeId=${storeId}&couponCode=${couponCode}&orderId=${orderId}&customerId=${userId}`)
             if (typeof res.data == 'object' && res.data?.status == "INVALID_COUPON_CODE") {
-                onError(res.data.status)
+                onError({ message: 'Invalid coupon code!' })
             } else if (res.data) {
                 yield put(getPurchageStart(purchaseId))
                 onSuccess('Apllied Successfully!.')
             } else {
-                onError('Operation Failed!.')
+                onError({ message: 'Operation Failed!.' })
             }
         } catch (error) {
             console.log(error);
-            onError(error.message)
+            onError({ message: 'Operation Failed!.' })
             // yield put(orderPaymentConfirmError(error))
         }
     })
@@ -265,6 +297,6 @@ function* onCouponCodeApplyStart() {
 export default function* checkoutSagas() {
     yield all([call(onSetBackendCartStart), call(onGetPurchageStart), call(onSetDeliveryAddressToPurchese), call(onSetDeliveryMethodToPurchese),
     call(onPaymentMethodToPurchese), call(onInitiatePayment), call(onOrderConfirmPayment), call(onAddItemToPurchaseStart), call(onUpdateQuantityStart),
-    call(onOrderConfirmPaymentSuccess), call(onDeleteItemFromPurchaseStart), call(onCreateNewRzpOrderStart), call(onCouponCodeApplyStart)
+    call(onOrderConfirmPaymentSuccess), call(onDeleteItemFromPurchaseStart), call(onCreateNewRzpOrderStart), call(onCouponCodeApplyStart), call(onSetBackendCartStoreStart)
     ])
 }

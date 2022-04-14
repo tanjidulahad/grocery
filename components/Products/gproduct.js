@@ -5,7 +5,8 @@ import Link from "@components/link"
 // import RecommendedCard from '@components/Cards/Home/RecommendedCard'
 import {BsFilterLeft} from 'react-icons/bs'
 import ProductItem from '@components/product-item/product-item'
-function products({products,status}) {
+function products({products,status,lastEleRef}) {
+
   return (
     <div>
 
@@ -24,18 +25,31 @@ function products({products,status}) {
           </div>
         <div className="  grid  grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4">
 
-  {
-          status == 'success'
-            ?
-            products.length
-              ?
+        {         status == 'success' || status == 'loading'?
+            products.length && (status == 'loading' || status == 'success')
+            ?<>
+             {
               products.map((item, i) => (
                  <div>
                 <ProductItem key={i} data={item} />
                 </div>
-              ))
-              :
-              <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+              ))}
+              {
+
+
+
+             status == 'loading' &&
+              <>
+                Loading...
+              </>
+}
+              <div className="h-6"></div>
+                <div className="h-8" ref={lastEleRef}></div>
+                </>
+              : products.length < 1 && status == 'success' ?
+
+
+               <div className="flex justify-center items-center" style={{ height: "30vh" }}>
                 <h6>
                   <span className="">No items found{' '}
                     <Link href={`/`}>
@@ -46,26 +60,55 @@ function products({products,status}) {
                   </span>
                 </h6>
               </div>
-            : status == 'loading' ?
-              <>
-                <ProductItem />
-                <ProductItem />
-                <ProductItem />
-              </>
-              :
-              <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                <h6>
-                  <span className="">Unexpected error occurred{' '}
-                    <span className="red-color" onClick={Router.reload} style={{ cursor: 'pointer' }}>{' '}
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                      </svg> Please Reload
-                    </span>
-                  </span>
-                </h6>
-              </div>
-        }
+               : products.length < 1 && status == 'success' ?
+               <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                 <h6>
+                   <span className="">No items found{' '}
+                     <Link href={`/`}>
+                       <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                         Show All Products.
+                       </a>
+                     </Link>
+                   </span>
+                 </h6>
+               </div>
+               :
+               <>
+                 <ProductItem />
+                 <ProductItem />
+                 <ProductItem />
+                 <ProductItem />
+
+               </>
+
+           : status == 'success' ?
+             <>
+               <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                 <h6>
+                   <span className="">No items found{' '}
+                     <Link href={`/`}>
+                       <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                         Show All Products.
+                       </a>
+                     </Link>
+                   </span>
+                 </h6>
+               </div>
+             </>
+             :
+             <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+               <h6 className="text-center">
+                 <span className="">Unexpected error occurred{' '}
+                   <span className="red-color block" onClick={Router.reload} style={{ cursor: 'pointer' }}>{' '}
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise inline" viewBox="0 0 16 16">
+                       <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                       <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                     </svg> Please Reload
+                   </span>
+                 </span>
+               </h6>
+             </div>
+       }
 
   </div>
 

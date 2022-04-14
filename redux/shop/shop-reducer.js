@@ -10,6 +10,7 @@ const INITIAL_STATE = {
     displaySettings: null,// {}
     socialProfile: [],
     isReadyToGo: false,// true || false
+    error: null,// true || false
     banners: [],
     pageCount: 1,
     // About products
@@ -43,6 +44,12 @@ const shopReducer = (state = INITIAL_STATE, { type, payload }) => {
                 settings: payload,
                 isReadyToGo: isReady({ ...state, settings: true })
             }
+        case storeActionType.ERROR_IN_GO:
+            return {
+                ...state,
+                error: payload
+            }
+
         case storeActionType.GET_PAGE_COUNT_SUCCESS:
             return {
                 ...state,
@@ -65,6 +72,17 @@ const shopReducer = (state = INITIAL_STATE, { type, payload }) => {
             return {
                 ...state,
                 products: payload,
+            }
+
+        case storeActionType.GET_SHOP_PRODUCTS_PAGINATION_SUCCESS:
+            return {
+                ...state,
+                products: [...state.products, ...payload],
+            }
+        case storeActionType.CLEAR_PRODUCTS_LIST:
+            return {
+                ...state,
+                products: [],
             }
         case storeActionType.GET_SHOP_SOCIAL_PROFILE_SUCCESS:
             return {

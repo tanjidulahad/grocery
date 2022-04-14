@@ -5,6 +5,7 @@ import axios from 'axios'
  * @param {String} method Request Method GET, POST, PUT, DELETE, etc default os GET.
  * @param {String} url URL to request on.
  * @param {Object} body Body is use to set data to be send in request.
+ * @param {Boolean} node In order to use node url pass value NODE=true.
  * @returns {Promise} return a Promis of the responce
  */
 
@@ -27,7 +28,23 @@ const fetcher = (method, url, body = {}) => (new Promise((resolve, reject) => {
         resolve(res)
     }).catch(function (error) {
         if (process.env.NODE_ENV == 'development') {
-            console.log(error);
+            console.error(error);
+        }
+        reject(error)
+    });
+}));
+export const nodefetcher = (method, url, body = {}) => (new Promise((resolve, reject) => {
+    axios({
+        method,
+        url: `${process.env.NEXT_PUBLIC_PLINTO_NODE_URL}${url}`,
+        data: body,
+    }).then(function (res) {
+        if (process.env.NODE_ENV == 'development') {
+            // console.log(res);
+        }
+        resolve(res)
+    }).catch(function (error) {
+        if (process.env.NODE_ENV == 'development') {
             console.error(error);
         }
         reject(error)

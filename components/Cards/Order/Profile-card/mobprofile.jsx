@@ -50,7 +50,7 @@ function mobprofile({ user, logout }) {
           </div>
         </div>
 
-        <div ClassName=" mb-6 ">
+        <div className=" mb-6 ">
 
           <div className="my-2 pt-4 border-t-2 border-gray-600 ">
             {
