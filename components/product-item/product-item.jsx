@@ -55,13 +55,13 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
                     })()}
                         onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                     :
-                    <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-2  ${className}`}  style={{backgroundColor:"#F58634"}} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                    <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-3  ${className}`}  style={{backgroundColor:"#F58634"}} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
             }
         </>
     )
     return (
         <>
-            <div className=" border-[#B6B6B6] w-[221.85px]   block product-item">
+            <div className=" border-[#B6B6B6] w-[221.85px]   block product-item w-max ">
 
 
                 <>

@@ -323,7 +323,7 @@ const Cart = ({
     <>
       <div className="flex bg-[#f2f2f2] flex-row  w-full ">
         <div className="w-1/12 hidden md:block "></div>
-        <div className="w-12/12 md:w-10/12 ">
+        <div className="w-12/12 md:w-10/12  md:mx-8">
         <div
         className=" w-full flex sm:hidden justify-start items-center p-5 bg-white sticky top-0 z-10 "
         style={{ boxShadow: `0px 2px 8px #0000001A` }}
@@ -349,7 +349,7 @@ const Cart = ({
         <span className="text-base font-semibold">My Cart</span>
       </div>
       <section className="bg-black-color-lighter cart relative pb-16">
-        <div className="wrapper mx-auto">
+        <div className=" mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-6 2xl:gap-10">
             <div className="w-full lg:col-span-7 xl:col-span-8 col-auto ">
               {payment && (

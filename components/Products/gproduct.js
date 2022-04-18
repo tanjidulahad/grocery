@@ -11,14 +11,14 @@ function products({products,status,lastEleRef}) {
   return (
     <div className="bg-[#F5F5F5] md:bg-white">
 
-      <div className="flex flex-row md:wrapper w-full ">
+      <div className="flex flex-row md:ml-4 md:wrapper w-full ">
         <div className="w-1/12 hidden md:block "></div>
         <div className=" w-12/12 md:w-10/12  ">
-          <div className="md:w-11/12">
+          <div className="md:mr-14">
           <div className=" flex justify-between   my-2  bg-white p-2 py-4 md:py-0 md:p-0 md:my-4">
 
-<p className=" md:relative md:left-4  flex items-center font-bold ">All Items</p>
-<div className="flex font-bold md:relative md:left-8    ">
+<p className="   flex items-center font-bold md:ml-3 ">All Items</p>
+<div className="flex font-bold    ">
   <div className="flex items-center  ">
   <BsFilterLeft size={20} className='mx-4'/>
 
