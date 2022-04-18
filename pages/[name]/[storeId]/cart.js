@@ -321,7 +321,10 @@ const Cart = ({
   }
   return (
     <>
-      <div
+      <div className="flex bg-[#f2f2f2] flex-row  w-full ">
+        <div className="w-1/12 hidden md:block "></div>
+        <div className="w-12/12 md:w-10/12 ">
+        <div
         className=" w-full flex sm:hidden justify-start items-center p-5 bg-white sticky top-0 z-10 "
         style={{ boxShadow: `0px 2px 8px #0000001A` }}
       >
@@ -1072,6 +1075,10 @@ const Cart = ({
           {error.message}
         </div>
       )}
+        </div>
+        <div className="w-1/12 hidden md:block "></div>
+</div>
+
     </>
   )
 }

@@ -65,8 +65,8 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
 
 
                 <>
-    <div className="w-100 border-[0.5px] h-[264.49px]">
-     <div className="flex justify-between w-full">
+    <div className="w-100 bg-white border-[0.5px] h-[264.49px]">
+     <div className="flex  justify-between w-full">
        <img  className="m-2" src="/img/square.png"/>
        <AiOutlineHeart className="m-2" size={18} />
      </div>

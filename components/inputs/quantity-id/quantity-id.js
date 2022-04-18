@@ -20,7 +20,7 @@ const QuantityID = ({ value = 0, onPlush, onMinus, disabled = false, disabledPlu
     }
 
     return (
-        <div className="inline-block quantity-id relative" style={{
+        <div className="inline-block quantity-id relative w-full" style={{
             ...disabled && { cursor: "not-allowed", }
         }} >
             <div className="flex justify-between items-center btn-border border-2 btn-bg-light h-10 sm:h-12 overflow-hidden rounded-md" style={{
@@ -30,7 +30,7 @@ const QuantityID = ({ value = 0, onPlush, onMinus, disabled = false, disabledPlu
                 backgroundColor:"#f8996221"
 
             }}>
-                <button className="p-2 sm:p-3 btn-color-revese outline-none" onClick={onMinusHandler} disabled={disabledMinus} style={{
+                <button className=" w-1/4 flex justify-center p-2 sm:p-3 btn-color-revese outline-none" onClick={onMinusHandler} disabled={disabledMinus} style={{
                     ...disabledMinus && {
                         opacity: 0.7,
                         cursor: "not-allowed",
@@ -40,10 +40,10 @@ const QuantityID = ({ value = 0, onPlush, onMinus, disabled = false, disabledPlu
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F58634" className="bi bi-dash-lg" viewBox="0 0 16 16">
                         <path fillRule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z" />
                     </svg></button>
-                <div className="h-full bg-white flex items-center">
+                <div className="h-full w-1/2 flex justify-center bg-white flex items-center">
                     <span className="font-medium text-center px-3 align-middle w-10">{value}</span>
                 </div>
-                <button className="p-2 sm:p-3 btn-color-revese outline-none" onClick={onPlushHandler} disabled={disabledPlush} style={{
+                <button className="p-2 w-1/4 flex justify-center sm:p-3 btn-color-revese outline-none" onClick={onPlushHandler} disabled={disabledPlush} style={{
                     ...disabledPlush && {
                         opacity: 0.7,
                         cursor: "not-allowed",

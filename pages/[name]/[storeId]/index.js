@@ -38,7 +38,7 @@ const Home = ({ products, pageCount,getPageCount,info, cart,clearProductList, ch
   useEffect(() => { // Componentdidmount
     if (!categories.length) getCategoryStart(storeId);
     setSearchHandler((e) => {
-      const { value } = e.target;
+      const  value  = e;
       if (value.trim().length > 0) {
         setStatus('loading')
         redirect(`/?search=${value}`)
@@ -46,27 +46,29 @@ const Home = ({ products, pageCount,getPageCount,info, cart,clearProductList, ch
         setSearchResult([])
         redirect(`/`)
       }
-      
+
       setq(value)
     })
   }, [])
   const observer = useRef()
   const listLastElement = useCallback(node => {
     if (status == 'loading') return;
+
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && pageCount) {
         console.log("visible");
         console.log(page + 1);
-        console.log(Router);
+        // console.log(Router);
         console.log(status);
         if (page < pageCount && !search) {
+
           setPage(page + 1)
         }
       }
     })
     if (node) observer.current.observe(node)
-  }, [status, pageCount])
+  }, [pageCount])
   useEffect(() => {
     if (search) {
       getSearchProducts({ storeId, q: q.trim(), setSearchResult, setStatus })
