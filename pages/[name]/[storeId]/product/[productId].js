@@ -3,6 +3,7 @@ import { useRouter, withRouter } from "next/router";
 import ReactPlayer from 'react-player'
 import { connect } from "react-redux";
 import Head from "next/head";
+import {AiOutlineHeart} from 'react-icons/ai'
 
 // Component
 import { QuantityID } from '@components/inputs'
@@ -152,7 +153,7 @@ const ProductDetails = ({
                     content={`${descriptions}, The pizzeria is the largest pizza restaurant chain in the Country with multiple outlets in and around. The pizzeria is known for its fresh pizzas made using organic produce and local ingredients.`} />
                 <meta name="keywords" content={`${descriptions} , Amazon.in, Amazon, Online Shopping, online shopping india, india shopping online, amazon india, amazn, buy online, buy mobiles online, buy books online, buy movie dvd's online, kindle, kindle fire hd, kindle e-readers, ebooks, computers, laptop, toys, trimmers, watches, fashion jewellery, home, kitchen, small appliances, beauty, Sports, Fitness &amp; Outdoors`} />
             </Head>
-            <div className=' w-full flex sm:hidden justify-start items-center p-5 bg-white sticky top-0 z-10 ' style={{ boxShadow: `0px 2px 8px #0000001A` }}>
+            <div className=' w-full flex hidden justify-start items-center p-5 bg-white sticky top-0 z-10 ' style={{ boxShadow: `0px 2px 8px #0000001A` }}>
                 <button className='flex items-center black-color-75 mr-4' onClick={router.back}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
@@ -162,14 +163,18 @@ const ProductDetails = ({
             </div>
             {
                 visuals.view ?
-                <div className="flex flex-row wrapper w-full ">
-                <div className="basis-1/12 "></div>
-                <div className=" basis-10/12">
-                    <section className="bg-black-color-lighter pdp">
-                        <div className="w-full bg-white relative">
+                <div className="flex flex-row md:wrapper w-full mr-0 md:mr-2 ">
+                <div className="basis-1/12 hidden md:block "></div>
+                <div className="basis-12/12 md:basis-10/12 md:ml-7 md:mr-9 ">
+                    <section className="bg-black-color-lighter  pdp">
+                        <div className="w-full pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] bg-white  relative">
                             <div className="">
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 py-20 overflow-x-hidden">
-                                    <div className="w-full ">
+                            <div className="flex md:hidden  justify-between w-full">
+       <img  className="my-2" src="/img/square.png"/>
+       <AiOutlineHeart className="my-2" size={18} />
+     </div>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 md:py-20 overflow-x-hidden">
+                                    <div className="w-11/12 md:w-full ml-4 md:ml-0">
                                         {/* <img src={visuals.images[0]} alt={visuals.name} /> */}
                                         <PdpImage name={visuals?.name} list={visuals?.images} />
                                     </div>
@@ -203,7 +208,7 @@ const ProductDetails = ({
                                             <div>
                                                 {
                                                     quantityInCart ?
-                                                        <QuantityID value={quantityInCart} disabledPlush={(() => {
+                                                        <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
                                                             if (visuals?.inventoryDetails) {
                                                                 return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
                                                             }
@@ -268,9 +273,9 @@ const ProductDetails = ({
                         </div>
                         {
                                                 !!visuals.specifications.length &&
-                                                <div className="w-full  bg-white ">
+                                                <div className="w-full  pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
                                                 <div className="">
-                                                    <div className="py-20">
+                                                    <div className="py-4 md:py-20">
                                                 <div className="mt-6">
                                                     <div className=" border-static additional-info mb-8">
                                                         <h2 className=" lg:text-2xl md:text-xl">
@@ -282,7 +287,7 @@ const ProductDetails = ({
                                                             visuals.specifications.map((item, i) => (
                                                                 <div className="py-3 flex flex items-center" key={i}>
                                                                   <GoPrimitiveDot/>
-                                                                    <p className="text-xl font-thin text-gray-500 mx-2 ">{item.attribute_value}</p>
+                                                                    <p className="text-sm md:text-xl font-thin text-gray-500 mx-2 ">{item.attribute_value}</p>
                                                                 </div>
                                                             ))
                                                         }
@@ -295,9 +300,9 @@ const ProductDetails = ({
 
                         {
                                                 !!visuals.specifications.length &&
-                                                <div className="w-full  bg-white ">
+                                                <div className="w-full pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
                                                 <div className="">
-                                                    <div className="py-20">
+                                                    <div className="py-4 md:py-20">
                                                 <div className="mt-6">
                                                     <div className=" border-static additional-info mb-8">
                                                         <h3 className="lg:text-2xl text-base md:text-xl">
@@ -321,50 +326,47 @@ const ProductDetails = ({
                                             }
 
 {
-                                                !!!visuals.similarProducts.length &&
-                                                <div className="w-full  bg-white ">
-                                                <div className="">
-                                                    <div className="py-20">
-                                                <div className="mt-6">
-                                                    <div className=" border-static additional-info mb-8">
-                                                        <h3 className="lg:text-2xl text-base md:text-xl">
-                                                            Similar Products
-                                                        </h3>
-                                                    </div>
-                                                    <div className="grid grid-cols-5 gap-4">
-                                                            <div>
-                                                            <RecommendedCard/>
+                                                 !!!visuals.similarProducts.length &&
+                                                 <div className="w-full  h md:block bg-[#F5F5F5]  md:bg-white ">
+                                                 <div className="">
+                                                     <div className=" md:py-20">
+                                                 <div className="md:mt-6">
+                                                     <div className=" border-static bg-white pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:additional-info mb-8">
+                                                         <h3 className="lg:text-2xl text-base md:text-xl">
+                                                             Recommended Products
+                                                         </h3>
+                                                     </div>
+                                                     <div className="grid bg-[#F5F5F5] pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:bg-white grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                                             <div>
+                                                             <RecommendedCard/>
 
-                                                            </div>
-                                                            <div>
-                                                            <RecommendedCard/>
+                                                             </div>
+                                                             <div>
+                                                             <RecommendedCard/>
 
-                                                            </div>
-                                                            <div>
-                                                            <RecommendedCard/>
+                                                             </div>
+                                                             <div>
+                                                             <RecommendedCard/>
 
-                                                            </div>
-                                                            <div>
-                                                            <RecommendedCard/>
+                                                             </div>
+                                                             <div>
+                                                             <RecommendedCard/>
 
-                                                            </div>
-                                                            <div>
-                                                            <RecommendedCard/>
+                                                             </div>
 
-                                                            </div>
 
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
+                                                     </div>
+                                                 </div>
+                                                 </div>
+                                                 </div>
+                                                 </div>
                                             }
 
 
 
                         {
                             visuals.additionalinfo.length ?
-                                <div className="w-full  bg-white ">
+                                <div className="w-full pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
                                     <div className="">
                                         <div className="">
                                             <div className=" border-static additional-info ">
@@ -406,16 +408,16 @@ const ProductDetails = ({
 
 {
                                                 !!!visuals.similarProducts.length &&
-                                                <div className="w-full  bg-white ">
+                                                <div className="w-full  h md:block bg-[#F5F5F5]  md:bg-white ">
                                                 <div className="">
-                                                    <div className="py-20">
-                                                <div className="mt-6">
-                                                    <div className=" border-static additional-info mb-8">
+                                                    <div className=" md:py-20">
+                                                <div className="md:mt-6">
+                                                    <div className=" border-static bg-white pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:additional-info mb-8">
                                                         <h3 className="lg:text-2xl text-base md:text-xl">
                                                             Recommended Products
                                                         </h3>
                                                     </div>
-                                                    <div className="grid grid-cols-5 gap-4">
+                                                    <div className="grid bg-[#F5F5F5] pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:bg-white grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                                                             <div>
                                                             <RecommendedCard/>
 
@@ -432,10 +434,7 @@ const ProductDetails = ({
                                                             <RecommendedCard/>
 
                                                             </div>
-                                                            <div>
-                                                            <RecommendedCard/>
 
-                                                            </div>
 
                                                     </div>
                                                 </div>
@@ -445,7 +444,7 @@ const ProductDetails = ({
                                             }
                     </section >
                     </div>
-                    <div className="basis-1/12 "></div>
+                    <div className="basis-1/12 hidden md:block "></div>
                     </div>
                     : failure
                         ?

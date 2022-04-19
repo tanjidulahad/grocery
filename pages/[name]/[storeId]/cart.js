@@ -14,7 +14,7 @@ import OnlienPayment from '@components/online-payment/online-payment'
 import Loader from '@components/loading/loader'
 
 // Actions
-import { clearCart } from '@redux/cart/cart-actions'
+import { clearCart ,deleteItemFromCart} from '@redux/cart/cart-actions'
 import {
   getAddressStart,
   addAddressStart,
@@ -51,6 +51,7 @@ const Cart = ({
   clearCheckout,
   createNewRzpOrder,
   clearCart,
+  deleteItemFromCart,
 }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const purchaseDetails = checkout.purchaseDetails
@@ -69,6 +70,8 @@ const Cart = ({
     deliveryMethod: '',
     paymentMethod: '',
   })
+
+console.log(userAddress,'line74444...')
   const router = useRouter()
   useEffect(() => {
     // Get Purchase Id
@@ -255,7 +258,7 @@ const Cart = ({
           const ele = document.getElementById('mob-navbar')
           if (ele) {
             if (ele.offsetWidth != mobNavHeight) {
-              console.log(ele)
+              // console.log(ele)
               setMobNavHeight(ele.offsetHeight)
             }
           }
@@ -325,7 +328,7 @@ const Cart = ({
         <div className="w-1/12 hidden md:block "></div>
         <div className="w-12/12 md:w-10/12  md:mx-8">
         <div
-        className=" w-full flex sm:hidden justify-start items-center p-5 bg-white sticky top-0 z-10 "
+        className=" w-full flex hidden justify-start items-center p-5 bg-white sticky top-0 z-10 "
         style={{ boxShadow: `0px 2px 8px #0000001A` }}
       >
         <button
@@ -442,6 +445,7 @@ const Cart = ({
                           ).toFixed(2)}
                         </h2>
                       </div>
+
                       <div className=" w-full flex justify-center items-center">
                         {!!purchaseDetails ? (
                           <Button
@@ -495,7 +499,7 @@ const Cart = ({
                 </>
               )}
 
-              <div className=" pt-4   flex ">
+              <div className=" pt-4 hidden  md:flex ">
                 {
                   !payment ?<>
                   <span className="text-orange-400  text-lg font-bold">
@@ -508,18 +512,40 @@ const Cart = ({
                 }
 
               </div>
+              <div className=" py-4 px-4 flex md:hidden bg-white items-center border-b-[1px] border-[#E7E7E7] ">
+                {
+                  !payment ?<>
+                  <span className="text-black  text-lg font-bold">
+                  <svg width="25" height="25" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.9688 10.1562C17.9688 8.29145 17.2872 6.50302 16.0741 5.18441C14.861 3.86579 13.2156 3.125 11.5 3.125C9.78438 3.125 8.13903 3.86579 6.9259 5.18441C5.71278 6.50302 5.03125 8.29145 5.03125 10.1562C5.03125 13.0406 7.15444 16.8 11.5 21.3031C15.8456 16.8 17.9688 13.0406 17.9688 10.1562ZM11.5 23.4375C6.22869 18.2297 3.59375 13.8016 3.59375 10.1562C3.59375 7.87705 4.42673 5.69119 5.90944 4.07955C7.39215 2.46791 9.40313 1.5625 11.5 1.5625C13.5969 1.5625 15.6079 2.46791 17.0906 4.07955C18.5733 5.69119 19.4062 7.87705 19.4062 10.1562C19.4062 13.8016 16.7713 18.2297 11.5 23.4375Z" fill="#313031"/>
+<path d="M11.5 12.5C12.0719 12.5 12.6203 12.2531 13.0247 11.8135C13.4291 11.374 13.6562 10.7779 13.6562 10.1562C13.6562 9.53465 13.4291 8.93851 13.0247 8.49897C12.6203 8.05943 12.0719 7.8125 11.5 7.8125C10.9281 7.8125 10.3797 8.05943 9.9753 8.49897C9.57093 8.93851 9.34375 9.53465 9.34375 10.1562C9.34375 10.7779 9.57093 11.374 9.9753 11.8135C10.3797 12.2531 10.9281 12.5 11.5 12.5ZM11.5 14.0625C10.5469 14.0625 9.63279 13.6509 8.95884 12.9184C8.28488 12.1858 7.90625 11.1923 7.90625 10.1562C7.90625 9.12025 8.28488 8.12668 8.95884 7.39411C9.63279 6.66155 10.5469 6.25 11.5 6.25C12.4531 6.25 13.3672 6.66155 14.0412 7.39411C14.7151 8.12668 15.0938 9.12025 15.0938 10.1562C15.0938 11.1923 14.7151 12.1858 14.0412 12.9184C13.3672 13.6509 12.4531 14.0625 11.5 14.0625Z" fill="#313031"/>
+</svg>
+                </span>
+                <div className="w-3/4 leading-3">
+                <p className="text-lg font-bold mx-2">{userAddress[0]?.full_name}</p>
+                <span className="text-base leading-3 mx-2">{userAddress[0]?.address_line_1}{userAddress[0]?.address_line_2}</span>
+
+                </div>
+                <Button className={`btn-color   btn-bg m text-sm  rounded-2xl py-3 px-4  `} pdp={true} style={{backgroundColor:"#F58634"}}  >Change </Button>
+
+                  </>:
+                <span className="text-lg font-bold mx-2">Review your order</span>
+
+                }
+
+              </div>
               {cart.map((item, i) => (
-                <>
-                  <div className=" my-4  w-full bg-white rounded">
-                    <div className="flex w-full p-2 justify-end text-gray-400">
-                      <IoIosCloseCircleOutline size={20} />
+                <div key={i}>
+                  <div className=" md:my-4  w-full bg-white rounded border-b-[1px] border-[#E7E7E7] md:border-[0px]">
+                    <div className="flex w-full p-2 justify-end text-gray-400   ">
+                      <IoIosCloseCircleOutline className="cursor-pointer hidden md:block" onClick={(e)=>{deleteItemFromCart(item)}} size={20} />
                     </div>
                     {/* cart Item list */}
                     <div className="p-3 py-0 lg:px-6 lg:pb-6 md:py-2 md:pb-6 sm:p-6  flex flex-col  divide-y sm:divide-y-0">
-                      <CartItem data={item} key={i} />
+                      <CartItem data={item} />
                     </div>
                   </div>
-                </>
+                </div>
               ))}
 
               {!!purchaseDetails && payment && (
@@ -597,7 +623,7 @@ const Cart = ({
                           <div className="">
                             <h2>Choose Delivery Address</h2>
                           </div>
-                          <div className="pt-10 grid grid-cols-1 sm:grid-cols-2 gap-10">
+                          <div className=" hidden pt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
                             {userAddress.map((item, i) => (
                               <div className="address flex h-full" key={i+i}>
                                 <div className="p-0 sm:p-8 delivery-inputs border-color border-dashed sm:border-2 rounded block w-full">
@@ -732,7 +758,7 @@ const Cart = ({
                                         </div>
                                     </div> */}
                   <div>
-                    <div className="mt-16 pb-10 bg-white rounded">
+                    <div className="mt-16 pb-10 bg-white rounded hidden md:block">
                       <div className="px-3 pt-10 sm:px-10  rounded">
                         <div
                           onFocus={() => {
@@ -772,7 +798,7 @@ const Cart = ({
                                 value="Dashboard"
                                 onFocus={(e) => {
                                   // setcoupon(e.target.value )
-                                  alert("hii")
+
                                 }}
 
                               >
@@ -960,21 +986,59 @@ const Cart = ({
                   bottom: `${mobNavHeight}px`,
                 }}
               >
-  <div className=" w-full  justify-center flex col-span-full">
+  <div className=" w-full  md:justify-center flex col-span-full">
 
     {
       !!user ?(
     (
 
-      !payment&&
+      !payment&&   <>
                           <Button
-                            className="w-3/4 py-3 sm:py-4 white-color rounded btn-bg text-center"
+                            className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
                             onClick={()=>{setpayment(!payment)}}
 
                             style={{
                               backgroundColor: '#F58634',
                             }}
-                          >Proceed</Button>)):
+                          >Proceed</Button>
+
+               <div className="w-1/2 md:hidden flex justify-center text-gray-400 ">
+               <div>
+               <span className="   text-lg font-semibold">
+                  {totalItems} Items
+                </span>
+                <span className="text-lg font-gray-400 font-semibold mx-2">In  cart</span>
+                <div className="flex text-black ">
+                              <h2 className="text-lg font-bold">
+                                Total
+                              </h2>
+                              <h2 className="text-lg font-bold mx-2">
+                                ₹{' '}
+                                {Number(
+                                  purchaseDetails.calculatedPurchaseTotal
+                                ).toFixed(2)}
+                              </h2>
+                            </div>
+               </div>
+
+
+               </div>
+
+
+
+
+                    <div className="w-1/2 items-center flex justify-center md:hidden">
+                            <Button
+                            className="w-3/4 py-3  md:block sm:py-4 white-color rounded btn-bg text-center"
+                            onClick={()=>{setpayment(!payment)}}
+
+                            style={{
+                              backgroundColor: '#F58634',
+                            }}
+                          >Proceed</Button>
+                          </div>
+</>
+                          )):
                     <Button
                       className="w-3/4 py-3 sm:py-4 white-color rounded btn-bg text-center mx-auto"
                       onClick={authToggle}
@@ -1107,6 +1171,7 @@ const mapDispatchToProps = (dispatch) => ({
   clearCheckout: () => dispatch(clearCheckout()),
   createNewRzpOrder: (data) => dispatch(createNewRzpOrderStart(data)),
   clearCart: () => dispatch(clearCart()),
+  deleteItemFromCart:(item)=> dispatch(deleteItemFromCart(item)),
 
   authToggle: () => dispatch(authShowToggle()),
 })

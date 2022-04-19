@@ -7,7 +7,7 @@ import Link from "@components/link"
 import {BsFilterLeft} from 'react-icons/bs'
 import ProductItem from '@components/product-item/product-item'
 function products({products,status,lastEleRef}) {
-  console.log(products,'line10000')
+  
   return (
     <div className="bg-[#F5F5F5] md:bg-white">
 
