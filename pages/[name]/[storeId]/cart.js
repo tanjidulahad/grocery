@@ -32,6 +32,7 @@ import {
   createNewRzpOrderStart,
 } from '@redux/checkout/checkout-action'
 import PageWrapper from '@components/page-wrapper/page-wrapper'
+import Tracker from '@components/Cards/tracker'
 
 const Cart = ({
   user,
@@ -267,6 +268,11 @@ console.log(userAddress,'line74444...')
       objerver.observe(document.body)
     }
   }, [])
+  //cart tracking headers
+  const [cartHeader,setcartHeader] =useState({
+    active:false,
+    status:'desktop'
+  })
 
   if (!info) {
     // If store details are not awilable
@@ -351,20 +357,20 @@ console.log(userAddress,'line74444...')
         </button>
         <span className="text-base font-semibold">My Cart</span>
       </div>
-      <section className="bg-black-color-lighter cart relative pb-16">
+      <section className=" bg-white md:bg-black-color-lighter  relative pb-16">
         <div className=" mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-6 2xl:gap-10">
-            <div className="w-full lg:col-span-7 xl:col-span-8 col-auto ">
+            <div className="w-full   col-span-10 md:col-span-7 xl:col-span-8 col-auto ">
               {payment && (
                 <>
-                  <div className=" py-4   flex ">
+                  <div className=" py-4 pl-2  flex ">
                     <span className="text-lg font-bold ">
-                      Select Payment Methos
+                      Select Payment Method
                     </span>
                     {/* Payment Method */}
 
                   </div>
-                  <div className="w-full  ">
+                  <div className="w-full px-4 md:px-0  ">
 
                     <div className="pt-2  divide-y sm:divide-y-0 ">
                       {storeSettings?.is_payment_accepted == 'Y' && (
@@ -375,7 +381,7 @@ console.log(userAddress,'line74444...')
                           >
                             <div className="flex justify-between items-center">
 
-                              <div className="pl-4">
+                              <div className="pl-2 md:pl-4">
                                 <h3 className="font-semibold text-base block">
                                   Online Payment
                                 </h3>
@@ -498,7 +504,174 @@ console.log(userAddress,'line74444...')
                   </div>
                 </>
               )}
+        {/* Payment section for mobile view */}
+        {cartHeader.status==='payment' && (
+                <>
 
+                  <div
+                          className="w-[94%] h-16 px-2 ml-3 my-6  justify-bewteen border-[1px] border-gray-100 rounded-lg flex items-center"
+                        >
+                  <Input
+                            className="   bg-transparent border-none  focus:outline-none"
+                            placeholder="Apply coupon code"
+                            value={coupon}
+                            onChange={(e)=>{setcoupon(e.target.value)}}
+                          />
+                          <Button
+                            className="px-4  py-2 sm:py-4 white-color rounded btn-bg text-center"
+                            // onClick={initiatePayment}
+                            style={{
+                              backgroundColor: '#F58634',
+                            }}
+
+                          >
+
+                            <span className="sm:hidden inline">Apply</span>
+                          </Button>
+
+                          </div>
+
+                    <span className="text-lg font-bold w-full flex justify-center my-12">
+                       Payment Method
+                    </span>
+
+
+
+                  <div className="w-[100vw]  md:px-0  ">
+
+                    <div className="pt-2  md:divide-y md:divide-y-0 ">
+                      {storeSettings?.is_payment_accepted == 'Y' && (
+                        <div className=" border-t-2 border-b-2 border-gray-200">
+                          <label
+                            className=" my-6 mb-8 md:p-6 delivery-inputs bg-white rounded block w-full"
+                            htmlFor="online"
+                          >
+                            <div className="flex px-4 justify-between items-center">
+
+                              <div className="pl-2 md:pl-4">
+                                <h3 className="font-semibold text-base block mt-4">
+                                  Online Payment
+                                </h3>
+                                <span className="  w-full block text-base text-white tracking-tight">
+                                  {/* ( UPI, Credit/Debit cards, Wallet, Net banking
+                                  ) */}
+                                </span>
+                              </div>
+                              <Radio
+                                className="mt-2"
+                                id="online"
+                                name="paymentMethod"
+                                value="Y"
+                                onChange={onChangeHandler}
+                                checked={checkoutDetails.paymentMethod == 'Y'}
+                              />
+                            </div>
+                          </label>
+                        </div>
+                      )}
+                      {storeSettings?.is_cod_accepted == 'Y' && (
+                        <div className="pt-4 border-b-2 border-gray-200  my-6 sm:pt-0">
+                          <label
+                            className="pb-8  md:p-6 delivery-inputs bg-white rounded block w-full"
+                            htmlFor="cod"
+                          >
+                            <div className="flex  px-4 justify-between items-center ">
+
+                              <div className="pl-2">
+                                <h3 className="font-semibold text-base block">
+                                  Cash On Delivery
+                                </h3>
+                                <span className="block text-base black-color-75 tracking-tight">
+                                  {/* ( Cash, UPI) */}
+                                </span>
+                              </div>
+                              <Radio
+                                className="mt-2"
+                                id="cod"
+                                name="paymentMethod"
+                                value="N"
+                                onChange={onChangeHandler}
+                                checked={checkoutDetails.paymentMethod == 'N'}
+                              />
+                            </div>
+                            <span className="md:ml-4 pl-6 sm:ml-0 text-xs text-gray-400 ">
+                              *Cash on delivery is not eligible for wallet
+                              transactions
+                            </span>
+                          </label>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-full flex justify-center mt-2">
+                  {user ? (
+                    // checkout button for payments
+                  !!purchaseDetails && (
+                    <>
+                      <div className="block hidden">
+                        <h2 className="text-sm font-bold black-color-75">
+                          Item total <sub> {totalItems} item(s)</sub>{' '}
+                        </h2>
+                        <h2 className="text-base font-bold mt-2">
+                          ₹{' '}
+                          {Number(
+                            purchaseDetails.calculatedPurchaseTotal
+                          ).toFixed(2)}
+                        </h2>
+                      </div>
+
+                      <div className=" hidden w-full flex justify-center items-center">
+                        {!!purchaseDetails ? (
+                          <Button
+                            className="w-3/4 py-3 sm:py-4 white-color rounded btn-bg text-center"
+                            onClick={initiatePayment}
+                            disabled={
+                              !enablePayment ||
+                              storeSettings.is_checkout_enabled == 'N'
+                            }
+                            style={{
+                              backgroundColor: '#F58634', ...((!enablePayment ||
+                                storeSettings?.is_checkout_enabled == 'N') && {
+                                opacity: 0.6,
+                                cursor: 'not-allowed',
+                                backgroundColor: '#F58634'
+                              }),
+                            }}
+                          >
+                            <span className="hidden sm:inline">
+                              Proceed to Pay ₹{' '}
+                              {Number(
+                                purchaseDetails.calculatedPurchaseTotal
+                              ).toFixed(2)}
+                            </span>
+                            <span className="sm:hidden inline">Check Out</span>
+                          </Button>
+                        ) : (
+                          <Button
+                            className="w-full py-3 sm:py-4 white-color rounded btn-bg text-center opacity-70"
+                            disabled={true}
+                            style={{backgroundColor: '#F58634'}}
+                          >
+                            Loading...
+                          </Button>
+                        )}
+                      </div>
+                    </>
+                  )
+                ) : (
+                  <div className=" col-span-full">
+                    <Button
+                      className="w-full py-3 sm:py-4 white-color rounded btn-bg text-center mx-auto"
+                      onClick={authToggle}
+                    >
+                      Login to Proceed
+                    </Button>
+                  </div>
+                )}
+
+                  </div>
+                </>
+              )}
               <div className=" pt-4 hidden  md:flex ">
                 {
                   !payment ?<>
@@ -512,8 +685,13 @@ console.log(userAddress,'line74444...')
                 }
 
               </div>
-              <div className=" py-4 px-4 flex md:hidden bg-white items-center border-b-[1px] border-[#E7E7E7] ">
+
+              {
+                cartHeader.status==='desktop'&&
+                <div className=" py-4 px-4 flex md:hidden bg-white items-center border-b-[1px] border-[#E7E7E7] ">
+
                 {
+
                   !payment ?<>
                   <span className="text-black  text-lg font-bold">
                   <svg width="25" height="25" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -521,6 +699,7 @@ console.log(userAddress,'line74444...')
 <path d="M11.5 12.5C12.0719 12.5 12.6203 12.2531 13.0247 11.8135C13.4291 11.374 13.6562 10.7779 13.6562 10.1562C13.6562 9.53465 13.4291 8.93851 13.0247 8.49897C12.6203 8.05943 12.0719 7.8125 11.5 7.8125C10.9281 7.8125 10.3797 8.05943 9.9753 8.49897C9.57093 8.93851 9.34375 9.53465 9.34375 10.1562C9.34375 10.7779 9.57093 11.374 9.9753 11.8135C10.3797 12.2531 10.9281 12.5 11.5 12.5ZM11.5 14.0625C10.5469 14.0625 9.63279 13.6509 8.95884 12.9184C8.28488 12.1858 7.90625 11.1923 7.90625 10.1562C7.90625 9.12025 8.28488 8.12668 8.95884 7.39411C9.63279 6.66155 10.5469 6.25 11.5 6.25C12.4531 6.25 13.3672 6.66155 14.0412 7.39411C14.7151 8.12668 15.0938 9.12025 15.0938 10.1562C15.0938 11.1923 14.7151 12.1858 14.0412 12.9184C13.3672 13.6509 12.4531 14.0625 11.5 14.0625Z" fill="#313031"/>
 </svg>
                 </span>
+
                 <div className="w-3/4 leading-3">
                 <p className="text-lg font-bold mx-2">{userAddress[0]?.full_name}</p>
                 <span className="text-base leading-3 mx-2">{userAddress[0]?.address_line_1}{userAddress[0]?.address_line_2}</span>
@@ -534,19 +713,28 @@ console.log(userAddress,'line74444...')
                 }
 
               </div>
-              {cart.map((item, i) => (
-                <div key={i}>
-                  <div className=" md:my-4  w-full bg-white rounded border-b-[1px] border-[#E7E7E7] md:border-[0px]">
-                    <div className="flex w-full p-2 justify-end text-gray-400   ">
-                      <IoIosCloseCircleOutline className="cursor-pointer hidden md:block" onClick={(e)=>{deleteItemFromCart(item)}} size={20} />
-                    </div>
-                    {/* cart Item list */}
-                    <div className="p-3 py-0 lg:px-6 lg:pb-6 md:py-2 md:pb-6 sm:p-6  flex flex-col  divide-y sm:divide-y-0">
-                      <CartItem data={item} />
+              }
+
+              {
+                cartHeader.status!==('payment'||'order')&&
+                <>
+
+                {cart.map((item, i) => (
+                  <div key={i}>
+                    <div className=" md:my-4  w-full bg-white rounded border-b-[1px] border-[#E7E7E7] md:border-[0px]">
+                      <div className="flex w-full p-2 justify-end text-gray-400   ">
+                        <IoIosCloseCircleOutline className="cursor-pointer hidden md:block" onClick={(e)=>{deleteItemFromCart(item)}} size={20} />
+                      </div>
+                      {/* cart Item list */}
+                      <div className="p-3 py-0 lg:px-6 lg:pb-6 md:py-2 md:pb-6 sm:p-6  flex flex-col  divide-y sm:divide-y-0">
+                        <CartItem data={item} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+                </>
+              }
+
 
               {!!purchaseDetails && payment && (
 
@@ -744,8 +932,10 @@ console.log(userAddress,'line74444...')
                 </>
               )}
             </div>
+            {/* payment for mobile view */}
+
             {/* Invoice section */}
-            <div className="w-full col-span-auto lg:col-span-5 xl:col-span-4 ">
+            <div className="w-full col-span-12  lg:col-span-5 xl:col-span-4 ">
               {!!user && (
                 <>
                   {/* <div className="bg-white">
@@ -758,8 +948,8 @@ console.log(userAddress,'line74444...')
                                         </div>
                                     </div> */}
                   <div>
-                    <div className="mt-16 pb-10 bg-white rounded hidden md:block">
-                      <div className="px-3 pt-10 sm:px-10  rounded">
+                    <div className="md:mt-16 md:pb-10 bg-white rounded hidden md:block  md:block">
+                      <div className="px-3 md:pt-10 sm:px-10  rounded">
                         <div
                           onFocus={() => {
                             document
@@ -772,13 +962,14 @@ console.log(userAddress,'line74444...')
                               .setAttribute('class', 'hidden')
                           }}
                           data-dropdown-toggle="dropdown"
-                          className="w-full h-10  border-2 border-gray-400 flex items-center"
+                          className="w-full hidden h-10  border-2 border-gray-400 md:flex items-center"
                         >
                           <Input
                             className="bg-transparent border-none  focus:outline-none"
                             placeholder="Apply coupon code"
                             value={coupon}
                             onChange={(e)=>{setcoupon(e.target.value)}}
+
                           />
                           <AiFillCaretDown className="mx-4" size={24} />
                         </div>
@@ -830,14 +1021,37 @@ console.log(userAddress,'line74444...')
                           </ul>
                         </div>
                       </div>
-                      <div className="px-3 py-10 sm:px-10  ">
+                      <div className="px-3 md:py-10 sm:px-10  ">
                         <div>
                           <div className="">
                             <div className="ml-2 w-full">
-                              <h3 className="text-xl font-semibold">
+                              <h3 className="text-xl hidden md:block font-semibold">
                                 Billing Address
                               </h3>
-                              <div className="mt-4 mb-2 fle">
+                              <div className="mt-4  hidden md:block mb-2 fle">
+                                <span className="home font-bold text-sm">
+                                  Shipping to:{' '}
+                                </span>
+
+                                <span className="home">
+                                  {userAddress[0]?.address_line_1},{' '}
+                                  {userAddress[0]?.address_line_2}
+                                </span>
+                                <br></br>
+                                <span className="state-pin">
+                                  {userAddress[0]?.city}, {userAddress[0]?.state}{' '}
+                                  {userAddress[0]?.zip_code},
+                                </span>
+                                <br></br>
+                                <span className="country">
+                                  {userAddress[0]?.country},
+                                </span>
+                                <br />
+                                <span className="country font-w-bold">
+                                  +91 {userAddress[0]?.phone}
+                                </span>
+                              </div>
+                              <div className="mt-4  md:hidden mb-2 fle">
                                 <span className="home font-bold text-sm">
                                   Shipping to:{' '}
                                 </span>
@@ -979,20 +1193,21 @@ console.log(userAddress,'line74444...')
                   </div>
                 </>
               )}
+              {/* tracking page  */}
               <div
                 id="cart-total-btn"
-                className="mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0 grid grid-cols-2 sm:grid-cols-1 bg-white sm:bg-transparent"
+                className=" border-[1px] border-[#E7E7E7]  md:border-[0px]mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0 grid grid-cols-2 sm:grid-cols-1 bg-white sm:bg-transparent"
                 style={{
                   bottom: `${mobNavHeight}px`,
                 }}
               >
-  <div className=" w-full  md:justify-center flex col-span-full">
+  <div className={` w-full ${cartHeader.status!=='review'?'flex':'block'}  md:justify-center md:flex col-span-full`}>
 
     {
       !!user ?(
     (
 
-      !payment&&   <>
+         <>
                           <Button
                             className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
                             onClick={()=>{setpayment(!payment)}}
@@ -1002,35 +1217,144 @@ console.log(userAddress,'line74444...')
                             }}
                           >Proceed</Button>
 
-               <div className="w-1/2 md:hidden flex justify-center text-gray-400 ">
-               <div>
-               <span className="   text-lg font-semibold">
-                  {totalItems} Items
-                </span>
-                <span className="text-lg font-gray-400 font-semibold mx-2">In  cart</span>
-                <div className="flex text-black ">
-                              <h2 className="text-lg font-bold">
-                                Total
-                              </h2>
-                              <h2 className="text-lg font-bold mx-2">
-                                ₹{' '}
-                                {Number(
-                                  purchaseDetails.calculatedPurchaseTotal
-                                ).toFixed(2)}
-                              </h2>
-                            </div>
+{
+  cartHeader.status!=='review'&& <div className=" w-1/2 md:hidden flex justify-center text-gray-400 ">
+  <div>
+  <span className="   text-lg font-semibold">
+     {totalItems} Items
+   </span>
+   <span className="text-lg font-gray-400 font-semibold mx-2">In  cart</span>
+   <div className="flex text-black ">
+                 <h2 className="text-lg font-bold">
+                   Total
+                 </h2>
+                 <h2 className="text-lg font-bold mx-2">
+                   ₹{' '}
+                   {Number(
+                     purchaseDetails.calculatedPurchaseTotal
+                   ).toFixed(2)}
+                 </h2>
                </div>
+  </div>
 
 
-               </div>
+  </div>
+}
 
 
+{
+  cartHeader.status==='review'&&
+  <>
+  <div className="px-3 pb-2 sm:px-10">
+    <div className="flex justify-between space-x-2 ">
+      <h6 className="text-lg font-medium text-gray-400">
+        Item Total
+      </h6>
+      <div>
+        <span className="text-lg font-medium ml-2">
+          ₹{' '}
+          {Number(
+            purchaseDetails.totalOrderAmount
+          ).toFixed(2)}
+        </span>
+      </div>
+    </div>
+    <div>
+      <div className="flex justify-between space-x-2 my-1">
+        <h6 className="text-lg  font-medium text-gray-400">
+          Delivery Charge
+        </h6>
+        <div>
+          <span className="text-lg black-color font-medium ml-2">
+            {purchaseDetails.totalDeliveryCharge
+              ? `₹ ${Number(
+                  purchaseDetails.totalDeliveryCharge
+                ).toFixed(2)}`
+              : 'Free'}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex justify-between space-x-2 my-1">
+        <h6 className="text-lg  font-medium text-gray-400">
+          Tax
+        </h6>
+        <div>
+          <span className="text-lg black-color font-medium ml-2">
+            ₹{' '}
+            {Number(
+              purchaseDetails.totalTaxAmount
+            ).toFixed(2)}
+          </span>
+        </div>
+      </div>
+      {purchaseDetails?.totalConvenienceCharge ? (
+        <div className="flex justify-between space-x-2 my-1">
+          <h6 className="text-lg  font-medium text-gray-400">
+            Convenience Charge
+          </h6>
+          <div>
+            <span className="text-lg black-color font-medium ml-2">
+              ₹{' '}
+              {Number(
+                purchaseDetails.totalConvenienceCharge
+              ).toFixed(2)}
+            </span>
+          </div>
+        </div>
+      ) : null}
+      <div className="flex justify-between space-x-2 my-1">
+        <h6 className="text-lg  font-medium text-gray-400">
+          Coupon Applied
+        </h6>
+        <div>
+          <span className="text-lg black-color font-medium ml-2">
+            ₹{' '}
+            {Number(
+              purchaseDetails.totalCouponSavingsAmount
+            ).toFixed(2)}
+          </span>
+        </div>
+      </div>
+      <div className="flex justify-between space-x-2 my-1">
+        <h6 className="text-lg success-color font-medium text-gray-400">
+          Discount
+        </h6>
+        <div>
+          <span className="text-lg success-color font-medium ml-2">
+            - ₹
+            {Number(
+              purchaseDetails.totalSavings
+            ).toFixed(2)}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div className="flex justify-between mt-2 border-t-2 border-solid pt-2">
+      <h2 className="text-lg font-bold">
+        Total Amount
+      </h2>
+      <h2 className="text-lg font-bold">
+        ₹{' '}
+        {Number(
+          purchaseDetails.calculatedPurchaseTotal
+        ).toFixed(2)}
+      </h2>
+    </div>
+  </div>
+  {/* <div className="text-center bg-success-color-lighter success-color py-4">
+                                <span className="text-base fonr-medium">Savings on Bill ₹ {Number(purchaseDetails.totalSavings).toFixed(2)}</span>
+                            </div> */}
+</>
+}
 
 
-                    <div className="w-1/2 items-center flex justify-center md:hidden">
+                    <div className="w-1/2  items-center flex justify-center md:hidden">
                             <Button
                             className="w-3/4 py-3  md:block sm:py-4 white-color rounded btn-bg text-center"
-                            onClick={()=>{setpayment(!payment)}}
+                            onClick={()=>{setcartHeader({...cartHeader,
+                              active:true,status:cartHeader.status==='payment'?'review':'payment'
+                            })}}
 
                             style={{
                               backgroundColor: '#F58634',
@@ -1141,6 +1465,12 @@ console.log(userAddress,'line74444...')
       )}
         </div>
         <div className="w-1/12 hidden md:block "></div>
+</div>
+<div className={`md:hidden fixed top-0  ${!cartHeader.active&&'hidden'}   shadow-lg bg-[#48887B] h-[124px] w-full `} style={{zIndex:1200}}>
+
+<Tracker status={cartHeader.status}/>
+
+
 </div>
 
     </>

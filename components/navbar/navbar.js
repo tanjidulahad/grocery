@@ -97,9 +97,8 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
    setlists(categories.length>0&& categories)
   },[categories.length])
 
-  const name=Router?.query?.name
-  const storeid=Router?.query?.storeId
-  const categoryid=Router?.query?.category
+  const name=Router?.route?.split('/')[3]
+
 
 const [cathover,setcathover]=useState({
   id:[],
@@ -345,7 +344,7 @@ const [cathover,setcathover]=useState({
 
       </div>
 
-      <div className="md:hidden shadow-lg bg-[#48887B] h-[124px] w-full ">
+      <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
        <div className=" flex justify-between ">
 
          <GiHamburgerMenu onClick={()=>{setmenu(true)}} className="m-4 my-4 cursor-pointer" color={'white'}  size={30} />
@@ -440,8 +439,10 @@ const [cathover,setcathover]=useState({
 
 
       {/* Navbar for mobile */}
-      <MediaQuery maxWidth={640}>
-        <div id='mob-navbar' className="mob-navbar  z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent " style={{ boxShadow: '0px -1px 4px #00000033' }}>
+      {
+        name!=='cart'&&
+        <MediaQuery maxWidth={640}>
+        <div id='mob-navbar' className={`mob-navbar   z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent `} style={{ boxShadow: '0px -1px 4px #00000033' }}>
           <div className='text-black w-1/4 flex flex-col  '>
             <Button type='link' href='/' className={`block sm:hidden text-center text-xs ${router.asPath == '/' || router.pathname == '/[name]/[storeId]' && 'btn-nav-color-actives text-[#48887B]'}`}>
               <div className={` w-[24px] h-[24px] mx-auto`}>
@@ -487,6 +488,8 @@ const [cathover,setcathover]=useState({
 
         </div>
       </MediaQuery>
+      }
+
     </nav >
   )
 }
