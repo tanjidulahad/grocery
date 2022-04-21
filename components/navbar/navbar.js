@@ -67,7 +67,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
     //   }
 
    }
-  // console.log(router);
+
 
   const [searchResult, setSearchResult] = useState([])
   const Router = useRouter();
@@ -98,7 +98,7 @@ const Navbar = ({ user, cart,categories, getCategoryStart, getCategoryProducts, 
   },[categories.length])
 
   const name=Router?.route?.split('/')[3]
-
+// console.log(name,'line101')
 
 const [cathover,setcathover]=useState({
   id:[],
@@ -440,7 +440,7 @@ const [cathover,setcathover]=useState({
 
       {/* Navbar for mobile */}
       {
-        name!=='cart'&&
+        name!=='cart'&& 'thank-you'&&
         <MediaQuery maxWidth={640}>
         <div id='mob-navbar' className={`mob-navbar   z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent `} style={{ boxShadow: '0px -1px 4px #00000033' }}>
           <div className='text-black w-1/4 flex flex-col  '>

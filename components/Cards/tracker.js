@@ -9,8 +9,8 @@ import { CgBorderStyleDotted } from 'react-icons/cg'
 
 export default function Tracker({ status }) {
 const track={
-  active1:status==='payment'?'active':status==='review'||'order'&&'completed',
-  active2:status==='review'?'active':status==='order'&&'completed',
+  active1:status==='payment'?'active':status==='review'||status==='order'||status==='failed'&&'completed',
+  active2:status==='review'?'active':status==='order'?'completed':status==='failed'&&'completed',
   active3:status==='order'&&'active',
 
 }
@@ -24,15 +24,17 @@ console.log(track,status)
       >
         <div className="flex  flex-col justify-center items-center text-center">
           <div
-            className={`w-10 h-10  border-2 border-[#F58634] ${track.active1===true&&'bg-[#F58634]'}   rounded-full flex justify-center items-center  `}
+            className={`w-10 h-10  border-2 border-[#F58634] ${track.active1===true&&'bg-[#F58634]'} ${track.active1==='completed'&&'bg-[#F58634]'} ${track.active1==='active'&&'bg-[transparent]'}   rounded-full flex justify-center items-center  `}
 
           >
 
 {
-  track.active1!==true?
-  <BsDot size={50} color={'#F58634'} />
+  track.active1==='active'?
+<BsDot size={50} color={'#F58634'} />
+
 :
 <TiTick size={50} color={'white'} />
+
 
 }
 
@@ -58,7 +60,7 @@ console.log(track,status)
 
         <div className="flex flex-col  justify-center items-center text-center">
           <div
-            className={`w-10 h-10 border-2 ${track.active1!==true?"border-[#E5E5E5]":"border-[#F58634]"} ${track.active2==='completed'&&track.active1==='completed'&&'bg-[#F58634]'}    rounded-full flex justify-center items-center  `}
+            className={`w-10 h-10 border-2 ${track.active2===false?"border-[#E5E5E5]":"border-[#F58634]"} ${track.active2==='completed'&&'bg-[#F58634]'}    rounded-full flex justify-center items-center  `}
 
           >
 {
@@ -98,11 +100,21 @@ console.log(track,status)
 
         <div className="flex flex-col justify-center items-center text-center">
         <div
-            className={`w-10 h-10 border-2 ${track.active2!=='completed'?"border-[#E5E5E5]":"border-[#F58634]"}   rounded-full flex justify-center items-center  `}
+            className={`w-10 h-10 border-2 ${track.active2!=='completed'?"border-[#E5E5E5]":"border-[#F58634]"} ${track.active3==='active'&&'bg-[#F58634]'}  rounded-full flex justify-center items-center  `}
 
           >
 
+{
+  track.active3!=='active'?
+
+// {/* <BsDot size={50} color={track.active1!==true?'#E5E5E5':'#F58634'} /> */}
                 <BsDot size={50} color={track.active2!=='completed'?'#E5E5E5':'#F58634'} />
+
+
+:
+<TiTick size={50} color={'white'} />
+
+}
 
           </div>
         </div>

@@ -72,7 +72,7 @@ const Cart = ({
     paymentMethod: '',
   })
 
-console.log(userAddress,'line74444...')
+console.log(purchaseDetails,'line74444...')
   const router = useRouter()
   useEffect(() => {
     // Get Purchase Id
@@ -130,7 +130,7 @@ console.log(userAddress,'line74444...')
   // Change function to chagen address payment and shipment methods
   const onChangeHandler = (e) => {
     const { name, value } = e.target
-    console.log(checkoutDetails)
+    console.log(checkoutDetails,'line133',name,value)
     setcheckoutDetails({
       ...checkoutDetails,
       [name]: value,
@@ -160,7 +160,7 @@ console.log(userAddress,'line74444...')
       (() => {
         let [d, p] = [false, false]
         if (
-          (deliveryMethod == 'Y' && deliveryAddress) ||
+          (deliveryMethod == '' || deliveryAddress) ||
           deliveryMethod == 'N'
         ) {
           d = true
@@ -179,6 +179,7 @@ console.log(userAddress,'line74444...')
 
   // Initial Payment function
   const initiatePayment = () => {
+    alert('clickked')
     if (!enablePayment) return
     const orderId = Object.keys(purchaseDetails.orders)[0]
     const { purchase } = checkout
@@ -212,7 +213,7 @@ console.log(userAddress,'line74444...')
       let encoded = ''
       if (initiateData) {
         const { purchase } = checkout
-        const amount = initiateData.calculatedPurchaseTotal
+        const amount = initiateData?.calculatedPurchaseTotal
         encoded = btoa(
           JSON.stringify({
             amount,
@@ -357,22 +358,22 @@ console.log(userAddress,'line74444...')
         </button>
         <span className="text-base font-semibold">My Cart</span>
       </div>
-      <section className=" bg-white md:bg-black-color-lighter  relative pb-16">
+      <section className=" bg-white md:bg-[#f2f2f2]  relative pb-16">
         <div className=" mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-6 2xl:gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 md:gap-2 md:gap-6 2xl:gap-10">
             <div className="w-full   col-span-10 md:col-span-7 xl:col-span-8 col-auto ">
               {payment && (
                 <>
-                  <div className=" py-4 pl-2  flex ">
+                  <div className=" py-4   hidden md:flex ">
                     <span className="text-lg font-bold ">
                       Select Payment Method
                     </span>
                     {/* Payment Method */}
 
                   </div>
-                  <div className="w-full px-4 md:px-0  ">
+                  <div className="w-fullhidden md:block px-4 md:px-0  ">
 
-                    <div className="pt-2  divide-y sm:divide-y-0 ">
+                    <div className="pt-2 hidden md:block divide-y sm:divide-y-0 ">
                       {storeSettings?.is_payment_accepted == 'Y' && (
                         <div className="">
                           <label
@@ -436,7 +437,7 @@ console.log(userAddress,'line74444...')
                       )}
                     </div>
                   </div>
-                  <div className="w-full flex justify-center mt-2">
+                  <div className="w-full hidden flex justify-center mt-2">
                   {user ? (
                   !!purchaseDetails && (
                     <>
@@ -447,7 +448,7 @@ console.log(userAddress,'line74444...')
                         <h2 className="text-base font-bold mt-2">
                           ₹{' '}
                           {Number(
-                            purchaseDetails.calculatedPurchaseTotal
+                            purchaseDetails?.calculatedPurchaseTotal
                           ).toFixed(2)}
                         </h2>
                       </div>
@@ -473,7 +474,7 @@ console.log(userAddress,'line74444...')
                             <span className="hidden sm:inline">
                               Proceed to Pay ₹{' '}
                               {Number(
-                                purchaseDetails.calculatedPurchaseTotal
+                                purchaseDetails?.calculatedPurchaseTotal
                               ).toFixed(2)}
                             </span>
                             <span className="sm:hidden inline">Check Out</span>
@@ -615,7 +616,7 @@ console.log(userAddress,'line74444...')
                         <h2 className="text-base font-bold mt-2">
                           ₹{' '}
                           {Number(
-                            purchaseDetails.calculatedPurchaseTotal
+                            purchaseDetails?.calculatedPurchaseTotal
                           ).toFixed(2)}
                         </h2>
                       </div>
@@ -641,7 +642,7 @@ console.log(userAddress,'line74444...')
                             <span className="hidden sm:inline">
                               Proceed to Pay ₹{' '}
                               {Number(
-                                purchaseDetails.calculatedPurchaseTotal
+                                purchaseDetails?.calculatedPurchaseTotal
                               ).toFixed(2)}
                             </span>
                             <span className="sm:hidden inline">Check Out</span>
@@ -680,7 +681,7 @@ console.log(userAddress,'line74444...')
                 </span>
                 <span className="text-lg font-bold mx-2">In your cart</span>
                   </>:
-                <span className="text-lg font-bold mx-2">Review your order</span>
+                <span className="text-lg hidden md:block font-bold ">Review your order</span>
 
                 }
 
@@ -708,7 +709,7 @@ console.log(userAddress,'line74444...')
                 <Button className={`btn-color   btn-bg m text-sm  rounded-2xl py-3 px-4  `} pdp={true} style={{backgroundColor:"#F58634"}}  >Change </Button>
 
                   </>:
-                <span className="text-lg font-bold mx-2">Review your order</span>
+                <span className="text-lg  hidden md:block font-bold ">Review your order</span>
 
                 }
 
@@ -740,7 +741,7 @@ console.log(userAddress,'line74444...')
 
                 <>
                   {/* Delivery method */}
-                  <div className="w-full mt-10 px-3 py-10 sm:px-10 bg-white rounded">
+                  <div className="w-full hidden md:block mt-10 px-3 py-10 sm:px-10 bg-white rounded">
                     <div className="">
                       <h2>Delivery Method</h2>
                     </div>
@@ -811,7 +812,7 @@ console.log(userAddress,'line74444...')
                           <div className="">
                             <h2>Choose Delivery Address</h2>
                           </div>
-                          <div className=" hidden pt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+                          <div className="hidden md:grid pt-10  grid-cols-1 md:grid-cols-2 gap-10">
                             {userAddress.map((item, i) => (
                               <div className="address flex h-full" key={i+i}>
                                 <div className="p-0 sm:p-8 delivery-inputs border-color border-dashed sm:border-2 rounded block w-full">
@@ -1051,29 +1052,7 @@ console.log(userAddress,'line74444...')
                                   +91 {userAddress[0]?.phone}
                                 </span>
                               </div>
-                              <div className="mt-4  md:hidden mb-2 fle">
-                                <span className="home font-bold text-sm">
-                                  Shipping to:{' '}
-                                </span>
 
-                                <span className="home">
-                                  {userAddress[0]?.address_line_1},{' '}
-                                  {userAddress[0]?.address_line_2}
-                                </span>
-                                <br></br>
-                                <span className="state-pin">
-                                  {userAddress[0]?.city}, {userAddress[0]?.state}{' '}
-                                  {userAddress[0]?.zip_code},
-                                </span>
-                                <br></br>
-                                <span className="country">
-                                  {userAddress[0]?.country},
-                                </span>
-                                <br />
-                                <span className="country font-w-bold">
-                                  +91 {userAddress[0]?.phone}
-                                </span>
-                              </div>
                               <span className="font-semibold">
                                 Get all Item before :
                               </span>
@@ -1096,7 +1075,7 @@ console.log(userAddress,'line74444...')
                                 <span className="text-lg font-medium ml-2">
                                   ₹{' '}
                                   {Number(
-                                    purchaseDetails.totalOrderAmount
+                                    purchaseDetails?.totalOrderAmount
                                   ).toFixed(2)}
                                 </span>
                               </div>
@@ -1108,9 +1087,9 @@ console.log(userAddress,'line74444...')
                                 </h6>
                                 <div>
                                   <span className="text-lg black-color font-medium ml-2">
-                                    {purchaseDetails.totalDeliveryCharge
+                                    {purchaseDetails?.totalDeliveryCharge
                                       ? `₹ ${Number(
-                                          purchaseDetails.totalDeliveryCharge
+                                          purchaseDetails?.totalDeliveryCharge
                                         ).toFixed(2)}`
                                       : 'Free'}
                                   </span>
@@ -1179,7 +1158,7 @@ console.log(userAddress,'line74444...')
                               <h2 className="text-lg font-bold">
                                 ₹{' '}
                                 {Number(
-                                  purchaseDetails.calculatedPurchaseTotal
+                                  purchaseDetails?.calculatedPurchaseTotal
                                 ).toFixed(2)}
                               </h2>
                             </div>
@@ -1196,9 +1175,10 @@ console.log(userAddress,'line74444...')
               {/* tracking page  */}
               <div
                 id="cart-total-btn"
-                className=" border-[1px] border-[#E7E7E7]  md:border-[0px]mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0 grid grid-cols-2 sm:grid-cols-1 bg-white sm:bg-transparent"
+                className=" border-[1px] border-[#E7E7E7] z-10 md:z-0  md:border-[0px] mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0 grid grid-cols-2 sm:grid-cols-1 bg-white sm:bg-transparent"
                 style={{
                   bottom: `${mobNavHeight}px`,
+
                 }}
               >
   <div className={` w-full ${cartHeader.status!=='review'?'flex':'block'}  md:justify-center md:flex col-span-full`}>
@@ -1208,17 +1188,35 @@ console.log(userAddress,'line74444...')
     (
 
          <>
-                          <Button
+
+         {
+           !payment ?
+           <Button
                             className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
                             onClick={()=>{setpayment(!payment)}}
 
                             style={{
                               backgroundColor: '#F58634',
                             }}
-                          >Proceed</Button>
+                          >Proceed</Button>:
+                          <Button
+                            className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
+
+                            onClick={()=>{initiatePayment()}}
+                            disabled={
+                              cartHeader.status==='payment' &&checkoutDetails?.paymentMethod===''
+
+                            }
+                            style={{
+                              backgroundColor: '#F58634',
+                              opacity:`${checkoutDetails.paymentMethod===''? 0.6:1}`
+                            }}
+                          >Proceed To Pay</Button>
+         }
+
 
 {
-  cartHeader.status!=='review'&& <div className=" w-1/2 md:hidden flex justify-center text-gray-400 ">
+  cartHeader.status!=='review'&& <div className=" w-1/2 md:hidden flex justify-start text-gray-400 ">
   <div>
   <span className="   text-lg font-semibold">
      {totalItems} Items
@@ -1231,7 +1229,7 @@ console.log(userAddress,'line74444...')
                  <h2 className="text-lg font-bold mx-2">
                    ₹{' '}
                    {Number(
-                     purchaseDetails.calculatedPurchaseTotal
+                     purchaseDetails?.calculatedPurchaseTotal
                    ).toFixed(2)}
                  </h2>
                </div>
@@ -1245,7 +1243,7 @@ console.log(userAddress,'line74444...')
 {
   cartHeader.status==='review'&&
   <>
-  <div className="px-3 pb-2 sm:px-10">
+  <div className="px-3 pb-2 md:hidden sm:px-10">
     <div className="flex justify-between space-x-2 ">
       <h6 className="text-lg font-medium text-gray-400">
         Item Total
@@ -1254,7 +1252,7 @@ console.log(userAddress,'line74444...')
         <span className="text-lg font-medium ml-2">
           ₹{' '}
           {Number(
-            purchaseDetails.totalOrderAmount
+            purchaseDetails?.totalOrderAmount
           ).toFixed(2)}
         </span>
       </div>
@@ -1266,9 +1264,9 @@ console.log(userAddress,'line74444...')
         </h6>
         <div>
           <span className="text-lg black-color font-medium ml-2">
-            {purchaseDetails.totalDeliveryCharge
+            {purchaseDetails?.totalDeliveryCharge
               ? `₹ ${Number(
-                  purchaseDetails.totalDeliveryCharge
+                  purchaseDetails?.totalDeliveryCharge
                 ).toFixed(2)}`
               : 'Free'}
           </span>
@@ -1283,7 +1281,7 @@ console.log(userAddress,'line74444...')
           <span className="text-lg black-color font-medium ml-2">
             ₹{' '}
             {Number(
-              purchaseDetails.totalTaxAmount
+              purchaseDetails?.totalTaxAmount
             ).toFixed(2)}
           </span>
         </div>
@@ -1297,7 +1295,7 @@ console.log(userAddress,'line74444...')
             <span className="text-lg black-color font-medium ml-2">
               ₹{' '}
               {Number(
-                purchaseDetails.totalConvenienceCharge
+                purchaseDetails?.totalConvenienceCharge
               ).toFixed(2)}
             </span>
           </div>
@@ -1311,7 +1309,7 @@ console.log(userAddress,'line74444...')
           <span className="text-lg black-color font-medium ml-2">
             ₹{' '}
             {Number(
-              purchaseDetails.totalCouponSavingsAmount
+              purchaseDetails?.totalCouponSavingsAmount
             ).toFixed(2)}
           </span>
         </div>
@@ -1324,7 +1322,7 @@ console.log(userAddress,'line74444...')
           <span className="text-lg success-color font-medium ml-2">
             - ₹
             {Number(
-              purchaseDetails.totalSavings
+              purchaseDetails?.totalSavings
             ).toFixed(2)}
           </span>
         </div>
@@ -1337,7 +1335,7 @@ console.log(userAddress,'line74444...')
       <h2 className="text-lg font-bold">
         ₹{' '}
         {Number(
-          purchaseDetails.calculatedPurchaseTotal
+          purchaseDetails?.calculatedPurchaseTotal
         ).toFixed(2)}
       </h2>
     </div>
@@ -1348,19 +1346,39 @@ console.log(userAddress,'line74444...')
 </>
 }
 
-
-                    <div className="w-1/2  items-center flex justify-center md:hidden">
+{
+  cartHeader.status!=='review'?
+  <div className="w-1/2  items-center flex justify-end md:hidden">
                             <Button
                             className="w-3/4 py-3  md:block sm:py-4 white-color rounded btn-bg text-center"
                             onClick={()=>{setcartHeader({...cartHeader,
                               active:true,status:cartHeader.status==='payment'?'review':'payment'
+
                             })}}
+                            disabled={
+                              cartHeader.status==='payment' &&checkoutDetails?.paymentMethod===''
+
+                            }
 
                             style={{
                               backgroundColor: '#F58634',
+                              opacity:`${cartHeader.status==='payment' &&checkoutDetails.paymentMethod===''? 0.6:1}`
                             }}
                           >Proceed</Button>
-                          </div>
+                          </div>:
+                          <div className=" w-full   items-center flex justify-center md:hidden">
+                          <Button
+                          className="w-full py-4  md:block sm:py-4 white-color rounded btn-bg text-center"
+                          onClick={()=>{initiatePayment(),setcartHeader({...cartHeader})}}
+
+                          style={{
+                            backgroundColor: '#F58634',
+                          }}
+                        >Proceed To Pay</Button>
+                        </div>
+}
+
+
 </>
                           )):
                     <Button

@@ -7,14 +7,14 @@ import Link from "@components/link"
 import {BsFilterLeft} from 'react-icons/bs'
 import ProductItem from '@components/product-item/product-item'
 function products({products,status,lastEleRef}) {
-  
+
   return (
     <div className="bg-[#F5F5F5] md:bg-white">
 
       <div className="flex flex-row md:ml-4 md:wrapper w-full ">
         <div className="w-1/12 hidden md:block "></div>
-        <div className=" w-12/12 md:w-10/12  ">
-          <div className="md:mr-14">
+        <div className=" w-12/12 md:w-10/12 md:ml-16 md:mr-12 ">
+          <div className="md:mr-16">
           <div className=" flex justify-between   my-2  bg-white p-2 py-4 md:py-0 md:p-0 md:my-4">
 
 <p className="   flex items-center font-bold md:ml-3 ">All Items</p>
@@ -28,7 +28,7 @@ function products({products,status,lastEleRef}) {
 </div>
           </div>
 
-        <div className="  grid  mx-2 md:mx-2 grid-cols-2 lg:grid-cols-4 md:grid-cols-2 gap-4">
+        <div className="  grid  mx-2 md:mx-2 grid-cols-2 lg:grid-cols-4 md:grid-cols-2 md:gap-2 gap-4">
 
         {         status == 'success' || status == 'loading'?
             products.length && (status == 'loading' || status == 'success')
