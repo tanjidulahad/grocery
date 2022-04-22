@@ -476,7 +476,7 @@ const [cathover,setcathover]=useState({
             </Button>
           </div>
           <div className='text-center text-xs font-semibold text-black w-1/4'>
-            <Button className=' btn-nav-color' href='/contact'>
+            <Button type='link' className=' btn-nav-color' href='/account'>
             <svg className='mx-auto btn-nav-color' style={{ fill: '', color: 'inherit' }} width="25" height="25" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.33325 20.6667C2.95825 10.8306 17.0416 10.2842 18.6666 20.6667" stroke="black" stroke-width="1.5"/>
 <path d="M14.6666 5.50001C14.6666 8.07734 12.5772 10.1667 9.99992 10.1667C7.42259 10.1667 5.33325 8.07734 5.33325 5.50001C5.33325 2.92268 7.42259 0.833344 9.99992 0.833344C12.5772 0.833344 14.6666 2.92268 14.6666 5.50001Z" stroke="black" stroke-width="1.5"/>

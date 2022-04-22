@@ -66,6 +66,25 @@ const ProductDetails = ({
         getSpecifications({ setSpecifications, id: productId })
         fetchSimilarProducts({ setSimilarProducts, id: productId })
     }, [router.isReady])
+
+    //UI setting for mobile devices
+    const [mobNavHeight, setMobNavHeight] = useState(0)
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        const objerver = new ResizeObserver(function (e) {
+          if (e[0].contentRect.width < 640 && mobNavHeight == 0) {
+            const ele = document.getElementById('mob-navbar')
+            if (ele) {
+              if (ele.offsetWidth != mobNavHeight) {
+                // console.log(ele)
+                setMobNavHeight(ele.offsetHeight)
+              }
+            }
+          }
+        })
+        objerver.observe(document.body)
+      }
+    }, [])
     useEffect(() => {
         // Run with Product change
         if (!Object.keys(success).length || !success) {
@@ -208,7 +227,7 @@ const ProductDetails = ({
                                             <div>
                                                 {
                                                     quantityInCart ?
-                                                        <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
+                                                        <QuantityID className=" hidden md:block" value={quantityInCart} pdp={true} disabledPlush={(() => {
                                                             if (visuals?.inventoryDetails) {
                                                                 return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
                                                             }
@@ -216,7 +235,7 @@ const ProductDetails = ({
                                                         })()}
                                                             onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                                                         :
-                                                        <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" style={{backgroundColor:"#F58634"}} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                                        <Button className="w-full hidden md:block md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" style={{backgroundColor:"#F58634"}} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
                                                 }
                                             </div>
                                             {
@@ -453,6 +472,35 @@ const ProductDetails = ({
                         <Loader />
 
             }
+             <div id="cart-total-btn"
+                className=" border-[1px] border-[#E7E7E7]   md:border-[0px] mt-0 sm:mt-20 w-full left-0 fixed mt-2 sm:relative bottom-0 p-4 sm:p-0  bg-white sm:bg-transparent"
+                style={{
+                  bottom: `${mobNavHeight}px`,
+                  zIndex:1
+                }}
+              >
+
+
+                  <div className=" flex justify-center ">
+                  {
+                                                    quantityInCart ?
+                                                        <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
+                                                            if (visuals?.inventoryDetails) {
+                                                                return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
+                                                            }
+                                                            return false
+                                                        })()}
+                                                            onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
+                                                        :
+                                                        <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" style={{backgroundColor:"#F58634"}} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                                }
+                  </div>
+
+
+
+
+                </div>
+
         </>
     )
 }

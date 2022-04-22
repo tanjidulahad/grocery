@@ -84,8 +84,7 @@ const ThankYou = ({ confirmOrder }) => {
                                 </div>
 
                             </div>
-                            <div
-                id="cart-total-btn"
+                            <div id="cart-total-btn"
                 className=" border-[1px] border-[#E7E7E7]   md:border-[0px] mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0  bg-white sm:bg-transparent"
                 style={{
                   bottom: `${mobNavHeight}px`,
@@ -151,7 +150,7 @@ const ThankYou = ({ confirmOrder }) => {
             }
             <div className={`md:hidden fixed top-0     shadow-lg bg-[#48887B] h-[124px] w-full `} style={{zIndex:1200}}>
 
-<Tracker status={status==='success'?'order':'failed'}/>
+<Tracker status={status==='success'?'order':'failed'} active2={true}/>
 
 </div>
         </section>)
