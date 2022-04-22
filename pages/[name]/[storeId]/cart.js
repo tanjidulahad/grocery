@@ -285,7 +285,7 @@ useEffect(() => {
     status:'desktop'
   })
 
-console.log(userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))[0].full_name)
+console.log(userAddress?.filter(x=>x?.address_id===+localStorage.getItem('addId')))
   if (!info) {
     // If store details are not awilable
     return <Loader />
@@ -293,6 +293,29 @@ console.log(userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))
   if (!cart.length) {
     return (
       <>
+       <div className=" py-4 px-4 flex md:hidden bg-white items-center border-b-[1px] border-[#E7E7E7] ">
+
+
+<span className="text-black mx-2  text-lg font-bold">
+  <svg width="25" height="25" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.9688 10.1562C17.9688 8.29145 17.2872 6.50302 16.0741 5.18441C14.861 3.86579 13.2156 3.125 11.5 3.125C9.78438 3.125 8.13903 3.86579 6.9259 5.18441C5.71278 6.50302 5.03125 8.29145 5.03125 10.1562C5.03125 13.0406 7.15444 16.8 11.5 21.3031C15.8456 16.8 17.9688 13.0406 17.9688 10.1562ZM11.5 23.4375C6.22869 18.2297 3.59375 13.8016 3.59375 10.1562C3.59375 7.87705 4.42673 5.69119 5.90944 4.07955C7.39215 2.46791 9.40313 1.5625 11.5 1.5625C13.5969 1.5625 15.6079 2.46791 17.0906 4.07955C18.5733 5.69119 19.4062 7.87705 19.4062 10.1562C19.4062 13.8016 16.7713 18.2297 11.5 23.4375Z" fill="#313031"/>
+<path d="M11.5 12.5C12.0719 12.5 12.6203 12.2531 13.0247 11.8135C13.4291 11.374 13.6562 10.7779 13.6562 10.1562C13.6562 9.53465 13.4291 8.93851 13.0247 8.49897C12.6203 8.05943 12.0719 7.8125 11.5 7.8125C10.9281 7.8125 10.3797 8.05943 9.9753 8.49897C9.57093 8.93851 9.34375 9.53465 9.34375 10.1562C9.34375 10.7779 9.57093 11.374 9.9753 11.8135C10.3797 12.2531 10.9281 12.5 11.5 12.5ZM11.5 14.0625C10.5469 14.0625 9.63279 13.6509 8.95884 12.9184C8.28488 12.1858 7.90625 11.1923 7.90625 10.1562C7.90625 9.12025 8.28488 8.12668 8.95884 7.39411C9.63279 6.66155 10.5469 6.25 11.5 6.25C12.4531 6.25 13.3672 6.66155 14.0412 7.39411C14.7151 8.12668 15.0938 9.12025 15.0938 10.1562C15.0938 11.1923 14.7151 12.1858 14.0412 12.9184C13.3672 13.6509 12.4531 14.0625 11.5 14.0625Z" fill="#313031"/>
+</svg>
+</span>
+
+<div className="w-3/4 leading-5">
+
+
+</div>
+<Button className={`btn-color   btn-bg m text-sm  rounded-2xl py-3 px-4  `} pdp={true} style={{backgroundColor:"#F58634"}} onClick={()=>{const url = `/${info?.store_name.replaceAll(" ", '-').trim()}/${info.store_id}`
+router.push(`${url}/account/savedplaces`)}}  >Change </Button>
+
+
+
+
+
+
+</div>
         <div
           className=" hidden w-full flex sm:hidden justify-start items-center p-5 bg-white sticky top-0 z-10 "
           // style={{ boxShadow: `0px 2px 8px #0000001A` }}
@@ -338,6 +361,32 @@ console.log(userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))
             </h4>
           </div>
         </div>
+        <div id="cart-total-btn md:hidden"
+                className=" border-[1px] border-[#E7E7E7]   md:border-[0px] mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0  bg-white sm:bg-transparent"
+                style={{
+                  bottom: `${mobNavHeight}px`,
+                  zIndex:1
+                }}
+              >
+                <div className="flex justify-center ">
+
+
+                  <div className="w-full flex justify-end ml-4">
+                  <Button
+                      className="  py-4  px-10 sm:py-4 white-color rounded btn-bg text-center text-lg font-bold mx-auto"
+                      type="link"
+                      style={{ backgroundColor: '#F58634'}}
+                      href={`/`}
+                    >
+                      Continue Shopping
+                    </Button>
+                  </div>
+
+                  <div>
+
+                  </div>
+                </div>
+                </div>
       </>
     )
   }
@@ -714,8 +763,8 @@ console.log(userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))
                 </span>
 
                 <div className="w-3/4 leading-5">
-                <p className="text-lg font-bold ">{userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))[0]?.full_name}</p>
-                <span className="text-base leading-3 ">{userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))[0]?.address_line_1},{userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))[0]?.address_line_2}</span>
+                <p className="text-lg font-bold ">{userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))[0]?.full_name===[]||userAddress[0]?.full_name}</p>
+<span className="text-base leading-3 ">{userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))[0]?.address_line_1||userAddress[0]?.address_line_1},{userAddress.filter(x=>x.address_id===+localStorage.getItem('addId'))[0]?.address_line_2||userAddress[0]?.address_line_2}</span>
 
                 </div>
                 <Button className={`btn-color   btn-bg m text-sm  rounded-2xl py-3 px-4  `} pdp={true} style={{backgroundColor:"#F58634"}} onClick={()=>{const url = `/${info?.store_name.replaceAll(" ", '-').trim()}/${info.store_id}`
