@@ -23,7 +23,7 @@ function accountLayout(WrappedComponent) {
                 </div> */}
                     <div className="md:flex flex-row md:wrapper bg-gray-100 w-full ">
                 <div className="basis-1/12 hidden md:block "></div>
-                <div className=" bg-gray-100 basis-12/12 md:basis-10/12">
+                <div className=" bg-gray-100 basis-12/12 md:basis-10/12 md:px-8 ">
                 <section className="bg-gray-100 w-full ">
                     <div className=" mx-auto">
                         <div className="md:grid  md:grid-cols-12 md:gap-10 md:py-6">

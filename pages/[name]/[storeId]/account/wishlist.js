@@ -5,27 +5,32 @@ import accountLayout from '@components/layout/account-layout'
 import Header from '@components/MobHeader/index'
 import withAuth from '@components/auth/withAuth'
 import PageWrapper from '@components/page-wrapper/page-wrapper'
-
+import {BsArrowLeft} from 'react-icons/bs'
+import { useRouter } from 'next/router';
 function Wishlist({ user }) {
+  const router=useRouter()
   return (
 
-    <>
-      <Header display={true} topic="Wishlist" />
 
-      <p className="text-xl mx-2 mt-4 md:mt-0 lg:mt-0 md:mx-0 lg:mx-0 text-gray-900 font-bold">
+    <div className="relative -top-[19px] bg-[#f3f4f6] md:relative md:-top-[0px] md:bg-[transparent]">
 
-        Wishlist</p>
-      <div className="grid lg:grid-cols-2 md-grid-cols-1  gap-6 my-5">
-        <div className="w-full rounded-lg shadow">
+    <div className='hidden md:block bg-white '>
+    <p className=" hidden md:block text-xl mx-2 bg-white p-4 mt-4 md:mt-0 lg:mt-0 md:mx-0 lg:mx-0 text-gray-900 font-bold">
 
-          <WishItem />
-        </div>
+<span className=" text-[#F58634] ">3 items </span>  in your Wishlist</p>
+    </div>
 
-        <div className="w-full rounded-lg shadow">
+      <div className="grid grid-cols-2 md:grid-cols-1  px-2 md:px-0 gap-6  py-8">
+        <div className="w-full md:rounded md:shadow md:bg-white  md:px-4">
 
           <WishItem />
         </div>
-        <div className="w-full rounded-lg shadow">
+
+        <div className="w-full md:rounded md:shadow md:bg-white  md:px-4">
+
+          <WishItem />
+        </div>
+        <div className="w-full md:rounded md:shadow md:bg-white  md:px-4">
 
           <WishItem />
         </div>
@@ -33,10 +38,22 @@ function Wishlist({ user }) {
 
       </div>
 
+      <div className={`md:hidden fixed top-0     shadow-lg bg-[#48887B] h-[121px] w-full `} style={{zIndex:1200}}>
+
+{/* <Tracker status={cartHeader.status}/> */}
+<div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
+  <BsArrowLeft className={`mx-4`} size={35} color={'white'}/>
+   <p className={`text-2xl text-[white] mx-4`}>Wishlist</p>
+</div>
 
 
 
-    </>
+
+</div>
+
+
+
+    </div>
 
 
   )
