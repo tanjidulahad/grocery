@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react'
 import { connect } from "react-redux";
 import { Button, Input } from '../inputs';
-import { otpVerificationStart, authShowToggle } from '../../redux/user/user-action';
+import CreateNewPassword from './create-pass'
+import { otpVerificationStart, authShowToggle, forgotPasswordOtpVerifyStart } from '@redux/user/user-action';
 import { set } from 'nprogress';
 
-const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, userId, setUser, info }) => {
+const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, userId, info, forgotPass, forgotPasswordOtpVerify }) => {
     const [otp, setOtp] = useState('');
     const [error, setError] = useState("") // ""
     const [status, setStatus] = useState("")
     const [timer, settimer] = useState(60)
     const [trigger, setTrigger] = useState(0)
-
-
+    const [isSuccess, setIsSuccess] = useState(false)
+    const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     // const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
     const storeId = info.store_id;
@@ -24,8 +25,13 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
         setOtp(otp.toString()+value.toString())
     }
     const onSubmitHandler = () => {
-
+alert(otp)
         if (!otp) return setError("Enter valid OTP.");
+        if (forgotPass) {
+          forgotPasswordOtpVerify({ state: { otpCode: otp, customerId: userId }, setError, setIsLoading, setIsSuccess, setUser })
+      }else{
+
+
         otpVerify({
             otp,
             userId,
@@ -35,6 +41,7 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
             setUser,
             mode: username.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ? 'email' : 'phone',
         })
+      }
 
        setTrigger(1)
         setError('')
@@ -88,8 +95,15 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
     return (
       <>
 
+      {
+        isSuccess ?
+        <CreateNewPassword setPage={setPage} user={user} forgotPass={forgotPass} />
+        :
+
+      <>
+
         <div className="auth hidden md:block">
-              <div className="p-6 auth-form-container rounded " style={{border:"2px solid #F58634"}} >
+              <div className="p-6 pt-40 auth-form-container rounded " style={{border:"2px solid #F58634"}} >
 
                 <div className="flex justify-end items-center">
 
@@ -250,16 +264,19 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
 
 
         </>
+                      }
+                      </>
     )
 }
 
 const mapStateToProps = state => ({
-    show: state.user.show,
-    info: state.store.info
+  show: state.user.show,
+  info: state.store.info
 })
 const mapDispatchToProps = dispatch => ({
-    showToggle: () => dispatch(authShowToggle()),
-    otpVerify: (otp) => dispatch(otpVerificationStart(otp))
+  showToggle: () => dispatch(authShowToggle()),
+  otpVerify: (data) => dispatch(otpVerificationStart(data)),
+  forgotPasswordOtpVerify: (data) => dispatch(forgotPasswordOtpVerifyStart(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Otp)

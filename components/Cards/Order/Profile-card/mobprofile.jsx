@@ -111,59 +111,59 @@ function mobprofile({ user, logout }) {
 
             }
             {
-              // active === 'wishlist' ?
-              //   <div className="border-l-4 border-rose-700 h-10 ">
+              active === 'wishlist' ?
+                <div className="border-l-4 border-rose-700 h-10 ">
 
-              //     <Link href='/account/wishlist ' >
-              //       <div className="mx-4  pt-2 flex">
-              //         <img src='/img/wishlist.svg' />
-              //         <p className="  mx-2   text-sm relative  font-semibold relative  text-red-600">
-              //           {" "}
-              //           Wishlist
-              //         </p>
-              //       </div>
-              //     </Link>
-              //   </div> :
-              //   <div className=" cursor-pointer h-10 ">
-              //     <Link href='/account/wishlist ' >
-              //       <div className="mx-4  pt-2 flex">
-              //         <img src='/img/wishlist.svg' />
-              //         <p className="  mx-2   text-sm relative  font-semibold relative  text-gray-600">
-              //           {" "}
-              //           Wishlist
-              //         </p>
-              //       </div>
-              //     </Link>
+                  <Link href='/account/wishlist ' >
+                    <div className="mx-4  pt-2 flex">
+                      <img src='/img/wishlist.svg' />
+                      <p className="  mx-2   text-sm relative  font-semibold relative  text-red-600">
+                        {" "}
+                        Wishlist
+                      </p>
+                    </div>
+                  </Link>
+                </div> :
+                <div className=" cursor-pointer h-10 ">
+                  <Link href='/account/wishlist ' >
+                    <div className="mx-4  pt-2 flex">
+                      <img src='/img/wishlist.svg' />
+                      <p className="  mx-2   text-sm relative  font-semibold relative  text-gray-600">
+                        {" "}
+                        Wishlist
+                      </p>
+                    </div>
+                  </Link>
 
-              //   </div>
+                </div>
             }
 
             {
-              // active === 'wallet' ?
-              //   <div className="border-l-4 border-rose-700 h-10 ">
+              active === 'wallet' ?
+                <div className="border-l-4 border-rose-700 h-10 ">
 
-              //     <Link href='/account/wallet ' >
-              //       <div className="mx-4  pt-2 flex">
-              //         <img src='/img/wishlist.svg' />
-              //         <p className="  mx-2   text-sm relative  font-semibold relative  text-red-600">
-              //           {" "}
-              //           Wallet
-              //         </p>
-              //       </div>
-              //     </Link>
-              //   </div> :
-              //   <div className=" cursor-pointer h-10 ">
-              //     <Link href='/account/wallet ' >
-              //       <div className="mx-4  pt-2 flex">
-              //         <img src='/img/wallet.svg' />
-              //         <p className="  mx-2   text-sm relative  font-semibold relative  text-gray-600">
-              //           {" "}
-              //           Wallet
-              //         </p>
-              //       </div>
-              //     </Link>
+                  <Link href='/account/wallet ' >
+                    <div className="mx-4  pt-2 flex">
+                      <img src='/img/wishlist.svg' />
+                      <p className="  mx-2   text-sm relative  font-semibold relative  text-red-600">
+                        {" "}
+                        Wallet
+                      </p>
+                    </div>
+                  </Link>
+                </div> :
+                <div className=" cursor-pointer h-10 ">
+                  <Link href='/account/wallet ' >
+                    <div className="mx-4  pt-2 flex">
+                      <img src='/img/wallet.svg' />
+                      <p className="  mx-2   text-sm relative  font-semibold relative  text-gray-600">
+                        {" "}
+                        Wallet
+                      </p>
+                    </div>
+                  </Link>
 
-              //</div>
+              </div>
             }
             {
               active === 'savedplaces' ?
