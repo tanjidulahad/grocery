@@ -2,8 +2,9 @@ import { Input,Button } from '@components/inputs/index';
 import React,{useState} from 'react'
 import {MdKeyboardArrowRight} from 'react-icons/md';
 
-function wallet() {
-const [wallet,setwallet]=useState("")
+function wallet(walletdata) {
+console.log(walletdata.walletdata)
+const [wallet,setwallet]=useState()
   return (
     <div className="w-full   mt-4  md:mt-0">
     <div className="my-2  bg-white  w-full flex justify-between">
@@ -11,7 +12,7 @@ const [wallet,setwallet]=useState("")
       <div className="lg:pl-4 w-full flex ">
       <div className="  w-full mx-4 md:mx-2 my-2 ">
          <p className="text-left font-bold text-lg traxt-dark ">Wallet Balance</p>
-         <p className="text-left text-xl my-2 font-extrabold text-green-600 ">₹ 548</p>
+         <p className="text-left text-xl my-2 font-extrabold text-green-600 ">₹ {+walletdata.walletdata}</p>
        </div>
        <div className="w-40  rounded flex items-center " >
        <svg width="47" height="40" viewBox="0 0 47 40" fill="none" xmlns="http://www.w3.org/2000/svg">

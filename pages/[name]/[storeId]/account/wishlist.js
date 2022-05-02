@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 
 import WishItem from '@components/Cards/Order/wishlist'
 import accountLayout from '@components/layout/account-layout'
@@ -7,8 +7,25 @@ import withAuth from '@components/auth/withAuth'
 import PageWrapper from '@components/page-wrapper/page-wrapper'
 import {BsArrowLeft} from 'react-icons/bs'
 import { useRouter } from 'next/router';
-function Wishlist({ user }) {
+import { connect } from 'react-redux'
+
+import {getWishlistStart,getWishlistSuccess,addWishlistStart,addWishlistSuccess,}from '@redux/wishlist/wishlist-action'
+function Wishlist({ user,info, getWishlist,wishItem }) {
+
   const router=useRouter()
+  // console.log(user,'line123415',info)
+  useEffect(() => {
+   const wishlist=()=>{
+     const payload={
+      userId:user.customer_id,
+      storeId:info.store_id
+     }
+     getWishlist(payload)
+   }
+   return wishlist()
+
+  }, [])
+console.log(wishItem)
   return (
 
 
@@ -58,8 +75,18 @@ function Wishlist({ user }) {
 
   )
 }
-
-export default PageWrapper(withAuth(accountLayout(Wishlist)))
+const mapStateToProps = state => ({
+  user: state.user,
+  info: state.store.info,
+  wishItem:state.wishlist
+})
+const mapDispatchToProps = dispatch => ({
+  getWishlist: (payload) => dispatch(getWishlistStart(payload)),
+  // addWishlist: (payload) => dispatch(addWishlistStart(payload)),
+  // updateAddress: (payload) => dispatch(updateAddressStart(payload)),
+  // removeAddress: (payload) => dispatch(removeAddressStart(payload)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(withAuth(accountLayout(Wishlist))))
 
 
 

@@ -6,7 +6,7 @@ import Link from "@components/link"
 // import RecommendedCard from '@components/Cards/Home/RecommendedCard'
 import {BsFilterLeft} from 'react-icons/bs'
 import ProductItem from '@components/product-item/product-item'
-function products({products,status,lastEleRef}) {
+function products({products,status,lastEleRef,wishlist}) {
 
   return (
     <div className="bg-[#F5F5F5] md:bg-white">
@@ -36,7 +36,7 @@ function products({products,status,lastEleRef}) {
              {
               products.map((item, i) => (
                  <div >
-                <ProductItem key={i} data={item} />
+                <ProductItem key={i} data={item} addItemToWishlist={wishlist} />
                 </div>
               ))}
               {

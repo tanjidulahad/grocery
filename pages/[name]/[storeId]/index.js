@@ -12,10 +12,11 @@ import { redirect } from '@components/link';
 import { getCategoryStart, getShopProductsStart, getCategoryProductsStart, getSearchProductsStart, getPageCountStart, clearProductList } from "@redux/shop/shop-action";
 import { setSearchHandler } from '@redux/search/seatch-actions'
 import PageWrapper from '@components/page-wrapper/page-wrapper';
+import {addWishlistStart}from '@redux/wishlist/wishlist-action'
 
 
 
-const Home = ({ products, pageCount,getPageCount,info, cart,clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
+const Home = ({ products, addWishlist, pageCount,getPageCount,info, cart,clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const purchaseDetails = checkout.purchaseDetails;
   // const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID;
@@ -147,7 +148,7 @@ const Home = ({ products, pageCount,getPageCount,info, cart,clearProductList, ch
 
       <section>
 
-      <Gproducts lastEleRef={listLastElement} storeName={info?.store_name} products={products} status={status}/>
+      <Gproducts wishlist={addWishlist} lastEleRef={listLastElement} storeName={info?.store_name} products={products} status={status}/>
       </section >
     </div >
   )
@@ -169,7 +170,9 @@ const mapDispatchToProps = dispatch => ({
   getCategoryProducts: (data) => dispatch(getCategoryProductsStart(data)),
   getCategoryStart: (storeId) => dispatch(getCategoryStart(storeId)),
   getSearchProducts: (payload) => dispatch(getSearchProductsStart(payload)),
-  setSearchHandler: (payload) => dispatch(setSearchHandler(payload))
+  setSearchHandler: (payload) => dispatch(setSearchHandler(payload)),
+  addWishlist: (payload) => dispatch(addWishlistStart(payload)),
+
 })
 export default connect(mapStateToProps, mapDispatchToProps)(memo(PageWrapper(Home)))
 

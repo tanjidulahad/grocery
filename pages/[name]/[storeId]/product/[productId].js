@@ -43,10 +43,11 @@ const visualsStructure = {
     additionalinfo: [],
     similarProducts: []  //[...similarProducts]
 }
+import {addWishlistStart}from '@redux/wishlist/wishlist-action'
 
 const ProductDetails = ({
     cart, addToCart, removeFromCart,
-    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications }) => {
+    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications,addWishlist }) => {
     const [success, onSuccess] = useState({})
     const [failure, onFailure] = useState(null)
     const [additionalinfo, setAdditionalInfo] = useState([])
@@ -55,6 +56,7 @@ const ProductDetails = ({
     const [defaultVariant, setDefaultVarian] = useState([])
     const [descriptions, setDescriptions] = useState('')
     const [viewdscmore, setViewdscmore] = useState(false)
+
     // Information for this page
     const [visuals, setVisuals] = useState(visualsStructure)
     const router = useRouter()
@@ -522,6 +524,8 @@ const mapDispatchToProps = dispatch => ({
     fetchSimilarProducts: (payload) => dispatch(similarProductFetchStart(payload)),
     getAdditionalInfo: (payload) => dispatch(getAdditionalInfoStart(payload)),
     getSpecifications: (payload) => dispatch(getSpecificationsStart(payload)),
+  addWishlist: (payload) => dispatch(addWishlistStart(payload)),
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(ProductDetails));

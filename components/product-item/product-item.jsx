@@ -5,10 +5,19 @@ import { QuantityID, Button } from "../inputs";
 import { addToCart, removeFromCart } from "../../redux/cart/cart-actions";
 import {AiOutlineHeart,AiFillStar} from 'react-icons/ai'
 
-const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
+const ProductItem = ({ data,user, addToCart, removeFromCart, cart,offer,addItemToWishlist }) => {
 
     const  truncate=(str, no_words)=> {
       return str.split(" ").splice(0,no_words).join(" ");
+  }
+  
+  const wishlist =()=>{
+   const payload={
+    id: Number(data.item_id),
+    storeId: +data.store_id,
+    userId:+user.currentUser.customer_id
+   }
+   addItemToWishlist(payload)
   }
 
     if (!data) {
@@ -68,7 +77,7 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
     <div className="w-100 bg-white border-[0.5px]  h-[220px] md:h-[264.49px]">
      <div className="flex  justify-between w-full">
        <img  className="m-2" src="/img/square.png"/>
-       <AiOutlineHeart className="m-2" size={18} />
+       <AiOutlineHeart className="m-2" size={18} onClick={wishlist} />
      </div>
      <Button className="block " type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
      <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{height:'160px'}}>
@@ -146,7 +155,9 @@ const ProductItem = ({ data, addToCart, removeFromCart, cart,offer }) => {
     )
 }
 const mapStateToProps = state => ({
-    cart: state.cart
+    cart: state.cart,
+    user:state.user
+
 })
 const mapDispatchToProps = dispatch => ({
     addToCart: (item) => dispatch(addToCart(item)),
