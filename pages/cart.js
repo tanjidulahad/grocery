@@ -576,7 +576,7 @@ const Cart = ({
                         ) : (
                           <div className=" col-span-full">
                             <Button
-                              className="w-full py-3 sm:py-4 white-color rounded btn-bg text-center mx-auto"
+                              className="w-full py-3 sm:py-4 rounded btn-bg btn-color text-center mx-auto"
                               onClick={authToggle}
                             >
                               Login to Proceed
@@ -758,7 +758,7 @@ const Cart = ({
                   <div className=" pt-4 hidden  md:flex ">
                     {
                       !payment ? <>
-                        <span className="text-orange-400  text-lg font-bold">
+                        <span className="  text-lg font-bold">
                           {totalItems} items
                         </span>
                         <span className="text-lg font-bold mx-2">In your cart</span>
@@ -1405,12 +1405,9 @@ const Cart = ({
                                   </div> :
                                   <div className=" w-full   items-center flex justify-center md:hidden">
                                     <Button
-                                      className="w-full py-4  md:block sm:py-4 white-color rounded btn-bg text-center"
+                                      className="w-full py-4  md:block sm:py-4 white-color rounded btn-bg btn-color text-center"
                                       onClick={() => { initiatePayment(), setactive2(true) }}
 
-                                      style={{
-                                        backgroundColor: '#F58634',
-                                      }}
                                     >Proceed To Pay</Button>
                                   </div>
                               }
@@ -1419,9 +1416,8 @@ const Cart = ({
                             </>
                           )) :
                           <Button
-                            className="w-3/4 py-3 sm:py-4 white-color rounded btn-bg text-center mx-auto"
+                            className="w-3/4 py-3 sm:py-4 white-color rounded btn-bg btn-color text-center mx-auto"
                             onClick={authToggle}
-                            style={{ backgroundColor: '#F58634' }}
                           >
                             Login
                           </Button>

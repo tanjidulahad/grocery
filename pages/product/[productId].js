@@ -184,10 +184,10 @@ const ProductDetails = ({
             </div>
             {
                 visuals.view ?
-                    <div className="flex flex-row md:wrapper w-full mr-0 md:mr-2 ">
+                    <div className="flex flex-row md:wrapper w-full mr-0 md:mr-2">
                         <div className="basis-1/12 hidden md:block "></div>
                         <div className="basis-12/12 md:basis-10/12 md:ml-7 md:mr-9 ">
-                            <section className="bg-black-color-lighter  pdp">
+                            <section className=" pdp">
                                 <div className="w-full pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] bg-white  relative">
                                     <div className="">
                                         <div className="flex md:hidden  justify-between w-full">
@@ -203,9 +203,9 @@ const ProductDetails = ({
                                                 <div className=" lg:absolute w-full top-0">
                                                     {/* <span className="text-sm md:text-lg black-color-75 capitalize ">{visuals.item.item_status.toLowerCase()}</span> */}
                                                     <h1 className="text-base md:text-lg xl:text-3xl mb-4 font-semibold md:font-bold capitalize">{visuals?.name.toLowerCase()}</h1>
-                                                    <div >
+                                                    {/* <div >
                                                         <Rating value={visuals?.rating.value} count={visuals?.rating.count} />
-                                                    </div>
+                                                    </div> */}
                                                     <div className="my-4 md:my-6">
                                                         <span className="text-lg md:text-xl my-6 black-color font-semibold">₹{visuals?.price?.sale_price}</span>
                                                         {
@@ -223,7 +223,7 @@ const ProductDetails = ({
                                                         </p>
                                                         {
                                                             visuals?.desc?.length > 200 &&
-                                                            <Button style={{ color: "#F58634" }} className="btn-color-revers" onClick={() => setViewdscmore(!viewdscmore)}>{viewdscmore ? 'hide' : 'more'}.</Button>
+                                                            <Button className="btn-color-revers" onClick={() => setViewdscmore(!viewdscmore)}>{viewdscmore ? 'hide' : 'more'}.</Button>
                                                         }
                                                     </div>
                                                     <div>
@@ -237,7 +237,7 @@ const ProductDetails = ({
                                                                 })()}
                                                                     onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                                                                 :
-                                                                <Button className="w-full hidden md:block md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" style={{ backgroundColor: "#F58634" }} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                                                <Button className="w-full hidden md:block md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
                                                         }
                                                     </div>
                                                     {
@@ -292,177 +292,178 @@ const ProductDetails = ({
                                         </div>
                                     </div>
                                 </div>
-                                {
-                                    !!visuals.specifications.length &&
-                                    <div className="w-full  pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
-                                        <div className="">
-                                            <div className="py-4 md:py-20">
-                                                <div className="mt-6">
-                                                    <div className=" border-static additional-info mb-8">
-                                                        <h2 className=" lg:text-2xl md:text-xl">
-                                                            Highlights
-                                                        </h2>
-                                                    </div>
-                                                    <div className="grid grid-cols-2 gap-4">
-                                                        {
-                                                            visuals.specifications.map((item, i) => (
-                                                                <div className="py-3 flex flex items-center" key={i}>
-                                                                    <GoPrimitiveDot />
-                                                                    <p className="text-sm md:text-xl font-thin text-gray-500 mx-2 ">{item.attribute_value}</p>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                <div className=" space-y-6">
 
-                                {
-                                    !!visuals.specifications.length &&
-                                    <div className="w-full pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
-                                        <div className="">
-                                            <div className="py-4 md:py-20">
-                                                <div className="mt-6">
-                                                    <div className=" border-static additional-info mb-8">
-                                                        <h3 className="lg:text-2xl text-base md:text-xl">
-                                                            Product Specification
-                                                        </h3>
-                                                    </div>
-                                                    <div className="grid grid-cols-2 gap-4">
-                                                        {
-                                                            visuals.specifications.map((item, i) => (
-                                                                <div className="py-3 border-b-2 " key={i}>
-                                                                    <h6 className="text-sm font-semibold black-color-75">{item.attribute_key}</h6>
-                                                                    <h3 className="text-base font-semibold black-color mt-1">{item.attribute_value}</h3>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-
-                                {
-                                    !!!visuals.similarProducts.length &&
-                                    <div className="w-full  h md:block bg-[#F5F5F5]  md:bg-white ">
-                                        <div className="">
-                                            <div className=" md:py-20">
-                                                <div className="md:mt-6">
-                                                    <div className=" border-static bg-white pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:additional-info mb-8">
-                                                        <h3 className="lg:text-2xl text-base md:text-xl">
-                                                            Recommended Products
-                                                        </h3>
-                                                    </div>
-                                                    <div className="grid bg-[#F5F5F5] pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:bg-white grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-
-
-
-                                {
-                                    visuals.additionalinfo.length ?
-                                        <div className="w-full pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
+                                    {
+                                        !!visuals.specifications.length &&
+                                        <div className="w-full  pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
                                             <div className="">
                                                 <div className="">
-                                                    <div className=" border-static additional-info ">
-                                                        <h3 className=" lg:text-2xl md:text-xl">
-                                                            Additional Info
-                                                        </h3>
-                                                    </div>
-                                                    <div className="grid grid-cols-1 sm:grid-cols-2 mt-10  gap-y-10 gap-x-4 md:gap-8 lg:gap-x-16 xl:gap-x-24">
-                                                        {/* // <div className="grid grid-cols-2 mt-10 gap-y-10 gap-x-36"> */}
-                                                        {
-                                                            visuals.additionalinfo.map((item, i) => (
-                                                                <div className="w-full" key={i} >
-                                                                    <div className="w-full product-addinfo-img-c border rounded">
-                                                                        {
-                                                                            item.media_type == "IMAGE" ?
-                                                                                <img className="w-full h-full object-cover " src={item.media_url} alt='...' />
-                                                                                :
-                                                                                <ReactPlayer height={'100%'} width={'100%'} url={item.media_url} />
-                                                                        }
+                                                    <div className="mt-6">
+                                                        <div className=" border-static additional-info mb-8">
+                                                            <h2 className=" lg:text-2xl md:text-xl">
+                                                                Highlights
+                                                            </h2>
+                                                        </div>
+                                                        <div className="grid grid-cols-2 gap-4">
+                                                            {
+                                                                visuals.specifications.map((item, i) => (
+                                                                    <div className="py-3 flex flex items-center" key={i}>
+                                                                        <GoPrimitiveDot />
+                                                                        <p className="text-sm md:text-xl font-thin text-gray-500 mx-2 ">{item.attribute_value}</p>
                                                                     </div>
-                                                                    <div className="mt-8">
-                                                                        {/* <h2 className="text-base md:text-xl font-semibold capitalize">{item.title}{item.title.toLowerCase()}</h2> */}
-                                                                        <p className="mt-6 text-sm md:text-lg text-gray-500 leading-7 tracking-tight normal-case">
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    {
+                                        !!visuals.specifications.length &&
+                                        <div className="w-full pl-[7px] pr-[8px] md:pl-[0px] md:pr-[0px]   bg-white ">
+                                            <div className="">
+                                                <div className="">
+                                                    <div className="mt-6">
+                                                        <div className=" border-static additional-info mb-8">
+                                                            <h3 className="lg:text-2xl text-base md:text-xl">
+                                                                Product Specification
+                                                            </h3>
+                                                        </div>
+                                                        <div className="grid grid-cols-2 gap-4">
+                                                            {
+                                                                visuals.specifications.map((item, i) => (
+                                                                    <div className="py-3 border-b-2 " key={i}>
+                                                                        <h6 className="text-sm font-semibold black-color-75">{item.attribute_key}</h6>
+                                                                        <h3 className="text-base font-semibold black-color mt-1">{item.attribute_value}</h3>
+                                                                    </div>
+                                                                ))
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    {
+                                        !!!visuals.similarProducts.length &&
+                                        <div className="w-full  h md:block bg-[#F5F5F5]  md:bg-white ">
+                                            <div className="">
+                                                <div className="">
+                                                    <div className="md:mt-6">
+                                                        <div className=" border-static bg-white pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:additional-info mb-8">
+                                                            <h3 className="lg:text-2xl text-base md:text-xl">
+                                                                Recommended Products
+                                                            </h3>
+                                                        </div>
+                                                        <div className="grid bg-[#F5F5F5] pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:bg-white grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    {
+                                        visuals.additionalinfo.length ?
+                                            <div className="w-full pl-[7px] pr-[8px]  md:pl-[0px] md:pr-[0px]  bg-white ">
+                                                <div className="">
+                                                    <div className="">
+                                                        <div className=" border-static additional-info ">
+                                                            <h3 className=" lg:text-2xl md:text-xl">
+                                                                Additional Info
+                                                            </h3>
+                                                        </div>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 mt-10  gap-y-10 gap-x-4 md:gap-8 lg:gap-x-16 xl:gap-x-24">
+                                                            {/* // <div className="grid grid-cols-2 mt-10 gap-y-10 gap-x-36"> */}
+                                                            {
+                                                                visuals.additionalinfo.map((item, i) => (
+                                                                    <div className="w-full" key={i} >
+                                                                        <div className="w-full product-addinfo-img-c border rounded">
                                                                             {
-                                                                                item.description
+                                                                                item.media_type == "IMAGE" ?
+                                                                                    <img className="w-full h-full object-cover " src={item.media_url} alt='...' />
+                                                                                    :
+                                                                                    <ReactPlayer height={'100%'} width={'100%'} url={item.media_url} />
                                                                             }
-                                                                        </p>
+                                                                        </div>
+                                                                        <div className="mt-8">
+                                                                            {/* <h2 className="text-base md:text-xl font-semibold capitalize">{item.title}{item.title.toLowerCase()}</h2> */}
+                                                                            <p className="mt-6 text-sm md:text-lg text-gray-500 leading-7 tracking-tight normal-case">
+                                                                                {
+                                                                                    item.description
+                                                                                }
+                                                                            </p>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            ))
-                                                        }
-                                                        {/* </div> */}
+                                                                ))
+                                                            }
+                                                            {/* </div> */}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            : <></>
+                                    }
+
+                                    {
+                                        !!!visuals.similarProducts.length &&
+                                        <div className="w-full  h md:block bg-[#F5F5F5]  md:bg-white ">
+                                            <div className="">
+                                                <div className="">
+                                                    <div className="md:mt-6">
+                                                        <div className=" border-static bg-white pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:additional-info mb-8">
+                                                            <h3 className="lg:text-2xl text-base md:text-xl">
+                                                                Recommended Products
+                                                            </h3>
+                                                        </div>
+                                                        <div className="grid bg-[#F5F5F5] pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:bg-white grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+                                                            <div>
+                                                                <RecommendedCard />
+
+                                                            </div>
+
+
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        : <></>
-                                }
+                                    }
+                                </div>
 
-                                {
-                                    !!!visuals.similarProducts.length &&
-                                    <div className="w-full  h md:block bg-[#F5F5F5]  md:bg-white ">
-                                        <div className="">
-                                            <div className=" md:py-20">
-                                                <div className="md:mt-6">
-                                                    <div className=" border-static bg-white pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:additional-info mb-8">
-                                                        <h3 className="lg:text-2xl text-base md:text-xl">
-                                                            Recommended Products
-                                                        </h3>
-                                                    </div>
-                                                    <div className="grid bg-[#F5F5F5] pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] md:bg-white grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-                                                        <div>
-                                                            <RecommendedCard />
-
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
                             </section >
                         </div>
                         <div className="basis-1/12 hidden md:block "></div>

@@ -110,8 +110,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   return (
     <nav className='sticky top-0  ' ref={ref} style={{ backgroundColor: `#F9F6ED` }}>
 
-      <div className={(router.pathname == "/[name]/[storeId] hidden md:block " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-[#F9F6ED] hidden md:block` : 'hidden'} >
-
+      <div className={(router.pathname == "/[name]/[storeId] hidden md:block " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-[#F9F6ED] hidden md:block nav-bg` : 'hidden'} >
         <div className="flex flex-row  py-4 w-full">
           <div className="basis-1/12  md:basis-1/12 lg:basis-1/6 h-20 md:w-max lg:w-full  md:mx-2 lg:mx-0 lg:w-full flex items-center">
             <Button className="md:w-max lg:w-full" type="link" href="/">
@@ -128,10 +127,13 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
           </div>
           <div className="basis-1/2 flex items-center h-20">
             <div className=" flex flex-row justify-between w-full ">
-              <div className="basis-1/4 border-white  h-10 text-black flex items-center">
-                <GrLocation size={20} />
+              <div className="basis-1/4 border-white nav-items-color h-10 text-black flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
                 <div className="mx-2">
-                  <p className="font-normal lg:text-base md:text-sm text-gray-600 leading-tight ">
+                  <p className="font-normal lg:text-base md:text-sm text-gray-600 nav-items-color leading-tight ">
                     Shipping to
                   </p>
                   {
@@ -152,7 +154,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             </div>
           </div>
           <div className="md:basis-2/4 lg:basis-1/4    items-center">
-            <div className=" flex flex-row justify-between items-center text-black mt-4">
+            <div className=" flex flex-row justify-between items-center nav-items-color text-black mt-4">
               <div className=" w-full flex justify-around ">
                 <span className="whitespace-nowrap font-bold inline-block tracking-tight md:text-sm lg:text-lg">
                   Home
@@ -170,8 +172,11 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                   type="link"
                   href="/cart"
                 >
-                  <span className=" text-black font-bold  my-2 relative">
-                    <IoMdCart size={30} />
+                  <span className=" text-black nav-items-color font-bold  my-2 relative">
+                    {/* <IoMdCart size={30} /> */}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                    </svg>
                     {
                       !!totalItems &&
                       <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex bg-[#F58634] justify-center bg-red-600 rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">

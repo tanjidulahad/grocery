@@ -42,7 +42,6 @@ body {
     Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-style: normal;
-
 }
 
 a {
@@ -83,20 +82,17 @@ nav {
 @media only screen and (min-width: 200px) {
   .wrapper {
     padding: 8px 8px;
-  };
-
+  }
 }
 @media only screen and (min-width: 300px) {
   .wrapper {
     padding: 8px 16px;
-  };
-
+  }
 }
 @media only screen and (min-width: 576px) {
   .wrapper {
     padding: 8px 16px;
-  };
-
+  }
 }
 @media only screen and (min-width: 640px) {
   .wrapper {
@@ -161,8 +157,15 @@ nav {
 .query-page {
   min-height: 100vh;
 }
-@media   (max-width: 400px) {
- body{
-  /* width:max-content; */
+@media (max-width: 400px) {
+  body {
+    /* width:max-content; */
+  }
 }
+
+.line-truncate-2 {
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
