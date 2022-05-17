@@ -6,11 +6,13 @@ import Link from "@components/link"
 // import RecommendedCard from '@components/Cards/Home/RecommendedCard'
 import { BsFilterLeft } from 'react-icons/bs'
 import ProductItem from '@components/product-item/product-item'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function products({ products, status, lastEleRef, wishlist }) {
 
   return (
     <div className="bg-[#F5F5F5] md:bg-white">
-
+      <ToastContainer />
       <div className="flex flex-row md:ml-4 md:wrapper w-full ">
         <div className="w-1/12 hidden md:block "></div>
         <div className=" w-12/12 md:w-10/12 xl:ml-16 xl:mr-12 ">
