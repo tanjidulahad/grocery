@@ -128,14 +128,11 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
           <div className="basis-1/2 flex items-center h-20">
             <div className=" flex flex-row justify-between w-full ">
               <div className="basis-1/4 border-white nav-items-color h-10 text-black flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                </svg> */}
                 <div className="mx-2">
-                  <p className="font-normal lg:text-base md:text-sm text-gray-600 nav-items-color leading-tight ">
-                    Shipping to
-                  </p>
                   {
                     !isLogin && !user &&
                     <p onClick={openAuth} className={` cursor-pointer font-bold lg:text-base md:text-sm ${isLogin && user ? 'hidden' : 'flex'}`}>
@@ -153,20 +150,20 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </div>
             </div>
           </div>
-          <div className="md:basis-2/4 lg:basis-1/4    items-center">
+          <div className="md:basis-2/4 lg:basis-1/5 items-center">
             <div className=" flex flex-row justify-between items-center nav-items-color text-black mt-4">
-              <div className=" w-full flex justify-around ">
+              <div className="w-9/12 flex justify-around ">
                 <span className="whitespace-nowrap font-bold inline-block tracking-tight md:text-sm lg:text-lg">
                   Home
                 </span>
                 <span className="whitespace-nowrap font-bold inline-block tracking-tight  md:text-sm lg:text-lg">
                   shop
                 </span>
-                <span className="whitespace-nowrap font-bold inline-block tracking-tight md:text-sm lg:text-lg">
+                {/* <span className="whitespace-nowrap font-bold inline-block tracking-tight md:text-sm lg:text-lg">
                   About
-                </span>
+                </span> */}
               </div>
-              <div className="  flex justify-end ">
+              <div className=" ">
                 <Button
                   className="flex items-center text-black"
                   type="link"
@@ -352,8 +349,8 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
 
       </div>
-
-      <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
+      {/* has to be hide in some places */}
+      {/* <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
         <div className=" flex justify-between ">
 
           <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
@@ -400,7 +397,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
 
 
-      </div>
+      </div> */}
       {
         Menu &&
         <div className="w-full transition duration-150 ease-in-out bg-white h-[130vh] absolute z-[inherit] top-0 ">

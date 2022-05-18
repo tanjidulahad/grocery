@@ -8,6 +8,7 @@ import Loader from "@components/loading/loader";
 import NavBar from "@components/navbar/navbar";
 import Footer from '@components/Footer'
 import Popup from "@components/popup/popup";
+import { useMediaQuery } from 'react-responsive'
 
 import {
     getShopInfoStart, getShopSeoStart, getShopSettingsStart, getSocialProfileStart, getShopDisplaySettingsStart, getPageCountStart, getBannerStart,
@@ -28,6 +29,8 @@ function hexToRGB(hex, alpha) {
 
 const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getBanner }) => {
     const router = useRouter()
+    const exceptionRouteinMobile=['/account/profile']
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
     useEffect(() => {
         const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
@@ -143,6 +146,8 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
     if (!store.isReadyToGo) {
         return <Loader />
     }
+
+    console.log("global",router)
     return (
         <>
             <Head>

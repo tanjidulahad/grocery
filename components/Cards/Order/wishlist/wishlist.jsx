@@ -7,7 +7,7 @@ import Rating from "@components/rating-stars/rating";
 import { connect } from "react-redux";
 import { Button } from '@components/inputs';
 import { removeWishlistStart } from "@redux/wishlist/wishlist-action";
-function Wishlist({ data, removeWishlistStart, wishListedItem, setWishListedItem }) {
+function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishListedItem, setWishListedItem, cart }) {
     const removeFromWishList = (wishlistid) => {
 
         const payload = {
@@ -18,6 +18,21 @@ function Wishlist({ data, removeWishlistStart, wishListedItem, setWishListedItem
         removeWishlistStart(payload)
 
     }
+
+    const itemInCart = cart.find((item) => (item.item_id == data.item_id)) || {}
+
+    const productDataForCart = {
+        item_id: Number(data.item_id),
+        store_id: data.store_id,
+        category_id: data.category_id,
+        item_name: data.item_name,
+        sale_price: data.sale_price,
+        price: data.price,
+        sub_category_id: data.sub_category_id,
+        primary_img: data.primary_img,
+        is_veg: data.is_veg,
+        inventoryDetails: data.inventoryDetails,
+    }
     return (
         <div className="w-100 block  ">
             <div className=" md:grid md:grid-cols-12 md:gap-4 mb-6 md:mt-4 lg:flex justify-between">
@@ -26,7 +41,7 @@ function Wishlist({ data, removeWishlistStart, wishListedItem, setWishListedItem
 
                         <div className=" m-2 md:m-0 w-full flex md:w-max md:mr-2 ">
                             <img className="md:block w-4 h-4" src="/img/square.png" />
-                            <img className=" my-6 md:my-0 mx-5 md:mx-0  md:ml-4 w-[80px] h-[80px] md:w-[100px] md:h-[100px] border-[2px] md:border-[0px] border-[#E7E7E7] md:border-[transparent]  object-cover rounded-md" src={data?.primary_img || '/img/default.png'} alt="product" />
+                            <img className=" my-6 md:my-0 md:mx-0  md:ml-4 w-full h-[120px] max-h-[120px] md:w-[100px] md:max-h-[100px] md:border-[0px] border-[#E7E7E7] md:border-[transparent]  object-cover rounded-md" src={data?.primary_img || '/img/default.png'} alt="product" />
                             {/* <div className=" md:hidden my-0 m-2 md:m-0 bg-red-400">
                                 <AiFillHeart size={20} color="#F35252" />
                             </div> */}
@@ -55,7 +70,18 @@ function Wishlist({ data, removeWishlistStart, wishListedItem, setWishListedItem
                         </div>
 
                         <div>
-                            <Button className={`btn-color btn-bg max-h-min text-base font-medium rounded py-2 px-3`} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                            {
+                                itemInCart?.quantity ?
+                                    <QuantityID value={itemInCart.quantity} disabledPlush={(() => {
+                                        if (itemInCart.inventoryDetails) {
+                                            return itemInCart.inventoryDetails.max_order_quantity == itemInCart.quantity && itemInCart.inventoryDetails.max_order_quantity > 0 || itemInCart.inventoryDetails.inventory_quantity <= itemInCart.quantity
+                                        }
+                                        return false
+                                    })()}
+                                        onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
+                                    :
+                                    <Button className={`btn-color btn-bg max-h-min text-base font-medium rounded py-2 px-3`} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                            }
                             {/* <div className=" md:flex  flex-col sm:flex-row justify-between w-full h-full items-end sm:items-center ">
                                     <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-2  px-3 `} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
                                 </div> */}
@@ -85,20 +111,25 @@ function Wishlist({ data, removeWishlistStart, wishListedItem, setWishListedItem
                         <Link href={`/product/${data?.item_id || '1234'}`}>
                             <a className="block">
                                 <div className=" h-[44px] ">
-                                    <h3 className="  lg:text-base text-sm capitalize md:cart-item-title">{data?.item_name?.toLowerCase().slice(0, 38) + " ..." || 'INDIA GATE super basmati rice | 5 kg pack | Aged Rice 2 years-old'}</h3>
+                                    <h3 className="line-truncate-2 lg:text-base text-sm capitalize md:cart-item-title">{data?.item_name}</h3>
                                 </div>
                             </a>
                         </Link>
-                        <div className=" w-full md:flex  my-2 flex-col sm:flex-row justify-between w-full h-full items-end sm:items-center ">
+                        <div className=" w-full md:flex  my-2 flex-col sm:flex-row justify-between  h-full items-end sm:items-center ">
                             <div className="w-full">
-                                {/* <QuantityID value={data?.quantity} pdp={true} disabledPlush={(() => {
-                        if (data?.inventoryDetails) {
-                            return data?.inventoryDetails?.max_order_quantity == data?.quantity && data?.inventoryDetails?.max_order_quantity > 0 || data?.inventoryDetails.inventory_quantity <= data?.quantity
-                        }
-                        return false
-                    })()}
-                        onPlush={() => addToCart(data)} onMinus={() => removeFromCart(data)} /> */}
-                                <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-3  `} style={{ backgroundColor: "#F58634" }} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                {
+                                    itemInCart?.quantity ?
+                                        <QuantityID value={itemInCart.quantity} disabledPlush={(() => {
+                                            if (itemInCart.inventoryDetails) {
+                                                return itemInCart.inventoryDetails.max_order_quantity == itemInCart.quantity && itemInCart.inventoryDetails.max_order_quantity > 0 || itemInCart.inventoryDetails.inventory_quantity <= itemInCart.quantity
+                                            }
+                                            return false
+                                        })()}
+                                            onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
+                                        :
+                                        <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-3  `} style={{ backgroundColor: "#F58634" }} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -122,10 +153,15 @@ function Wishlist({ data, removeWishlistStart, wishListedItem, setWishListedItem
         </div>
     )
 }
+const mapStateToProps = state => ({
+    cart: state.cart,
+
+
+})
 const mapDispatchToProps = dispatch => ({
     addToCart: (item) => dispatch(addToCart(item)),
     removeFromCart: (item) => dispatch(removeFromCart(item)),
     removeWishlistStart: (data) => dispatch(removeWishlistStart(data))
 })
-export default connect(null, mapDispatchToProps)(Wishlist);
+export default connect(mapStateToProps, mapDispatchToProps)(Wishlist);
 

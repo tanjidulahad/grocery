@@ -32,11 +32,11 @@ function wallet(walletdata) {
       <div className="mb-4  bg-white    w-full ">
         <div className=' w-full md:mx-2 md:m-4 mt-4'>
           <p className="text-left font-bold text-lg traxt-dark  px-4  pt-4 ">Add Money</p>
-          <div className="mt-4  w-3/4 bg-white  ">
-            <div className="px-4  md:px-0 lg:pl-4    md:w-full pb-5  flex ">
-              <div className=" w-3/4 md:w-[360px]  rounded " >
+          <div className="mt-4 bg-white  ">
+            <div className="px-4 md:px-0 lg:pl-4 md:w-full pb-5 flex">
+              <div className="md:w-[360px] rounded" >
                 <Input type="number"
-                  className="   bg-transparent "
+                  className="bg-transparent lg:w-[300px]"
                   placeholder="Add Money"
                   value={wallet}
                   onChange={(e) => { setwallet(e.target.value) }}

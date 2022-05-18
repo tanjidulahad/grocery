@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import fetcher from '@redux/utility'
+import { connect } from 'react-redux'
 import { AiOutlineCamera } from 'react-icons/ai';
 import { Button } from '@components/inputs';
+import { updateUserDetails } from '@redux/user/user-action';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function Profile({ type, fullname, email_id, phone, id }) {
+function Profile({ type, fullname, email_id, phone, id,updateUserDetails }) {
   const [mobNavHeight, setMobNavHeight] = useState(0)
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -22,9 +26,13 @@ function Profile({ type, fullname, email_id, phone, id }) {
     }
   }, [])
   const [profile, setprofile] = useState({
+    customerId: id,
+    deviceId: null,
     fullName: fullname,
     emailId: email_id,
-    phone: phone
+    phone: phone,
+    social_auth_origin: "",
+    social_auth_token: ""
   })
   const [state, setstae] = useState({ file: '', imageurl: '' })
   const onChange = (e) => {
@@ -33,13 +41,14 @@ function Profile({ type, fullname, email_id, phone, id }) {
     setprofile({ ...profile, [name]: value })
   }
   const onSubmitHandler = () => {
-    fetcher('post', `?r=customer/update-login-details&customerId=${id}`, profile).then((response) => { console.log(response) }).catch((err) => { console.log(err) })
+    // fetcher('post', `?r=customer/update-login-details&customerId=${id}`, profile).then((response) => { console.log(response) }).catch((err) => { console.log(err) })
+    updateUserDetails(profile)
 
   }
   const handleSubmit = () => {
 
   }
-  const imagepreview = (<div className="rounded w-[200px] h-[200px] bg-gray-100 text-gray-400 m-8 lg:mx-8 md:mx-8 lg:my-0 md:my-0 z-100 flex justify-center items-center">
+  const imagepreview = (<div className="rounded w-[150px] h-[150px] lg:w-[200px] lg:h-[200px] bg-gray-100 text-gray-400 m-8 lg:mx-8 md:mx-8 lg:my-0 md:my-0 z-100 flex justify-center items-center">
     <span className='text-3xl font-extrabold	' >
       {(() => {
         const name = fullname?.split(' ')
@@ -52,13 +61,14 @@ function Profile({ type, fullname, email_id, phone, id }) {
         return 'A'
       })()}
     </span>
-    <span className=' cursor-pointer relative -top-20 left-10 text-3xl font-extrabold	' onClick={(e) => handleSubmit(e)} >
+    <span className=' cursor-pointer relative -top-14 left-9 lg:-top-20 lg:left-10 text-3xl font-extrabold	' onClick={(e) => handleSubmit(e)} >
       <AiOutlineCamera color={'gray'} />
     </span>
   </div>)
   return (
 
-    <div className={` w-full h-[68vh] md:h-auto ${type === 'index' ? "lg:w-full" : "lg:w-1/2"}  md:w-full  `}>
+    <div className={` w-full h-[100vh] md:h-auto ${type === 'index' ? "lg:w-full" : "lg:w-1/2"}  md:w-full  `}>
+      <ToastContainer></ToastContainer>
       {/* <p className="m-8 mb-4 text-lg text-dark h md:block lg:block" >My Profile</p> */}
       {/* <div className="rounded w-[200px] h-[200px] bg-gray-100 text-gray-400 m-8 lg:mx-8 md:mx-8 lg:my-0 md:my-0 z-100 flex justify-center items-center">
         <span className='text-3xl font-extrabold	' >
@@ -78,7 +88,7 @@ function Profile({ type, fullname, email_id, phone, id }) {
         </span>
       </div> */}
       {
-        <div className="my-8">
+        <div className="mt-28 lg:mt-8">
           {imagepreview}
         </div>
       }
@@ -100,7 +110,7 @@ function Profile({ type, fullname, email_id, phone, id }) {
           <div className="flex items-center mr-16 ">
             {/* <p className="   rounded text-sm text-green-500 " >Dont Save </p> */}
           </div>
-          <Button className="  p-4 py-2 justify-end text-right btn-color btn-bg bg-[#48887B] rounded text-base my-4  text-white  " onClick={onSubmitHandler} >Submit</Button>
+          <Button className="  p-4 py-2 justify-end text-right btn-color btn-bg bg-[#48887B] rounded text-base my-4  text-white  " onClick={onSubmitHandler} >Update</Button>
         </div>
       </div>
       <div id="cart-total-btn md:hidden"
@@ -112,11 +122,15 @@ function Profile({ type, fullname, email_id, phone, id }) {
       >
         <div className="  h-min flex md:hidden items-center justify-between  ">
           {/* <p className="   rounded text-lg text-green-500 " >Dont Save </p> */}
-          <Button className="px-4  py-2 justify-end text-right btn-bg btn-color bg-[#48887B] rounded text-base   text-white  " onClick={onSubmitHandler} >Submit</Button>
+          <Button className="px-4  py-2 justify-end text-right btn-bg btn-color bg-[#48887B] rounded text-base   text-white  " onClick={onSubmitHandler} >Update</Button>
         </div>
       </div>
     </div>
   )
 }
 
-export default Profile
+
+const mapDispatchToProps = dispatch => ({
+  updateUserDetails: (payload) => dispatch(updateUserDetails(payload))
+})
+export default connect(null,mapDispatchToProps)(Profile)

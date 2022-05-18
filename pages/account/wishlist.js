@@ -22,7 +22,6 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
   const router = useRouter()
   // console.log(user,'line123415',info)
   useEffect(() => {
-    const wishlist = () => {
       const payload = {
         userId: user.customer_id,
         storeId: info.store_id,
@@ -33,8 +32,8 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
         setNoMore
       }
       getWishlist(payload)
-    }
-    return wishlist()
+
+
 
   }, [])
 
@@ -77,8 +76,8 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
                 <WishlistSkeleton></WishlistSkeleton>
               }
             >
-              <div className="grid grid-cols-2 md:grid-cols-1  px-2 md:px-0 gap-6  py-8">
-              {wishListedItem.map((item, idx) => <div key={idx} className="w-full md:rounded md:shadow md:bg-white md:px-4 py-1 my-4">
+              <div className="grid grid-cols-2 md:grid-cols-1 px-2 md:px-0 gap-6 lg:gap-4 py-8 mt-32 lg:mt-0">
+              {wishListedItem.map((item, idx) => <div key={idx} className="w-full md:rounded md:shadow md:bg-white md:px-4">
 
                 <WishItem data={item} wishListedItem={wishListedItem} setWishListedItem={setWishListedItem} />
 
