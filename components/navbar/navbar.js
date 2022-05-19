@@ -35,6 +35,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const [query, setQuery] = useState('')
   const [Menu, setmenu] = useState(false)
   const router = useRouter();
+  const exceptionRouteinMobile=['/account/profile','/account/myorders','/account/wishlist','/account/wallet','/account/savedplaces','/account/newaddress']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   useEffect(() => {
     getShopInfo(storeId);
@@ -350,7 +351,9 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
       </div>
       {/* has to be hide in some places */}
-      {/* <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
+      {
+        !exceptionRouteinMobile.includes(router.pathname)?
+      <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
         <div className=" flex justify-between ">
 
           <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
@@ -397,7 +400,10 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
 
 
-      </div> */}
+      </div>
+      :
+      ""
+}
       {
         Menu &&
         <div className="w-full transition duration-150 ease-in-out bg-white h-[130vh] absolute z-[inherit] top-0 ">

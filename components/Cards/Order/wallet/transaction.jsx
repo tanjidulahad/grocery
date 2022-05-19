@@ -15,7 +15,7 @@ function transaction({ item, transaction = 'add' }) {
       {
         item.map((items, index) => (
           <>
-          <div key={index} className="mb-4  w-full flex justify-between ">
+          <div key={index} className="mb-4 w-full flex justify-between ">
             <div className=" px-4 md:px-0 lg:mx-6  md:mx-6 flex max-w-fill items-center">
               <Button className={` mt-2 rounded ${items?.purchase_id === '' && 'bg-white'}bg-gray-900 w-[60px] h-[60px] md:w-[100px] md:h-[100px] shrink-0 block" type='link' href={"/product/{item.orderItemId}"}`}>
                 {items?.purchase_id === "" ?
@@ -56,14 +56,14 @@ function transaction({ item, transaction = 'add' }) {
 
 
               </div> :
-              <div className=' w-full md:m-4 mt-4'>
+              <div className=' w-full mt-4'>
                 <div className='flex items-center'>
-                  <p className="text-left font-bold text-xs lg:text-base traxt-dark ml-4">Paid for</p>
-                  <span className="text-left font-[100] text-sm text-gray-600 ml-2 my-2 ">(Order ID- {items?.payment_plan_id})</span>
+                  <p className="text-left font-bold text-xs lg:text-base traxt-dark ml-4 md:ml-0">Paid for</p>
+                  <span className="text-left font-[100] text-sm text-gray-600 ml-2 md:ml-0 lg:ml-2 my-2 ">(Order ID- {items?.payment_plan_id})</span>
                 </div>
                 {/* <p className="text-left  text-base traxt-dark  mx-4 ">Maggie combo of 4</p> */}
 
-                <p className="text-left text-sm  font-bold  text-[#48887B]  mx-4 ">{moment.unix(items?.last_modified_date).format("DD-MM-YY")}</p>
+                <p className="text-left text-sm  font-bold  text-[#48887B]  ml-4 md:ml-0 ">{moment.unix(items?.last_modified_date).format("DD-MM-YY")}</p>
 
 
 

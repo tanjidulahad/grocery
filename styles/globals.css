@@ -169,3 +169,16 @@ nav {
   display: -webkit-box;
   -webkit-box-orient: vertical;
 }
+
+.slick-prev:before {
+  content: "\276E" !important;
+  color: gray !important;
+}
+
+.slick-next:before {
+  content: '\276F' !important;
+  color: gray !important;
+  font-size: 50px;
+
+}
+

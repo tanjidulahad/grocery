@@ -24,6 +24,10 @@ import '@styles/product.scss'
 import '@styles/cart.scss'
 import '@styles/saved-places.scss'
 
+//slick
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 function MyApp({ Component, pageProps }) {
   return (

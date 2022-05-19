@@ -47,7 +47,7 @@ function Myorders({ user, getCurrentOrders, getPastOrders }) {
               {/* <Header display={true} topic="My Orders" /> */}
 
 
-              <div className="grid grid-cols-1 gap-4 mb-4 mt-28 lg:mt-0">
+              <div className="grid grid-cols-1 gap-4 mb-4 md:mt-5 mt-28 lg:mt-0">
                 {
                   orderList.length ? orderList.map((item, i) => (
                     <div className="w-full rounded shadow bg-white " key={i}>

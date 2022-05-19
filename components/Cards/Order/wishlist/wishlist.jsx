@@ -7,6 +7,7 @@ import Rating from "@components/rating-stars/rating";
 import { connect } from "react-redux";
 import { Button } from '@components/inputs';
 import { removeWishlistStart } from "@redux/wishlist/wishlist-action";
+
 function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishListedItem, setWishListedItem, cart }) {
     const removeFromWishList = (wishlistid) => {
 
@@ -40,7 +41,7 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                     <Link href={`/product/${data?.item_id || '1234'}`}>
 
                         <div className=" m-2 md:m-0 w-full flex md:w-max md:mr-2 ">
-                            <img className="md:block w-4 h-4" src="/img/square.png" />
+                            <img className="md:block w-4 h-4" src="/img/veg.svg" />
                             <img className=" my-6 md:my-0 md:mx-0  md:ml-4 w-full h-[120px] max-h-[120px] md:w-[100px] md:max-h-[100px] md:border-[0px] border-[#E7E7E7] md:border-[transparent]  object-cover rounded-md" src={data?.primary_img || '/img/default.png'} alt="product" />
                             {/* <div className=" md:hidden my-0 m-2 md:m-0 bg-red-400">
                                 <AiFillHeart size={20} color="#F35252" />
@@ -52,11 +53,11 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                         <AiFillHeart onClick={() => removeFromWishList(data.entry_id)} size={20} color="#F35252" />
                     </div>
                 </div>
-                <div className=" hidden lg:block w-8/12">
+                <div className="hidden w-8/12 md:block lg:block">
                     <div>
                         <Link href={`/product/${data?.item_id || '1234'}`}>
 
-                            <h3 className=" lg:text-base text-sm capitalize cart-item-title cursor-pointer">{data.item_name}</h3>
+                            <h3 className="line-truncate-2 lg:text-base text-sm capitalize cart-item-title cursor-pointer">{data.item_name}</h3>
                         </Link>
                     </div>
                     <div className="flex justify-between items-center mt-10">
