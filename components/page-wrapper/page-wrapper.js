@@ -12,7 +12,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import {
     getShopInfoStart, getShopSeoStart, getShopSettingsStart, getSocialProfileStart, getShopDisplaySettingsStart, getPageCountStart, getBannerStart,
-    getShopInfoSuccess, getShopSeoSuccess, getShopSettingsSuccess, getSocialProfileSuccess,
+    getCategoryStart,
 } from "@redux/shop/shop-action";
 
 function hexToRGB(hex, alpha) {
@@ -27,9 +27,9 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getBanner }) => {
+const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getCategories, getShopDisplaySettings, getPageCount, getBanner }) => {
     const router = useRouter()
-    const exceptionRouteinMobile=['/account/profile']
+    const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
     useEffect(() => {
@@ -42,6 +42,7 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
             getShopSettings(storeId);
             getSocialProfile(storeId);
             getShopDisplaySettings(storeId)
+            getCategories(storeId)
         }
     }, [router])
 
@@ -148,7 +149,7 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
         return <Loader />
     }
 
-    console.log("global",router)
+    console.log("global", router)
     return (
         <>
             <Head>
@@ -182,6 +183,7 @@ const mapDispatchToProps = dispatch => ({
     getShopSettings: (shopId) => dispatch(getShopSettingsStart(shopId)),
     getSocialProfile: (shopId) => dispatch(getSocialProfileStart(shopId)),
     getShopDisplaySettings: (storeId) => dispatch(getShopDisplaySettingsStart(storeId)),
+    getCategories: (storeId) => dispatch(getCategoryStart(storeId)),
 })
 
 const HOC = connect(mapStateToProps, mapDispatchToProps)(verifier)

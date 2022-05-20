@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { connect } from "react-redux";
 import { QuantityID, Button } from "../inputs";
 // import Rating from '../rating-stars/rating'
@@ -8,15 +9,10 @@ import { addWishlistStart } from "@redux/wishlist/wishlist-action";
 
 
 
-const ProductItem = ({ store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist }) => {
-    console.log("storedetails", user)
-
-    const truncate = (str, no_words) => {
-        return str.split(" ").splice(0, no_words).join(" ");
-    }
-
+const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist }) => {
+    const tip = useRef(null)
     const wishlist = () => {
-        if (user.currentUser === null) {
+        if (!user.currentUser) {
             alert('Please Login First');
         }
         else {
@@ -28,11 +24,16 @@ const ProductItem = ({ store, data, user, addToCart, removeFromCart, cart, offer
             addItemToWishlist(payload)
         }
     }
-
+    const tipFun = (e) => {
+        let x = e.clientX, y = e.clientY;
+        if (tip.current) {
+            tip.current.style.top = (y - 10) + 'px';
+            tip.current.style.left = (x + 10) + 'px';
+        }
+    };
     if (!data) {
         return (
-            <div className="h-full   border-gray-200 rounded-lg overflow-hidden">
-
+            <div className={`h-full border-gray-200 rounded-lg overflow-hidden ${className}`}>
                 <div className=" w-32 h-32 sm:w-40 sm:h-40 animate-pulse bg-gray-400 shrink-0 object-cover object-center"></div>
                 <div className="pl-0 px-6 pt-6">
                     <h1 className="w-1/2 mb-3 sm:mb-4 h-4 sm:h-6 animate-pulse bg-gray-500"></h1>
@@ -80,22 +81,24 @@ const ProductItem = ({ store, data, user, addToCart, removeFromCart, cart, offer
     )
     return (
         <>
-            <div className=" flex flex-col  items-stretch justify-between border-[#B6B6B6] h-full w-[180px] md:w-[221.85px] product-item w-max ">
-                <Button className="block " type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
-                    <a className="tooltip block relative bg-white border rounded-sm h-[220px] md:h-[264.49px]">
-                        <div className="flex absolute justify-between w-full">
-                            <img className="m-2" src="/img/square.png" />
-                            <AiOutlineHeart className="m-2" size={18} onClick={wishlist} />
-                        </div>
-                        {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
-                        <img className="w-full h-full object-cover" src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`} />
-                        {/* </div> */}
-                        {
-                            data.item_name.length > 40 &&
-                            <span className="tooltiptext">{data.item_name}</span>
-                        }
-                    </a>
-                </Button>
+            <div className={`flex flex-col  items-stretch justify-between border-[#B6B6B6] h-full w-[180px] md:w-[221.85px] product-item w-max hover:sca ${className}`}>
+                <div className="tooltip block relative bg-white border rounded-sm h-[220px] md:h-[264.49px]">
+                    <img className="w-4 h-4 top-2 left-2 absolute" src="/img/veg.svg" />
+                    <AiOutlineHeart className="w-4 h-4 top-2 right-2 absolute hover:text-[#F35252] hover:scale-150 transition-all " size={18} onClick={wishlist} />
+                    <Button type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
+                        <a onMouseMove={tipFun} >
+                            {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
+                            <img className="w-full h-full object-cover" src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`} />
+                            {/* </div> */}
+                            {
+                                data.item_name.length > 40 &&
+                                <span ref={tip} className="tooltiptext">
+                                    {data.item_name}
+                                </span>
+                            }
+                        </a>
+                    </Button>
+                </div>
                 <div className="flex flex-col justify-between items-start">
                     <div className="flex justify-start items-baseline h-full my-2  w-full ">
                         <div className="flex">
@@ -110,8 +113,8 @@ const ProductItem = ({ store, data, user, addToCart, removeFromCart, cart, offer
                         </div> */}
                     </div>
                     <div className="h-10 ">
-                        <p className="text-sm font-semibold line-truncate-2">
-                            {data.item_name}
+                        <p className="text-sm capitalize font-semibold line-truncate-2">
+                            {data.item_name?.toLowerCase()}
                         </p>
                     </div>
                 </div>

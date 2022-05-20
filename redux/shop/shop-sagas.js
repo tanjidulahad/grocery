@@ -9,7 +9,8 @@ import {
     getPageCountSuccess,
     getBannerSuccess,
     getShopProductsPaginationSuccess,
-    errorInGo
+    errorInGo,
+    clearProductList
 } from "./shop-action";
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
 
@@ -176,11 +177,11 @@ function* onGetShopProductsStart() {
         }
     })
 }
-
 function* onGetCategoryProductsStart() {
     yield takeLatest(shopActionType.GET_CATEGORY_PRODUCTS_START, function* ({ payload }) {
         const { storeId, categoryId, subCategoryId, page, setStatus } = payload //status == loading || failed || success
         try {
+            yield put(clearProductList());
             const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}&sortOrder=ASC`
             const res = yield fetcher('GET', query)
             if (Array.isArray(res.data)) {
@@ -205,14 +206,17 @@ function* onProductSerachStart() {
         try {
             const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}`)
             console.log(res);
+            if (setStatus) {
+                console.log('sdfsdaf', setStatus)
+                setStatus('success')
+            }
             if (Array.isArray(res.data)) {
                 yield put(getSearchProductsSuccess(res.data))
                 // setSearchResult(res.data)
-                if (setStatus) setStatus('success')
             }
         } catch (error) {
             console.log(error);
-            if (setStatus) setStatus('failed')
+            if (!!setStatus) { setStatus('failed') }
         }
     })
 }

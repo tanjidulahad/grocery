@@ -28,12 +28,11 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
   const storeId = info.store_id;
   const [searchResult, setSearchResult] = useState([])
   const Router = useRouter();
-  const { category, subCategory, search } = Router.query;
+  const { category, subCategoryId, search } = Router.query;
   const [status, setStatus] = useState('loading') //status == loading || failed || success
   const [q, setq] = useState(search ? search : '');
   // UI Vars
   const [page, setPage] = useState(1)
-
   const [scrollPosition, setScrollPosition] = useState(0);
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 768 })
   const [navHeight, setNavHeight] = useState(156)
@@ -68,7 +67,6 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
         // console.log(Router);
         console.log(status);
         if (page < pageCount && !search) {
-
           setPage(page + 1)
         }
       }
@@ -77,21 +75,19 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
   }, [pageCount])
   useEffect(() => {
     if (search) {
-      getSearchProducts({ storeId, q: q.trim(), setSearchResult, setStatus })
-
-      setStatus('loading') // Set to success default Because its run whene All  products are fetching
+      getSearchProducts({ storeId, q: q.trim(), setSearchResult, setStatus: (s) => { } })
+      setStatus('loading')
 
     } else if (category) {
-      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategory, page: 1, setStatus })
+      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
 
-      // setq('') // Cleaning query string of search
     } else {
       getShopProducts({ storeId, setStatus })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       // setq('') // Cleaning query string of search
     }
-  }, [Router.query, page])
+  }, [category, subCategoryId, search, page])
   useEffect(() => { // UI function
 
     if (typeof window !== 'undefined') {
@@ -163,14 +159,14 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 gap-y-14">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0">
               {status == 'success' || status == 'loading' ?
                 products.length && (status == 'loading' || status == 'success')
                   ? <>
                     {
                       products.map((item, i) => (
                         <div className='w-full'>
-                          <ProductItem key={i} data={item} addItemToWishlist={addWishlist} />
+                          <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
                         </div>
                       ))}
                     {
@@ -182,11 +178,11 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
                     <div className="h-6"></div>
                     <div className="h-8" ref={listLastElement}></div>
                   </>
-                  : products.length < 1 && status == 'success' ?
+                  : products?.length < 1 && status == 'success' ?
                     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
                       <h6>
-                        <span className="">No items found{' '}
-                          <Link href={`/`}>
+                        <span>No items found{' '}
+                          <Link href={`/shop`}>
                             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
                               Show All Products.
                             </a>
@@ -194,11 +190,11 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
                         </span>
                       </h6>
                     </div>
-                    : products.length < 1 && status == 'success' ?
+                    : products?.length < 1 && status == 'success' ?
                       <div className="flex justify-center items-center" style={{ height: "30vh" }}>
                         <h6>
                           <span className="">No items found{' '}
-                            <Link href={`/`}>
+                            <Link href={`/shop`}>
                               <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
                                 Show All Products.
                               </a>
@@ -214,10 +210,10 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
                         <ProductItem />
                         <ProductItem />
                         <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
-                        <ProductItem />
+                        <ProductItem className={'hidden lg:block'} />
+                        <ProductItem className={'hidden xl:block'} />
+                        <ProductItem className={'hidden lg:block'} />
+                        <ProductItem className={'hidden xl:block'} />
                       </>
 
                 : status == 'success' ?

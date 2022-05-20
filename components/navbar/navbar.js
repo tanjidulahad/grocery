@@ -60,15 +60,9 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
     // This handler function comming from PLP page via redux
   }
   const onSearched = () => {
-
-    searchHandler(query)
-
-    // if (!searchHandler) {
-    //     router.push(`/`);
-    //     setStatus('loading')
-    //     redirect(`/?search=${query}`)
-    //   }
-
+    if (query.length) {
+      redirect(`/shop?search=${query}`)
+    }
   }
 
 
@@ -139,15 +133,18 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             <div className=" flex flex-row justify-between items-center nav-items-color text-black space-x-14">
               <div className=" w-full flex justify-around space-x-4 lg:space-x-6 xl:space-x-14">
                 <Link href={'/'}>
-                  <a className="whitespace-nowrap font-normal inline-block tracking-tight lg:text-base">
+                  <a className="block whitespace-nowrap font-normal  tracking-tight lg:text-base">
                     Home
                   </a>
                 </Link>
                 <Link href={'/shop'}>
-                  <a className="whitespace-nowrap font-normal inline-block tracking-tight  lg:text-base">
+                  <a className="block whitespace-nowrap font-normal  tracking-tight  lg:text-base">
                     shop
                   </a>
                 </Link>
+                <a className="block whitespace-nowrap font-normal  tracking-tight lg:text-base">
+                  Contact
+                </a>
               </div>
               <div className="flex items-center justify-end space-x-4">
                 <Button
@@ -318,47 +315,49 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
       </div>
       {/* has to be hide in some places */}
       {
-        !exceptionRouteinMobile.includes(router.pathname) &&
-        <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
-          <div className=" flex justify-between ">
-            <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
-            <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
-              <div className="flex  w-[135px] h-[46px]   rounded md:w-max lg:w-full  ">
-                <div className="h-full w-full rounded  shrink-0 flex  justify-center overflow-hidden r items-center">
-                  <img
-                    className="w-100 h-100 object-cover"
-                    src={info.logo_img_url || '/img/default.png'} alt="..."
-                  />
+        !exceptionRouteinMobile.includes(router.pathname) ?
+          <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
+            <div className=" flex justify-between ">
+              <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
+              <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
+                <div className="flex  w-[135px] h-[46px]   rounded md:w-max lg:w-full  ">
+                  <div className="h-full w-full rounded  shrink-0 flex  justify-center overflow-hidden r items-center">
+                    <img
+                      className="w-100 h-100 object-cover"
+                      src={info.logo_img_url || '/img/default.png'} alt="..."
+                    />
+                  </div>
                 </div>
-              </div>
-            </Button>
-            <div>
-              <Button
-                className="flex items-center my-4 mx-4 text-black"
-                type="link"
-                href="/cart"
-              >
-                <span className=" text-white font-bold   relative">
-                  <IoMdCart size={30} color={"white"} />
-                  {
-                    !!totalItems &&
-                    <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center bg-[#F58634] rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
-                      {
-                        totalItems
-                      }
-                    </div>
-                  }
-                </span>
               </Button>
+              <div>
+                <Button
+                  className="flex items-center my-4 mx-4 text-black"
+                  type="link"
+                  href="/cart"
+                >
+                  <span className=" text-white font-bold   relative">
+                    <IoMdCart size={30} color={"white"} />
+                    {
+                      !!totalItems &&
+                      <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center bg-[#F58634] rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
+                        {
+                          totalItems
+                        }
+                      </div>
+                    }
+                  </span>
+                </Button>
+              </div>
+            </div>
+            <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
+              <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
+              <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
+                <FiSearch color={'black'} size={20} />
+              </div>
             </div>
           </div>
-          <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
-            <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
-            <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
-              <FiSearch color={'black'} size={20} />
-            </div>
-          </div>
-        </div>
+          :
+          ""
       }
       {
         Menu &&
@@ -384,17 +383,22 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             </div>
 
             <div >
-              <p className="py-6 cursor-pointer px-14 text-lg font-[600]">About</p>
+              <Link href={'/'}>
+                <a className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Home</a>
+              </Link>
             </div>
             <div >
-              <p className="py-6 cursor-pointer px-14 text-lg font-[600]">Contact Us</p>
+              <Link href={'/'}>
+                <a className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Contact Us</a>
+              </Link>
             </div> <div >
-              <p className="py-6 cursor-pointer px-14 text-lg font-[600]">Privecy Policy</p>
+              <Link href={'https://goplinto.com/privacy-policy'}>
+                <a className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Privecy Policy</a>
+              </Link>
             </div> <div >
-              <p className="py-6 cursor-pointer px-14 text-lg font-[600]">Return & Refunds</p>
-            </div>
-            <div >
-              <p className="py-6 cursor-pointer px-14 text-lg font-[600]">Terms of Service</p>
+              <Link href={'https://goplinto.com/refund-policy'}>
+                <a className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Return & Refunds</a>
+              </Link>
             </div>
             <div >
               {/* <p className="py-6 px-14 text-base font-[600]">About</p> */}
