@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { connect } from 'react-redux'
 import accountLayout from '@components/layout/account-layout'
 import Header from '@components/MobHeader/index'
@@ -13,10 +15,11 @@ import { getAddressStart, addAddressStart, updateAddressStart, removeAddressStar
 import PageWrapper from '@components/page-wrapper/page-wrapper'
 import { useRouter } from 'next/router';
 import { BsArrowLeft } from 'react-icons/bs'
+import { Modal } from 'antd'
+import { useMediaQuery } from 'react-responsive'
 
 function Savedplaces({ user, address, info, getAddress, addAddress, removeAddress, updateAddress }) {
-
-
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
   const router = useRouter()
   const addressStructure = {
     full_name: "",
@@ -24,7 +27,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
     address_line_1: "",
     address_line_2: "",
     city: "",
-    address_fields: {},
+    address_fields: "",
     address_tag: "Home",
     country: "India",
     is_default: "",
@@ -35,6 +38,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
   }
   const [newAddress, setNewAddress] = useState(addressStructure)
   const [isAddressActive, setIsAddressActive] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [isLoadding, setIsLoadding] = useState(true)
   const [error, setError] = useState(null)
@@ -63,8 +67,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
     }
     if (newAddress?.address_id) {
       updateAddress({
-        userId: user.customer_id, addressId: newAddress.address_id, address: (({ full_name, phone, address_line_1, address_line_2, city, address_fields, address_tag, country, is_default, latitude, longitude, state, zip_code }) =>
-          ({ full_name, phone, address_line_1, address_line_2, city, address_fields: {}, address_tag, country, is_default, latitude, longitude, state, zip_code }))(newAddress),
+        userId: user.customer_id, addressId: newAddress.address_id, address: newAddress,
         setError
       })
     } else {
@@ -75,6 +78,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
   }
   return (
     <>
+    <ToastContainer></ToastContainer>
       {
         isLoadding ?
           <div className='w-full  bg-white md:bg-[transparent]'>
@@ -86,14 +90,14 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
 
             {
               !isAddressActive &&
-              <div className="flex justify-center items-center md:hidden" onClick={() => {
+              <div className="flex justify-center items-center md:hidden mt-24" onClick={() => {
                 router.push(`/account/newaddress`)
               }}>
                 <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12.5 3.125C17.6562 3.125 21.875 7.34375 21.875 12.5C21.875 17.6562 17.6562 21.875 12.5 21.875C7.34375 21.875 3.125 17.6562 3.125 12.5C3.125 7.34375 7.34375 3.125 12.5 3.125ZM12.5 1.5625C6.48438 1.5625 1.5625 6.48438 1.5625 12.5C1.5625 18.5156 6.48438 23.4375 12.5 23.4375C18.5156 23.4375 23.4375 18.5156 23.4375 12.5C23.4375 6.48438 18.5156 1.5625 12.5 1.5625Z" fill="#48887B" />
                   <path d="M18.75 11.7188H13.2812V6.25H11.7188V11.7188H6.25V13.2812H11.7188V18.75H13.2812V13.2812H18.75V11.7188Z" fill="#48887B" />
                 </svg>
-                <p className="text-lg  lg:block text-gray-900 font-bold bg-white p-4">
+                <p className="text-lg  lg:block text-[#48887B] font-bold bg-white p-4">
                   {' '}
                   Add New Address
                 </p>
@@ -112,17 +116,34 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
               //   }
               // </div>
             }
+            {
+              isTabletOrMobile && <div className=" md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 my-0 md:my-5 lg:my-5 mr-4 mb-5 ">
+              {
+                [...address].map((item, i) => (
+                  <div className="w-full mt-4" key={i} >
+                    <Address type={item.address_tag == `Home` ? 'Home' : 'Work'} ids={i} data={item} onEdit={() => router.push(
+                                        {
+                                            pathname: `/account/newaddress`,
+                                            query: item
+                                        },
+                                        // '/accounts/EditAddress'
+                                    )}onRemove={() => removeAddress({ userId: user.customer_id, addressId: item.address_id, setError })} />
+                  </div>
+                ))
+              }
+            </div>
+            }
             <div className="hidden md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 my-0 md:my-5 lg:my-5  ">
               {
                 [...address].map((item, i) => (
                   <div className="w-full mt-4" key={i} >
-                    <Address type={item.address_tag == `Home` ? 'Home' : 'Work'} ids={i} data={item} onEdit={() => { setNewAddress(item); setIsAddressActive(true) }} onRemove={() => removeAddress({ userId: user.customer_id, addressId: item.address_id, setError })} />
+                    <Address type={item.address_tag == `Home` ? 'Home' : 'Work'} ids={i} data={item} onEdit={() => { setNewAddress(item) }} onRemove={() => removeAddress({ userId: user.customer_id, addressId: item.address_id, setError })} />
                   </div>
                 ))
               }
             </div>
 
-            <div className="flex cursor-pointer md:mt-24 justify-center md:mt-0 lg:mt-0 md:justify-start lg:justify-start ">
+            <div className="flex cursor-pointer md:mt-24 justify-center lg:mt-0 md:justify-start lg:justify-start ">
               {/* <BsPlusCircle className="btn-color-revers" size={30} />
               <Button className="text-lg btn-color-revese btn-color-revers font-semibold ml-4 " onClick={() => setIsAddressActive(true)}>
                 Add New Address
@@ -287,7 +308,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
             </>
         // <Loader />
       }
-      <div className={`md:hidden fixed top-0     shadow-lg bg-[#48887B] h-[122px] w-full `} style={{ zIndex: 1200 }}>
+      <div className={`md:hidden fixed top-0 shadow-lg bg-[#48887B] h-[80px] w-full `} style={{ zIndex: 1200 }}>
 
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
@@ -295,6 +316,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
           <p className={`text-2xl text-[white] mx-4`}>Savedplaces</p>
         </div>
       </div>
+
     </>
   )
 }

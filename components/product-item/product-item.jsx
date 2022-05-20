@@ -4,32 +4,42 @@ import { QuantityID, Button } from "../inputs";
 
 import { addToCart, removeFromCart } from "../../redux/cart/cart-actions";
 import { AiOutlineHeart, AiFillStar } from 'react-icons/ai'
+import { addWishlistStart } from "@redux/wishlist/wishlist-action";
 
-const ProductItem = ({ data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist }) => {
+
+
+const ProductItem = ({ store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist }) => {
+    console.log("storedetails", user)
 
     const truncate = (str, no_words) => {
         return str.split(" ").splice(0, no_words).join(" ");
     }
 
     const wishlist = () => {
-        const payload = {
-            id: Number(data.item_id),
-            storeId: +data.store_id,
-            userId: +user.currentUser.customer_id
+        if (user.currentUser === null) {
+            alert('Please Login First');
         }
-        addItemToWishlist(payload)
+        else {
+            const payload = {
+                id: Number(data.item_id),
+                storeId: store.store_id,
+                userId: user.currentUser.customer_id
+            }
+            addItemToWishlist(payload)
+        }
     }
 
     if (!data) {
         return (
             <div className="h-full   border-gray-200 rounded-lg overflow-hidden">
+
                 <div className=" w-32 h-32 sm:w-40 sm:h-40 animate-pulse bg-gray-400 shrink-0 object-cover object-center"></div>
-                <div className="px-6 pt-6">
+                <div className="pl-0 px-6 pt-6">
                     <h1 className="w-1/2 mb-3 sm:mb-4 h-4 sm:h-6 animate-pulse bg-gray-500"></h1>
                     <h2 className="bg-gray-400 animate-pulse h-3 sm:h-4 w-1/4 mb-2"></h2>
                     <p className="leading-relaxed mb-3 w-full h-2 sm:h-3 animate-pulse bg-gray-400"></p>
                     <div className="block items-center flex-wrap ">
-                        <a className="bg-indigo-300 h-4 animate-pulse mt-2 w-52 inline-flex items-center md:mb-2 lg:mb-0">
+                        <a className="bg-indigo-300 h-4 py-6 animate-pulse mt-2 w-full inline-flex items-center md:mb-2 lg:mb-0">
 
                         </a>
 
@@ -72,7 +82,7 @@ const ProductItem = ({ data, user, addToCart, removeFromCart, cart, offer, addIt
         <>
             <div className=" flex flex-col  items-stretch justify-between border-[#B6B6B6] h-full w-[180px] md:w-[221.85px] product-item w-max ">
                 <Button className="block " type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
-                    <a className="block relative bg-white border rounded-sm h-[220px] md:h-[264.49px]">
+                    <a className="tooltip block relative bg-white border rounded-sm h-[220px] md:h-[264.49px]">
                         <div className="flex absolute justify-between w-full">
                             <img className="m-2" src="/img/square.png" />
                             <AiOutlineHeart className="m-2" size={18} onClick={wishlist} />
@@ -80,6 +90,10 @@ const ProductItem = ({ data, user, addToCart, removeFromCart, cart, offer, addIt
                         {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
                         <img className="w-full h-full object-cover" src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`} />
                         {/* </div> */}
+                        {
+                            data.item_name.length > 40 &&
+                            <span className="tooltiptext">{data.item_name}</span>
+                        }
                     </a>
                 </Button>
                 <div className="flex flex-col justify-between items-start">
@@ -96,12 +110,9 @@ const ProductItem = ({ data, user, addToCart, removeFromCart, cart, offer, addIt
                         </div> */}
                     </div>
                     <div className="h-10 ">
-                        {
-                            !!data.item_desc &&
-                            <p className="text-sm font-semibold line-truncate-2">
-                                {data.item_desc}
-                            </p>
-                        }
+                        <p className="text-sm font-semibold line-truncate-2">
+                            {data.item_name}
+                        </p>
                     </div>
                 </div>
                 <div className="my-2 w-full ">
@@ -129,11 +140,13 @@ const ProductItem = ({ data, user, addToCart, removeFromCart, cart, offer, addIt
 }
 const mapStateToProps = state => ({
     cart: state.cart,
-    user: state.user
+    user: state.user,
+    store: state.store.info,
 
 })
 const mapDispatchToProps = dispatch => ({
     addToCart: (item) => dispatch(addToCart(item)),
-    removeFromCart: (item) => dispatch(removeFromCart(item))
+    removeFromCart: (item) => dispatch(removeFromCart(item)),
+    addItemToWishlist: (item) => dispatch(addWishlistStart(item)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);

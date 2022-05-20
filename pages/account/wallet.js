@@ -11,9 +11,9 @@ import fetcher from '@redux/utility'
 import { useEffect, useState } from 'react'
 import { set } from 'nprogress'
 
-const profileWallet = (user, info) => {
+const profileWallet = ({user, info}) => {
   const [wallet, setwallet] = useState("")
-  const [transaction, settransaction] = useState("")
+  const [transaction, settransaction] = useState([])
 
   console.log(user, info, 'line15')
   const router = useRouter()
@@ -32,12 +32,12 @@ const profileWallet = (user, info) => {
 
   return (
 
-    <div className="md: grid md:grid-cols-1 h-[90vh] bg-[transparent] md:gap-6 ">
+    <div className="md:grid md:grid-cols-1 bg-[transparent] md:gap-6 mt-28 md:mt-2 lg:mt-0">
       <div className="w-full h-max ">
         <Wallet walletdata={wallet?.customer_wallet_balance} />
       </div>
 
-      <div className="w-full mb-[220px] md:mb-[0px] ">
+      <div className="w-full md:mb-[0px] ">
         {transaction.length !== 0 ?
           <Transaction item={transaction && transaction} />
           : <div className="bg-white py-20 text-center px-4 font-bold text-lg" >
@@ -46,7 +46,7 @@ const profileWallet = (user, info) => {
         }
         {/* <Transaction  item={transaction&&transaction}/> */}
       </div>
-      <div className={`md:hidden fixed top-0     shadow-lg bg-[#48887B] h-[121px] w-full `} style={{ zIndex: 1200 }}>
+      <div className={`md:hidden fixed top-0 shadow-lg bg-[#48887B] h-[80px] w-full `} style={{ zIndex: 1200 }}>
 
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
@@ -58,7 +58,8 @@ const profileWallet = (user, info) => {
 
 
       </div>
-    </div>)
+    </div>
+    )
 
 }
 const mapStateToProps = state => ({

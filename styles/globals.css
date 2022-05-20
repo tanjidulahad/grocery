@@ -203,3 +203,35 @@ nav {
     padding: 8px 80px;
   }
 }
+.slick-prev:before {
+  content: '\276E' !important;
+  color: gray !important;
+}
+
+.slick-next:before {
+  content: '\276F' !important;
+  color: gray !important;
+  font-size: 50px;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgb(156, 154, 154);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

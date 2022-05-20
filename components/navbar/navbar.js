@@ -35,6 +35,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const [query, setQuery] = useState('')
   const [Menu, setmenu] = useState(false)
   const router = useRouter();
+  const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   const isDesktopOrLaptopx = useMediaQuery({ minWidth: 1020 })
   useEffect(() => {
@@ -137,15 +138,16 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             </div>
             <div className=" flex flex-row justify-between items-center nav-items-color text-black space-x-14">
               <div className=" w-full flex justify-around space-x-4 lg:space-x-6 xl:space-x-14">
-                <span className="whitespace-nowrap font-normal inline-block tracking-tight lg:text-base">
-                  Home
-                </span>
-                <span className="whitespace-nowrap font-normal inline-block tracking-tight  lg:text-base">
-                  shop
-                </span>
-                <span className="whitespace-nowrap font-normal inline-block tracking-tight lg:text-base">
-                  About
-                </span>
+                <Link href={'/'}>
+                  <a className="whitespace-nowrap font-normal inline-block tracking-tight lg:text-base">
+                    Home
+                  </a>
+                </Link>
+                <Link href={'/shop'}>
+                  <a className="whitespace-nowrap font-normal inline-block tracking-tight  lg:text-base">
+                    shop
+                  </a>
+                </Link>
               </div>
               <div className="flex items-center justify-end space-x-4">
                 <Button
@@ -242,7 +244,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               lists.length && lists.slice(0, isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
 
                 <div className="others" key={i}>
-                  <Link href={`/?category=${item.category_id}`}>
+                  <Link href={`/shop?category=${item.category_id}`}>
                     <a className=" text-sm font-medium inline-block cursor-pointer">
                       {item.category_name}
                       {
@@ -258,7 +260,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                       {
                         item?.subCategories.map((subItem, j) => (
                           <li className=" relative others-list-item " key={j + 'll'}>
-                            <Link href={`/?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
+                            <Link href={`/shop?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
                               <a className=" block py-2 px-4 hover:bg-gray-400">
                                 {subItem.sub_category_name}
                               </a>
@@ -284,7 +286,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                     {
                       lists.length && lists.slice(isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
                         <li className=" relative others-list-item " key={i}>
-                          <Link href={`/?category=${item.category_id}`}>
+                          <Link href={`/shop?category=${item.category_id}`}>
                             <a className=" block py-2 px-4 hover:bg-gray-400">
                               {item.category_name}
                             </a>
@@ -294,7 +296,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                               {
                                 item.subCategories.map((subItem, j) => (
                                   <li key={j + 'll'}>
-                                    <Link href={`/?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
+                                    <Link href={`/shop?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
                                       <a className=" block py-2 px-4 hover:bg-gray-400">
                                         {subItem.sub_category_name}
                                       </a>
@@ -314,46 +316,50 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
           </div>
         </div>
       </div>
-      <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
-        <div className=" flex justify-between ">
-          <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
-          <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
-            <div className="flex  w-[135px] h-[46px]   rounded md:w-max lg:w-full  ">
-              <div className="h-full w-full rounded  shrink-0 flex  justify-center overflow-hidden r items-center">
-                <img
-                  className="w-100 h-100 object-cover"
-                  src={info.logo_img_url || '/img/default.png'} alt="..."
-                />
+      {/* has to be hide in some places */}
+      {
+        !exceptionRouteinMobile.includes(router.pathname) &&
+        <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
+          <div className=" flex justify-between ">
+            <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
+            <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
+              <div className="flex  w-[135px] h-[46px]   rounded md:w-max lg:w-full  ">
+                <div className="h-full w-full rounded  shrink-0 flex  justify-center overflow-hidden r items-center">
+                  <img
+                    className="w-100 h-100 object-cover"
+                    src={info.logo_img_url || '/img/default.png'} alt="..."
+                  />
+                </div>
               </div>
-            </div>
-          </Button>
-          <div>
-            <Button
-              className="flex items-center my-4 mx-4 text-black"
-              type="link"
-              href="/cart"
-            >
-              <span className=" text-white font-bold   relative">
-                <IoMdCart size={30} color={"white"} />
-                {
-                  !!totalItems &&
-                  <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center bg-[#F58634] rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
-                    {
-                      totalItems
-                    }
-                  </div>
-                }
-              </span>
             </Button>
+            <div>
+              <Button
+                className="flex items-center my-4 mx-4 text-black"
+                type="link"
+                href="/cart"
+              >
+                <span className=" text-white font-bold   relative">
+                  <IoMdCart size={30} color={"white"} />
+                  {
+                    !!totalItems &&
+                    <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center bg-[#F58634] rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
+                      {
+                        totalItems
+                      }
+                    </div>
+                  }
+                </span>
+              </Button>
+            </div>
+          </div>
+          <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
+            <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
+            <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
+              <FiSearch color={'black'} size={20} />
+            </div>
           </div>
         </div>
-        <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
-          <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
-          <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
-            <FiSearch color={'black'} size={20} />
-          </div>
-        </div>
-      </div>
+      }
       {
         Menu &&
         <div className="w-full transition duration-150 ease-in-out bg-white h-[130vh] absolute z-[inherit] top-0 ">
