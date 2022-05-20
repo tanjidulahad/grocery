@@ -15,12 +15,13 @@ import {
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
 
 function* getShopInfoStart() {
-    yield takeLatest(shopActionType.GET_SHOP_INFO_START, function* ({ payload: storeId }) {
+    yield takeLatest(shopActionType.GET_SHOP_INFO_START, function* ({ payload }) {
+        const { storeId, seassion_id } = payload
         try {
             if (!storeId.match(/^\d+$/)) {
                 throw "Please provide valid storeid!.";
             }
-            const res = yield fetcher('GET', `?r=stores/get-details&storeId=${storeId}`)
+            const res = yield fetcher('GET', `?r=stores/get-details&storeId=${storeId}&customerId=${seassion_id}`)
             if (!res.data) return;
             yield put(getShopInfoSuccess(res.data))
         } catch (error) {
@@ -205,14 +206,12 @@ function* onProductSerachStart() {
         const { storeId, q, setSearchResult, setStatus } = payload //status == loading || failed || success
         try {
             const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}`)
-            console.log(res);
-            if (setStatus) {
-                console.log('sdfsdaf', setStatus)
-                setStatus('success')
-            }
             if (Array.isArray(res.data)) {
                 yield put(getSearchProductsSuccess(res.data))
                 // setSearchResult(res.data)
+                if (setStatus) {
+                    setStatus('success')
+                }
             }
         } catch (error) {
             console.log(error);

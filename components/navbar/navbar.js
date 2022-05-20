@@ -60,6 +60,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
     // This handler function comming from PLP page via redux
   }
   const onSearched = () => {
+    console.log('queryrr', query);
     if (query.length) {
       redirect(`/shop?search=${query}`)
     }
@@ -316,17 +317,15 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
       {/* has to be hide in some places */}
       {
         !exceptionRouteinMobile.includes(router.pathname) ?
-          <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
+          <div className={`md:hidden nav-bg shadow-lg bg-[#48887B] h-[124px] w-full `}>
             <div className=" flex justify-between ">
               <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
               <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
-                <div className="flex  w-[135px] h-[46px]   rounded md:w-max lg:w-full  ">
-                  <div className="h-full w-full rounded  shrink-0 flex  justify-center overflow-hidden r items-center">
-                    <img
-                      className="w-100 h-100 object-cover"
-                      src={info.logo_img_url || '/img/default.png'} alt="..."
-                    />
-                  </div>
+                <div className="w-20 h-20 rounded text-center shrink-0 flex  justify-center overflow-hidden items-center">
+                  <img
+                    className=" h-full w-full object-cover"
+                    src={info.logo_img_url || '/img/default.png'} alt="..."
+                  />
                 </div>
               </Button>
               <div>
@@ -407,14 +406,11 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
         </div>
       }
-
-
-
       {/* Navbar for mobile */}
       {
         name !== 'cart' && 'thank-you' &&
         <MediaQuery maxWidth={640}>
-          <div id='mob-navbar' className={`mob-navbar   z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent `} style={{ boxShadow: '0px -1px 4px #00000033' }}>
+          <div id='mob-navbar' className={`mob-navbar z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent `} style={{ boxShadow: '0px -1px 4px #00000033' }}>
             <div className='text-black w-1/4 flex flex-col  '>
               <Button type='link' href='/' className={`block sm:hidden text-center text-xs ${router.asPath == '/' || router.pathname == '/[name]/[storeId]' && 'btn-nav-color-actives text-[#48887B]'}`}>
                 <div className={` w-[24px] h-[24px] mx-auto`}>

@@ -30,7 +30,7 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
   const Router = useRouter();
   const { category, subCategoryId, search } = Router.query;
   const [status, setStatus] = useState('loading') //status == loading || failed || success
-  const [q, setq] = useState(search ? search : '');
+  // const [q, setq] = useState(search ? search : '');
   // UI Vars
   const [page, setPage] = useState(1)
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -42,18 +42,18 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
 
   useEffect(() => { // Componentdidmount
     if (!categories.length) getCategoryStart(storeId);
-    setSearchHandler((e) => {
-      const value = e;
-      if (value.trim().length > 0) {
-        setStatus('loading')
-        redirect(`/?search=${value}`)
-      } else {
-        setSearchResult([])
-        redirect(`/`)
-      }
+    // setSearchHandler((e) => {
+    //   const value = e;
+    //   if (value.trim().length > 0) {
+    //     setStatus('loading')
+    //     redirect(`/?search=${value}`)
+    //   } else {
+    //     setSearchResult([])
+    //     redirect(`/`)
+    //   }
 
-      setq(value)
-    })
+    //   setq(value)
+    // })
   }, [])
   const observer = useRef()
   const listLastElement = useCallback(node => {
@@ -75,8 +75,8 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
   }, [pageCount])
   useEffect(() => {
     if (search) {
-      getSearchProducts({ storeId, q: q.trim(), setSearchResult, setStatus: (s) => { } })
       setStatus('loading')
+      getSearchProducts({ storeId, q: search, setSearchResult, setStatus: (s) => { } })
 
     } else if (category) {
       getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus })
@@ -169,12 +169,12 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
                           <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
                         </div>
                       ))}
-                    {
+                    {/* {
                       status == 'loading' &&
                       <>
                         Loading...
                       </>
-                    }
+                    } */}
                     <div className="h-6"></div>
                     <div className="h-8" ref={listLastElement}></div>
                   </>

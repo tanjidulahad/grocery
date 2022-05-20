@@ -12,7 +12,7 @@ import Tracker from "@components/Cards/tracker"
 const ThankYou = ({ confirmOrder }) => {
     const [status, setStatus] = useState('loading') // loading, success, failure
     const [orderId, setOrderId] = useState(null)
-
+    // const [price, setPrice] = useState(0)
     const router = useRouter();
     useEffect(() => {
         if (!router.isReady) return;
@@ -21,6 +21,7 @@ const ThankYou = ({ confirmOrder }) => {
         console.log(id, data);
         setOrderId(data.orderId)
         confirmOrder({ ...data, setStatus })
+        // setPrice(data.amount)
 
     }, [router.isReady])
     const [mobNavHeight, setMobNavHeight] = useState(0)
@@ -68,7 +69,7 @@ const ThankYou = ({ confirmOrder }) => {
                                     <div className="text-center my-10 px-10 lg:px-0">
                                         <h3 className="text-sm lg:text-xl font-bold text-[#1DAE81]">Order Placed. A confermation email has been sent.</h3>
                                         <div className='pt-6 pb-10'>
-                                            <span className="text-sm lg:text-lg font-bold  pb-10">You saved  ₹6837 On this Order.</span>
+                                            {/* <span className="text-sm lg:text-lg font-bold  pb-10">You saved  ₹{price} On this Order.</span> */}
                                         </div>
                                         <div className="flex justify-between ">
                                             <div className="w-1/2 flex items-center">

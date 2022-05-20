@@ -32,7 +32,7 @@ function SamplePrevArrow(props) {
     </div>
   );
 }
-const Index = ({ banner,getShopProducts ,products,info}) => {
+const Index = ({ banner, getShopProducts, products, info }) => {
   const storeId = info.store_id;
   const [status, setStatus] = useState('loading')
   var bannersettings = {
@@ -77,15 +77,15 @@ const Index = ({ banner,getShopProducts ,products,info}) => {
     ]
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getShopProducts({ storeId, setStatus })
-  },[])
+  }, [])
   console.log(products)
 
   return (
     <div >
       {/* slider div */}
-      <div className='mt-10 mr-6 ml-6 lg:mr-24 lg:ml-24 mb-8'>
+      <div className='my-4 pt-6 sm:px-4'>
         <div>
           <Slider {...bannersettings}>
             {banner.map((item, idx) => <div key={idx}>
@@ -95,7 +95,7 @@ const Index = ({ banner,getShopProducts ,products,info}) => {
         </div>
       </div>
       {/* fresh items */}
-      <div className='mr-6 ml-6 lg:mr-40 lg:ml-40'>
+      <div className='wrapper'>
         <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold '>Fresh Items</h2>
         <div className='bg-[#C0EDAB]'>
           <Slider {...settings}>
@@ -106,11 +106,11 @@ const Index = ({ banner,getShopProducts ,products,info}) => {
         </div>
       </div>
       {/* Recommended */}
-      <div className='mr-6 ml-6 lg:mr-40 lg:ml-40'>
+      <div className='wrapper'>
         <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold'>Recomended</h2>
-        <div className='grid grid-cols-2 lg:grid-cols-5 gap-2 lg:gap-8'>
+        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0'>
           {products.map((item, idx) =>
-          <ProductItem key={idx} data={item} />
+            <ProductItem key={idx} data={item} />
           )
           }
         </div>
@@ -132,4 +132,4 @@ const mapDispatchToProps = dispatch => ({
 
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(PageWrapper(Index));
+export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(Index));

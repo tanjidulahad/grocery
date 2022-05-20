@@ -250,6 +250,7 @@ const Cart = ({
             method: paymentMethod,
             customerId,
             orderId,
+            amount
           })
         )
       }
@@ -561,7 +562,7 @@ const Cart = ({
                         />
                         <Button
                           className="px-4  py-2 sm:py-4 white-color rounded btn-bg text-center"
-                          // onClick={initiatePayment}
+                        // onClick={initiatePayment}
 
                         >
 
