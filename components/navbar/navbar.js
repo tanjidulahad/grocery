@@ -131,7 +131,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             <div className=" flex flex-1 flex-row justify-between w-full ">
               <div className=" w-full flex rounded">
                 <Input className=" px-4 p-2.5 lg:p-3 text-sm border rounded-r-none border-[#48887B] rounded  outline-none" placeholder='Search' onChange={onInputChangeHandler} />
-                <div className="bg-[#48887B] px-8  cursor-pointer rounded-r flex items-center " onClick={onSearched}>
+                <div className="btn-bg px-8  cursor-pointer rounded-r flex items-center " onClick={onSearched}>
                   <AiOutlineSearch color={'white'} size={20} />
                 </div>
               </div>
@@ -237,8 +237,8 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
           </div>
         </div>
         {/* Category list start */}
-        <div style={{ backgroundColor: '#48887B' }}
-          className="    white-color   wrapper mx-auto " onMouseLeave={() => { setcathover({ ...cathover, active: false }) }}>
+        <div 
+          className="btn-bg white-color   wrapper mx-auto " onMouseLeave={() => { setcathover({ ...cathover, active: false }) }}>
           <div className="flex justify-between items-center">
             {
               lists.length && lists.slice(0, isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
@@ -255,7 +255,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                       }
                     </a>
                   </Link>
-                  <div className=" absolute bg-[#48887B]  others-list">
+                  <div className=" absolute bg-white text-black others-list">
                     <ul className="">
                       {
                         item?.subCategories.map((subItem, j) => (
@@ -281,7 +281,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </h5>
-                <div className=" absolute -right-10 w-60 bg-[#48887B]  others-list">
+                <div className=" absolute -right-10 w-60 bg-white text-black  others-list">
                   <ul className=" w-auto">
                     {
                       lists.length && lists.slice(isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
@@ -291,7 +291,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                               {item.category_name}
                             </a>
                           </Link>
-                          <div className=" absolute top-0 right-full bg-[#48887B] sub-cat-list">
+                          <div className=" absolute top-0 right-full bg-white text-black sub-cat-list">
                             <ul className="w-60 flex flex-col sticky bottom-0 overflow-x-clip overflow-y-auto" style={{ maxHeight: '300px' }}>
                               {
                                 item.subCategories.map((subItem, j) => (
@@ -319,7 +319,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
       {/* has to be hide in some places */}
       {
         !exceptionRouteinMobile.includes(router.pathname) &&
-        <div className={`md:hidden   shadow-lg bg-[#48887B] h-[124px] w-full `}>
+        <div className={`md:hidden   shadow-lg nav-bg h-[124px] w-full `}>
           <div className=" flex justify-between ">
             <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
             <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
@@ -342,7 +342,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                   <IoMdCart size={30} color={"white"} />
                   {
                     !!totalItems &&
-                    <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center bg-[#F58634] rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
+                    <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center btn-bg rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
                       {
                         totalItems
                       }
@@ -420,7 +420,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </Button>
             </div>
             <div className='text-center text-xs font-medium text-black w-1/4'>
-              <Button className={`btn-nav-color ${router.asPath.includes('cart') && 'btn-nav-color-active'}`} type='link' href='/cart'>
+              <Button className={`btn-nav-color ${router.asPath.includes('cart') && 'btn-nav-color-active'}`} type='link' href='/shop'>
                 <div className={` w-[24px] h-[24px] mx-auto`}>
                   {
                     !router.asPath.includes('cart') ?

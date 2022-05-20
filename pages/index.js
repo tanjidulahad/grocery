@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PageWrapper from '@components/page-wrapper/page-wrapper';
 import Slider from "react-slick";
 import { connect } from 'react-redux'
 import RecommendedCard from "@components/Cards/Home/RecommendedCard";
+import { getShopProductsStart } from '@redux/shop/shop-action';
+import ProductItem from '@components/product-item/product-item';
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
@@ -30,7 +32,9 @@ function SamplePrevArrow(props) {
     </div>
   );
 }
-const Index = ({ banner }) => {
+const Index = ({ banner,getShopProducts ,products,info}) => {
+  const storeId = info.store_id;
+  const [status, setStatus] = useState('loading')
   var bannersettings = {
     dots: true,
     infinite: true,
@@ -73,6 +77,11 @@ const Index = ({ banner }) => {
     ]
   };
 
+  useEffect(()=>{
+    getShopProducts({ storeId, setStatus })
+  },[])
+  console.log(products)
+
   return (
     <div >
       {/* slider div */}
@@ -100,9 +109,9 @@ const Index = ({ banner }) => {
       <div className='mr-6 ml-6 lg:mr-40 lg:ml-40'>
         <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold'>Recomended</h2>
         <div className='grid grid-cols-2 lg:grid-cols-5 gap-2 lg:gap-8'>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, idx) => < div key={idx} >
-            <RecommendedCard></RecommendedCard>
-          </div>)
+          {products.map((item, idx) =>
+          <ProductItem key={idx} data={item} />
+          )
           }
         </div>
       </div>
@@ -112,9 +121,15 @@ const Index = ({ banner }) => {
 };
 
 const mapStateToProps = state => ({
-  banner: state.store.banners
-
+  banner: state.store.banners,
+  products: state.store.products,
+  info: state.store.info,
 
 })
 
-export default connect(mapStateToProps)(PageWrapper(Index));
+const mapDispatchToProps = dispatch => ({
+  getShopProducts: (storeId) => dispatch(getShopProductsStart(storeId))
+
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(PageWrapper(Index));

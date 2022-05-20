@@ -41,7 +41,7 @@ function OrderCard({ status, message, data }) {
         {/* </div> */}
         <div className='flex justify-between col-span-3'>
           <div className="ml-8 lg:ml-4 flex flex-col justify-center">
-            <p className={`font-bold  ${data?.orderStatus == 'CANCELLED_BY_CUSTOMER' || data?.orderStatus=='ORDER_DECLINED_BY_RESTAURANT' ? "text-xs lg:text-base text-[red]" : "text-xs lg:text-base text-[#1DAE81]"} `}>{orderStatus} </p>
+            <p className={`font-bold  ${data?.orderStatus == 'CANCELLED_BY_CUSTOMER' || data?.orderStatus=='ORDER_DECLINED_BY_RESTAURANT' ? "text-xs lg:text-base text-[red]" : "text-xs lg:text-base btn-color-revese"} `}>{orderStatus} </p>
             <p className="text-left text-sm lg:text-base font-medium text-black mt-4">{Object.values(data.orderItems)[0]?.itemName}</p>
           </div>
           <div className="mr-2  w-max flex justify-end items-center cursor-pointer">
@@ -55,7 +55,7 @@ function OrderCard({ status, message, data }) {
         {/* </div> */}
 
       </div>
-      {
+      {/* {
         data?.deliveredTime !== null ? <>
           <div className="flex justify-between mx-4 lg:mx-8">
             <div className=" text-black">
@@ -68,7 +68,7 @@ function OrderCard({ status, message, data }) {
           </div>
 
         </> : ""
-      }
+      } */}
       {/* {
         status === 'past' ?
           <div className=" m-4 w-full h-full flex justify-between align-center">

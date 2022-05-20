@@ -86,13 +86,13 @@ function address({ type, data, onEdit, onRemove, ids }) {
           </div>
         </div>
         <div className=' md:hidden flex justify-end items-center'>
-          <Button className="text-left text-sms mt-3 mx-4 cursor-pointer text-[#48887B]" onClick={onEdit}>
+          <Button className="text-left text-sms mt-3 mx-4 cursor-pointer btn-color-revese" onClick={onEdit}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
             Edit
           </Button>
-          <Button className="text-left mt-4 mx-4  text-sm cursor-pointer btn-color-reverse text-[#48887B]" onClick={onRemove}>
+          <Button className="text-left mt-4 mx-4  text-sm cursor-pointer btn-color-reverse btn-color-revese" onClick={onRemove}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>4
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>

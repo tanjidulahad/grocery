@@ -135,7 +135,7 @@ function Savedplaces({
             {/* <Header display={true} topic="Saved Address" /> */}
 
             <div className="my-4 mb-20 bg-white">
-              <div className="py-2 md:p-4 px-2 md:px-8   md:w-1/2  ">
+              <div className="py-2 md:p-4 px-2 md:px-8 md:w-1/2  ">
                 <span className=" font-bold text-lg md:block hidden  ">
                   Country*
                 </span>
@@ -145,7 +145,7 @@ function Savedplaces({
                   name="country"
                   placeholder="Your Country/Region..."
                   value={newAddress.country}
-                  className="h-[48px] my-2 rounded border-2 border-gray-300 "
+                  className="h-[48px] my-2 rounded border border-gray-300 "
                 />
               </div>
               <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
@@ -158,7 +158,7 @@ function Savedplaces({
                   name="full_name"
                   placeholder="Full Name"
                   value={newAddress.full_name}
-                  className="h-[48px] my-2 rounded border-2 border-gray-300 "
+                  className="h-[48px] my-2 rounded border border-gray-300 "
                 />
               </div>
 
@@ -172,7 +172,7 @@ function Savedplaces({
                   name="phone"
                   placeholder="Mobile Number"
                   value={newAddress.phone}
-                  className="h-[48px] my-2 rounded border-2 border-gray-300 "
+                  className="h-[48px] my-2 rounded border border-gray-300 "
                 />
               </div>
               <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
@@ -185,7 +185,7 @@ function Savedplaces({
                   name="address_line_1"
                   placeholder="Flat, House no"
                   value={newAddress.address_line_1}
-                  className="h-[48px] my-2 rounded border-2 border-gray-300 "
+                  className="h-[48px] my-2 rounded border border-gray-300 "
                 />
               </div>
               <div className="w-full md:flex">
@@ -199,7 +199,7 @@ function Savedplaces({
                     name="address_line_2"
                     placeholder="Area, Colony, Street, Sector"
                     value={newAddress.address_line_2}
-                    className="h-[48px] my-2 rounded border-2 border-gray-300 "
+                    className="h-[48px] my-2 rounded border border-gray-300 "
                   />
                 </div>
                 <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
@@ -212,7 +212,7 @@ function Savedplaces({
                     name="city"
                     placeholder="City"
                     value={newAddress.city}
-                    className="h-[48px] my-2 rounded border-2 border-gray-300 "
+                    className="h-[48px] my-2 rounded border border-gray-300 "
                   />
                 </div>
                 <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
@@ -225,7 +225,7 @@ function Savedplaces({
                     name="state"
                     placeholder="State"
                     value={newAddress.state}
-                    className="h-[48px] my-2 rounded border-2 border-gray-300 "
+                    className="h-[48px] my-2 rounded border border-gray-300 "
                   />
                 </div>
               </div>
@@ -242,11 +242,11 @@ function Savedplaces({
                     name="zip_code"
                     placeholder="Zip Code"
                     value={newAddress.zip_code}
-                    className="h-[48px] my-2  rounded border-2 border-gray-300 "
+                    className="h-[48px] my-2  rounded border border-gray-300 "
                   />
                 </div>
                 <div className="pl-1 w-96">
-                    <select onChange={onChangeAddress} name="address_tag" className="h-[48px] my-2  rounded border-2 border-gray-300 w-full text-gray-400" >
+                    <select onChange={onChangeAddress} name="address_tag" className="h-[48px] my-2  rounded border border-gray-300 w-full text-gray-400" >
                       <option value="Home" selected>Home</option>
                       <option value="Work">Work</option>
                     </select>
@@ -363,7 +363,7 @@ function Savedplaces({
         // <Loader />
       }
       <div
-        className={`md:hidden fixed top-0 shadow-lg bg-[#48887B] h-[80px] w-full `}
+        className={`md:hidden fixed top-0 shadow-lg nav-bg h-[80px] w-full `}
         style={{ zIndex: 1200 }}
       >
         {/* <Tracker status={cartHeader.status}/> */}
@@ -384,7 +384,7 @@ function Savedplaces({
         >
           <div className="p-2 flex justify-end items-center ">
             <Button
-              className="w-1/4 bg-[#48887B] px-4 py-2 rounded text-xl font-bold white-color"
+              className="w-1/4 btn-bg px-4 py-2 rounded text-xl font-bold white-color"
               onClick={onSave}
             >
               Save

@@ -128,7 +128,7 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                                         })()}
                                             onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                                         :
-                                        <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-3  `} style={{ backgroundColor: "#F58634" }} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                        <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-3  `} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
                                 }
 
                             </div>

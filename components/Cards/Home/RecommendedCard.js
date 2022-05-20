@@ -60,7 +60,7 @@ function RecommendedCard({offer}) {
 </p>
      </div>
     <div className="my-2 white-color ">
-    <Button  className="w-full py-2 rounded" style={{backgroundColor:"#F58634"}} type="button" href="/" title="ADD TO CART"/>
+    <Button  className="w-full py-2 rounded btn-bg" type="button" href="/" title="ADD TO CART"/>
 
     </div>
     </>
