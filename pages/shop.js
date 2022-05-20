@@ -1,12 +1,10 @@
 import Head from 'next/head'
 import { Link } from 'next/link';
 import { connect } from 'react-redux'
-import { useEffect, useState, useRef, memo, useCallback } from 'react'
+import React, { useEffect, useState, useRef, memo, useCallback } from 'react'
 import { useRouter } from "next/dist/client/router";
 import { useMediaQuery } from 'react-responsive';
 import { redirect } from '@components/link';
-import React from 'react'
-
 
 // import RecommendedCard from '@components/Cards/Home/RecommendedCard'
 import { BsFilterLeft } from 'react-icons/bs'
@@ -57,22 +55,39 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
   }, [])
   const observer = useRef()
   const listLastElement = useCallback(node => {
+    console.log(observer);
     if (status == 'loading') return;
-
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && pageCount) {
-        console.log("visible");
-        console.log(page + 1);
-        // console.log(Router);
-        console.log(status);
+      if (entries[0].isIntersecting && pageCount && products?.length >= 20) {
+        // console.log("visible");
+        // console.log(page + 1);
+        // // console.log(Router);
+        // console.log(status);
         if (page < pageCount && !search) {
           setPage(page + 1)
         }
       }
     })
     if (node) observer.current.observe(node)
-  }, [pageCount])
+  }, [status, pageCount])
+
+  useEffect(() => {
+    if (!page) return;
+    if (search) {
+      setStatus('loading') // Set to success default Because its run whene All  products are fetching
+      getSearchProducts({ storeId, q: q.trim(), setSearchResult, setStatus })
+
+    } else if (category) {
+      setStatus('loading') // Set to success default Because its run whene All  products are fetching
+      getCategoryProducts({ storeId, categoryId: category, subCategoryId, page, setStatus })
+
+    } else {
+      setStatus('loading') // Set to success default Because its run whene All  products are fetching
+      getShopProducts({ storeId, page, setStatus })
+    }
+  }, [Router.query, page])
+
   useEffect(() => {
     if (search) {
       setStatus('loading')
@@ -87,9 +102,9 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       // setq('') // Cleaning query string of search
     }
-  }, [category, subCategoryId, search, page])
-  useEffect(() => { // UI function
+  }, [category, subCategoryId, search])
 
+  useEffect(() => { // UI function
     if (typeof window !== 'undefined') {
       const objerver = new ResizeObserver(function (e) {
         const ele = document.getElementById('big-navbar')
@@ -175,8 +190,8 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
                         Loading...
                       </>
                     } */}
-                    <div className="h-6"></div>
-                    <div className="h-8" ref={listLastElement}></div>
+                    {/* <div className="h-6"></div> */}
+                    <div className="h-8 " ref={listLastElement}></div>
                   </>
                   : products?.length < 1 && status == 'success' ?
                     <div className="flex justify-center items-center" style={{ height: "30vh" }}>

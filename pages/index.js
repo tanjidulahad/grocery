@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import PageWrapper from '@components/page-wrapper/page-wrapper';
 import Slider from "react-slick";
 import { connect } from 'react-redux'
@@ -132,4 +132,4 @@ const mapDispatchToProps = dispatch => ({
 
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(Index));
+export default connect(mapStateToProps, mapDispatchToProps)(memo(PageWrapper(Index)));
