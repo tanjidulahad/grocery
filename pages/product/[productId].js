@@ -44,10 +44,11 @@ const visualsStructure = {
     similarProducts: []  //[...similarProducts]
 }
 import { addWishlistStart } from '@redux/wishlist/wishlist-action'
+import { createSeasionId } from "services/pickytoClient";
 
 const ProductDetails = ({
     cart, addToCart, removeFromCart,
-    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist }) => {
+    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist,user }) => {
     const [success, onSuccess] = useState({})
     const [failure, onFailure] = useState(null)
     const [additionalinfo, setAdditionalInfo] = useState([])
@@ -61,13 +62,21 @@ const ProductDetails = ({
     const [visuals, setVisuals] = useState(visualsStructure)
     const router = useRouter()
     useEffect(() => {
+        var seassion_id
         const { productId } = router.query
         if (!productId) return;
-        fetchProductDetails({ id: productId, onSuccess, onFailure })
+        if(!user?.customer_id){
+            seassion_id = createSeasionId()
+        }
+        else {
+            seassion_id = user.customer_id
+        }
+        fetchProductDetails({ id: productId,seassion_id, onSuccess, onFailure })
         getAdditionalInfo({ setAdditionalInfo, id: productId })
         getSpecifications({ setSpecifications, id: productId })
         fetchSimilarProducts({ setSimilarProducts, id: productId })
     }, [router.isReady])
+
 
     //UI setting for mobile devices
     const [mobNavHeight, setMobNavHeight] = useState(0)
@@ -512,6 +521,7 @@ const mapStateToProps = state => ({
     // Other States
     cart: state.cart,
     wishlist: state.wishlist.list,
+    user: state.user.currentUser,
 })
 const mapDispatchToProps = dispatch => ({
     // Cart Dispatch

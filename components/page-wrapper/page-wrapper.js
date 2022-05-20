@@ -14,6 +14,7 @@ import {
     getShopInfoStart, getShopSeoStart, getShopSettingsStart, getSocialProfileStart, getShopDisplaySettingsStart, getPageCountStart, getBannerStart,
     getShopInfoSuccess, getShopSeoSuccess, getShopSettingsSuccess, getSocialProfileSuccess,
 } from "@redux/shop/shop-action";
+import { createSeasionId } from "services/pickytoClient";
 
 function hexToRGB(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),
@@ -27,17 +28,24 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getBanner }) => {
+const verifier = ({user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getBanner }) => {
     const router = useRouter()
     const exceptionRouteinMobile=['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
     useEffect(() => {
+        var seassion_id
         const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
         if (!store.isReadyToGo && storeId) {
+            if(!user?.customer_id){
+                seassion_id = createSeasionId()
+            }
+            else {
+                seassion_id = user.customer_id
+            }
             getBanner(storeId)
             getShopSeo(storeId);
-            getShopInfo(storeId);
+            getShopInfo({storeId,seassion_id});
             getPageCount(storeId)
             getShopSettings(storeId);
             getSocialProfile(storeId);
@@ -172,7 +180,8 @@ const mapStateToProps = state => ({
     seo: state.store.seo,
     // displaySettings: state.store.displaySettings,
     isReadyToGo: state.store.isReadyToGo,
-    isLogin: !state.user.currentUser
+    isLogin: !state.user.currentUser,
+    user: state.user.currentUser,
 })
 const mapDispatchToProps = dispatch => ({
     getBanner: (shopId) => dispatch(getBannerStart(shopId)),
