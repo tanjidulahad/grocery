@@ -111,7 +111,7 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
                                 <form onSubmit={onSubmitHandler}  >
                                     <div className="flex justify-center mt-2">
 
-                                        <Input disabled={isLoading} name='fullName' className={`py-4 rounded-lg w-3/4 ${error && ' border-red-400'}`} type="text" placeholder="Your name" onChange={onChangeHandler} value={state.name} />
+                                        <Input disabled={isLoading} name='fullName' className={` border py-4 rounded-lg w-3/4 ${error && ' border-red-400'}`} type="text" placeholder="Your name" onChange={onChangeHandler} value={state.name} />
                                     </div>
 
 
@@ -132,7 +132,7 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
                                                     </div>
                                                     <div className=' relative w-full'>
                                                         <input disabled={isLoading} className='ml-2 absolute text-center text-sm top-1/2 -translate-y-1/2 w-11 outline-none rounded-lg' value={'+' + state.isdCode} />
-                                                        <Input disabled={isLoading} name='phone' className={`pl-14 py-4 ${error && ' border-red-400'} rounded-lg `} type="tel" placeholder="Enter 10 digit phone number" onChange={onChangeHandler} value={state.phone} />
+                                                        <Input disabled={isLoading} name='phone' className={` border pl-14 py-4 ${error && ' border-red-400'} rounded-lg `} type="tel" placeholder="Enter 10 digit phone number" onChange={onChangeHandler} value={state.phone} />
                                                     </div>
                                                 </div>
 
@@ -140,14 +140,14 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
 
                                             :
                                             <div className='mt-4 w-full flex justify-center   '>
-                                                <Input disabled={isLoading} name='emailId' className={`py-4 w-3/4 ${error && ' border-red-400'} rounded-lg`} type="email" placeholder="Enter valid email" onChange={onChangeHandler} value={state.emailId} />
+                                                <Input disabled={isLoading} name='emailId' className={`border py-4 w-3/4 ${error && ' border-red-400'} rounded-lg`} type="email" placeholder="Enter valid email" onChange={onChangeHandler} value={state.emailId} />
                                             </div>
                                     }
                                     <div className='mt-4 h-fit w-full flex justify-center  '>
                                         {/* <Input disabled={isLoading} name='password' className={`py-3 ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} /> */}
                                         {/* <h3 className='mb-1'>Password</h3> */}
                                         <div className=' relative w-full '>
-                                            <Input disabled={isLoading} name='password' className={`py-4 rounded-lg w-full  ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Create a password" onChange={onChangeHandler} value={state.password} />
+                                            <Input disabled={isLoading} name='password' className={`border py-4 rounded-lg w-full  ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Create a password" onChange={onChangeHandler} value={state.password} />
                                             <div className=' cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 p-4' onClick={() => setShowPass(!showPass)}>
                                                 {
                                                     showPass ?
@@ -159,7 +159,7 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
                                         </div>
                                     </div>
                                     <div className="flex justify-center mt-4">
-                                        <Input disabled={isLoading} name='confirmPassword' className={`py-4 w-3/4 rounded-lg ${error && ' border-red-400'}`} type="password" placeholder="Confirm password" onChange={onChangeHandler} value={state.confirmPassword} />
+                                        <Input disabled={isLoading} name='confirmPassword' className={`border py-4 w-3/4 rounded-lg ${error && ' border-red-400'}`} type="password" placeholder="Confirm password" onChange={onChangeHandler} value={state.confirmPassword} />
                                     </div>
                                     <div className="py-8 border-b-2 flex w-full justify-center">
                                         <Button className={`w-full rounded-lg btn-color text-lg font-medium btn-bg py-4 ${isLoading == true ? 'loading-btn' : ""}`} type="submit" disabled={isLoading == true}

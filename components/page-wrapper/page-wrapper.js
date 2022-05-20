@@ -51,7 +51,7 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
                 bgColor: '#F58634',
                 bgColor50: hexToRGB('0.13'),
                 fillColor: '#d85a5a',
-                navColor: 'transparent',
+                // navColor: 'transparent',
                 footerColor: '#242424',
             }
             if (displaySettings) {
@@ -61,7 +61,8 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
                     bgColor: displaySettings.primary_color || '#d85a5a', // #48887B
                     bgColor50: hexToRGB(displaySettings.primary_color, '0.13') || 'rgba(246, 75, 93, 0.13)',
                     fillColor: displaySettings.primary_color || '#d85a5a',
-                    navColor: displaySettings.navbar_color || 'transparent',
+                    navColor: displaySettings.primary_color || 'transparent',
+                    // navColor: displaySettings.navbar_color || 'transparent',
                     footerColor: displaySettings.secondary_color.includes('#') ? displaySettings.secondary_color : '#' + displaySettings.secondary_color || '#000',
                 }
 

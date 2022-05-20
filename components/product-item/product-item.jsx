@@ -70,55 +70,43 @@ const ProductItem = ({ data, user, addToCart, removeFromCart, cart, offer, addIt
     )
     return (
         <>
-            <div className=" flex flex-col items-stretch justify-between border-[#B6B6B6] h-full w-[180px] md:w-[221.85px] product-item w-max ">
-                <>
-                    <div className="w-100 bg-white border-[0.5px]  h-[220px] md:h-[264.49px]">
-                        <div className="flex  justify-between w-full">
+            <div className=" flex flex-col  items-stretch justify-between border-[#B6B6B6] h-full w-[180px] md:w-[221.85px] product-item w-max ">
+                <Button className="block " type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
+                    <a className="block relative bg-white border rounded-sm h-[220px] md:h-[264.49px]">
+                        <div className="flex absolute justify-between w-full">
                             <img className="m-2" src="/img/square.png" />
                             <AiOutlineHeart className="m-2" size={18} onClick={wishlist} />
                         </div>
-                        <Button className="block " type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
-                            <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}>
-                                <img className="w-full h-full " src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`} />
-                            </div>
-                        </Button>
-                        {
-                            offer ?
-                                <div className="w-8/12 rounded-r-full h-8  relative -top-8  white-color flex items-center justify-center" style={{ backgroundColor: "#44ADF4" }}>
-                                    <p className="md:text-sm lg:text-base">Flat Rs. 200 OFF</p>
-                                </div>
-                                :
-                                <div className=" hidden lg:w-8/12 w-full rounded-r-full h-8 bg-transparent   relative -top-40 -left-2  white-color flex items-center justify-center" >
-                                    <p>Flat Rs. 200 OFF</p>
-                                </div>
-                        }
-                    </div>
-                    <div className="flex flex-col justify-between items-start">
-                        <div className="flex justify-start items-baseline h-full my-2  w-full ">
-                            <div className="flex">
-                                <p className="font-bold text-sm">₹ {data.sale_price}</p>
-                                <span className="text-gray-400 font-thinner text-sm ml-2 flex items-center line-through"> (MPR.{data.price})</span>
-                            </div>
-                            {/* <div className=" hidden md:flex">
+                        {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
+                        <img className="w-full h-full object-cover" src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`} />
+                        {/* </div> */}
+                    </a>
+                </Button>
+                <div className="flex flex-col justify-between items-start">
+                    <div className="flex justify-start items-baseline h-full my-2  w-full ">
+                        <div className="flex">
+                            <p className="font-bold text-sm md:text-lg">₹ {data.sale_price}</p>
+                            <span className="text-gray-400 font-thinner text-xs ml-2 flex items-center line-through"> (MPR.{data.price})</span>
+                        </div>
+                        {/* <div className=" hidden md:flex">
                             <p className=" text-sm flex items-center">4.5</p>
                             <div className="flex items-center">
                                 <AiFillStar color="orange" />
                             </div>
                         </div> */}
-                        </div>
-                        <div className="h-10 ">
-                            {
-                                !!data.item_desc &&
-                                <p className="text-sm font-semibold line-truncate-2">
-                                    {data.item_desc}
-                                </p>
-                            }
-                        </div>
                     </div>
-                    <div className="my-2 w-full ">
-                        <LocalQuantityID />
+                    <div className="h-10 ">
+                        {
+                            !!data.item_desc &&
+                            <p className="text-sm font-semibold line-truncate-2">
+                                {data.item_desc}
+                            </p>
+                        }
                     </div>
-                </>
+                </div>
+                <div className="my-2 w-full ">
+                    <LocalQuantityID />
+                </div>
                 {
                     !!itemInCart.inventoryDetails && <>
                         {

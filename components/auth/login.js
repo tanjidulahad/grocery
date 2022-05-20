@@ -105,7 +105,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
                                     {
                                         isVarificationPhone ?
                                             <div className=" flex justify-center">
-                                                <div className='w-3/4 w-full flex space-x-2 '>
+                                                <div className='w-3/4 w-full  flex space-x-2 '>
                                                     <div className='w-10 shrink-0 relative '>
                                                         <PhoneInput
                                                             inputClass='hidden'
@@ -119,7 +119,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
                                                     </div>
                                                     <div className=' relative w-full'>
                                                         <input disabled={isLoading} className='ml-2 absolute text-center text-sm top-1/2 -translate-y-1/2 w-11 outline-none rounded-lg' value={'+' + state.isdCode} />
-                                                        <Input disabled={isLoading} name='phone' className={`pl-14 py-4 ${error && ' border-red-400'} rounded-lg `} type="tel" placeholder="Enter 10 digit phone number" onChange={onChangeHandler} value={state.phone} />
+                                                        <Input disabled={isLoading} name='phone' className={`border pl-14 py-4 ${error && ' border-red-400'} rounded-lg `} type="tel" placeholder="Enter 10 digit phone number" onChange={onChangeHandler} value={state.phone} />
                                                     </div>
                                                 </div>
 
@@ -127,7 +127,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
 
                                             :
                                             <div className=' flex justify-center  '>
-                                                <Input disabled={isLoading} name='emailId' className={`py-4 w-3/4 ${error && ' border-red-400'} rounded-lg`} type="email" placeholder="Enter valid email" onChange={onChangeHandler} value={state.emailId} />
+                                                <Input disabled={isLoading} name='emailId' className={` border py-4 w-3/4 ${error && ' border-red-400'} rounded-lg`} type="email" placeholder="Enter valid email" onChange={onChangeHandler} value={state.emailId} />
                                             </div>
                                     }
 
@@ -135,7 +135,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
                                         {
                                             !forgotPass &&
                                             <div className='mt-6 w-full flex justify-center relative h-fit w-3/4 '>
-                                                <Input disabled={isLoading} name='password' className={` ${error && ' border-red-400'} rounded-lg py-4 w-full`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} />
+                                                <Input disabled={isLoading} name='password' className={` border ${error && ' border-red-400'} rounded-lg py-4 w-full`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} />
                                                 <div className=' cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 p-4' onClick={() => setShowPass(!showPass)}>
                                                     {
                                                         showPass ?

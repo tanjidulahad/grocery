@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { connect } from 'react-redux'
-import { useEffect, useState, useRef, memo,useCallback } from 'react'
+import { useEffect, useState, useRef, memo, useCallback } from 'react'
 import { useRouter } from "next/dist/client/router";
 import { useMediaQuery } from 'react-responsive';
 import Gproducts from '@components/Products/gproduct'
@@ -12,11 +12,11 @@ import { redirect } from '@components/link';
 import { getCategoryStart, getShopProductsStart, getCategoryProductsStart, getSearchProductsStart, getPageCountStart, clearProductList } from "@redux/shop/shop-action";
 import { setSearchHandler } from '@redux/search/seatch-actions'
 import PageWrapper from '@components/page-wrapper/page-wrapper';
-import {addWishlistStart}from '@redux/wishlist/wishlist-action'
+import { addWishlistStart } from '@redux/wishlist/wishlist-action'
 
 
 
-const Home = ({ products, addWishlist, pageCount,getPageCount,info, cart,clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
+const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const purchaseDetails = checkout.purchaseDetails;
   // const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID;
@@ -39,7 +39,7 @@ const Home = ({ products, addWishlist, pageCount,getPageCount,info, cart,clearPr
   useEffect(() => { // Componentdidmount
     if (!categories.length) getCategoryStart(storeId);
     setSearchHandler((e) => {
-      const  value  = e;
+      const value = e;
       if (value.trim().length > 0) {
         setStatus('loading')
         redirect(`/?search=${value}`)
@@ -86,7 +86,7 @@ const Home = ({ products, addWishlist, pageCount,getPageCount,info, cart,clearPr
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       // setq('') // Cleaning query string of search
     }
-  }, [Router.query,page])
+  }, [Router.query, page])
   useEffect(() => { // UI function
 
     if (typeof window !== 'undefined') {
@@ -145,10 +145,8 @@ const Home = ({ products, addWishlist, pageCount,getPageCount,info, cart,clearPr
         <meta name="keywords" content={`${description} ${info.name}, Amazon.in, Amazon, Online Shopping, online shopping india, india shopping online, amazon india, amazn, buy online, buy mobiles online, buy books online, buy movie dvd's online, kindle, kindle fire hd, kindle e-readers, ebooks, computers, laptop, toys, trimmers, watches, fashion jewellery, home, kitchen, small appliances, beauty, Sports, Fitness &amp; Outdoors`} />
 
       </Head>
-
       <section>
-
-      <Gproducts wishlist={addWishlist} lastEleRef={listLastElement} storeName={info?.store_name} products={products} status={status}/>
+        <Gproducts wishlist={addWishlist} lastEleRef={listLastElement} storeName={info?.store_name} products={products} status={status} />
       </section >
     </div >
   )
@@ -159,7 +157,7 @@ const mapStateToProps = state => ({
   products: state.store.products,
   categories: state.store.categories,
   checkout: state.checkout,
-  banner:state.store.banners,
+  banner: state.store.banners,
   pageCount: state.store.pageCount
 
 })
