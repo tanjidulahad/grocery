@@ -11,7 +11,7 @@ function wallet(walletdata) {
         <div className="lg:pl-4 w-full flex ">
           <div className="  w-full mx-4 md:mx-2 my-2 ">
             <p className="text-left font-bold text-lg traxt-dark ">Wallet Balance</p>
-            <p className="text-left text-xl my-2 font-extrabold text-green-600 ">₹ {+walletdata.walletdata}</p>
+            <p className="text-left text-xl my-2 font-extrabold btn-color-revese ">₹ {+walletdata.walletdata}</p>
           </div>
           <div className="w-40  rounded flex items-center " >
             <svg width="47" height="40" viewBox="0 0 47 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +34,7 @@ function wallet(walletdata) {
           <p className="text-left font-bold text-lg traxt-dark  px-4  pt-4 ">Add Money</p>
           <div className="mt-4 bg-white  ">
             <div className="px-4 md:px-0 lg:pl-4 md:w-full pb-5 flex">
-              <div className="md:w-[360px] rounded" >
+              <div className="md:w-[360px] rounded border border-gray-300" >
                 <Input type="number"
                   className="bg-transparent lg:w-[300px]"
                   placeholder="Add Money"

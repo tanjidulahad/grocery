@@ -62,12 +62,12 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
                 themeColors = {
                     // color: displaySettings.primary_color || '#fff',
                     color: '#fff',
-                    bgColor: displaySettings.primary_color || '#d85a5a', // #48887B
+                    bgColor: displaySettings.secondary_color || '#F58634', // #48887B
                     bgColor50: hexToRGB(displaySettings.primary_color, '0.13') || 'rgba(246, 75, 93, 0.13)',
                     fillColor: displaySettings.primary_color || '#d85a5a',
-                    navColor: displaySettings.primary_color || 'transparent',
+                    navColor: displaySettings.primary_color || '#F9F6ED',
                     // navColor: displaySettings.navbar_color || 'transparent',
-                    footerColor: displaySettings.secondary_color.includes('#') ? displaySettings.secondary_color : '#' + displaySettings.secondary_color || '#000',
+                    footerColor: displaySettings.primary_color.includes('#') ? displaySettings.primary_color : '#' + displaySettings.primary_color || '#203934',
                 }
 
             }
@@ -112,7 +112,7 @@ const verifier = ({ children, isLogin, store, getShopInfo, getShopSeo, getShopSe
                         background-color: ${themeColors.navColor}!important;
                     }
                     .nav-items-color{
-                        color: ${displaySettings?.navbar_color ? '#fff' : '#000'}!important;
+                        color: ${displaySettings?.navbar_color ? '#fff' : '#333333'}!important;
                     }
                     .footer-bg{
                         background-color: ${themeColors.footerColor}

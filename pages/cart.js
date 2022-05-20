@@ -313,7 +313,7 @@ const Cart = ({
           </span>
           <div className="w-3/4 leading-5">
           </div>
-          <Button className={`btn-color   btn-bg m text-sm  rounded-2xl py-3 px-4  `} pdp={true} style={{ backgroundColor: "#F58634" }} onClick={() => {
+          <Button className={`btn-color btn-bg m text-sm  rounded-2xl py-3 px-4  `} pdp={true} style={{ backgroundColor: "#F58634" }} onClick={() => {
             router.push(`/account/savedplaces`)
           }}  >Change </Button>
         </div>
@@ -562,9 +562,6 @@ const Cart = ({
                         <Button
                           className="px-4  py-2 sm:py-4 white-color rounded btn-bg text-center"
                           // onClick={initiatePayment}
-                          style={{
-                            backgroundColor: '#F58634',
-                          }}
 
                         >
 
@@ -745,7 +742,7 @@ const Cart = ({
                             <span className="text-sm md:text-base leading-3 ">{userAddress.filter(x => x.address_id === +localStorage.getItem('addId'))[0]?.address_line_1 || userAddress[0]?.address_line_1},{userAddress.filter(x => x.address_id === +localStorage.getItem('addId'))[0]?.address_line_2 || userAddress[0]?.address_line_2}</span>
 
                           </div>
-                          <Button className={`btn-color   btn-bg m text-sm  rounded-2xl py-3 px-4  `} pdp={true} style={{ backgroundColor: "#F58634" }} onClick={() => {
+                          <Button className={`btn-color btn-bg text-sm  rounded-2xl py-3 px-4  `} pdp={true} onClick={() => {
                             router.push(`/account/savedplaces`)
                           }}  >Change </Button>
 
@@ -997,7 +994,7 @@ const Cart = ({
                                     // setOnSuccess(null)
                                     setCouponCode(e.target.value)
                                   }} value={couponCode} />
-                                  <Button className=' col-span-2 rounded py-3 text-white bg-[#48887B]' onClick={onCouponAppyHandler} >Apply</Button>
+                                  <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
                                 </div>
                                 {
                                   !!success &&
@@ -1178,9 +1175,6 @@ const Cart = ({
                                   <Button
                                     className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
                                     onClick={() => { setpayment(!payment) }}
-                                    style={{
-                                      backgroundColor: '#F58634',
-                                    }}
                                   >Proceed</Button> :
                                   <Button
                                     className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
@@ -1191,7 +1185,7 @@ const Cart = ({
 
                                     }
                                     style={{
-                                      backgroundColor: '#F58634',
+
                                       opacity: `${checkoutDetails.paymentMethod === '' ? 0.6 : 1}`
                                     }}
                                   >Proceed To Pay</Button>
@@ -1340,7 +1334,6 @@ const Cart = ({
                                       }
 
                                       style={{
-                                        backgroundColor: '#F58634',
                                         opacity: `${cartHeader.status === 'payment' && checkoutDetails.paymentMethod === '' ? 0.6 : 1}`
                                       }}
                                     >Proceed</Button>

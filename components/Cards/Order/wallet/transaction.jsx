@@ -63,7 +63,7 @@ function transaction({ item, transaction = 'add' }) {
                 </div>
                 {/* <p className="text-left  text-base traxt-dark  mx-4 ">Maggie combo of 4</p> */}
 
-                <p className="text-left text-sm  font-bold  text-[#48887B]  ml-4 md:ml-0 ">{moment.unix(items?.last_modified_date).format("DD-MM-YY")}</p>
+                <p className="text-left text-sm  font-bold  btn-color-revese  ml-4 md:ml-0 ">{moment.unix(items?.last_modified_date).format("DD-MM-YY")}</p>
 
 
 
