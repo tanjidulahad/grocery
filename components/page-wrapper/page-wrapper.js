@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import Head from "next/head";
-
 import Auth from "@components/auth/auth";
 import Loader from "@components/loading/loader";
 import NavBar from "@components/navbar/navbar";
@@ -15,6 +14,7 @@ import {
     getCategoryStart,
 } from "@redux/shop/shop-action";
 import { createSeasionId } from "services/pickytoClient";
+
 
 function hexToRGB(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),
@@ -70,10 +70,10 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                 themeColors = {
                     // color: displaySettings.primary_color || '#fff',
                     color: '#fff',
-                    bgColor: displaySettings.secondary_color || '#F58634', // #48887B
+                    bgColor: displaySettings.secondary_color.includes('#') ? displaySettings.secondary_color : '#' + displaySettings.secondary_color || '#F58634', // #48887B
                     bgColor50: hexToRGB(displaySettings.primary_color, '0.13') || 'rgba(246, 75, 93, 0.13)',
-                    fillColor: displaySettings.primary_color || '#d85a5a',
-                    navColor: displaySettings.primary_color || '#F9F6ED',
+                    fillColor: displaySettings.primary_color.includes('#') ? displaySettings.primary_color : '#' + displaySettings.primary_color || '#d85a5a',
+                    navColor: displaySettings.primary_color.includes('#') ? displaySettings.primary_color : '#' + displaySettings.primary_color || '#F9F6ED',
                     // navColor: displaySettings.navbar_color || 'transparent',
                     footerColor: displaySettings.primary_color.includes('#') ? displaySettings.primary_color : '#' + displaySettings.primary_color || '#203934',
                 }
@@ -81,6 +81,14 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
             }
             const head = document.getElementById('style')
             const style = (` <style>
+            .radio-custom input[type="radio"]:checked+label {
+                background-color: white;
+                border-color:${themeColors.bgColor};
+                color:${themeColors.bgColor};
+              }
+            .ant-tabs-nav .ant-tabs-tab-active {
+                border-left: 3px solid ${themeColors.bgColor} !important;
+              }
                     .btn-border{
                     border-color: ${themeColors.bgColor};
                     }

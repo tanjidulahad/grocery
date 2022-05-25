@@ -120,3 +120,7 @@ export const getBannerSuccess = (data) => ({
     type: shopActionType.GET_BANNER_SUCCESS,
     payload: data
 })
+export const getFilterGroups = (storeId) => ({
+    type: shopActionType.FETCH_FILTER_GROUPS,
+    payload: storeId
+})

@@ -238,3 +238,34 @@ nav {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+/* .sort-btn{
+  height: 100%;
+  background: linear-gradient(90deg, rgb(250 250 250) 96px, #FFFF 10%);
+} */
+/* .mobile-sort-div{
+  background: linear-gradient(90deg, rgb(250 250 250) 108px, #FFFF 10%);
+} */
+
+/* antd */
+.ant-tabs-card .ant-tabs-tab-btn{
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  font-size: 20px;
+
+}
+.ant-tabs-tab{
+  border: none !important;
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #363636 !important; 
+  font-weight: 500;
+}
+.mobile-tab.ant-tabs-card .ant-tabs-tab-btn{
+  padding-top: 11px !important;
+  padding-bottom: 11px !important;
+  font-size: 14px;
+}
+.ant-tabs-nav .ant-tabs-nav-more{
+  display: none !important;
+}

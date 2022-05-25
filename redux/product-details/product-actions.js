@@ -40,3 +40,9 @@ export const errorOnProductDetailPage = (error) => ({
     type: productActionType.ERROR_ON_PRODUCT_DETAIL_PAGE,
     payload: error
 })
+
+//Get Product Varient Start
+export const getProductVariant=(data)=>({
+    type: productActionType.GET_PRODUCT_VARIENT_START,
+    payload:data
+})
