@@ -1,4 +1,9 @@
+import fetcher from "../redux/utility"
 import { countries, timezones } from "./utility"
+
+export const getVariantItemByItemId=(itemid,variantvalueid)=>{
+    return fetcher('POST',`?r=catalog/get-variant-items-by-item-id&itemId=${itemid}`,variantvalueid)
+}
 
 export const createSeasionId = () => {
     const country = getCountry();

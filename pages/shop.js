@@ -5,6 +5,7 @@ import React, { useEffect, useState, useRef, memo, useCallback } from 'react'
 import { useRouter } from "next/dist/client/router";
 import { useMediaQuery } from 'react-responsive';
 import { redirect } from '@components/link';
+import { AiOutlineClose } from "react-icons/ai";
 
 // import RecommendedCard from '@components/Cards/Home/RecommendedCard'
 import { BsFilterLeft } from 'react-icons/bs'
@@ -12,16 +13,26 @@ import ProductItem from '@components/product-item/product-item'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // Actions
-import { getCategoryStart, getShopProductsStart, getCategoryProductsStart, getSearchProductsStart, getPageCountStart, clearProductList } from "@redux/shop/shop-action";
+import { getCategoryStart, getShopProductsStart, getCategoryProductsStart, getSearchProductsStart, getPageCountStart, clearProductList, getFilterGroups } from "@redux/shop/shop-action";
 import { setSearchHandler } from '@redux/search/seatch-actions'
 import PageWrapper from '@components/page-wrapper/page-wrapper';
 import { addWishlistStart } from '@redux/wishlist/wishlist-action'
+import Modal from 'react-modal';
+import 'antd/lib/tabs/style/index.css';
+import 'antd/lib/slider/style/index.css';
+import 'antd/lib/tooltip/style/index.css';
+import { BsArrowLeft } from 'react-icons/bs'
+
+import { Slider, Tabs } from 'antd';
+const { TabPane } = Tabs;
 
 
 
-const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
+
+const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount, info, cart, clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const purchaseDetails = checkout.purchaseDetails;
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
   // const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID;
   const storeId = info.store_id;
   const [searchResult, setSearchResult] = useState([])
@@ -37,6 +48,28 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
   const [restHeight, setRestHeight] = useState(78) // in vh
   const [plpc, setPlpc] = useState(775) // in vh
   const [description, setDescription] = useState("")
+  const [filterModalVisible, setFilterModalVisible] = useState(false)
+  const [mobileSortOpen, setMobileSortOpen] = useState(false)
+  const [priceFilter,setPriceFilter]=useState({priceRange:{}})
+  const [filtersGroup, setFiltersGroup] = useState({})
+  const [filterArray, setFilterArray] = useState([])
+  const [filterPayLoad,setFilterPayLoad]=useState({})
+  const [filterAndSortPayload,setFilterAndSortPayload]=useState({})
+  const [triggerFilter,setTriggerFilter]=useState('No')
+  const customStyles = {
+    overlay: { zIndex: 1000 },
+    content: {
+      width: '1000px',
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      padding: '0',
+      zIndex: 100
+    },
+  };
 
   useEffect(() => { // Componentdidmount
     if (!categories.length) getCategoryStart(storeId);
@@ -72,6 +105,7 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
     if (node) observer.current.observe(node)
   }, [status, pageCount])
 
+
   useEffect(() => {
     if (!page) return;
     if (search) {
@@ -85,6 +119,7 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
     } else {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       getShopProducts({ storeId, page, setStatus })
+      getFilterGroups({ storeId, setFiltersGroup })
     }
   }, [Router.query, page])
 
@@ -152,6 +187,65 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
     clearProductList()
   }, [category, search])
 
+  const openMobileSort = () => {
+    setMobileSortOpen(!mobileSortOpen)
+  }
+
+  // console.log("filters group", filtersGroup)
+
+  const handleFilter = (groupid, value) => {
+    if(filterArray.length){
+      const indexOfObject = filterArray.findIndex(object => {
+        return object[groupid] == value;
+      });
+      if(indexOfObject!=-1){
+        filterArray.splice(indexOfObject, 1);
+        setFilterArray(filterArray)
+      }
+      else{
+        const newFilterArray = [...filterArray, { [groupid]: value }]
+        setFilterArray(newFilterArray)
+      }
+    }
+    else{
+    const newFilterArray = [...filterArray, { [groupid]: value }]
+    setFilterArray(newFilterArray)
+    }
+
+  }
+
+  const filtergroupBy = (arr, key) => {
+    const result = arr.reduce((h, obj) => Object.assign(h, { [Object.keys(obj)]:( h[Object.keys(obj)] || [] ).concat(Number(Object.values(obj)))}), {})
+  return result
+  }
+
+  useEffect(()=>{
+    const filterAfterGroupby=filtergroupBy(filterArray)
+    setFilterPayLoad({filter_groups:filterAfterGroupby})
+
+  },[filterArray])
+
+  const priceSliderhandler=(value)=>{
+    setPriceFilter({priceRange:{max_price:value[1],min_price:value[0]}})
+    console.log(value)
+  }
+
+  const handleFilterAndSort=()=>{
+    const finalPayloadForSortAndFilter={...filterPayLoad,...priceFilter}
+    setFilterAndSortPayload(finalPayloadForSortAndFilter)
+    setTriggerFilter("yes")
+    setFilterModalVisible(false)
+  }
+
+  useEffect(()=>{
+    if(triggerFilter=='yes'){
+      getShopProducts({ storeId, setStatus ,filterAndSortPayload})
+      setTriggerFilter("No")
+    }
+
+  },[filterAndSortPayload])
+
+
   return (
     < >
       <Head>
@@ -168,10 +262,20 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
             <div className="md:mr-16">
               <div className="flex justify-between my-2 bg-white p-2 py-4 md:py-0 md:p-0 md:my-4">
                 <p className="flex items-center font-bold md:ml-3 ">All Items</p>
-                <div className="flex font-bold ">
+                {
+                  isTabletOrMobile ? <div className="flex font-bold cursor-pointer" onClick={openMobileSort}>
+                    <BsFilterLeft size={20} className='' />
+                    <p className="flex items-center "> Filter / Sort By</p>
+                  </div>
+                    : <div className="flex font-bold cursor-pointer" onClick={() => setFilterModalVisible(true)}>
+                      <BsFilterLeft size={20} className='' />
+                      <p className="flex items-center "> Filter / Sort By</p>
+                    </div>
+                }
+                {/* <div className="flex font-bold cursor-pointer" onClick={() => setFilterModalVisible(true)}>
                   <BsFilterLeft size={20} className='' />
                   <p className="flex items-center "> Filter / Sort By</p>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0">
@@ -262,6 +366,109 @@ const Home = ({ products, addWishlist, pageCount, getPageCount, info, cart, clea
             </div>
           </div>
         </div>
+
+        <>
+          <Modal
+            isOpen={filterModalVisible}
+            // onAfterOpen={afterOpenModal}
+            onRequestClose={() => setFilterModalVisible(false)}
+            style={customStyles}
+          >
+            <div className=''>
+              <div className='flex justify-between pt-4 px-4'>
+                <h2 className='text-2xl'>Filters</h2>
+                <p className='cursor-pointer text-xl font-thin' onClick={() => setFilterModalVisible(false)}><AiOutlineClose /></p>
+              </div>
+              <div className="pt-4">
+                <div className="w-full border-t border-gray-400"></div>
+              </div>
+              <div>
+                <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='h-[40vh]'>
+                  {
+                    Object.keys(filtersGroup).map(function (groupid) {
+                      if (groupid != 'priceRange') {
+                        return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
+                          {
+                            Object.keys(filtersGroup[groupid].filter_group_values).map(function (value) {
+                              return (
+                                // <input type="radio" id="css" name="fav_language" value="CSS"></input>
+                                // <p>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</p>
+                                <div className='mt-2'>
+                                  <input type="checkbox" id={value} value={value} onClick={() => handleFilter(groupid, value)} />
+                                  <label className='text-[18px] ml-2' htmlFor={value}>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</label>
+                                </div>
+                              )
+                            })
+                          }
+                        </TabPane>)
+                      }
+                      else if (groupid == 'priceRange') {
+                        return (
+                          <TabPane tab={`${groupid}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
+                            <div className='mt-14'>
+                              <Slider onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
+                            </div>
+                          </TabPane>
+                        )
+                      }
+                    })
+                  }
+
+                </Tabs>
+              </div>
+              <div className='flex justify-end gap-6 pb-9 sort-btn'>
+                <p className='text-base px-5 py-2 btn-color-revese'>Clear All</p>
+                <p onClick={handleFilterAndSort} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded'>Apply</p>
+              </div>
+            </div>
+
+          </Modal>
+        </>
+        {/* for mobile view */}
+        <>{
+          mobileSortOpen && <div className='lg:hidden md:hidden bg-white fixed h-[91vh] w-full  left-0 top-0 z-[1000] overflow-y-scroll'>
+
+            <h3 className='pt-5 pb-5 bg-[#E5E5E5]' onClick={openMobileSort}><BsArrowLeft className={`mx-2 inline`} size={20} />Short by</h3>
+            <div className='mt-3 flex flex-wrap px-2 radio-custom'>
+
+              <input className='hidden ' type="radio" id='Popularity' name="sort" value="Popularity" />
+              <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Popularity">Popularity</label>
+
+              <input className='hidden' type="radio" id='High' name="sort" value="High to Low" />
+              <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="High">High to Low</label>
+
+              <input className='hidden ' type="radio" id='Low' name="sort" value="Low to High" />
+              <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Low">Low to High</label>
+
+              <input className='hidden ' type="radio" id='New' name="sort" value="New Arrivals" />
+              <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="New">New Arrivals</label>
+            </div>
+            <h3 className='p-5 bg-[#E5E5E5]'>Filter</h3>
+            <div>
+              <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='mobile-tab max-h-full overflow-hidden overflow-y-scroll'>
+                {
+                  Object.keys(filtersGroup).map(function (groupid) {
+                    if (groupid != 'priceRange') {
+                      return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid}>
+                        <p>Content of Tab Pane 1</p>
+                        <p>Content of Tab Pane 1</p>
+                        <p>Content of Tab Pane 1</p>
+                      </TabPane>)
+                    }
+                  })
+                }
+
+              </Tabs>
+            </div>
+            <div className='max-h-[100vh] h-1 w-1 mobile-sort-div'>
+              <div className='flex justify-end gap-6 pb-5 fixed bottom-0 right-0 bg-white left-0 shadow-[0_20px_10px_15px_rgba(0,0,0,0.6)] pt-5'>
+                <p className='text-base px-5 py-2 btn-color-revese'>Clear All</p>
+                <p onClick={openMobileSort} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded'>Apply</p>
+              </div>
+            </div>
+          </div>
+        }
+        </>
       </section >
     </>
   )
@@ -285,6 +492,7 @@ const mapDispatchToProps = dispatch => ({
   getSearchProducts: (payload) => dispatch(getSearchProductsStart(payload)),
   setSearchHandler: (payload) => dispatch(setSearchHandler(payload)),
   addWishlist: (payload) => dispatch(addWishlistStart(payload)),
+  getFilterGroups: (payload) => dispatch(getFilterGroups(payload)),
 
 })
 export default connect(mapStateToProps, mapDispatchToProps)(memo(PageWrapper(Home)))

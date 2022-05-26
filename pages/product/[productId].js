@@ -17,7 +17,7 @@ import Loader from "@components/loading/loader";
 import { addToCart, removeFromCart } from "@redux/cart/cart-actions";
 // import { authShowToggle } from "@redux/user/user-action";
 // import { addWishlistStart, removeWishlistStart } from '@redux/wishlist/wishlist-action'
-import { productDetailsFetchStart, similarProductFetchStart, getAdditionalInfoStart, getSpecificationsStart } from "@redux/product-details/product-actions";
+import { productDetailsFetchStart, similarProductFetchStart, getAdditionalInfoStart, getSpecificationsStart, getProductVariant } from "@redux/product-details/product-actions";
 // Components
 import Rating from "@components/rating-stars/rating";
 import PageWrapper from "@components/page-wrapper/page-wrapper";
@@ -30,6 +30,7 @@ const visualsStructure = {
     categoryId: null,
     subCategoryId: null,
     storeId: null,
+    defaultVariantItem: null,
     images: [], // First element will be primary image
     desc: '',
     rating: { value: 4.5, count: 5.0 },
@@ -44,11 +45,12 @@ const visualsStructure = {
     similarProducts: []  //[...similarProducts]
 }
 import { addWishlistStart } from '@redux/wishlist/wishlist-action'
-import { createSeasionId } from "services/pickytoClient";
+import { createSeasionId, getVariantItemByItemId } from "services/pickytoClient";
+import ReactTooltip from "react-tooltip";
 
 const ProductDetails = ({
     cart, addToCart, removeFromCart,
-    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist,user }) => {
+    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist, user, getProductVariant }) => {
     const [success, onSuccess] = useState({})
     const [failure, onFailure] = useState(null)
     const [additionalinfo, setAdditionalInfo] = useState([])
@@ -57,6 +59,22 @@ const ProductDetails = ({
     const [defaultVariant, setDefaultVarian] = useState([])
     const [descriptions, setDescriptions] = useState('')
     const [viewdscmore, setViewdscmore] = useState(false)
+    const [allVariants, setAllVariants] = useState([])
+    const [selectedVarientStyle, setSelectedVarientStyle] = useState([])
+    const [keepVarients, setKeepVariants] = useState([])
+
+
+    const colorVarients = ["COLOUR",
+        "COLOURS",
+        "COLOR",
+        "COLORS",
+        "SHADE",
+        "SHADES",
+        "Colr",
+        "Color",
+        "color"
+    ]
+
 
     // Information for this page
     const [visuals, setVisuals] = useState(visualsStructure)
@@ -65,16 +83,17 @@ const ProductDetails = ({
         var seassion_id
         const { productId } = router.query
         if (!productId) return;
-        if(!user?.customer_id){
+        if (!user?.customer_id) {
             seassion_id = createSeasionId()
         }
         else {
             seassion_id = user.customer_id
         }
-        fetchProductDetails({ id: productId,seassion_id, onSuccess, onFailure })
+        fetchProductDetails({ id: productId, seassion_id, onSuccess, onFailure })
         getAdditionalInfo({ setAdditionalInfo, id: productId })
         getSpecifications({ setSpecifications, id: productId })
         fetchSimilarProducts({ setSimilarProducts, id: productId })
+        getProductVariant({ setAllVariants, id: productId })
     }, [router.isReady])
 
 
@@ -138,6 +157,7 @@ const ProductDetails = ({
             subCategoryId: success.sub_category_id,
             storeId: success.store_id,
             variantId: success.defaultVariantItem?.variant_item_id,
+            defaultVariantItem: success.defaultVariantItem,
             name: success.item_name,
             images: [...images],
             desc: success.item_desc,
@@ -159,20 +179,256 @@ const ProductDetails = ({
         const dsc = success.item_name + ', ' + success.item_desc
         setDescriptions(dsc)
     }, [success])
-    const productDataForCart = {
-        item_id: visuals.id,
-        store_id: visuals.storeId,
-        category_id: visuals.categoryId,
-        item_name: visuals.name,
-        sale_price: visuals.price.sale_price,
-        price: visuals.price.price,
-        sub_category_id: visuals.subCategoryId,
-        primary_img: visuals.images[0],
-        is_veg: visuals.item?.is_veg,
-        inventoryDetails: visuals.inventoryDetails,
+
+
+
+
+    // marking default variant
+    useEffect(() => {
+        if (visuals.defaultVariantItem) {
+            console.log("selectedVariantItem", visuals.defaultVariantItem)
+            const defaultVar = Object.keys(visuals.defaultVariantItem).map(key => {
+                if (key.includes("variant_value")) {
+                    return visuals.defaultVariantItem[key]
+                }
+            }).filter(Boolean)
+            // console.log("defaultV", defaultVar)
+            const selectedDefaultVariant = defaultVar.map(e => e.variant_value_id)
+            console.log("selectedDefaultVariant", selectedDefaultVariant)
+            setSelectedVarientStyle(selectedDefaultVariant)
+
+        }
+    }, [visuals])
+
+    // fetch item all variant combination
+    const fetchVarientItemById = async (itemid, variantvalueid) => {
+        setVisuals({
+            ...visuals,
+            view: false,
+        })
+        // console.log(itemid, variantvalueid)
+        const res = await getVariantItemByItemId(itemid, variantvalueid)
+        setVisuals({
+            ...visuals,
+            view: true,
+        })
+        return res.data;
     }
-    const quantityInCart = cart.filter((item) => item.item_id == visuals.id)[0]?.quantity
+
+    // handle variant change
+    const handleVarientOnChange = async (indices, groupName, imagedata, varientValueId) => {
+        let images = visuals.images
+        if (imagedata) {
+            images = Object.values(imagedata).filter(Boolean)
+        }
+
+        selectedVarientStyle[indices - 1] = varientValueId
+        let varientvalue = {}
+        varientvalue[`variant_value_${indices}`] = varientValueId
+        const allVariantsComb = await fetchVarientItemById(success.item_id, varientvalue);
+        const shouldbeselect = getListedVarants(allVariantsComb, selectedVarientStyle)
+        console.log("should be select", shouldbeselect)
+        vanishVarients(indices, allVariantsComb)
+
+        if (shouldbeselect) {
+            // setDefaultItem(shouldbeselect);
+            setVisuals({
+                ...visuals,
+                images: [...images],
+                defaultVariantItem: shouldbeselect
+            })
+        }
+        else {
+            const defaultOnChange = allVariantsComb[Object.keys(allVariantsComb)[0]]
+            if (defaultOnChange) {
+                // setDefaultItem(defaultOnChange);
+                setVisuals({
+                    ...visuals,
+                    images: [...images],
+                    defaultVariantItem: defaultOnChange
+                })
+            }
+        }
+
+        // if (!imagedata) {
+        //     return
+        // }
+        // else {
+        //     const images = Object.values(imagedata).filter(Boolean)
+        //     setVisuals({
+        //         ...visuals,
+        //         images: [...images],
+        //     })
+        // }
+
+    }
+
+
+    // get available variant after click if exist
+    const getListedVarants = (object = {}, list = []) => {
+        let variant = {};
+        const giantList = Object.values(object)
+        for (let i = 0; i < giantList.length; i++) {
+            const x = giantList[i]
+            let vari = []
+            let flag = 0
+            if (x.is_displayable == "Y") {
+                for (let i = 0; i < list.length; i++) {
+                    if (x[`variant_value_${i + 1}`]) {
+                        // vari.push(x[`variant_value_${i + 1}`])
+                        const variantx = x[`variant_value_${i + 1}`]
+                        if (variantx?.variant_value_id == list[i]) {
+                            flag = flag + 1
+                        }
+                    }
+                }
+            }
+            if (flag == list.length) {
+                return x
+            }
+            // variant.push(vari)
+        }
+        // let result = null
+        // variant.forEach(element => {
+        //     if (element.some(item => list.includes(item?.variant_value_id))) {
+        //         result = element
+        //     }
+        // });
+        // return result
+        return null;
+    }
+
+
+
+    // vanish variant
+    const vanishVarients = (indices, object) => {
+        const keepVarient = allVariants.filter(item => item.indices == indices)
+        const keep = keepVarient.map(element => element.variant_values)
+        // const keep=keepProp.map(item=>item.variant_value_id)
+        let result
+        if (keepVarients.length) {
+            result = keep[0].map(function (item) {
+                if (keepVarients.includes(item.variant_value_id)) {
+                    return item.variant_value_id
+                }
+            })
+        }
+        else {
+            result = keep[0].map(a => a.variant_value_id);
+        }
+        // let result = keep[0].map(a => a.variant_value_id);
+        console.log("keep clicked id", result)
+        // setKeepVariants(result)
+        let not_displayable = []
+        let finalResult = []
+        const giantList = Object.values(object)
+        for (let i = 0; i < giantList.length; i++) {
+            const x = giantList[i]
+            let vari = []
+            let flag = 0
+
+
+            if (x["is_displayable"] == "N") {
+                for (let i = 1; i <= 5; i++) {
+                    if (x[`variant_value_${i}`]) {
+                        // vari.push(x[`variant_value_${i + 1}`])
+                        const variantx = x[`variant_value_${i}`]
+                        if (variantx?.variant_value_id) {
+                            // flag=flag+1
+                            not_displayable.indexOf(variantx?.variant_value_id) == -1 ? not_displayable.push(variantx?.variant_value_id) : ""
+                        }
+                    }
+                }
+            }
+
+            console.log("need not to display", not_displayable)
+
+            if (x["is_displayable"] != "N") {
+                for (let i = 1; i <= 5; i++) {
+                    if (x[`variant_value_${i}`]) {
+                        // vari.push(x[`variant_value_${i + 1}`])
+                        const variantx = x[`variant_value_${i}`]
+                        if (variantx?.variant_value_id) {
+                            // flag=flag+1
+                            result.indexOf(variantx?.variant_value_id) == -1 ? result.push(variantx?.variant_value_id) : ""
+                        }
+                    }
+                }
+            }
+
+            // if(flag==list.length){
+            //     return x
+            // }
+            // variant.push(vari)
+        }
+        if (not_displayable.length) {
+            for (let i = 0; i < not_displayable.length; i++) {
+                if (selectedVarientStyle[i] != not_displayable[i]) {
+                    finalResult = result.filter(item => item != not_displayable[i])
+                }
+            }
+            setKeepVariants(finalResult)
+        }
+        else {
+            // console.log("need not to display",not_displayable)
+            // console.log("now Displaying",result)
+            setKeepVariants(result)
+        }
+
+    }
+
+
+
+
+
+    const itemAddToCart = () => {
+        const productDataForCart = {
+            item_id: visuals.id,
+            store_id: visuals.storeId,
+            category_id: visuals.categoryId,
+            item_name: visuals.name,
+            sale_price: visuals.price.sale_price,
+            price: visuals.price.price,
+            sub_category_id: visuals.subCategoryId,
+            primary_img: visuals.images[0],
+            is_veg: visuals.item?.is_veg,
+            inventoryDetails: visuals.inventoryDetails,
+            defaultVariantItem: visuals.defaultVariantItem
+        }
+
+        addToCart(productDataForCart)
+    }
+
+    const itemRemoveFromCart = () => {
+        const productDataForCart = {
+            item_id: visuals.id,
+            store_id: visuals.storeId,
+            category_id: visuals.categoryId,
+            item_name: visuals.name,
+            sale_price: visuals.price.sale_price,
+            price: visuals.price.price,
+            sub_category_id: visuals.subCategoryId,
+            primary_img: visuals.images[0],
+            is_veg: visuals.item?.is_veg,
+            inventoryDetails: visuals.inventoryDetails,
+            defaultVariantItem: visuals.defaultVariantItem
+        }
+        removeFromCart(productDataForCart)
+    }
+    // const quantityInCart = cart.filter((item) => item.item_id == visuals.id)[0]?.quantity
     // console.log(quantityInCart, failure);
+    const quantityInCart = cart.filter(function (item) {
+        if (visuals.defaultVariantItem) {
+            if (item.defaultVariantItem) {
+                if (item.defaultVariantItem.variant_item_id == visuals.defaultVariantItem.variant_item_id) {
+                    return item
+                }
+            }
+        }
+        else if (item.item_id == visuals.id) {
+            return item
+        }
+    })[0]?.quantity
     console.log(visuals);
     return (
         <>
@@ -213,15 +469,11 @@ const ProductDetails = ({
                                                         <Rating value={visuals?.rating.value} count={visuals?.rating.count} />
                                                     </div> */}
                                             <div className="my-4 md:my-6">
-                                                <span className="text-lg md:text-xl my-6 black-color font-semibold">₹{visuals?.price?.sale_price}</span>
+                                                <span className="text-lg md:text-xl my-6 black-color font-semibold">₹{visuals.defaultVariantItem ? visuals.defaultVariantItem.sale_price : visuals.price.sale_price}</span>
                                                 {
-                                                    visuals.price.sale_price != visuals?.price?.price &&
-                                                    <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹{visuals?.price?.price}</span>
+                                                    visuals.price.sale_price != visuals.price.price &&
+                                                    <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹{visuals.defaultVariantItem ? visuals.defaultVariantItem.list_price : visuals.price.price}</span>
                                                 }
-                                                {/* {
-                                                    Boolean(visuals.price.price - visuals.price.sale_price) &&
-                                                    <span className="mx-2 md:mx-6 success-color text-sm md:text-lg font-light">save ₹{visuals.price.price - visuals.price.sale_price}</span>
-                                                } */}
                                             </div>
                                             <div className="my-6">
                                                 <p className={`text-sm md:text-base text-gray-500 font-bold text-justify md:text-left  normal-case ${!viewdscmore && visuals?.desc?.length > 200 && 'product-truncate'} transition`}>
@@ -232,8 +484,34 @@ const ProductDetails = ({
                                                     <Button className="btn-color-revers" onClick={() => setViewdscmore(!viewdscmore)}>{viewdscmore ? 'hide' : 'more'}.</Button>
                                                 }
                                             </div>
+
+                                            {/* varients */}
+                                            {allVariants ? allVariants.map((item, idx) => <div key={idx} className="my-6">
+                                                <p className="font-montMedium mb-2">{item.variant_group_name}</p>
+                                                <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
+                                                    {colorVarients.includes(item.variant_group_name) ? item.variant_values.map((varient, idx) => <li key={idx} className="mr-2">
+                                                        <div onClick={() => handleVarientOnChange(item.indices, item.variant_group_name, varient.variant_value_images, varient.variant_value_id)} data-tip={varient.variant_value_name} className={`inline-block py-3 px-3 text-white rounded-full border-2 cursor-pointer ${selectedVarientStyle.includes(varient.variant_value_id) ? "btn-border" : ""}`} style={{ background: `${varient.variant_value_metadata ? varient.variant_value_metadata.color_hexcode : varient.variant_value_name}`, display: `${keepVarients.length && !keepVarients.includes(varient.variant_value_id) ? "none" : ""}` }}></div>
+                                                        <ReactTooltip />
+                                                    </li>)
+                                                        :
+                                                        item.variant_values.map((varient, idx) => <li key={idx} className="mr-2">
+                                                            <div onClick={() => handleVarientOnChange(item.indices, item.variant_group_name, varient.variant_value_images, varient.variant_value_id)} className={`inline-block py-2 px-3 text-gray-500 border-2 border-gray-300 rounded-lg cursor-pointer ${selectedVarientStyle.includes(varient.variant_value_id) ? "btn-border" : ""}`}
+                                                                style={{ display: `${keepVarients.length && !keepVarients.includes(varient.variant_value_id) ? "none" : ""}` }}
+                                                            >{varient.variant_value_name}</div>
+                                                        </li>
+                                                        )
+                                                    }
+                                                </ul>
+
+
+                                            </div>)
+                                                : ""
+                                            }
+
                                             <div className=" hidden sm:block">
                                                 {
+                                                    visuals.defaultVariantItem && visuals.defaultVariantItem.variant_item_status == "UNAVAILABLE" ? <Button className="w-full md:w-auto py-3 px-12 text-base border-2 border-slate-300 text-slate-400 rounded font-bold cursor-not-allowed" >Unavailable</Button>
+                                                    :
                                                     quantityInCart ?
                                                         <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
                                                             if (visuals?.inventoryDetails) {
@@ -241,9 +519,9 @@ const ProductDetails = ({
                                                             }
                                                             return false
                                                         })()}
-                                                            onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
+                                                            onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
                                                         :
-                                                        <Button className="w-full sm:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                                        <Button className="w-full sm:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
                                                 }
                                             </div>
                                             {
@@ -263,8 +541,8 @@ const ProductDetails = ({
                                                     </>
                                                     : <></>
                                             }
-                                            <div className="my-6">
-                                                {
+                                            {/* <div className="my-6"> */}
+                                            {/* {
 
                                                     defaultVariant.map(varient => (<>
                                                         <h6 className="text-base font-semibold md:text-xl md:font-medium">Size</h6>
@@ -279,8 +557,8 @@ const ProductDetails = ({
                                                             }
                                                         </div>
                                                     </>))
-                                                }
-                                                {/* <h6 className="text-base font-semibold md:text-xl md:font-medium">Size</h6>
+                                                } */}
+                                            {/* <h6 className="text-base font-semibold md:text-xl md:font-medium">Size</h6>
                                             <div className="flex mt-6">
                                                 <div className="mr-6 size-tab rounded flex items-center justify-center border-2 w-12 h-12 ">
                                                     <span className="text-base md:text-xl font-medium">M</span>
@@ -292,7 +570,7 @@ const ProductDetails = ({
                                                     <span className="text-base md:text-xl font-medium">XL</span>
                                                 </div>
                                             </div> */}
-                                            </div>
+                                            {/* </div> */}
 
                                         </div></div>
                                 </div>
@@ -438,6 +716,8 @@ const ProductDetails = ({
             >
                 <div className="sm:hidden flex justify-center ">
                     {
+                        visuals.defaultVariantItem && visuals.defaultVariantItem.variant_item_status == "UNAVAILABLE" ? <Button className="w-full md:w-auto py-3 px-12 text-base border-2 border-slate-300 text-slate-400 rounded font-bold cursor-not-allowed" >Unavailable</Button>
+                        :
                         quantityInCart ?
                             <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
                                 if (visuals?.inventoryDetails) {
@@ -445,9 +725,9 @@ const ProductDetails = ({
                                 }
                                 return false
                             })()}
-                                onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
+                                onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
                             :
-                            <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                            <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
                     }
                 </div>
             </div>
@@ -475,6 +755,7 @@ const mapDispatchToProps = dispatch => ({
     getAdditionalInfo: (payload) => dispatch(getAdditionalInfoStart(payload)),
     getSpecifications: (payload) => dispatch(getSpecificationsStart(payload)),
     addWishlist: (payload) => dispatch(addWishlistStart(payload)),
+    getProductVariant: (payload) => dispatch(getProductVariant(payload)),
 
 })
 

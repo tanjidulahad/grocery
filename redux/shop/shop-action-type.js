@@ -41,6 +41,8 @@ const storeActionType = {
     GET_BANNER_START: "GET_BANNER_START",
     GET_BANNER_SUCCESS: "GET_BANNER_SUCCESS",
 
+    FETCH_FILTER_GROUPS:'FETCH_FILTER_GROUPS'
+
 }
 
 export default storeActionType;

@@ -81,8 +81,23 @@ function* onGetAdditionalInfoStart() {
     })
 }
 
+function* onGetProductVariantStart() {
+    yield takeLatest(productActionType.GET_PRODUCT_VARIENT_START, function* ({ payload }) {
+        const { setAllVariants,id } = payload
+        try {
+            const res = yield fetcher('GET', `?r=catalog/get-variant-groups-by-item-id&itemId=${id}`);
+            if (Array.isArray(res.data)) {
+                // yield put(getAdditionalInfoSuccess(res.data))
+                setAllVariants(res.data)
+            }
+        } catch (error) {
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
+
 
 
 export default function* productSaga() {
-    yield all([call(onProductFetchStart), call(onSimilarProductFetchStart), call(onGetSpecificationsStart), call(onGetAdditionalInfoStart)])
+    yield all([call(onProductFetchStart), call(onSimilarProductFetchStart), call(onGetSpecificationsStart), call(onGetAdditionalInfoStart), call(onGetProductVariantStart)])
 }

@@ -157,9 +157,10 @@ function* onGetSubCategoriesStart() {
 
 function* onGetShopProductsStart() {
     yield takeLatest(shopActionType.GET_SHOP_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, page, setStatus } = payload;
+        const { storeId, page, setStatus ,filterAndSortPayload} = payload;
+        console.log("filter from saga",filterAndSortPayload)
         try {
-            const res = yield fetcher('GET', `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : ""}`)
+            const res = yield fetcher(`${filterAndSortPayload==undefined?'GET':'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}`,filterAndSortPayload)
             if (Array.isArray(res.data)) {
                 if (page > 1 && typeof page != 'undefined') {
                     yield put(getShopProductsPaginationSuccess(res.data))
@@ -220,10 +221,24 @@ function* onProductSerachStart() {
     })
 }
 
+function* onGetFiltersGroup() {
+    yield takeLatest(shopActionType.FETCH_FILTER_GROUPS, function* ({ payload }) {
+        const { storeId,setFiltersGroup } = payload
+        try {
+            const res = yield fetcher('GET', `?r=catalog-search/get-filter-groups&storeId=${storeId}`);
+            if(res.data){
+                setFiltersGroup(res.data)
+            }
+
+        } catch (error) {
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
 
 export default function* shopSagas() {
     yield all([call(getShopInfoStart), call(getShopSeoStart), call(getShopSettingsStart), call(onGetSocialProfileStart),
     call(onGetCategoriesStart), call(onGetSubCategoriesStart), call(onGetShopProductsStart), call(onGetCategoryProductsStart),
-    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart)
+    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart), call(onGetFiltersGroup)
     ])
 }

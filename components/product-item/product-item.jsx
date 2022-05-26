@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { connect } from "react-redux";
 import { QuantityID, Button } from "../inputs";
+import Router from 'next/router'
 // import Rating from '../rating-stars/rating'
 
 import { addToCart, removeFromCart } from "../../redux/cart/cart-actions";
@@ -66,16 +67,24 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
         // This component used two times
         <>
             {
-                itemInCart?.quantity ?
-                    <QuantityID value={itemInCart.quantity} disabledPlush={(() => {
-                        if (itemInCart.inventoryDetails) {
-                            return itemInCart.inventoryDetails.max_order_quantity == itemInCart.quantity && itemInCart.inventoryDetails.max_order_quantity > 0 || itemInCart.inventoryDetails.inventory_quantity <= itemInCart.quantity
-                        }
-                        return false
-                    })()}
-                        onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
-                    :
-                    <Button className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-3  ${className}`} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+
+                <>
+                    {
+                        data.is_customizable == "N" ?
+                            itemInCart?.quantity ?
+                                <QuantityID value={itemInCart.quantity} disabledPlush={(() => {
+                                    if (itemInCart.inventoryDetails) {
+                                        return itemInCart.inventoryDetails.max_order_quantity == itemInCart.quantity && itemInCart.inventoryDetails.max_order_quantity > 0 || itemInCart.inventoryDetails.inventory_quantity <= itemInCart.quantity
+                                    }
+                                    return false
+                                })()}
+                                    onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
+                                :
+                                <Button className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-3  ${className}`} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                            :
+                            <p onClick={() => Router.push(`/product/${data.item_id}`)} className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-3 text-center cursor-pointer`} >View</p>
+                    }
+                </>
             }
         </>
     )

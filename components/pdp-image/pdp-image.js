@@ -31,7 +31,7 @@ function ImageMagnifier({
         >
             <img
                 src={src}
-                style={{ height: height, width: width }}
+                style={{ height: height, width: width ,maxWidth:'500px',maxHeight:'500px'}}
                 onMouseEnter={(e) => {
                     // update image size and turn-on magnifier
                     const elem = e.currentTarget;
@@ -92,7 +92,7 @@ function App({ src }) {
     return (
         <div className="App">
             <ImageMagnifier
-                width={"100%"}
+                width={"500px"}
                 height={"100%"}
                 src={src}
             />
@@ -129,6 +129,7 @@ const PdpImage = ({ list: images = [], alt = 'goplinto product image' }) => {
                 <div className="w-full h-auto relative sm:pl-4 md:pl-0">
                     {isDesktopOrLaptop ?
                         <App src={`${images[activeImage] || '/static/images/default.png'}`} />
+
                         :
                         <>
                             <img className="w-full h-full" src={images[activeImage]} alt={alt} onClick={() => setOpenSlider(true)} />
@@ -177,8 +178,8 @@ export default PdpImage;
 
 
 // /**
-//  * 
-//  * @param {Array} list list of all images, the first image will be default image 
+//  *
+//  * @param {Array} list list of all images, the first image will be default image
 //  * @param {String} alt alt is the default alt string for all images
 //  * @returns Jsx object
 //  */
