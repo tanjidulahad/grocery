@@ -3,7 +3,10 @@ import { useRouter, withRouter } from "next/router";
 import ReactPlayer from 'react-player'
 import { connect } from "react-redux";
 import Head from "next/head";
-import { AiOutlineHeart } from 'react-icons/ai'
+import { AiOutlineHeart,AiFillHeart } from 'react-icons/ai'
+
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Component
 import { QuantityID } from '@components/inputs'
@@ -42,15 +45,16 @@ const visualsStructure = {
     inventoryDetails: null,
     specifications: [],
     additionalinfo: [],
-    similarProducts: []  //[...similarProducts]
+    similarProducts: [], //[...similarProducts]
+    wishlist:false
 }
-import { addWishlistStart } from '@redux/wishlist/wishlist-action'
+import { addWishlistStart, removeWishlistStart } from '@redux/wishlist/wishlist-action'
 import { createSeasionId, getVariantItemByItemId } from "services/pickytoClient";
 import ReactTooltip from "react-tooltip";
 
-const ProductDetails = ({
+const ProductDetails = ({store,
     cart, addToCart, removeFromCart,
-    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist, user, getProductVariant }) => {
+    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist, user, getProductVariant,addItemToWishlist,removeWishlistStart }) => {
     const [success, onSuccess] = useState({})
     const [failure, onFailure] = useState(null)
     const [additionalinfo, setAdditionalInfo] = useState([])
@@ -62,6 +66,7 @@ const ProductDetails = ({
     const [allVariants, setAllVariants] = useState([])
     const [selectedVarientStyle, setSelectedVarientStyle] = useState([])
     const [keepVarients, setKeepVariants] = useState([])
+    const [wishlistAdded,setWishListAdded]=useState(null)
 
 
     const colorVarients = ["COLOUR",
@@ -149,6 +154,7 @@ const ProductDetails = ({
                 images.push(success[`img_url_${i}`])
             }
         }
+        
         setVisuals({
             ...visuals,
             view: true,
@@ -172,12 +178,14 @@ const ProductDetails = ({
             specifications: [...specifications],
             similarProducts: [...similarProducts],
             additionalinfo: [...additionalinfo],
-            item: success
+            item: success,
+            wishlist:success.wishlist
         })
     }, [success, similarProducts, additionalinfo, specifications])
     useEffect(() => { // SEO
         const dsc = success.item_name + ', ' + success.item_desc
         setDescriptions(dsc)
+        setWishListAdded(success.wishlistId)
     }, [success])
 
 
@@ -430,8 +438,40 @@ const ProductDetails = ({
         }
     })[0]?.quantity
     console.log(visuals);
+
+
+    const wishlist = () => {
+        if (!user) {
+            toast.error("Please Sign in First",{
+                autoClose: 2000
+            })
+        }
+        else {
+            const payload = {
+                id: Number(visuals.id),
+                storeId: store.store_id,
+                userId: user.customer_id,
+                setWishListAdded:setWishListAdded
+            }
+            addItemToWishlist(payload)
+        }
+    }
+
+    const removeFromWishList = (wishlistid) => {
+
+        const payload = {
+            wishlistId: wishlistid,
+            setWishListAdded:setWishListAdded
+        }
+        removeWishlistStart(payload)
+
+    }
+
+    console.log("wishlisht added", wishlistAdded)
+
     return (
         <>
+        <ToastContainer/>
             <Head>
                 <title>{visuals.name}</title>
                 <meta name="description" content={`${descriptions}, Amazon.in: Online Shopping India - Buy mobiles, laptops, cameras, books, watches, apparel, shoes and e-Gift Cards. Free Shipping &amp; Cash on Delivery Available. `} />
@@ -454,7 +494,7 @@ const ProductDetails = ({
                             <div className="">
                                 <div className="flex md:hidden justify-between w-full">
                                     <img className="my-2" src="/img/square.png" />
-                                    <AiOutlineHeart className="my-2" size={18} />
+                                    {!wishlistAdded?<AiOutlineHeart onClick={wishlist} className="my-2" size={24} />:<AiFillHeart onClick={() => removeFromWishList(wishlistAdded)} className="my-2"  size={24} color="#F35252" />}
                                 </div>
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10  overflow-x-hidden">
                                     <div className="w-11/12 md:w-full ml-4 md:ml-0">
@@ -521,17 +561,34 @@ const ProductDetails = ({
                                                         })()}
                                                             onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
                                                         :
+                                                        <div className="flex items-center gap-5">
                                                         <Button className="w-full sm:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
+                                                        <div>
+                                                            {!wishlistAdded?<p onClick={wishlist} className="text-base btn-color-revese cursor-pointer">
+                                                            <AiOutlineHeart className="my-2 inline mx-3" size={24} />
+                                                            Add to Wishlist
+                                                            </p>
+                                                            :
+                                                            <p onClick={() => removeFromWishList(wishlistAdded)} className="text-base btn-color-revese cursor-pointer">
+                                                            <AiFillHeart className="my-2 inline mx-3"  size={24} color="#F35252" />
+                                                            
+                                                             Remove from Wishlist</p>
+
+                                                            }
+
+                                                            
+                                                        </div>
+                                                        </div>
                                                 }
                                             </div>
                                             {
                                                 visuals.inventoryDetails ?
                                                     <>
                                                         {
-                                                            visuals.inventoryDetails.min_order_quantity > 0 &&
-                                                            <div className="">
-                                                                <span className="text-sm black-color-75">*Minimum order quantity is {visuals.inventoryDetails.min_order_quantity}.</span>
-                                                            </div>
+                                                            // visuals.inventoryDetails.min_order_quantity > 0 &&
+                                                            // <div className="">
+                                                            //     <span className="text-sm black-color-75">*Minimum order quantity is {visuals.inventoryDetails.min_order_quantity}.</span>
+                                                            // </div>
                                                         } {
                                                             (visuals.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0) || visuals.inventoryDetails.inventory_quantity == quantityInCart &&
                                                             <div className="">
@@ -741,6 +798,7 @@ const mapStateToProps = state => ({
     cart: state.cart,
     wishlist: state.wishlist.list,
     user: state.user.currentUser,
+    store: state.store.info,
 })
 const mapDispatchToProps = dispatch => ({
     // Cart Dispatch
@@ -756,6 +814,8 @@ const mapDispatchToProps = dispatch => ({
     getSpecifications: (payload) => dispatch(getSpecificationsStart(payload)),
     addWishlist: (payload) => dispatch(addWishlistStart(payload)),
     getProductVariant: (payload) => dispatch(getProductVariant(payload)),
+    addItemToWishlist: (item) => dispatch(addWishlistStart(item)),
+    removeWishlistStart: (data) => dispatch(removeWishlistStart(data))
 
 })
 

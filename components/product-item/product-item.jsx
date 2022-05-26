@@ -7,6 +7,7 @@ import Router from 'next/router'
 import { addToCart, removeFromCart } from "../../redux/cart/cart-actions";
 import { AiOutlineHeart, AiFillStar } from 'react-icons/ai'
 import { addWishlistStart } from "@redux/wishlist/wishlist-action";
+import { toast } from "react-toastify";
 
 
 
@@ -14,7 +15,9 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
     const tip = useRef(null)
     const wishlist = () => {
         if (!user.currentUser) {
-            alert('Please Login First');
+            toast.error("Please Sign in First",{
+                autoClose: 2000
+            })
         }
         else {
             const payload = {
@@ -80,9 +83,9 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
                                 })()}
                                     onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                                 :
-                                <Button className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-3  ${className}`} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                <Button className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-2  ${className}`} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
                             :
-                            <p onClick={() => Router.push(`/product/${data.item_id}`)} className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-3 text-center cursor-pointer`} >View</p>
+                            <p onClick={() => Router.push(`/product/${data.item_id}`)} className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-2 text-center cursor-pointer`} >View</p>
                     }
                 </>
             }
@@ -112,7 +115,10 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
                     <div className="flex justify-start items-baseline h-full my-2  w-full ">
                         <div className="flex">
                             <p className="font-bold text-sm md:text-lg">₹ {data.sale_price}</p>
-                            <span className="text-gray-400 font-thinner text-xs ml-2 flex items-center line-through"> (MPR.{data.price})</span>
+                            {
+                                data.sale_price != data.price &&<span className="text-gray-400 font-thinner text-xs ml-2 flex items-center line-through"> (MPR.{data.price})</span>
+                            }
+                            
                         </div>
                         {/* <div className=" hidden md:flex">
                             <p className=" text-sm flex items-center">4.5</p>
@@ -121,7 +127,7 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
                             </div>
                         </div> */}
                     </div>
-                    <div className="h-10 ">
+                    <div >
                         <p className="text-sm capitalize font-semibold line-truncate-2">
                             {data.item_name?.toLowerCase()}
                         </p>
@@ -133,10 +139,10 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
                 {
                     !!itemInCart.inventoryDetails && <>
                         {
-                            itemInCart.inventoryDetails.min_order_quantity > 1 &&
-                            <div className="">
-                                <span className="text-sm red-color">*Minimum order quantity is {itemInCart.inventoryDetails.min_order_quantity}.</span>
-                            </div>
+                            // itemInCart.inventoryDetails.min_order_quantity > 1 &&
+                            // <div className="">
+                            //     <span className="text-sm red-color">*Minimum order quantity is {itemInCart.inventoryDetails.min_order_quantity}.</span>
+                            // </div>
                         } {
                             itemInCart.inventoryDetails.max_order_quantity == itemInCart.quantity && itemInCart.inventoryDetails.max_order_quantity > 0 || itemInCart.inventoryDetails.inventory_quantity <= itemInCart.quantity &&
                             <div className="">

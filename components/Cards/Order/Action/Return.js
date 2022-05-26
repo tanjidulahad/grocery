@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import { useState } from 'react'
 import { Button, Radio, Checkbox } from '@components/inputs'
 import fetcher from '@redux/utility'
+import { toast } from 'react-toastify'
 function Ret({ action, items, closeRetun, user, orderId }) {
   const [final, setfinal] = useState(false)
   console.log(items, orderId)
@@ -13,10 +14,20 @@ function Ret({ action, items, closeRetun, user, orderId }) {
   const onReasonHandler = (e) => {
     const { value, name, } = e.target
 
+    if (name === 'r1') {
+      setPayload({ ...payload, cancelReason: value })
+    }
+    // if (name === 'r2') {
+    //   setPayload({ ...payload, cancelReason: value })
 
-    setPayload({ ...payload, cancelReason: value })
+
+    // }
+    if (name === 'custom') {
+      console.log(name, value)
+      setPayload({ ...payload, cancelReason: value })
 
 
+    }
   }
 
   const [payload, setPayload] = useState({
@@ -30,8 +41,23 @@ function Ret({ action, items, closeRetun, user, orderId }) {
 
 
     if (type === "submit") {
+      closeRetun(false)
       setPayload({ ...payload, cancelReason: reason.custom ? reason.custom : reason.reason1 ? reason.reason1 : reason.reason2 && reason.reason2 })
-      fetcher('post', `/?r=my-orders/cancel-order&orderId=${orderId}`, payload).then(response => { closeRetun(false), location.reload() }).catch(err => console.log(err))
+      fetcher('post', `/?r=my-orders/cancel-order&orderId=${orderId}`, payload).then(response => {
+        console.log(response);
+        if(response){
+        toast.success("Request Placed Successfully",{
+          autoClose: 2000
+      })
+    }
+
+      }).catch(err => {
+        if(err.response.data.message=="Sorry, the order can not be cancelled once confirmed!"){
+          toast.error("Request Already Placed",{
+            autoClose: 2000
+        })
+        }
+      })
     }
 
 
@@ -51,10 +77,10 @@ function Ret({ action, items, closeRetun, user, orderId }) {
 
   return (
     <div id="return" className="auth ">
-      <div className="mt-80 md:mt-0 lg:mt-0  auth-form-container  md:roundec-lg lg:rounded-lg ">
-        <section>
-          <div className="flex p-4 justify-between items-center border-b-2 border-gray-200">
-            <h2 className="text-base font-semibold">Cancel Order</h2>
+      <div className="mt-80 md:mt-0 lg:mt-0 md:roundec-lg lg:rounded-lg ">
+        <section className='auth-form-container '>
+          <div className="flex p-4 justify-between items-center border-b-2 border-gray-200 ">
+            <h2 className="text-base font-semibold">{action} Order</h2>
             <Button
               className="bg-transparent dark-blue p-2"
               onClick={() => closeRetun(false)}
@@ -90,7 +116,7 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                   <Radio
                     className="mt-3 "
                     name="r1"
-                    value="Order got delayed"
+                    value="Product defective"
                     onClick={(e) => {
                       onReasonHandler(e)
                     }}
@@ -100,14 +126,14 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                     className="text-sm flex text-gray-400 mt-2 mx-3"
                     style={{ alignItems: 'center' }}
                   >
-                    Order got delayed
+                    Product defective
                   </h3>
                 </div>
                 <div className="mt-4 mx-1 flex flex-around  ">
                   <Radio
                     className="mt-3 "
                     name="r1"
-                    value=" Wrong delivery address"
+                    value=" Delivery box damaged"
                     onClick={(e) => {
                       onReasonHandler(e)
                     }}
@@ -117,49 +143,36 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                     className="text-sm flex text-gray-400 mt-2 mx-3"
                     style={{ alignItems: 'center' }}
                   >
-                    Wrong delivery address
+                    Delivery box damaged
                   </h3>
                 </div>
-                <div className="mt-4 mx-1 flex flex-around  ">
-                  <Radio
-                    className="mt-3 "
-                    name="r1"
-                    value="No longer needed  this item"
-                    onClick={(e) => {
+                <div className="mt-4 mx-1 flex flex-around hidden md:block lg:block  ">
+                  <textarea
+                    className="mx-6 border-2 border-gray-200 rounded-lg"
+                    rows="4"
+                    cols="50"
+                    name="custom"
+                    onChange={(e) => {
                       onReasonHandler(e)
                     }}
-                  />
-
-                  <h3
-                    className="text-sm flex text-gray-400 mt-2 mx-3"
-                    style={{ alignItems: 'center' }}
-                  >
-                    No longer needed  this item
-                  </h3>
+                  ></textarea>
                 </div>
-                <div className="mt-4 mx-1 flex flex-around  ">
-                  <Radio
-                    className="mt-3 "
-                    name="r1"
-                    value=" Got it at a better price"
-                    onClick={(e) => {
+                <div className="mt-4 mx-1 flex flex-around block md:hidden lg:hidden ">
+                  <textarea
+                    className="mx-6 border-2 border-gray-200 rounded-lg"
+                    rows="4"
+                    cols="35"
+                    name="custom"
+                    onChange={(e) => {
                       onReasonHandler(e)
                     }}
-                  />
-
-                  <h3
-                    className="text-sm flex text-gray-400 mt-2 mx-3"
-                    style={{ alignItems: 'center' }}
-                  >
-                    Got it at a better price
-                  </h3>
+                  ></textarea>
                 </div>
-
 
                 <div className="flex justify-center md:justify-end lg:justify-end my-6 mb-40 lg:my-2 md:my-2">
                   <Button
-                    className={`w-full md:w-max lg:w-max m-2 btn-color btn-bg text-lg font-medium  px-4 py-1 rounded `}
-                    type="button"
+                    className={`w-full md:w-max lg:w-max m-2 btn-color text-lg font-medium btn-bg px-4 py-1 rounded `}
+                    type="submit"
                     onClick={(e) => {
                       onChangeHandler(e)
                     }}
@@ -195,11 +208,25 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                     </label>
                   </div>
                 ))}
-
+                {/* <div className="mt-4 mx-1 flex flex-around  ">
+                  <Radio className="mt-3 " />
+                  <div className="mx-4 w-10 h-10 rounded bg-gray-900">
+                    <img
+                      className="w-full h-full rounded object-center opacity-80"
+                      src="https://b.zmtcdn.com/data/reviews_photos/1e2/19f261b43d11344ce5f483c20a0941e2_1561214851.jpg?fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+                    />
+                  </div>
+                  <h3
+                    className="text-sm flex text-gray-600 "
+                    style={{ alignItems: 'center' }}
+                  >
+                    Plain Briyani
+                  </h3>
+                </div> */}
 
                 <div className="flex justify-end ">
                   <Button
-                    className={`w-max m-2 btn-color btn-bg text-lg font-medium  px-4 py-1 rounded `}
+                    className={`w-max m-2 btn-color text-lg font-medium btn-bg px-4 py-1 rounded `}
                     type="button"
                     onClick={(e) => {
                       setfinal(

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { useRouter } from 'next/router'
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Ordertracker from '@components/Cards/orderDetail/orderTracker/ordertracker.jsx'
 import List from '@components/Cards/orderDetail/orderList/orderlList'
 import Address from '@components/Cards/orderDetail/address/adress'
@@ -37,6 +40,7 @@ function orderDetail({ getOrderDetails }) {
 
   return (
     <>
+    <ToastContainer/>
       <div className=' w-full flex sm:hidden justify-start items-center p-5 bg-white sticky top-0 z-10 ' style={{ boxShadow: `0px 2px 8px #0000001A` }}>
         {
           orderDetails?.orderId &&
@@ -156,7 +160,7 @@ function orderDetail({ getOrderDetails }) {
           <Return action={'return'} items={orderDetails.orderItems} orderId={orderDetails.orderId} closeRetun={setIsReturnActive} />
         }
       </section>
-      <div className={`md:hidden fixed top-0     shadow-lg nav-bg h-[122px] w-full `} style={{ zIndex: 1200 }}>
+      <div className={`md:hidden fixed top-0 shadow-lg nav-bg h-[122px] w-full `} style={{ zIndex: 1200 }}>
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
           <BsArrowLeft className={`mx-4`} size={35} color={'white'} />

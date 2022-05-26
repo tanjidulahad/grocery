@@ -1,6 +1,6 @@
 import Router from 'next/router'
 import { takeLatest, all, call, put } from "redux-saga/effects";
-import fetcher from "../utility";
+import fetcher, { nodefetcher } from "../utility";
 import shopActionType from './shop-action-type'
 import {
     getShopInfoSuccess, getShopSeoSuccess, getShopSettingsSuccess, getSocialProfileSuccess,
@@ -235,10 +235,38 @@ function* onGetFiltersGroup() {
         }
     })
 }
+function* onGetBestSellerProduct() {
+    yield takeLatest(shopActionType.GET_BEST_SELLER_PRODUCTS, function* ({ payload }) {
+        const { storeId,setBestSellerProducts } = payload
+        try {
+            const res = yield nodefetcher('GET', `/store-widgets/get-best-sellers-by-store?storeId=${storeId}`);
+            if(res.data){
+                setBestSellerProducts(res.data)
+            }
+
+        } catch (error) {
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
+function* onGetNewArrivalProducts() {
+    yield takeLatest(shopActionType.GET_NEW_ARRIVALS_PRODUCTS, function* ({ payload }) {
+        const { storeId,setNewArrivalProducts } = payload
+        try {
+            const res = yield nodefetcher('GET', `/store-widgets/get-new-arrivals-by-store?storeId=${storeId}`);
+            if(res.data){
+                setNewArrivalProducts(res.data)
+            }
+
+        } catch (error) {
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
 
 export default function* shopSagas() {
     yield all([call(getShopInfoStart), call(getShopSeoStart), call(getShopSettingsStart), call(onGetSocialProfileStart),
     call(onGetCategoriesStart), call(onGetSubCategoriesStart), call(onGetShopProductsStart), call(onGetCategoryProductsStart),
-    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart), call(onGetFiltersGroup)
+    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart), call(onGetFiltersGroup), call(onGetBestSellerProduct), call(onGetNewArrivalProducts)
     ])
 }

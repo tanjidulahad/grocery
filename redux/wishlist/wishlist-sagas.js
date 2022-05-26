@@ -11,13 +11,16 @@ import { toast } from 'react-toastify';
 function* onWishlistItemAddStart() {
     yield takeLatest(wishlistActionType.ADD_WISHLIST_START, function* ({ payload }) {
         console.log("add wishlist from saga")
-        let { userId, storeId, id } = payload;
+        let { userId, storeId, id,setWishListAdded } = payload;
         // if (!variantId) { variantId = null };
         try {
             const res = yield fetcher('GET', `?r=customer/add-item-to-wishlist&customerId=${userId}&storeId=${storeId}&itemId=${id}`);
             console.log(res);
             if (res.data){
                 toast.success("Added to Wishlist")
+                if(setWishListAdded!=undefined){
+                    setWishListAdded(res.data)
+                }
             }
             else{
                  throw "Adding to wishlist faild"
@@ -78,7 +81,7 @@ function* onGetWishlistStart() {
 function* onWishlistRemoveStart() {
     yield takeLatest(wishlistActionType.REMOVE_WISHLIST_START, function* ({ payload }) {
         try {
-            const { wishlistId,wishListedItem,setWishListedItem } = payload;
+            const { wishlistId,wishListedItem,setWishListedItem,setWishListAdded } = payload;
             // if (!userId) return //throw "Login before adding to wishlist"
             const res = yield fetcher('GET', `?r=customer/delete-from-wishlist&wishlistId=${wishlistId}`);
             console.log(res);
@@ -86,8 +89,13 @@ function* onWishlistRemoveStart() {
                 toast.success("Product Removed From Wishlist",{
                     autoClose: 2000
                 })
+                if(setWishListedItem!=undefined){
                 const remaining=wishListedItem.filter(item=>item.entry_id!=wishlistId)
                 setWishListedItem(remaining)
+                }
+                if(setWishListAdded!=undefined){
+                    setWishListAdded(null)
+                }
             }
             // if (!res.data) throw "Fetching wishlist Failed"
             // yield put(getWishlistSuccess(res.data))

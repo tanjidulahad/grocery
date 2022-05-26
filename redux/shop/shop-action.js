@@ -124,3 +124,11 @@ export const getFilterGroups = (storeId) => ({
     type: shopActionType.FETCH_FILTER_GROUPS,
     payload: storeId
 })
+export const getBestSellerProducts = (storeId) => ({
+    type: shopActionType.GET_BEST_SELLER_PRODUCTS,
+    payload: storeId
+})
+export const getNewArrivalProducts = (storeId) => ({
+    type: shopActionType.GET_NEW_ARRIVALS_PRODUCTS,
+    payload: storeId
+})
