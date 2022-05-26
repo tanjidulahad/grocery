@@ -555,7 +555,7 @@ const Cart = ({
                         className="w-[94%] h-16 px-2 ml-3 my-6  justify-bewteen border-[1px] border-gray-100 rounded-lg flex items-center"
                       >
                         <Input
-                          className="   bg-transparent border-none  focus:outline-none"
+                          className=" border-staticr bg-transparent border-none  focus:outline-none"
                           placeholder="Apply coupon code"
                           value={coupon}
                           onChange={(e) => { setcoupon(e.target.value) }}
@@ -777,7 +777,7 @@ const Cart = ({
 
                     <>
                       {/* Delivery method */}
-                      <div className="w-full hidden md:block mt-10 px-3 py-10 sm:px-10 bg-white rounded">
+                      <div id='selectAddress' className="w-full hidden md:block mt-10 px-3 py-10 sm:px-10 bg-white rounded">
                         <div className="">
                           <h2>Delivery Method</h2>
                         </div>
@@ -974,23 +974,15 @@ const Cart = ({
                 <div className="w-full col-span-12 md:col-span-5 lg:col-span-4 xl:col-span-4 ">
                   {!!user && (
                     <>
-                      {/* <div className="bg-white">
-                                        <div className="px-2 py-10 sm:px-10 border-b-2 rounded">
-                                            <h2>Promo / Gift Code</h2>
-                                        </div>
-                                        <div className="w-full p-10 flex justify-between items-baseline space-x-2">
-                                            <input type="text" className="text-lg font-medium w-full border-b-2 focus:outline-none focus:border-b-2 " placeholder="Have any Promo Code?" />
-                                            <button className="py-2 btn-color rounded px-4 text-base btn-bg ">Apply</button>
-                                        </div>
-                                    </div> */}
+
                       <div>
                         <div className="md:mt-16 md:pb-10 bg-white rounded hidden md:block  md:block">
                           {/* coupon field */}
-                          <div className="px-3 md:py-10 sm:px-10  ">
+                          <div className="px-3 md:pt-10 sm:px-10  ">
                             <div>
                               <div className="">
                                 <div className='mb-3 grid grid-cols-6 space-x-2'>
-                                  <Input className=' col-span-4 rounded py-3' placeholder={'Coupon Code'} onChange={(e) => {
+                                  <Input className=' border-static border col-span-4 rounded py-3' placeholder={'Coupon Code'} onChange={(e) => {
                                     setCpError("");
                                     // setOnSuccess(null)
                                     setCouponCode(e.target.value)
@@ -1009,41 +1001,65 @@ const Cart = ({
                                     {cpError}
                                   </div>
                                 }
-                                <div className="ml-2 w-full">
+                                <div className=" w-full">
                                   <h3 className="text-xl hidden md:block font-semibold">
                                     Billing Details
                                   </h3>
-                                  <div className="mt-4  hidden md:block mb-2 fle">
-                                    <span className="home font-bold text-sm">
-                                      Shipping to:{' '}
-                                    </span>
+                                  {
+                                    checkoutDetails.deliveryMethod == 'N' &&
+                                    <div className="mt-4  hidden md:block mb-2 fle">
+                                      <span className="home font-bold text-base">
+                                        Pick up from store:{' '}
+                                      </span>
+                                      <span>
+                                        {
+                                          storeSettings.pickupPointDetails
+                                            .pickup_point_name
+                                        }, {storeSettings.pickupPointDetails.address},{' '}
+                                        {storeSettings.pickupPointDetails.city}, <br />
+                                        {storeSettings.pickupPointDetails.state},{' '}
+                                        {storeSettings.pickupPointDetails.country},{' '}
+                                        Pin-{' '}
+                                        {storeSettings.pickupPointDetails.zip_code}
+                                      </span>
+                                      <Button type='link' href='#selectAddress' className=' w-fit block btn-color-revese'>Change</Button>
+                                    </div>
+                                  }
+                                  {
+                                    checkoutDetails.deliveryMethod == 'Y' && checkoutDetails.deliveryAddress &&
+                                    < div className="mt-4  hidden md:block mb-2 fle">
+                                      <span className="home font-bold text-base">
+                                        Shipping to:{' '}
+                                      </span>
+                                      {
+                                        (() => {
+                                          const address = userAddress.find(item => item.address_id == checkoutDetails.deliveryAddress);
+                                          return (
+                                            <>
+                                              <span className="home">
+                                                {address.address_line_1},{' '}
+                                                {address.address_line_2}
+                                              </span>
+                                              <span className="state-pin">
+                                                {address.city}, {userAddress[0]?.state}{' '}
 
-                                    <span className="home">
-                                      {userAddress[0]?.address_line_1},{' '}
-                                      {userAddress[0]?.address_line_2}
-                                    </span>
-                                    <br></br>
-                                    <span className="state-pin">
-                                      {userAddress[0]?.city}, {userAddress[0]?.state}{' '}
-                                      {userAddress[0]?.zip_code},
-                                    </span>
-                                    <br></br>
-                                    <span className="country">
-                                      {userAddress[0]?.country},
-                                    </span>
-                                    <br />
-                                    <span className="country font-w-bold">
-                                      +91 {userAddress[0]?.phone}
-                                    </span>
-                                  </div>
-
-                                  {/* <span className="font-semibold">
-                                    Get all Item before :
-                                  </span>
-                                  <span className="text-green-600">
-                                    {' '}
-                                    Wednesday 23 mar, 2022
-                                  </span> */}
+                                              </span>
+                                              <span className="country">
+                                                {address.country},
+                                              </span>
+                                              <span>Pin-
+                                                {userAddress[0]?.zip_code},
+                                              </span>
+                                              <span className="country font-w-bold">
+                                                +91 {address.phone}
+                                              </span>
+                                            </>
+                                          )
+                                        })()
+                                      }
+                                      <Button type='link' href='#selectAddress' className=' w-fit block btn-color-revese'>Change</Button>
+                                    </div>
+                                  }
                                 </div>
                               </div>
                             </div>
@@ -1172,7 +1188,7 @@ const Cart = ({
                           (
                             <>
                               {
-                                !payment ?
+                                !payment && ((checkoutDetails?.paymentMethod == 'Y' && checkoutDetails.deliveryAddress) || checkoutDetails?.paymentMethod == 'N') ?
                                   <Button
                                     className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
                                     onClick={() => { setpayment(!payment) }}
@@ -1182,11 +1198,10 @@ const Cart = ({
 
                                     onClick={() => { initiatePayment() }}
                                     disabled={
-                                      cartHeader.status === 'payment' && checkoutDetails?.paymentMethod === ''
+                                      cartHeader.status === 'payment' && checkoutDetails?.paymentMethod == ''
 
                                     }
                                     style={{
-
                                       opacity: `${checkoutDetails.paymentMethod === '' ? 0.6 : 1}`
                                     }}
                                   >Proceed To Pay</Button>
@@ -1466,7 +1481,7 @@ const Cart = ({
             </div>
           )}
         </div>
-      </div>
+      </div >
       <div className={`md:hidden fixed top-0  ${!cartHeader.active && 'hidden'}   shadow-lg bg-[#48887B] h-[124px] w-full `} style={{ zIndex: 1200 }}>
 
         <Tracker status={cartHeader.status} active2={active2} />
