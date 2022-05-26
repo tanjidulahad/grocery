@@ -29,6 +29,7 @@ import { setSearchHandler } from '@redux/search/seatch-actions'
 const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler, displaySettings, openAuth, logOut, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, searchHandler, info, ref }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const [isLogin, setIsLogin] = useState(false)
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [mobNaveHeight, setMobNaveHeight] = useState(10)
   // const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
   const storeId = info.store_id;
@@ -69,7 +70,8 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
   const [searchResult, setSearchResult] = useState([])
   const Router = useRouter();
-  const { category, subCategory, search } = Router.query;
+  const { category, subCategoryId, search } = Router.query;
+  // const { category, subCategoryId } = Router.router.query
   const [status, setStatus] = useState('loading') //status == loading || failed || success
   const [q, setq] = useState(search ? search : '');
 
@@ -80,7 +82,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
 
     } else if (category) {
-      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategory, page: 1, setStatus })
+      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
 
       // setq('') // Cleaning query string of search
@@ -95,14 +97,16 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
     setlists(categories.length > 0 && categories)
   }, [categories.length])
 
+  useEffect(() => {
+    const body = document.body
+    if (!body) return;
+    if (isCategoryOpen && !isDesktopOrLaptop) {
+      body.style.overflow = 'hidden'
+    } else {
+      body.style.overflow = 'auto'
+    }
+  }, [isCategoryOpen, isDesktopOrLaptop])
   const name = Router?.route?.split('/')[3]
-  // console.log(name,'line101')
-
-  const [cathover, setcathover] = useState({
-    id: [],
-    active: true
-  })
-
 
   return (
     <nav className='sticky top-0  ' ref={ref} style={{ backgroundColor: `#F9F6ED` }}>
@@ -234,9 +238,9 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             </div>
           </div>
         </div>
-        {/* Category list start */}
-        <div
-          className="btn-bg white-color   wrapper mx-auto " onMouseLeave={() => { setcathover({ ...cathover, active: false }) }}>
+
+        {/* Category list >> */}
+        <div className="btn-bg white-color   wrapper mx-auto " >
           <div className="flex justify-between items-center">
             {
               lists.length && lists.slice(0, isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
@@ -279,13 +283,13 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </h5>
-                <div className=" absolute -right-10 w-60 bg-white text-black  others-list">
+                <div className=" absolute -right-10 w-60 bg-white  others-list">
                   <ul className=" w-auto">
                     {
                       lists.length && lists.slice(isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
                         <li className=" relative others-list-item " key={i}>
                           <Link href={`/shop?category=${item.category_id}`}>
-                            <a className=" block py-2 px-4 hover:bg-gray-400">
+                            <a className=" block py-2 text-white px-4 hover:bg-gray-400">
                               {item.category_name}
                             </a>
                           </Link>
@@ -313,11 +317,13 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             }
           </div>
         </div>
+        {/* << Category list */}
+
       </div>
       {/* has to be hide in some places */}
       {
         !exceptionRouteinMobile.includes(router.pathname) ?
-          <div className={`md:hidden nav-bg shadow-lg bg-[#48887B] h-[124px] w-full `}>
+          <div className={`md:hidden nav-bg shadow-lg bg-[#48887B] py-2 w-full `}>
             <div className=" flex justify-between ">
               <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
               <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
@@ -410,7 +416,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
       {
         name !== 'cart' && 'thank-you' &&
         <MediaQuery maxWidth={640}>
-          <div id='mob-navbar' className={`mob-navbar z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent `} style={{ boxShadow: '0px -1px 4px #00000033' }}>
+          <div id='mob-navbar' className={`mob-navbar z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent `} style={{ boxShadow: 'rgb(194 190 190 / 65%) 1px -4px 16px 0px' }}>
             <div className='text-black w-1/4 flex flex-col  '>
               <Button type='link' href='/' className={`block sm:hidden text-center text-xs ${router.asPath == '/' || router.pathname == '/[name]/[storeId]' && 'btn-nav-color-actives text-[#48887B]'}`}>
                 <div className={` w-[24px] h-[24px] mx-auto`}>
@@ -434,7 +440,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </Button>
             </div>
             <div className='text-center text-xs font-semibold text-black w-1/4'>
-              <Button className='  btn-nav-color '>
+              <Button className='  btn-nav-color ' onClick={() => setIsCategoryOpen(!isCategoryOpen)}>
                 <svg className='mx-auto' width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M13.5417 19.7916H18.7501M13.5417 5.20831H21.8751H13.5417ZM13.5417 9.37498H18.7501H13.5417ZM13.5417 15.625H21.8751H13.5417Z" stroke="#1B0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                   <path d="M8.33333 4.16666H4.16667C3.59137 4.16666 3.125 4.63303 3.125 5.20832V9.37499C3.125 9.95029 3.59137 10.4167 4.16667 10.4167H8.33333C8.90863 10.4167 9.375 9.95029 9.375 9.37499V5.20832C9.375 4.63303 8.90863 4.16666 8.33333 4.16666Z" stroke="#1B0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -452,12 +458,74 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                 <span className=' text-xs font-medium tracking-tight'>User</span>
               </Button>
             </div>
+            {/* Mob Category list >> */}
+            {
+              !!lists.length && isCategoryOpen &&
+              <div className=" fixed lg:hidden top-[10.5rem] inset-x-0 bottom-[3.5rem] no-scrollbar  overflow-y-auto z-50 bg-white">
+                <div className=" relative inset-0 overflow-auto w-full h-full ">
+                  <div className="grid grid-cols-12 w-full relative">
+                    <div className=" col-span-12 px-3 py-2.5 border-b-2 flex justify-between items-center sticky top-0 z-10 bg-white">
+                      <h2 className=" font-semibold text-base text-black">Shop by Category</h2>
+                      <span className=" cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </span>
+                    </div>
+                    <div className=" col-span-6 w-full text-black ">
+                      <ul className=" ">
+                        <li className={`${!category && 'bg-white font-semibold'} px-3 py-2`}>
+                          <Link href={`/`}>
+                            <a >
+                              <div className="d-flex font-medium justify-content-between">
+                                <span className=" ">All Products </span>
+                                {/* <span className="font-16 font-w-400 dark-blue-50">22</span> */}
+                              </div>
+                            </a>
+                          </Link>
+                        </li>
+                        {
+                          lists.map((item) => (
+                            <li key={item.category_id} className={`lists category-item px-3 py-2 ${category == item.category_id && ' primary-color font-semibold'}`} >
+                              <Link href={`/?category=${item.category_id}`}>
+                                <a>
+                                  <div className="d-flex font-medium justify-content-between">
+                                    <span className="">{item.category_name}</span>
+                                  </div>
+                                </a>
+                              </Link>
+                            </li>
+                          ))
+                        }
+                      </ul>
+                    </div>
 
-
+                  </div>
+                </div>
+                <div className="absolute top-[46px] h-full text-black right-0 w-6/12 overflow-y-auto no-scrollbar ">
+                  <ul className="top-0">
+                    {
+                      !!category &&
+                      lists.find((listItem) => listItem.category_id == category)?.subCategories.map((subitem, i) => (
+                        <li className="px-3 py-2" key={i}>
+                          <Link href={`/?category=${category}&subCategoryId=${subitem.sub_category_id}`}>
+                            <a>
+                              <div className="d-flex justify-content-between">
+                                <span className={`text-xs font-w-400  ${subCategoryId == subitem.sub_category_id ? "primary-color" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
+                                {/* <span className="font-16 font-w-400 ">22</span> */}
+                              </div>
+                            </a>
+                          </Link>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              </div>
+            }{/* << Category list */}
           </div>
         </MediaQuery>
       }
-
     </nav >
   )
 }

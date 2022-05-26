@@ -5,7 +5,8 @@ import uiActionType from "@redux/UI/ui-action-type";
 
 const INITIAL_STATE = {
     isDetailsLoading: false,
-    logout: false
+    logout: false,
+    isMobCatOpen: false
 }
 
 const uiReducer = (state = INITIAL_STATE, { type, payload }) => {

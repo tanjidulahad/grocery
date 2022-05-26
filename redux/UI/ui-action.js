@@ -6,5 +6,3 @@ export const logOut = () => ({
 export const logOutCancel = () => ({
     type: uiActionType.LOG_OUT_CANCEL
 })
-
-
