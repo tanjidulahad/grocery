@@ -248,24 +248,34 @@ nav {
 } */
 
 /* antd */
-.ant-tabs-card .ant-tabs-tab-btn{
+.ant-tabs-card .ant-tabs-tab-btn {
   padding-top: 14px !important;
   padding-bottom: 14px !important;
   font-size: 20px;
-
 }
-.ant-tabs-tab{
+.ant-tabs-tab {
   border: none !important;
 }
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  color: #363636 !important; 
+  color: #363636 !important;
   font-weight: 500;
 }
-.mobile-tab.ant-tabs-card .ant-tabs-tab-btn{
+.mobile-tab.ant-tabs-card .ant-tabs-tab-btn {
   padding-top: 11px !important;
   padding-bottom: 11px !important;
   font-size: 14px;
 }
-.ant-tabs-nav .ant-tabs-nav-more{
+.ant-tabs-nav .ant-tabs-nav-more {
   display: none !important;
+}
+
+button:disabled,
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed !important;
+  opacity: 0.6;
 }

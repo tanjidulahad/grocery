@@ -15,6 +15,7 @@ import { riseError } from "../global-error-handler/global-error-handler-action.t
 
 function* onSetBackendCartStart() {
     yield takeLatest(checkoutActionType.SET_BACKEND_CART_START, function* ({ payload }) {
+        console.log('formfasfa');
         const { userId, groupId, purchaseId, data } = payload;
         try {
             const res = yield fetcher('POST', `?r=orders/add-items-to-cart&customerId=${userId}&groupId=${groupId}${purchaseId ? `&purchaseId=${purchaseId}` : ''}`, data)

@@ -5,7 +5,7 @@ import plintoLogo from './plintoLogo.jpg'
 import { orderPaymentConfirmStart } from "../../redux/checkout/checkout-action"
 import Loader from "../loading/loader"
 
-const OnlienPayment = ({ store, user, checkout, setConfirmPayment, rzpOrder, children, setInitiateStatus, setError }) => {
+const OnlienPayment = ({ store, user, themeColor = '#F64B5D', checkout, setConfirmPayment, rzpOrder, children, setInitiateStatus, setError }) => {
     useEffect(() => {
         // if (!checkout.rzpOrder) Router.push(`/${store.store_name.replaceAll(' ', '-').trim()}/${store.store_id}/cart`)
         // Payment details
@@ -39,7 +39,7 @@ const OnlienPayment = ({ store, user, checkout, setConfirmPayment, rzpOrder, chi
                 contact: user.phone,
             },
             theme: {
-                color: null,
+                color: themeColor,
             },
             modal: {
                 "ondismiss": () => setInitiateStatus('pending')

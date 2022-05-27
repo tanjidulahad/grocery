@@ -104,9 +104,6 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                     .btn-color {
                     color: ${themeColors.color};
                     }
-                    .btn-color-revese {
-                    color: ${themeColors.bgColor};
-                    }
                     .btn-color-revers {
                     color: ${themeColors.bgColor};
                     }

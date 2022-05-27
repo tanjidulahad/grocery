@@ -109,8 +109,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const name = Router?.route?.split('/')[3]
 
   return (
-    <nav className='sticky top-0  ' ref={ref} style={{ backgroundColor: `#F9F6ED` }}>
-
+    <nav id='navbar' className='sticky top-0' ref={ref} style={{ backgroundColor: `#F9F6ED` }}>
       <div className={(router.pathname == "/[name]/[storeId] hidden md:block " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-[#F9F6ED] hidden md:block nav-bg` : 'hidden'} >
         <div className="wrapper flex flex-row justify-between py-4 w-full">
           <div className=" flex items-center ">

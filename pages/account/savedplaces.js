@@ -78,7 +78,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
   }
   return (
     <>
-    <ToastContainer></ToastContainer>
+      <ToastContainer></ToastContainer>
       {
         isLoadding ?
           <div className='w-full  bg-white md:bg-[transparent]'>
@@ -94,7 +94,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
                 router.push(`/account/newaddress`)
               }}>
                 <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12.5 3.125C17.6562 3.125 21.875 7.34375 21.875 12.5C21.875 17.6562 17.6562 21.875 12.5 21.875C7.34375 21.875 3.125 17.6562 3.125 12.5C3.125 7.34375 7.34375 3.125 12.5 3.125ZM12.5 1.5625C6.48438 1.5625 1.5625 6.48438 1.5625 12.5C1.5625 18.5156 6.48438 23.4375 12.5 23.4375C18.5156 23.4375 23.4375 18.5156 23.4375 12.5C23.4375 6.48438 18.5156 1.5625 12.5 1.5625Z"  />
+                  <path d="M12.5 3.125C17.6562 3.125 21.875 7.34375 21.875 12.5C21.875 17.6562 17.6562 21.875 12.5 21.875C7.34375 21.875 3.125 17.6562 3.125 12.5C3.125 7.34375 7.34375 3.125 12.5 3.125ZM12.5 1.5625C6.48438 1.5625 1.5625 6.48438 1.5625 12.5C1.5625 18.5156 6.48438 23.4375 12.5 23.4375C18.5156 23.4375 23.4375 18.5156 23.4375 12.5C23.4375 6.48438 18.5156 1.5625 12.5 1.5625Z" />
                   <path d="M18.75 11.7188H13.2812V6.25H11.7188V11.7188H6.25V13.2812H11.7188V18.75H13.2812V13.2812H18.75V11.7188Z" />
                 </svg>
                 <p className="text-lg  lg:block btn-color-revese font-bold bg-white p-4">
@@ -118,20 +118,20 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
             }
             {
               isTabletOrMobile && <div className=" md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 my-0 md:my-5 lg:my-5 mr-4 mb-5 ">
-              {
-                [...address].map((item, i) => (
-                  <div className="w-full mt-4" key={i} >
-                    <Address type={item.address_tag == `Home` ? 'Home' : 'Work'} ids={i} data={item} onEdit={() => router.push(
-                                        {
-                                            pathname: `/account/newaddress`,
-                                            query: item
-                                        },
-                                        // '/accounts/EditAddress'
-                                    )}onRemove={() => removeAddress({ userId: user.customer_id, addressId: item.address_id, setError })} />
-                  </div>
-                ))
-              }
-            </div>
+                {
+                  [...address].map((item, i) => (
+                    <div className="w-full mt-4" key={i} >
+                      <Address type={item.address_tag == `Home` ? 'Home' : 'Work'} ids={i} data={item} onEdit={() => router.push(
+                        {
+                          pathname: `/account/newaddress`,
+                          query: item
+                        },
+                        // '/accounts/EditAddress'
+                      )} onRemove={() => removeAddress({ userId: user.customer_id, addressId: item.address_id, setError })} />
+                    </div>
+                  ))
+                }
+              </div>
             }
             <div className="hidden md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 my-0 md:my-5 lg:my-5  ">
               {
