@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { connect } from 'react-redux'
-import Link, { redirect } from '@components/link'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import { Button } from '@components/inputs'
 import { Input } from '@components/inputs'
 
@@ -110,6 +111,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
     } : {}
     return (
         <div className="wrapper bg-[#f2f2f2] w-full ">
+            <ToastContainer />
             {/* Stepper Header */}
             <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
                 <Stepper steps={steps} activeStep={checkoutDetails.deliveryAddress ? 1 : 0} sx={style} />

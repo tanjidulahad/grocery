@@ -288,7 +288,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                       lists.length && lists.slice(isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
                         <li className=" relative others-list-item " key={i}>
                           <Link href={`/shop?category=${item.category_id}`}>
-                            <a className=" block py-2 text-white px-4 hover:bg-gray-400">
+                            <a className=" block py-2 text-black hover:text-white px-4 hover:bg-gray-400">
                               {item.category_name}
                             </a>
                           </Link>
@@ -296,7 +296,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                             <ul className="w-60 flex flex-col sticky bottom-0 overflow-x-clip overflow-y-auto" style={{ maxHeight: '300px' }}>
                               {
                                 item.subCategories.map((subItem, j) => (
-                                  <li key={j + 'll'}>
+                                  <li className=" text-black" key={j + 'll'}>
                                     <Link href={`/shop?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
                                       <a className=" block py-2 px-4 hover:bg-gray-400">
                                         {subItem.sub_category_name}

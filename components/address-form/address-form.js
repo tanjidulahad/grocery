@@ -52,6 +52,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
         } else {
             addAddress({ userId: user.customer_id, address: newAddress });
         }
+        setNewAddress(addressStructure)
     }
     useEffect(() => {
         if (edit) {
@@ -134,7 +135,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                         <div className="flex justify-start items-center space-x-4">
                             <div className=" primary-color ">
                                 <Button className="btn-color-revers text-center w-40 py-3 px-4 btn-border border text-sm md:text-base" onClick={onSave} >{
-                                    Object(newAddress).hasOwnProperty('address_id') ? 'Update' : 'Save Address'
+                                    newAddress?.address_id ? 'Update' : 'Save Address'
                                 }</Button>
                             </div>
                             <div className="">

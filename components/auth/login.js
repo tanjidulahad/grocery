@@ -61,8 +61,19 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
             {
                 !user ?
                     <>
-                        <div className="auth ">
-                            <div className="p-6 auth-form-container rounded " style={{ border: "2px solid #F58634" }} >
+                        <div className="auth overflow-y-auto no-scrollbar">
+                            <div className={`sm:hidden flex sticky top-0 justify-between items-center shadow-lg nav-bg h-[100px] w-full `} style={{ zIndex: 1200 }}>
+                                <div className={`flex items-center  mb-4`}>
+                                    <p className={`text-2xl text-[white] mx-4`}>Register</p>
+                                </div>
+                                <Button className='bg-transparent dark-blue sm:hidden block mx-6' onClick={showToggle} >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                                        <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                                    </svg>
+                                </Button>
+                            </div>
+                            <div className="p-6 absolute bottom-0 sm:bottom-auto top-[100px] sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full bg-white sm:w-[512px] rounded " style={{ border: "2px solid #F58634" }} >
                                 <div className="flex justify-between items-center">
                                     {/* <h2 className="text-2xl font-semibold">Login</h2> */}
                                     <div className='w-fit flex   p-4' onClick={() => setIsVarificationPhone(!isVarificationPhone)}>
@@ -73,7 +84,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
                                             <MdEmail />
                                         </span>
                                     </div>
-                                    <Button className='bg-transparent dark-blue ' onClick={showToggle} >
+                                    <Button className='bg-transparent dark-blue  hidden sm:block' onClick={showToggle} >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                                             <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
                                             <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />

@@ -111,7 +111,7 @@ const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount,
     if (!page) return;
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getSearchProducts({ storeId, q: q.trim(), setSearchResult, setStatus })
+      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus })
 
     } else if (category) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
@@ -427,7 +427,7 @@ const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount,
                           <TabPane tab={`${groupid}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
                             <p className='text-xl text-center mt-14 mb-4'>Select the Price Range</p>
                             <div className='px-10'>
-                            
+
                               <Slider trackStyle={{ height: '10px' }} handleStyle={{ height: '20px', width: "20px" }} marks={{
                                 [Number(filtersGroup[groupid].min_value)]: `${Number(filtersGroup[groupid].min_value)}`,
                                 [Number(filtersGroup[groupid].max_value)]: `${Number(filtersGroup[groupid].max_value)}`,
@@ -508,7 +508,7 @@ const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount,
             </div>
             <div className='max-h-[100vh] h-1 w-1 mobile-sort-div'>
               <div className='flex justify-end gap-6 pb-5 fixed bottom-0 right-0 bg-white left-0 shadow-[0_20px_10px_15px_rgba(0,0,0,0.6)] pt-5'>
-                <p onClick={ openMobileSort} className='text-base px-5 py-2 btn-color-revese'>Cancel</p>
+                <p onClick={openMobileSort} className='text-base px-5 py-2 btn-color-revese'>Cancel</p>
                 <p onClick={() => { handleFilterAndSort(), openMobileSort() }} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded'>Apply</p>
               </div>
             </div>
