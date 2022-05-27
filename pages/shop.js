@@ -29,7 +29,7 @@ const { TabPane } = Tabs;
 
 
 
-const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount, info, cart, clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
+const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageCount, info, cart, clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const purchaseDetails = checkout.purchaseDetails;
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
@@ -71,6 +71,7 @@ const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount,
       zIndex: 100
     },
   };
+
 
   useEffect(() => { // Componentdidmount
     if (!categories.length) getCategoryStart(storeId);
@@ -119,7 +120,7 @@ const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount,
 
     } else {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getShopProducts({ storeId, page, setStatus, filterAndSortPayload, sortOrder })
+      getShopProducts({ storeId, page, setStatus, filterAndSortPayload, sortOrder,user })
       getFilterGroups({ storeId, setFiltersGroup })
     }
   }, [Router.query, page])
@@ -134,7 +135,7 @@ const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount,
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
 
     } else {
-      getShopProducts({ storeId, setStatus })
+      getShopProducts({ storeId, setStatus,user })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       // setq('') // Cleaning query string of search
     }
@@ -245,7 +246,7 @@ const Home = ({ getFilterGroups, products, addWishlist, pageCount, getPageCount,
 
   useEffect(() => {
     if (triggerFilter == 'yes') {
-      getShopProducts({ storeId, filterAndSortPayload, sortOrder })
+      getShopProducts({ storeId, filterAndSortPayload, sortOrder,user })
       setTriggerFilter("No")
     }
 
@@ -526,7 +527,8 @@ const mapStateToProps = state => ({
   categories: state.store.categories,
   checkout: state.checkout,
   banner: state.store.banners,
-  pageCount: state.store.pageCount
+  pageCount: state.store.pageCount,
+  user: state.user.currentUser,
 
 })
 const mapDispatchToProps = dispatch => ({

@@ -157,10 +157,10 @@ function* onGetSubCategoriesStart() {
 
 function* onGetShopProductsStart() {
     yield takeLatest(shopActionType.GET_SHOP_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, page, setStatus ,filterAndSortPayload,sortOrder} = payload;
+        const { storeId, page, setStatus ,filterAndSortPayload,sortOrder,user} = payload;
         console.log("filter from saga",payload)
         try {
-            const res = yield fetcher(`${filterAndSortPayload==undefined?'GET':'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder !="false" ? sortOrder!= undefined ?`&sortOrder=${sortOrder}`:"":""}`,filterAndSortPayload)
+            const res = yield fetcher(`${filterAndSortPayload==undefined?'GET':'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder !="false" ? sortOrder!= undefined ?`&sortOrder=${sortOrder}`:"":""}${user?`&customerId=${user.customer_id}`:""}`,filterAndSortPayload)
             if (Array.isArray(res.data)) {
                 if (page > 1 && typeof page != 'undefined') {
                     yield put(getShopProductsPaginationSuccess(res.data))

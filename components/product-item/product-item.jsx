@@ -1,18 +1,19 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { connect } from "react-redux";
 import { QuantityID, Button } from "../inputs";
 import Router from 'next/router'
 // import Rating from '../rating-stars/rating'
 
 import { addToCart, removeFromCart } from "../../redux/cart/cart-actions";
-import { AiOutlineHeart, AiFillStar } from 'react-icons/ai'
-import { addWishlistStart } from "@redux/wishlist/wishlist-action";
+import { AiOutlineHeart, AiFillStar ,AiFillHeart} from 'react-icons/ai'
+import { addWishlistStart, removeWishlistStart } from "@redux/wishlist/wishlist-action";
 import { toast } from "react-toastify";
 
 
 
-const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist }) => {
+const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist,removeWishlistStart }) => {
     const tip = useRef(null)
+    const [wishlistAdded,setWishListAdded]=useState(data?.wishlistId)
     const wishlist = () => {
         if (!user.currentUser) {
             toast.error("Please Sign in First",{
@@ -23,10 +24,21 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
             const payload = {
                 id: Number(data.item_id),
                 storeId: store.store_id,
-                userId: user.currentUser.customer_id
+                userId: user.currentUser.customer_id,
+                setWishListAdded:setWishListAdded
             }
             addItemToWishlist(payload)
         }
+    }
+
+    const removeFromWishList = (wishlistid) => {
+
+        const payload = {
+            wishlistId: wishlistid,
+            setWishListAdded:setWishListAdded
+        }
+        removeWishlistStart(payload)
+
     }
     const tipFun = (e) => {
         let x = e.clientX, y = e.clientY;
@@ -96,7 +108,10 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
             <div className={`flex flex-col  items-stretch justify-between border-[#B6B6B6] h-full w-[160px] md:w-[221.85px] product-item w-max hover:sca ${className}`}>
                 <div className="tooltip block relative bg-white border rounded-sm h-[220px] md:h-[264.49px]">
                     <img className="w-4 h-4 top-2 left-2 absolute" src="/img/veg.svg" />
-                    <AiOutlineHeart className="w-4 h-4 top-2 right-2 absolute hover:text-[#F35252] hover:scale-150 transition-all " size={18} onClick={wishlist} />
+                    {wishlistAdded?<AiFillHeart className="w-4 h-4 top-2 right-2 absolute text-[#F35252] hover:text-[#F35252] hover:scale-150 transition-all " size={18} onClick={() => removeFromWishList(wishlistAdded)} />
+                    :
+                    <AiOutlineHeart onClick={wishlist}  className="w-4 h-4 top-2 right-2 absolute hover:text-[#F35252] hover:scale-150 transition-all " size={18} />}
+                
                     <Button type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
                         <a onMouseMove={tipFun} >
                             {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
@@ -166,5 +181,6 @@ const mapDispatchToProps = dispatch => ({
     addToCart: (item) => dispatch(addToCart(item)),
     removeFromCart: (item) => dispatch(removeFromCart(item)),
     addItemToWishlist: (item) => dispatch(addWishlistStart(item)),
+    removeWishlistStart: (data) => dispatch(removeWishlistStart(data))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ProductItem);

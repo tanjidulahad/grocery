@@ -4,7 +4,7 @@ import { Button } from '../../../inputs'
 function orderlList({ list, storeName, orderId, createTime, openReturn }) {
   return (
     <div className="w-full    ">
-      <div className=" lg:w-full p-4 bg-white ">
+      <div className=" lg:w-full bg-white ">
         <div className="flex justify-between">
           <div className=" bg-white w-full  ">
             <div className=" flex w-full justify-between    my-2 md:my-2   ">
@@ -27,7 +27,7 @@ function orderlList({ list, storeName, orderId, createTime, openReturn }) {
                   </div>
                 </div>
                 <div className='flex justify-start'>
-                  <div className=" flex-col items-center  mt-4 mx-6 md:ml-6 ">
+                  <div className=" flex-col items-center  mx-6 md:ml-6 ">
                     <Button type='link' href={`/product/${item.orderItemId}`}>
                       <p className="text-left font-semibold truncate-2 text-base text-dark mt-2 ">{item.itemName}</p>
                     </Button>
