@@ -1,15 +1,22 @@
-import { logOutStart } from "@redux/user/user-action";
+import { getWalletBalance, logOutStart } from "@redux/user/user-action";
 import Link from "@components/link";
 import Router from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-function Sideprofilecard({ user, logout }) {
+function Sideprofilecard({ user, logout, customerWallet, info,getWalletBalance }) {
 
-  let active = Router?.router?.state?.pathname.split('/')[4]
- active=active===undefined? 'account' :active
+  let active = Router?.router?.state?.pathname.split('/')[2]
+  active = active === undefined ? 'account' : active
 
-// console.log(active,'linwertyuihvhhgufxfg')
+  useEffect(() => {
+    if(customerWallet==null){
+        getWalletBalance({ customerId: user.customer_id, storeId: info.store_id })
+    }
+  }, [])
+
+  // console.log("active path",Router.router.state.asPath.split('/')[2])
+
   return (
     <div className="w-full  h-full hidden md:block lg:block rounded-t-md bg-white shadow-lg md:pb-20">
 
@@ -54,7 +61,7 @@ function Sideprofilecard({ user, logout }) {
             active === 'account' ?
               <div className=" h-10 my-6">
                 <Link href='/account ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold text-[#48887B] ">
+                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold btn-color-revese ">
                     {" "}
                     Account
                   </p>
@@ -74,7 +81,7 @@ function Sideprofilecard({ user, logout }) {
             active === 'myorders' ?
               <div className="h-10 my-6">
                 <Link href='/account/myorders ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold text-[#48887B] ">
+                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold btn-color-revese ">
                     {" "}
                     My Orders
                   </p>
@@ -96,7 +103,7 @@ function Sideprofilecard({ user, logout }) {
               <div className=" h-10 my-6">
 
                 <Link href='/account/wishlist ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  text-[#48887B] ">
+                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  btn-color-revese ">
 
                     Wishlist
 
@@ -105,7 +112,7 @@ function Sideprofilecard({ user, logout }) {
               </div> :
               <div className=" cursor-pointer h-10 my-6">
                 <Link href='/account/wishlist ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  text-gray-600">
+                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  text-gray-600">
                     Wishlist
 
                   </p>
@@ -119,19 +126,25 @@ function Sideprofilecard({ user, logout }) {
               <div className=" h-10 my-6">
 
                 <Link href='/account/wallet ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  text-[#48887B] ">
-
+                <div className="flex items-center justify-between">
+                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  btn-color-revese">
                     Wallet
-
+                    
                   </p>
+                  <p className="font-semibold text-base text-[#44ADF4] bg-[#44ADF440] mr-7 px-2 rounded-3xl"><span className="text-[#44ADF4] mr-1">₹</span> {+customerWallet?.customer_wallet_balance}</p>
+                  </div>
                 </Link>
               </div> :
               <div className=" cursor-pointer h-10 my-6">
                 <Link href='/account/wallet ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold relative  text-gray-600">
+                  <div className="flex items-center justify-between">
+                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  text-gray-600">
                     Wallet
-
+                    
                   </p>
+                  <p className="font-semibold text-base text-[#44ADF4] bg-[#44ADF440] mr-7 px-2 rounded-3xl"><span className="text-[#44ADF4] mr-1">₹</span> {+customerWallet?.customer_wallet_balance}</p>
+                  </div>
+                  
                 </Link>
 
               </div>
@@ -140,7 +153,7 @@ function Sideprofilecard({ user, logout }) {
             active === 'savedplaces' ?
               <div className=" h-10 my-6">
                 <Link href='/account/savedplaces ' >
-                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  text-[#48887B] ">
+                  <p className=" flex mx-8 py-2 text-lg font-semibold relative  btn-color-revese ">
                     Saved Places
                   </p>
                 </Link>
@@ -188,11 +201,14 @@ function Sideprofilecard({ user, logout }) {
 }
 
 const mapStateToProps = state => ({
-  user: state.user.currentUser
+  user: state.user.currentUser,
+  customerWallet: state.user.customerWallet,
+  info: state.store.info,
 })
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logOutStart())
+  logout: () => dispatch(logOutStart()),
+  getWalletBalance: (data) => dispatch(getWalletBalance(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sideprofilecard);

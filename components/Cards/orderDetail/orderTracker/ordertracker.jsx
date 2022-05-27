@@ -17,11 +17,11 @@ function Ordertracker({ data, details, openReturn }) {
             <div className=" px-4 my-4  w-full flex justify-end  items-center  ">
               {
                 details.orderStatus !== "CANCELLED_BY_CUSTOMER" ?
-                  <p className='btn-color-revers cursor-pointer mr-6 font-bold' onClick={() => openReturn(true)}>Cancel</p>
+                  <p className='btn-color-revers cursor-pointer mr-14 font-bold' onClick={() => openReturn(true)}>Cancel</p>
                   :
-                  <p className='btn-color-revers cursor-pointer mr-6 font-bold'  >Order Cancelled</p>
+                  <p className='btn-color-revers cursor-pointer mr-14 font-bold'  >Order Cancelled</p>
               }
-              <p className='btn-color-revers cursor-pointer font-bold '>Need Help?</p>
+              {/* <p className='btn-color-revers cursor-pointer font-bold '>Need Help?</p> */}
             </div>
           </div>
         </div>

@@ -2,6 +2,10 @@ import React, { useEffect, useState, memo } from 'react';
 import PageWrapper from '@components/page-wrapper/page-wrapper';
 import Slider from "react-slick";
 import { connect } from 'react-redux'
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import RecommendedCard from "@components/Cards/Home/RecommendedCard";
 import { getBestSellerProducts, getNewArrivalProducts, getShopProductsStart } from '@redux/shop/shop-action';
 import ProductItem from '@components/product-item/product-item';
@@ -89,6 +93,7 @@ const Index = ({ banner, getBestSellerProducts, products, info,getNewArrivalProd
 
   return (
     <div >
+      <ToastContainer/>
       {/* slider div */}
       <div className='my-4 pt-6 sm:px-4'>
         <div>

@@ -66,17 +66,17 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
       </div>
       {/* <div className="grid grid-cols-2 md:grid-cols-1  px-2 md:px-0 gap-6  py-8"> */}
       {
-        wishListedItem.length == 0 ? <WishlistSkeleton /> :         
+        wishListedItem.length == 0 ? <div className='mt-32 lg:mt-4'><WishlistSkeleton/></div> :         
 
             <InfiniteScroll
               dataLength={wishListedItem?.length}
               next={getMoreProducts}
               hasMore={noMore}              
               loader={
-                <WishlistSkeleton></WishlistSkeleton>
+                <WishlistSkeleton ></WishlistSkeleton>
               }
             >
-              <div className="grid grid-cols-2 md:grid-cols-1 px-2 md:px-0 gap-6 lg:gap-4 py-8 mt-32 md:mt-2 lg:mt-0">
+              <div className="grid grid-cols-2 md:grid-cols-1 px-2 md:px-0 gap-6 lg:gap-4 py-8 mt-20 md:mt-2 lg:mt-0">
               {wishListedItem.map((item, idx) => <div key={idx} className="w-full md:rounded md:shadow md:bg-white md:px-4">
 
                 <WishItem data={item} wishListedItem={wishListedItem} setWishListedItem={setWishListedItem} />
@@ -93,7 +93,7 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
       {/* </div> */}
 
 
-      <div className={`md:hidden fixed top-0 shadow-lg nav-bg h-[121px] w-full `} style={{ zIndex: 1200 }}>
+      <div className={`md:hidden fixed top-0 shadow-lg nav-bg h-[80px] w-full `} style={{ zIndex: 1200 }}>
 
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>

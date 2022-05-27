@@ -489,7 +489,7 @@ const ProductDetails = ({store,
             </div>
             {
                 visuals.view ?
-                    <section className="wrapper pdp">
+                    <section className="wrapper pdp mt-2 md:mt-0">
                         <div className="w-full pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px] bg-white  relative">
                             <div className="">
                                 <div className="flex md:hidden justify-between w-full">
@@ -509,10 +509,10 @@ const ProductDetails = ({store,
                                                         <Rating value={visuals?.rating.value} count={visuals?.rating.count} />
                                                     </div> */}
                                             <div className="my-4 md:my-6">
-                                                <span className="text-lg md:text-xl my-6 black-color font-semibold">₹{visuals.defaultVariantItem ? visuals.defaultVariantItem.sale_price : visuals.price.sale_price}</span>
+                                                <span className="text-lg md:text-xl my-6 black-color font-semibold">₹ {visuals.defaultVariantItem ? visuals.defaultVariantItem.sale_price : visuals.price.sale_price}</span>
                                                 {
                                                     visuals.price.sale_price != visuals.price.price &&
-                                                    <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹{visuals.defaultVariantItem ? visuals.defaultVariantItem.list_price : visuals.price.price}</span>
+                                                    <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹ {visuals.defaultVariantItem ? visuals.defaultVariantItem.list_price : visuals.price.price}</span>
                                                 }
                                             </div>
                                             <div className="my-6">

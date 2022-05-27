@@ -15,13 +15,13 @@ function OrderCard({ status, message, data }) {
 
   let orderStatus = ""
   if (data.orderStatus == "PAYMENT_COMPLETED") {
-    orderStatus = "Ordered by " + moment.unix(data.orderPlacedTime).format("MMM, YY")
+    orderStatus = "Ordered by " + moment.unix(data.orderPlacedTime).format("MMM DD, YYYY")
   }
   else if (data.orderStatus == "ORDER_DELIVERED_SUCCESS") {
-    orderStatus = "Delivered on " + moment.unix(data.deliveredTime).format("MMM, YY")
+    orderStatus = "Delivered on " + moment.unix(data.deliveredTime).format("MMM DD, YYYY")
   }
   else if (data.orderStatus == "ORDER_DECLINED_BY_RESTAURANT" || data.orderStatus == "CANCELLED_BY_CUSTOMER") {
-    orderStatus = "Order Cancelled on " + moment.unix(data.orderCancelledTime).format("MMM, YY")
+    orderStatus = "Order Cancelled on " + moment.unix(data.orderCancelledTime).format("MMM DD, YYYY")
   }
   console.log(data)
 

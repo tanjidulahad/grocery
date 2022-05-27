@@ -103,7 +103,7 @@ alert(otp)
       <>
 
         <div className="auth hidden md:block">
-              <div className="p-6 pt-40 auth-form-container rounded " style={{border:"2px solid #F58634"}} >
+              <div className="p-6 pt-4 auth-form-container rounded " style={{border:"2px solid #F58634"}} >
 
                 <div className="flex justify-end items-center">
 
@@ -162,12 +162,12 @@ alert(otp)
                 </div>
                 <div className="auth-redirect text-lg my-8 mx-10 flex justify-between items-center black-color-75" >
                     <span className='font-semibold mx-2 ' id="timerCont">{timer} sec</span>
-                    <span >Didn't receive OTP? <Button className="red-color px-2"style={{color:"#F58634"}} onClick={resend} >Resend</Button> </span>
+                    <span >Didn't receive OTP? <Button className="red-color px-2 btn-color-revese" onClick={resend} >Resend</Button> </span>
                 </div>
                 <div className="flex justify-around w-full">
                     <Button className={`w-10/12 btn-bg btn-color py-4 rounded `} type="button" onClick={onSubmitHandler} disabled={isLoading}
                         style={{
-                          backgroundColor:"#F58634",...isLoading && {
+                          ...isLoading && {
                                 opacity: 0.7,
                                 cursor: "not-allowed"
                             },

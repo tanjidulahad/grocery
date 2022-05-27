@@ -313,7 +313,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
           <BsArrowLeft className={`mx-4`} size={35} color={'white'} />
-          <p className={`text-2xl text-[white] mx-4`}>Savedplaces</p>
+          <p className={`text-2xl text-[white] mx-4`}>Saved Places</p>
         </div>
       </div>
 

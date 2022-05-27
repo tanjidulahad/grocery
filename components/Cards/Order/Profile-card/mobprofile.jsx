@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from "@components/link";
 import Router from "next/router";
 import { connect } from 'react-redux';
-import { logOutStart } from '@redux/user/user-action';
+import { getWalletBalance, logOutStart } from '@redux/user/user-action';
 import {AiOutlineUser} from 'react-icons/ai'
 
-function mobprofile({ user, logout }) {
+function mobprofile({ user, logout,getWalletBalance,customerWallet,info }) {
   const active = Router?.router?.state?.pathname.split('/')[2]
 
+  useEffect(() => {
+    if(customerWallet==null){
+        getWalletBalance({ customerId: user.customer_id, storeId: info.store_id })
+    }
+  }, [])
 
   return (
     <div>
@@ -46,7 +51,7 @@ function mobprofile({ user, logout }) {
                   !user? <p className="text-lg font-bold absolute m-4  text-[#F58634]">
                     Login / Signup
                   </p>:
-                   <div className=" text-left ml-4 mt-1 relative    ">
+                   <div className=" text-left ml-4 mt-4 relative ">
                    <p className="text-base md:text-sm   font-bold  leading-4  text-gray-900">
                      {user?.full_name}
 
@@ -65,7 +70,7 @@ function mobprofile({ user, logout }) {
             </div>
           </div>
 
-          <div className={`${!user&&'hidden'}  w-max mt-2 mr-2 `}>
+          <div className={`${!user&&'hidden'}  w-max mt-4 mr-2 `}>
             <Link href='/account/profile ' >
             <svg width="20" height="20" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M13.474 3.40799L15.592 5.52499L13.474 3.40799ZM14.836 1.54299L9.109 7.27C8.81309 7.56549 8.61128 7.94198 8.529 8.35199L8 11L10.648 10.47C11.058 10.388 11.434 10.187 11.73 9.891L17.457 4.16399C17.6291 3.9919 17.7656 3.78759 17.8588 3.56273C17.9519 3.33788 17.9998 3.09688 17.9998 2.85349C17.9998 2.61011 17.9519 2.36911 17.8588 2.14426C17.7656 1.9194 17.6291 1.71509 17.457 1.54299C17.2849 1.3709 17.0806 1.23438 16.8557 1.14124C16.6309 1.04811 16.3899 1.00017 16.1465 1.00017C15.9031 1.00017 15.6621 1.04811 15.4373 1.14124C15.2124 1.23438 15.0081 1.3709 14.836 1.54299V1.54299Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -143,23 +148,33 @@ function mobprofile({ user, logout }) {
                 <div className="border-l-4 border-rose-700 h-10 ">
 
                   <Link href='/account/wallet ' >
-                    <div className="mx-4  pt-2 flex">
-                      <img src='/img/wishlist.svg' />
+                  <div className="mx-4  pt-2 flex justify-between">
+                      <div className='flex'>
+                      <img src='/img/wallet.svg' />
                       <p className="  mx-2   text-sm relative  font-semibold relative  text-red-600">
                         {" "}
                         Wallet
                       </p>
+                      </div>
+                      <div>
+                      <p className="font-semibold text-base text-[#44ADF4] bg-[#44ADF440] mr-7 px-2 rounded-3xl"><span className="text-[#44ADF4] mr-1">₹</span> {+customerWallet?.customer_wallet_balance}</p>
+                      </div>
                     </div>
                   </Link>
                 </div> :
                 <div className=" cursor-pointer h-10 ">
                   <Link href='/account/wallet ' >
-                    <div className="mx-4  pt-2 flex">
+                    <div className="mx-4  pt-2 flex justify-between">
+                      <div className='flex'>
                       <img src='/img/wallet.svg' />
                       <p className="  mx-2   text-sm relative  font-semibold relative  text-gray-600">
                         {" "}
                         Wallet
                       </p>
+                      </div>
+                      <div>
+                      <p className="font-semibold text-base text-[#44ADF4] bg-[#44ADF440] mr-7 px-2 rounded-3xl"><span className="text-[#44ADF4] mr-1">₹</span> {+customerWallet?.customer_wallet_balance}</p>
+                      </div>
                     </div>
                   </Link>
 
@@ -242,11 +257,14 @@ function mobprofile({ user, logout }) {
 }
 
 const mapStateToProps = state => ({
-  user: state.user.currentUser
+  user: state.user.currentUser,
+  customerWallet: state.user.customerWallet,
+  info: state.store.info,
 })
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logOutStart())
+  logout: () => dispatch(logOutStart()),
+  getWalletBalance: (data) => dispatch(getWalletBalance(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(mobprofile)
