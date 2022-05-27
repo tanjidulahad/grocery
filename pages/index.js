@@ -2,6 +2,7 @@ import React, { useEffect, useState, memo } from 'react';
 import PageWrapper from '@components/page-wrapper/page-wrapper';
 import Slider from "react-slick";
 import { connect } from 'react-redux'
+import { useRouter } from 'next/router';
 import RecommendedCard from "@components/Cards/Home/RecommendedCard";
 import { getShopProductsStart } from '@redux/shop/shop-action';
 import ProductItem from '@components/product-item/product-item';
@@ -34,6 +35,7 @@ function SamplePrevArrow(props) {
 }
 const Index = ({ banner, getShopProducts, products, info }) => {
   const storeId = info.store_id;
+  const router = useRouter()
   const [status, setStatus] = useState('loading')
   var bannersettings = {
     dots: true,
@@ -81,7 +83,10 @@ const Index = ({ banner, getShopProducts, products, info }) => {
     getShopProducts({ storeId, setStatus })
   }, [])
   console.log(products)
-
+  useEffect(() => {
+    const { storeId } = router.query
+    router.push(router.asPath)
+  }, [router.isReady])
   return (
     <div >
       {/* slider div */}
