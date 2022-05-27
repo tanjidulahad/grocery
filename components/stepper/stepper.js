@@ -13,6 +13,7 @@ function hexToRGB(hex, alpha) {
     }
 }
 
+
 const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openReturn, details }) => {
     const style = {
         compoleted: {
