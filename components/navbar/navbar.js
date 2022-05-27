@@ -36,7 +36,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const [query, setQuery] = useState('')
   const [Menu, setmenu] = useState(false)
   const router = useRouter();
-  const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress']
+  const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress','/account/orderdetail/[id]']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   const isDesktopOrLaptopx = useMediaQuery({ minWidth: 1020 })
   useEffect(() => {
@@ -152,7 +152,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </div>
               <div className="flex items-center justify-end space-x-4">
                 <Button
-                  className="flex items-center text-black"
+                  className="flex items-center text-black mr-6"
                   type="link"
                   href="/cart"
                 >
@@ -195,7 +195,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                       </div>
                       <div className="flex ">
                         {/* <span className='block min-w-max text-dark text-lg font-bold tracking-tight  mt-2  ml-2 mr-2'> My Account</span> */}
-                        <AiFillCaretDown className="" size={18} />
+                        <AiFillCaretDown className="ml-1" size={14} />
                       </div>
 
                       <div className="absolute w-40 hidden  account-options top-full -right-12 z-10">

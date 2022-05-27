@@ -1,11 +1,15 @@
 import React, { useEffect, useState, memo } from 'react';
 import PageWrapper from '@components/page-wrapper/page-wrapper';
 import Slider from "react-slick";
-import { connect } from 'react-redux'
-import { useRouter } from 'next/router';
+import { connect } from 'react-redux';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import RecommendedCard from "@components/Cards/Home/RecommendedCard";
-import { getShopProductsStart } from '@redux/shop/shop-action';
+import { getBestSellerProducts, getNewArrivalProducts, getShopProductsStart } from '@redux/shop/shop-action';
 import ProductItem from '@components/product-item/product-item';
+import { useRouter } from 'next/router';
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
   return (
@@ -33,10 +37,12 @@ function SamplePrevArrow(props) {
     </div>
   );
 }
-const Index = ({ banner, getShopProducts, products, info }) => {
-  const storeId = info.store_id;
+const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalProducts }) => {
   const router = useRouter()
+  const storeId = info.store_id;
   const [status, setStatus] = useState('loading')
+  const [bestSellerProducts, setBestSellerProducts] = useState([])
+  const [newArrivalProducts, setNewArrivalProducts] = useState([])
   var bannersettings = {
     dots: true,
     infinite: true,
@@ -80,7 +86,8 @@ const Index = ({ banner, getShopProducts, products, info }) => {
   };
 
   useEffect(() => {
-    getShopProducts({ storeId, setStatus })
+    getBestSellerProducts({ storeId, setBestSellerProducts });
+    getNewArrivalProducts({ storeId, setNewArrivalProducts })
   }, [])
   console.log(products)
   useEffect(() => {
@@ -89,6 +96,7 @@ const Index = ({ banner, getShopProducts, products, info }) => {
   }, [router.isReady])
   return (
     <div >
+      <ToastContainer />
       {/* slider div */}
       <div className='my-4 pt-6 sm:px-4'>
         <div>
@@ -100,26 +108,26 @@ const Index = ({ banner, getShopProducts, products, info }) => {
         </div>
       </div>
       {/* fresh items */}
-      <div className='wrapper'>
-        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold '>Fresh Items</h2>
+      {newArrivalProducts.length != 0 && <div className='wrapper'>
+        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold '>New Arrivals</h2>
         <div className='bg-[#C0EDAB]'>
           <Slider {...settings}>
-            {[1, 2, 3, 4, 5, 6, 7].map((item, idx) => <div key={idx}>
-              <img className='w-[80px] h-[80px] max-h-[80px] lg:w-[200px] lg:h-[200px] lg:max-h-[200px] ml-4 mt-2' src="/img/fresh1.png" alt="" />
+            {newArrivalProducts.map((item, idx) => <div key={idx}>
+              <img onClick={() => router.push(`/product/${item.item_id}`)} className='w-[80px] h-[80px] max-h-[80px] lg:w-[200px] lg:h-[200px] lg:max-h-[200px] ml-4 mt-2' src={`${item.primary_img || '/img/default.png'}`} alt="" />
             </div>)}
           </Slider>
         </div>
-      </div>
+      </div>}
       {/* Recommended */}
-      <div className='wrapper'>
-        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold'>Recomended</h2>
+      {bestSellerProducts.length != 0 && <div className='wrapper'>
+        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold'>Recommended</h2>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0'>
-          {products.map((item, idx) =>
+          {bestSellerProducts.map((item, idx) =>
             <ProductItem key={idx} data={item} />
           )
           }
         </div>
-      </div>
+      </div>}
 
     </div >
   );
@@ -133,7 +141,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  getShopProducts: (storeId) => dispatch(getShopProductsStart(storeId))
+  getBestSellerProducts: (storeId) => dispatch(getBestSellerProducts(storeId)),
+  getNewArrivalProducts: (storeId) => dispatch(getNewArrivalProducts(storeId)),
 
 })
 

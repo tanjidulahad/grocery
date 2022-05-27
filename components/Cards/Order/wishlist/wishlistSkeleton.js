@@ -2,7 +2,7 @@ import React from 'react';
 
 const WishlistSkeleton = () => {
     return (
-        <div className="h-full   border-gray-200 rounded-lg overflow-hidden">
+        <div className="h-full border-gray-200 rounded-lg overflow-hidden">
             <div className=" w-32 h-32 sm:w-40 sm:h-40 animate-pulse bg-gray-400 shrink-0 object-cover object-center"></div>
             <div className="px-6 pt-6">
                 <h1 className="w-1/2 mb-3 sm:mb-4 h-4 sm:h-6 animate-pulse bg-gray-500"></h1>

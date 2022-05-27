@@ -148,4 +148,20 @@ export const updateCurrentUserDetails = (data) =>
     }
 )
 
+export const getWalletBalance = (data) =>{
+return{
+        type: userActionType.GET_WALLET_BALANCE,
+        payload: data
+    }
+}
+
+export const setWalletBalance = (data) =>
+(
+
+    {
+        type: userActionType.SET_WALLET_BALANCE,
+        payload: data
+    }
+)
+
 

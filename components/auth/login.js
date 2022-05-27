@@ -160,7 +160,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
 
                                     </div>
 
-                                    <div className=' relative flex justify-end w-3/4 ml-14 mt-4'>
+                                    <div className=' relative flex justify-end ml-14 mt-4'>
                                         <Button type='button' className='font-semibold btn-color-revers ' onClick={() => { setUser(null); setForgotPass(!forgotPass) }} >{forgotPass ? 'Want to Login?' : 'Forgot password?'}</Button>
                                     </div>
                                     <div className="py-4 border-b-2 flex w-full justify-center ">

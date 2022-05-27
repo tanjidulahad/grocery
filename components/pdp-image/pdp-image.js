@@ -31,7 +31,7 @@ function ImageMagnifier({
         >
             <img
                 src={src}
-                style={{ height: height, width: width ,maxWidth:'500px',maxHeight:'500px'}}
+                style={{ height: height, width: width ,maxWidth:'450px',maxHeight:'450px',minWidth:'450px',minHeight:'450px'}}
                 onMouseEnter={(e) => {
                     // update image size and turn-on magnifier
                     const elem = e.currentTarget;

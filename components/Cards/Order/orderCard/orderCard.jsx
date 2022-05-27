@@ -15,13 +15,13 @@ function OrderCard({ status, message, data }) {
 
   let orderStatus = ""
   if (data.orderStatus == "PAYMENT_COMPLETED") {
-    orderStatus = "Ordered by " + moment.unix(data.orderPlacedTime).format("MMM, YY")
+    orderStatus = "Ordered by " + moment.unix(data.orderPlacedTime).format("MMM DD, YYYY")
   }
   else if (data.orderStatus == "ORDER_DELIVERED_SUCCESS") {
-    orderStatus = "Delivered on " + moment.unix(data.deliveredTime).format("MMM, YY")
+    orderStatus = "Delivered on " + moment.unix(data.deliveredTime).format("MMM DD, YYYY")
   }
   else if (data.orderStatus == "ORDER_DECLINED_BY_RESTAURANT" || data.orderStatus == "CANCELLED_BY_CUSTOMER") {
-    orderStatus = "Order Cancelled on " + moment.unix(data.orderCancelledTime).format("MMM, YY")
+    orderStatus = "Order Cancelled on " + moment.unix(data.orderCancelledTime).format("MMM DD, YYYY")
   }
   console.log(data)
 
@@ -41,7 +41,7 @@ function OrderCard({ status, message, data }) {
         {/* </div> */}
         <div className='flex justify-between col-span-3'>
           <div className="ml-8 lg:ml-4 flex flex-col justify-center">
-            <p className={`font-bold  ${data?.orderStatus == 'CANCELLED_BY_CUSTOMER' || data?.orderStatus=='ORDER_DECLINED_BY_RESTAURANT' ? "text-xs lg:text-base text-[red]" : "text-xs lg:text-base btn-color-revese"} `}>{orderStatus} </p>
+            <p className={`font-bold  ${data?.orderStatus == 'CANCELLED_BY_CUSTOMER' || data?.orderStatus=='ORDER_DECLINED_BY_RESTAURANT' ? " text-[red]" : `${data.orderStatus == "ORDER_DELIVERED_SUCCESS" ? "text-[green]" :"text-black"} `} `}>{orderStatus} </p>
             <p className="text-left text-sm lg:text-base font-medium text-black mt-4">{Object.values(data.orderItems)[0]?.itemName}</p>
           </div>
           <div className="mr-2  w-max flex justify-end items-center cursor-pointer">

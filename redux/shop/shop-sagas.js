@@ -1,6 +1,6 @@
 import Router from 'next/router'
 import { takeLatest, all, call, put } from "redux-saga/effects";
-import fetcher from "../utility";
+import fetcher, { nodefetcher } from "../utility";
 import shopActionType from './shop-action-type'
 import {
     getShopInfoSuccess, getShopSeoSuccess, getShopSettingsSuccess, getSocialProfileSuccess,
@@ -157,10 +157,10 @@ function* onGetSubCategoriesStart() {
 
 function* onGetShopProductsStart() {
     yield takeLatest(shopActionType.GET_SHOP_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, page, setStatus ,filterAndSortPayload,sortOrder} = payload;
+        const { storeId, page, setStatus ,filterAndSortPayload,sortOrder,user} = payload;
         console.log("filter from saga",payload)
         try {
-            const res = yield fetcher(`${filterAndSortPayload==undefined?'GET':'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder !="false" ? sortOrder!= undefined ?`&sortOrder=${sortOrder}`:"":""}`,filterAndSortPayload)
+            const res = yield fetcher(`${filterAndSortPayload==undefined?'GET':'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder !="false" ? sortOrder!= undefined ?`&sortOrder=${sortOrder}`:"":""}${user?`&customerId=${user.customer_id}`:""}`,filterAndSortPayload)
             if (Array.isArray(res.data)) {
                 if (page > 1 && typeof page != 'undefined') {
                     yield put(getShopProductsPaginationSuccess(res.data))
@@ -235,10 +235,38 @@ function* onGetFiltersGroup() {
         }
     })
 }
+function* onGetBestSellerProduct() {
+    yield takeLatest(shopActionType.GET_BEST_SELLER_PRODUCTS, function* ({ payload }) {
+        const { storeId,setBestSellerProducts } = payload
+        try {
+            const res = yield nodefetcher('GET', `/store-widgets/get-best-sellers-by-store?storeId=${storeId}`);
+            if(res.data){
+                setBestSellerProducts(res.data)
+            }
+
+        } catch (error) {
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
+function* onGetNewArrivalProducts() {
+    yield takeLatest(shopActionType.GET_NEW_ARRIVALS_PRODUCTS, function* ({ payload }) {
+        const { storeId,setNewArrivalProducts } = payload
+        try {
+            const res = yield nodefetcher('GET', `/store-widgets/get-new-arrivals-by-store?storeId=${storeId}`);
+            if(res.data){
+                setNewArrivalProducts(res.data)
+            }
+
+        } catch (error) {
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
 
 export default function* shopSagas() {
     yield all([call(getShopInfoStart), call(getShopSeoStart), call(getShopSettingsStart), call(onGetSocialProfileStart),
     call(onGetCategoriesStart), call(onGetSubCategoriesStart), call(onGetShopProductsStart), call(onGetCategoryProductsStart),
-    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart), call(onGetFiltersGroup)
+    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart), call(onGetFiltersGroup), call(onGetBestSellerProduct), call(onGetNewArrivalProducts)
     ])
 }
