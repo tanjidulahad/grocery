@@ -18,10 +18,10 @@ import PageWrapper from '@components/page-wrapper/page-wrapper'
 import accountLayout from '@components/layout/account-layout'
 import Review from '@components/Cards/Review/review'
 import { BsArrowLeft } from 'react-icons/bs'
-import Stepper from '@components/Stepper/Stepper';
+import Stepper from '@components/stepper/stepper';
 
 
-function orderDetail({ getOrderDetails,display }) {
+function orderDetail({ getOrderDetails, display }) {
   const [isReturnActive, setIsReturnActive] = useState(false)
   const [orderDetails, setOrderDetails] = useState(null) // {}
   const [error, setError] = useState(null)
@@ -94,7 +94,7 @@ function orderDetail({ getOrderDetails,display }) {
 
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className=' w-full flex sm:hidden justify-start items-center p-5 bg-white sticky top-0 z-10 mt-20' style={{ boxShadow: `0px 2px 8px #0000001A` }}>
         {
           orderDetails?.orderId &&
@@ -115,7 +115,7 @@ function orderDetail({ getOrderDetails,display }) {
                       <List orderId={orderDetails.orderId} storeName={orderDetails.storeName} createTime={orderDetails.createTime} list={Object.values(orderDetails.orderItems)} />
                       {/* <Ordertracker data={{ orderId: orderDetails.orderId }} details={orderDetails} openReturn={setIsReturnActive} /> */}
                       <div className='py-8 ml-8 lg:ml-14'>
-                      <Stepper vertical={true} steps={steps} activeStep={orderStatus + 1} sx={style} openReturn={setIsReturnActive} details={orderDetails}/>
+                        <Stepper vertical={true} steps={steps} activeStep={orderStatus + 1} sx={style} openReturn={setIsReturnActive} details={orderDetails} />
                       </div>
                     </div>
                     {
@@ -228,8 +228,8 @@ function orderDetail({ getOrderDetails,display }) {
   )
 }
 
-const mapStateToProps=state=>({
-  display:state.store.displaySettings
+const mapStateToProps = state => ({
+  display: state.store.displaySettings
 })
 
 const mapDispatchToProps = dispatch => ({
