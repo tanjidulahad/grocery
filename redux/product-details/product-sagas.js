@@ -13,6 +13,7 @@ function* onProductFetchStart() {
         const { onSuccess, onFailure, id,seassion_id } = payload;
         try {
             const res = yield fetcher('GET', `?r=catalog/get-item-details&itemId=${id}&customerId=${seassion_id}`)
+
             yield put(productDetailsFetchSuccess(res.data))
             if (onSuccess) {
                 onSuccess(res.data)

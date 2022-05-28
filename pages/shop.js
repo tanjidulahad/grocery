@@ -29,7 +29,7 @@ const { TabPane } = Tabs;
 
 
 
-const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageCount, info, cart, clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
+const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPageCount, info, cart, clearProductList, checkout, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const purchaseDetails = checkout.purchaseDetails;
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
@@ -50,7 +50,7 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
   const [description, setDescription] = useState("")
   const [filterModalVisible, setFilterModalVisible] = useState(false)
   const [mobileSortOpen, setMobileSortOpen] = useState(false)
-  const [priceFilter, setPriceFilter] = useState({ priceRange: {} })
+  const [priceFilter, setPriceFilter] = useState({})
   const [filtersGroup, setFiltersGroup] = useState({})
   const [filterArray, setFilterArray] = useState([])
   const [filterPayLoad, setFilterPayLoad] = useState({})
@@ -113,14 +113,16 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus })
+      getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       getCategoryProducts({ storeId, categoryId: category, subCategoryId, page, setStatus })
+      getFilterGroups({ storeId, setFiltersGroup })
 
     } else {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getShopProducts({ storeId, page, setStatus, filterAndSortPayload, sortOrder,user })
+      getShopProducts({ storeId, page, setStatus, filterAndSortPayload, sortOrder, user })
       getFilterGroups({ storeId, setFiltersGroup })
     }
   }, [Router.query, page])
@@ -129,15 +131,18 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
     if (search) {
       setStatus('loading')
       getSearchProducts({ storeId, q: search, setSearchResult, setStatus: (s) => { } })
+      getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
       getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
+      getFilterGroups({ storeId, setFiltersGroup })
 
     } else {
-      getShopProducts({ storeId, setStatus,user })
+      getShopProducts({ storeId, setStatus, user })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       // setq('') // Cleaning query string of search
+      getFilterGroups({ storeId, setFiltersGroup })
     }
   }, [category, subCategoryId, search])
 
@@ -195,22 +200,26 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
 
   // console.log("filters group", filtersGroup)
 
-  const handleFilter = (groupid, value) => {
-    if (filterArray.length) {
+  const handleFilter = (groupid, value, e) => {
+    var newFilterArray = []
+    if (filterArray.length != 0) {
       const indexOfObject = filterArray.findIndex(object => {
         return object[groupid] == value;
       });
+      console.log("index of value", indexOfObject)
       if (indexOfObject != -1) {
         filterArray.splice(indexOfObject, 1);
-        setFilterArray(filterArray)
+        console.log("filter Array after Splice", filterArray)
+        newFilterArray = [...filterArray]
+        setFilterArray(newFilterArray)
       }
       else {
-        const newFilterArray = [...filterArray, { [groupid]: value }]
+        newFilterArray = [...filterArray, { [groupid]: value }]
         setFilterArray(newFilterArray)
       }
     }
     else {
-      const newFilterArray = [...filterArray, { [groupid]: value }]
+      newFilterArray = [...filterArray, { [groupid]: value }]
       setFilterArray(newFilterArray)
     }
 
@@ -223,36 +232,35 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
 
   useEffect(() => {
     const filterAfterGroupby = filtergroupBy(filterArray)
-    setFilterPayLoad({ filter_groups: filterAfterGroupby })
+    console.log("filter after groupby", filterAfterGroupby)
+    setFilterPayLoad({ ...filterAfterGroupby })
 
   }, [filterArray])
 
   const priceSliderhandler = (value) => {
-    setPriceFilter({ priceRange: { max_price: value[1], min_price: value[0] } })
     console.log(value)
+    setPriceFilter({ max_price: value[1], min_price: value[0] })
   }
 
   const handleSortOrder = (e) => {
-    console.log(e.target.value)
     setSortOrder(e.target.value)
   }
 
   const handleFilterAndSort = () => {
-    const finalPayloadForSortAndFilter = { ...filterPayLoad, ...priceFilter }
-    setFilterAndSortPayload(finalPayloadForSortAndFilter)
-    setTriggerFilter("yes")
+    console.log(priceFilter)
+    // let finalPayloadForSortAndFilter = { ...filterPayLoad, ...priceFilter }
+    // console.log("finalpayloadforsortand filter",finalPayloadForSortAndFilter)
+    setFilterAndSortPayload({ filter_groups: filterPayLoad, priceRange: priceFilter })
+    // setFinalFilterPayload(finalPayloadForSortAndFilter)
+    // setTriggerFilter("yes")
     setFilterModalVisible(false)
   }
 
   useEffect(() => {
-    if (triggerFilter == 'yes') {
-      getShopProducts({ storeId, filterAndSortPayload, sortOrder,user })
-      setTriggerFilter("No")
-    }
-
+    getShopProducts({ storeId, filterAndSortPayload, sortOrder, user })
   }, [filterAndSortPayload])
 
-  console.log(filterArray)
+  console.log("all products", products)
   return (
     < >
       <Head>
@@ -286,10 +294,14 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0">
-              {status == 'success' || status == 'loading' ?
-                products.length && (status == 'loading' || status == 'success')
-                  ? <>
+              {
+                // status == 'success' || status == 'loading' ?
+
+                //  (status == 'loading' || status == 'success')
+                products.length != 0 ?
+                  <>
                     {
+
                       products.map((item, i) => (
                         <div className='w-full'>
                           <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
@@ -304,22 +316,39 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
                     {/* <div className="h-6"></div> */}
                     <div className="h-8 " ref={listLastElement}></div>
                   </>
-                  : products?.length < 1 && status == 'success' ?
-                    <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                      <h6>
-                        <span>No items found{' '}
-                          <Link href={`/shop`}>
-                            <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                              Show All Products.
-                            </a>
-                          </Link>
-                        </span>
-                      </h6>
-                    </div>
-                    : products?.length < 1 && status == 'success' ?
+
+                  //  products.length ==0 && status == 'success' ?
+                  //   <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                  //     <h6>
+                  //       <span>No items found{' '}
+                  //         <Link href={`/shop`}>
+                  //           <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                  //             Show All Products.
+                  //           </a>
+                  //         </Link>
+                  //       </span>
+                  //     </h6>
+                  //   </div>
+
+
+                  //   : products?.length < 1 && status == 'success' ?
+                  //     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                  //       <h6>
+                  //         <span className="">No items found{' '}
+                  //           <Link href={`/shop`}>
+                  //             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                  //               Show All Products.
+                  //             </a>
+                  //           </Link>
+                  //         </span>
+                  //       </h6>
+                  //     </div>
+                  :
+                  <>
+                    products.length == 0 && status == 'success' ?
                       <div className="flex justify-center items-center" style={{ height: "30vh" }}>
                         <h6>
-                          <span className="">No items found{' '}
+                          <span>No items found{' '}
                             <Link href={`/shop`}>
                               <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
                                 Show All Products.
@@ -329,7 +358,7 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
                         </h6>
                       </div>
                       :
-                      <>
+                  <>
                         <ProductItem />
                         <ProductItem />
                         <ProductItem />
@@ -341,146 +370,100 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
                         <ProductItem className={'hidden lg:block'} />
                         <ProductItem className={'hidden xl:block'} />
                       </>
-
-                : status == 'success' ?
-                  <>
-                    <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                      <h6>
-                        <span className="">No items found{' '}
-                          <Link href={`/`}>
-                            <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                              Show All Products.
-                            </a>
-                          </Link>
-                        </span>
-                      </h6>
-                    </div>
-                  </>
-                  :
-                  <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                    <h6 className="text-center">
-                      <span className="">Unexpected error occurred{' '}
-                        <span className="red-color block" onClick={Router.reload} style={{ cursor: 'pointer' }}>{' '}
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise inline" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                          </svg> Please Reload
-                        </span>
-                      </span>
-                    </h6>
-                  </div>
-              }
-            </div>
-          </div>
-        </div>
-
-        <>
-          <Modal
-            isOpen={filterModalVisible}
-            // onAfterOpen={afterOpenModal}
-            onRequestClose={() => setFilterModalVisible(false)}
-            style={customStyles}
-          >
-            <div className=''>
-              <div className='flex justify-between pt-4 px-4'>
-                <h2 className='text-2xl'>Filters</h2>
-                <p className='cursor-pointer text-xl font-thin' onClick={() => setFilterModalVisible(false)}><AiOutlineClose /></p>
-              </div>
-              <div className="pt-4">
-                <div className="w-full border-t border-gray-400"></div>
-              </div>
-              <div>
-                <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='h-[40vh]'>
-                  <TabPane tab={`Sort by`} key="sort" className='h-[40vh] overflow-hidden overflow-y-scroll' >
-                    <div className='mt-2'>
-                      <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} id='rel' type="radio" name='sort' value="false" />
-                      <label className='text-[18px] ml-2' htmlFor="rel">Relevance</label>
-                    </div>
-                    <div className='mt-2'>
-                      <input checked={sortOrder == "DESC" ? true : false} onClick={handleSortOrder} id='htl' type="radio" name='sort' value="DESC" />
-                      <label className='text-[18px] ml-2' htmlFor="htl">Price (High to Low)</label>
-                    </div>
-                    <div className='mt-2'>
-                      <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} id='lth' type="radio" name='sort' value="ASC" />
-                      <label className='text-[18px] ml-2' htmlFor="lth">Price (Low to High)</label>
-                    </div>
-                  </TabPane>
-                  {
-                    Object.keys(filtersGroup).map(function (groupid) {
-                      if (groupid != 'priceRange') {
-                        return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
-                          {
-                            Object.keys(filtersGroup[groupid].filter_group_values).map(function (value) {
-                              return (
-                                // <input type="radio" id="css" name="fav_language" value="CSS"></input>
-                                // <p>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</p>
-                                <div className='mt-2'>
-                                  <input type="checkbox" id={value} value={value} onClick={() => handleFilter(groupid, value)} />
-                                  <label className='text-[18px] ml-2' htmlFor={value}>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</label>
-                                </div>
-                              )
-                            })
-                          }
-                        </TabPane>)
-                      }
-                      else if (groupid == 'priceRange') {
-                        return (
-                          <TabPane tab={`${groupid}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
-                            <p className='text-xl text-center mt-14 mb-4'>Select the Price Range</p>
-                            <div className='px-10'>
-
-                              <Slider trackStyle={{ height: '10px' }} handleStyle={{ height: '20px', width: "20px" }} marks={{
-                                [Number(filtersGroup[groupid].min_value)]: `${Number(filtersGroup[groupid].min_value)}`,
-                                [Number(filtersGroup[groupid].max_value)]: `${Number(filtersGroup[groupid].max_value)}`,
-                              }
-                              } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
-                            </div>
-                          </TabPane>
-                        )
-                      }
-                    })
+                      </>
                   }
 
-                </Tabs>
-              </div>
-              <div className='flex justify-end gap-6 pb-9 sort-btn'>
-                <p onClick={() => setFilterModalVisible(false)} className='text-base px-5 py-2 btn-color-revese cursor-pointer'>Cancel</p>
-                <p onClick={handleFilterAndSort} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded cursor-pointer'>Apply</p>
-              </div>
+                {/* // : status == 'success' ?
+                //   <>
+                //     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                //       <h6>
+                //         <span className="">No items found{' '}
+                //           <Link href={`/`}>
+                //             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                //               Show All Products.
+                //             </a>
+                //           </Link>
+                //         </span>
+                //       </h6>
+                //     </div>
+                //   </>
+                //   :
+                //   <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                //     <h6 className="text-center">
+                //       <span className="">Unexpected error occurred{' '}
+                //         <span className="red-color block" onClick={Router.reload} style={{ cursor: 'pointer' }}>{' '}
+                //           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise inline" viewBox="0 0 16 16">
+                //             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                //             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+                //           </svg> Please Reload
+                //         </span>
+                //       </span>
+                //     </h6>
+                //   </div> */}
+              
+          </div>
+        </div>
+      </div>
+
+      <>
+        <Modal
+          isOpen={filterModalVisible}
+          // onAfterOpen={afterOpenModal}
+          onRequestClose={() => setFilterModalVisible(false)}
+          style={customStyles}
+        >
+          <div className=''>
+            <div className='flex justify-between pt-4 px-4'>
+              <h2 className='text-2xl'>Filters</h2>
+              <p className='cursor-pointer text-xl font-thin' onClick={() => setFilterModalVisible(false)}><AiOutlineClose /></p>
             </div>
-
-          </Modal>
-        </>
-        {/* for mobile view */}
-        <>{
-          mobileSortOpen && <div className='lg:hidden md:hidden bg-white fixed h-[91vh] w-full  left-0 top-0 z-[1000] overflow-y-scroll'>
-
-            <h3 className='pt-5 pb-5 bg-[#E5E5E5]' onClick={openMobileSort}><BsArrowLeft className={`mx-2 inline`} size={20} />Short by</h3>
-            <div className='mt-3 flex flex-wrap px-2 radio-custom'>
-
-              <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Popularity' name="sort" value="false" />
-              <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Popularity">Relevance</label>
-
-              <input checked={sortOrder == "DESC" ? true : false} onClick={handleSortOrder} className='hidden' type="radio" id='High' name="sort" value="DESC" />
-              <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="High">Price (High to Low)</label>
-
-              <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Low' name="sort" value="ASC" />
-              <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Low">Price (Low to High)</label>
+            <div className="pt-4">
+              <div className="w-full border-t border-gray-400"></div>
             </div>
-            <h3 className='p-5 bg-[#E5E5E5]'>Filter</h3>
             <div>
-              <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='mobile-tab max-h-full overflow-hidden overflow-y-scroll'>
+              <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='h-[40vh]'>
+                <TabPane tab={`Sort by`} key="sort" className='h-[40vh] overflow-hidden overflow-y-scroll' >
+                  <div className='mt-2'>
+                    <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} id='rel' type="radio" name='sort' value="false" />
+                    <label className='text-[18px] ml-2' htmlFor="rel">Relevance</label>
+                  </div>
+                  <div className='mt-2'>
+                    <input checked={sortOrder == "DESC" ? true : false} onClick={handleSortOrder} id='htl' type="radio" name='sort' value="DESC" />
+                    <label className='text-[18px] ml-2' htmlFor="htl">Price (High to Low)</label>
+                  </div>
+                  <div className='mt-2'>
+                    <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} id='lth' type="radio" name='sort' value="ASC" />
+                    <label className='text-[18px] ml-2' htmlFor="lth">Price (Low to High)</label>
+                  </div>
+                </TabPane>
                 {
                   Object.keys(filtersGroup).map(function (groupid) {
                     if (groupid != 'priceRange') {
-                      return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid}>
+                      return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
                         {
                           Object.keys(filtersGroup[groupid].filter_group_values).map(function (value) {
                             return (
                               // <input type="radio" id="css" name="fav_language" value="CSS"></input>
                               // <p>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</p>
+                              // checked={filterArray.length&&filterArray.map(function(item){
+                              //   if(Object.keys(item)[0]==groupid && Object.values(item)[0]==value){
+                              //     console.log(Object.values(item)[0])
+                              //     // return true
+                              //     // // console.log(value,e.target.value)
+                              //     // document.getElementById(value).checked=true
+                              //     // console.log(document.getElementById(value))
+                              //   }
+                              //   else{
+                              //     return false
+                              //   }
+                              // })}
                               <div className='mt-2'>
-                                <input type="checkbox" id={value} value={value} onClick={() => handleFilter(groupid, value)} />
+
+                                {/* // Object.keys(filterPayLoad).length&&filterPayLoad[groupid]?.includes(value)?
+                                    // <input checked={true} type="checkbox" id={value} name={groupid} value={value} onClick={(e) => handleFilter(groupid, value, e)} /> */}
+
+                                <input checked={filterPayLoad[groupid]?.includes(1 * value)} type="checkbox" id={value} name={groupid} value={value} onClick={(e) => handleFilter(groupid, value, e)} />
+
                                 <label className='text-[18px] ml-2' htmlFor={value}>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</label>
                               </div>
                             )
@@ -490,14 +473,15 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
                     }
                     else if (groupid == 'priceRange') {
                       return (
-                        <TabPane tab={`${groupid}`} key={groupid} >
-                          <p className='text-[18px] text-center mt-14 mb-4'>Select the Price Range</p>
-                          <div className='px-2'>
+                        <TabPane tab={`${groupid}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
+                          <p className='text-xl text-center mt-14 mb-4'>Select the Price Range</p>
+                          <div className='px-10'>
+
                             <Slider trackStyle={{ height: '10px' }} handleStyle={{ height: '20px', width: "20px" }} marks={{
-                              [Number(filtersGroup[groupid].min_value)]: `${Number(filtersGroup[groupid].min_value)}`,
-                              [Number(filtersGroup[groupid].max_value)]: `${Number(filtersGroup[groupid].max_value)}`,
+                              [Number(filtersGroup[groupid]?.min_value)]: `${Number(filtersGroup[groupid]?.min_value)}`,
+                              [Number(filtersGroup[groupid]?.max_value)]: `${Number(filtersGroup[groupid]?.max_value)}`,
                             }
-                            } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
+                            } onAfterChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
                           </div>
                         </TabPane>
                       )
@@ -507,16 +491,80 @@ const Home = ({user, getFilterGroups, products, addWishlist, pageCount, getPageC
 
               </Tabs>
             </div>
-            <div className='max-h-[100vh] h-1 w-1 mobile-sort-div'>
-              <div className='flex justify-end gap-6 pb-5 fixed bottom-0 right-0 bg-white left-0 shadow-[0_20px_10px_15px_rgba(0,0,0,0.6)] pt-5'>
-                <p onClick={openMobileSort} className='text-base px-5 py-2 btn-color-revese'>Cancel</p>
-                <p onClick={() => { handleFilterAndSort(), openMobileSort() }} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded'>Apply</p>
-              </div>
+            <div className='flex justify-end gap-6 pb-9 sort-btn'>
+              <p onClick={() => setFilterModalVisible(false)} className='text-base px-5 py-2 btn-color-revese cursor-pointer'>Cancel</p>
+              <p onClick={handleFilterAndSort} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded cursor-pointer'>Apply</p>
             </div>
           </div>
-        }
-        </>
-      </section >
+
+        </Modal>
+      </>
+      {/* for mobile view */}
+      <>{
+        mobileSortOpen && <div className='lg:hidden md:hidden bg-white fixed h-[91vh] w-full  left-0 top-0 z-[1000] overflow-y-scroll'>
+
+          <h3 className='pt-5 pb-5 bg-[#E5E5E5]' onClick={openMobileSort}><BsArrowLeft className={`mx-2 inline`} size={20} />Short by</h3>
+          <div className='mt-3 flex flex-wrap px-2 radio-custom'>
+
+            <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Popularity' name="sort" value="false" />
+            <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Popularity">Relevance</label>
+
+            <input checked={sortOrder == "DESC" ? true : false} onClick={handleSortOrder} className='hidden' type="radio" id='High' name="sort" value="DESC" />
+            <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="High">Price (High to Low)</label>
+
+            <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Low' name="sort" value="ASC" />
+            <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Low">Price (Low to High)</label>
+          </div>
+          <h3 className='p-5 bg-[#E5E5E5]'>Filter</h3>
+          <div>
+            <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='mobile-tab max-h-full overflow-hidden overflow-y-scroll'>
+              {
+                Object.keys(filtersGroup).map(function (groupid) {
+                  if (groupid != 'priceRange') {
+                    return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid}>
+                      {
+                        Object.keys(filtersGroup[groupid].filter_group_values).map(function (value) {
+                          return (
+                            // <input type="radio" id="css" name="fav_language" value="CSS"></input>
+                            // <p>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</p>
+                            <div className='mt-2'>
+                              <input type="checkbox" id={value} value={value} onClick={() => handleFilter(groupid, value)} />
+                              <label className='text-[18px] ml-2' htmlFor={value}>{filtersGroup[groupid].filter_group_values[value].filter_value_name}</label>
+                            </div>
+                          )
+                        })
+                      }
+                    </TabPane>)
+                  }
+                  else if (groupid == 'priceRange') {
+                    return (
+                      <TabPane tab={`${groupid}`} key={groupid} >
+                        <p className='text-[18px] text-center mt-14 mb-4'>Select the Price Range</p>
+                        <div className='px-2'>
+                          <Slider trackStyle={{ height: '10px' }} handleStyle={{ height: '20px', width: "20px" }} marks={{
+                            [Number(filtersGroup[groupid].min_value)]: `${Number(filtersGroup[groupid].min_value)}`,
+                            [Number(filtersGroup[groupid].max_value)]: `${Number(filtersGroup[groupid].max_value)}`,
+                          }
+                          } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
+                        </div>
+                      </TabPane>
+                    )
+                  }
+                })
+              }
+
+            </Tabs>
+          </div>
+          <div className='max-h-[100vh] h-1 w-1 mobile-sort-div'>
+            <div className='flex justify-end gap-6 pb-5 fixed bottom-0 right-0 bg-white left-0 shadow-[0_20px_10px_15px_rgba(0,0,0,0.6)] pt-5'>
+              <p onClick={openMobileSort} className='text-base px-5 py-2 btn-color-revese'>Cancel</p>
+              <p onClick={() => { handleFilterAndSort(), openMobileSort() }} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded'>Apply</p>
+            </div>
+          </div>
+        </div>
+      }
+      </>
+    </section >
     </>
   )
 }
