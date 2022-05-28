@@ -81,7 +81,7 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
                                     </svg>
                                 </Button>
                             </div>
-                            <div className="p-6 absolute bottom-0 sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full bg-white sm:w-[512px] rounded " style={{ border: "2px solid #F58634" }} >
+                            <div className="p-6 sm:absolute bottom-0 sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full bg-white sm:w-[512px] rounded " style={{ border: "2px solid #F58634" }} >
                                 <div className="flex justify-between items-center">
                                     {/* <h2 className="text-2xl font-semibold">Login</h2> */}
                                     <div className='w-fit flex   p-4' onClick={() => setIsVarificationPhone(!isVarificationPhone)}>
