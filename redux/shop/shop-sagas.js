@@ -162,16 +162,19 @@ function* onGetShopProductsStart() {
         try {
             const res = yield fetcher(`${filterAndSortPayload==undefined?'GET':'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder !="false" ? sortOrder!= undefined ?`&sortOrder=${sortOrder}`:"":""}${user?`&customerId=${user.customer_id}`:""}`,filterAndSortPayload)
             console.log("product res",res.data)
+
             if (Array.isArray(res.data)) {
                 if (page > 1 && typeof page != 'undefined') {
                     yield put(getShopProductsPaginationSuccess(res.data))
-                } else {              
-                    yield put(getShopProductsSuccess(res.data))
+                } else {            
+                    yield put(getShopProductsSuccess(res.data))                 
 
                     
                 }
                 setStatus('success')
+                
             }
+            
         
         } catch (error) {
             if (setStatus) setStatus('failed')
