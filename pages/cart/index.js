@@ -74,7 +74,7 @@ const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, 
                                                 </div>
                                             </>
                                             :
-                                            <Button onClick={authToggle} className="w-3/4 mx-auto py-3 sm:mt-10 block sm:py-4 white-color rounded btn-bg text-center">Login to proceed </Button>
+                                            <Button onClick={authToggle} className="w-3/4 mx-auto mt-10 sm:mt-0 p-3 sm:mt-10 block sm:py-4 white-color rounded btn-bg text-center">Login to proceed </Button>
                                     }
                                 </div>
                             </div>
