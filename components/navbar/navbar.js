@@ -36,7 +36,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const [query, setQuery] = useState('')
   const [Menu, setmenu] = useState(false)
   const router = useRouter();
-  const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress','/account/orderdetail/[id]']
+  const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress', '/account/orderdetail/[id]']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   const isDesktopOrLaptopx = useMediaQuery({ minWidth: 1020 })
   useEffect(() => {
@@ -486,7 +486,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                         {
                           lists.map((item) => (
                             <li key={item.category_id} className={`lists category-item px-3 py-2 ${category == item.category_id && ' primary-color font-semibold'}`} >
-                              <Link href={`/?category=${item.category_id}`}>
+                              <Link href={`/shop?category=${item.category_id}`}>
                                 <a>
                                   <div className="d-flex font-medium justify-content-between">
                                     <span className="">{item.category_name}</span>
@@ -507,7 +507,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                       !!category &&
                       lists.find((listItem) => listItem.category_id == category)?.subCategories.map((subitem, i) => (
                         <li className="px-3 py-2" key={i}>
-                          <Link href={`/?category=${category}&subCategoryId=${subitem.sub_category_id}`}>
+                          <Link href={`/shop?category=${category}&subCategoryId=${subitem.sub_category_id}`}>
                             <a>
                               <div className="d-flex justify-content-between">
                                 <span className={`text-xs font-w-400  ${subCategoryId == subitem.sub_category_id ? "primary-color" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
