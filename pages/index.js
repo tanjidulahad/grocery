@@ -56,7 +56,6 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
   };
 
   const settings = {
-    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 5,
@@ -98,7 +97,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
     <div >
       <ToastContainer />
       {/* slider div */}
-      <div className='my-4 pt-6 sm:px-4'>
+      <div className='my-4 pt-6 lg:mx-14 sm:px-4'>
         <div>
           <Slider {...bannersettings}>
             {banner.map((item, idx) => <div key={idx}>
@@ -109,7 +108,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
       </div>
       {/* fresh items */}
       {newArrivalProducts.length != 0 && <div className='wrapper'>
-        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold '>New Arrivals</h2>
+        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold ml-3 sm:ml-0'>New Arrivals</h2>
         <div className='bg-[#C0EDAB]'>
           <Slider {...settings}>
             {newArrivalProducts.map((item, idx) => <div key={idx}>
@@ -120,7 +119,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
       </div>}
       {/* Recommended */}
       {bestSellerProducts.length != 0 && <div className='wrapper'>
-        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold'>Recommended</h2>
+        <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold ml-3 sm:ml-0'>Recommended</h2>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0'>
           {bestSellerProducts.map((item, idx) =>
             <ProductItem key={idx} data={item} />
