@@ -164,15 +164,17 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                                     <button className="btn-color-revers my-2" onClick={() => { setNewAddress(item); setIsAddressActive(true) }}>
                                                         Edit
                                                     </button>
-                                                    {checkoutDetails.deliveryAddress !=
-                                                        item.address_id && (
-                                                            <label
-                                                                className=" hidden sm:block my-2 btn-bg btn-color py-3.5  px-8 rounded max-w-fit"
-                                                                htmlFor={`address${i}`}
-                                                            >
-                                                                Deliver Here
-                                                            </label>
-                                                        )}
+                                                    {
+                                                        // checkoutDetails.deliveryAddress !=
+                                                        // item.address_id && (
+                                                        //     <label
+                                                        //         className=" hidden sm:block my-2 btn-bg btn-color py-3.5  px-8 rounded max-w-fit"
+                                                        //         htmlFor={`address${i}`}
+                                                        //     >
+                                                        //         Deliver Here
+                                                        //     </label>
+                                                        // )
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
