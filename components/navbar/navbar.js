@@ -36,7 +36,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const [query, setQuery] = useState('')
   const [Menu, setmenu] = useState(false)
   const router = useRouter();
-  const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress','/account/orderdetail/[id]']
+  const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress', '/account/orderdetail/[id]']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   const isDesktopOrLaptopx = useMediaQuery({ minWidth: 1020 })
   useEffect(() => {
@@ -175,7 +175,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                 {
                   !isLogin && !user ?
                     <div className="shrink-0 flex items-center">
-                      <Button onClick={openAuth} className=" border border-white max-h-min text-base font-medium rounded py-3 px-8 hover:bg-orange-400 hover:text-white " title="Sign In"></Button>
+                      <Button onClick={openAuth} className=" border border-white max-h-min text-base font-medium rounded py-3 px-8 hover:bg-orange-400 hover:text-white btn-hover-revers " title="Sign In"></Button>
                     </div>
                     :
                     <div className=" w-max flex relative text-black items-center justify-end lg:ml-4 md:mx-4  cursor-pointer account">
@@ -411,7 +411,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
         </div>
       }
-      {/* Navbar for mobile */}
+      {/* Navbar for mobile >> */}
       {
         name !== 'cart' && 'thank-you' &&
         <MediaQuery maxWidth={640}>
@@ -449,7 +449,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </Button>
             </div>
             <div className='text-center text-xs font-semibold text-black w-1/4'>
-              <Button type='link' className=' btn-nav-color' href='/account'>
+              <Button className=' btn-nav-color' {...!!user ? { type: 'link', href: '/account' } : { onClick: openAuth }} href='/account'>
                 <svg className='mx-auto btn-nav-color' style={{ fill: '', color: 'inherit' }} width="25" height="25" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M1.33325 20.6667C2.95825 10.8306 17.0416 10.2842 18.6666 20.6667" stroke="black" stroke-width="1.5" />
                   <path d="M14.6666 5.50001C14.6666 8.07734 12.5772 10.1667 9.99992 10.1667C7.42259 10.1667 5.33325 8.07734 5.33325 5.50001C5.33325 2.92268 7.42259 0.833344 9.99992 0.833344C12.5772 0.833344 14.6666 2.92268 14.6666 5.50001Z" stroke="black" stroke-width="1.5" />
@@ -471,25 +471,32 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                         </svg>
                       </span>
                     </div>
-                    <div className=" col-span-6 w-full text-black ">
+                    <div className=" col-span-6 w-full text-black border-r border-gray-200">
                       <ul className=" ">
                         <li className={`${!category && 'bg-white font-semibold'} px-3 py-2`}>
-                          <Link href={`/`}>
+                          <Link href={`/shop`}>
                             <a >
-                              <div className="d-flex font-medium justify-content-between">
+                              <div className="d-flex font-medium justify-content-between flex items-center justify-between space-y-2">
                                 <span className=" ">All Products </span>
-                                {/* <span className="font-16 font-w-400 dark-blue-50">22</span> */}
+                                <span className={`font-16 font-w-400 dark-blue-50 w-3 shrink-0 h-fit transition-all ${!category ? "" : 'rotate-90'}`}><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                </svg></span>
                               </div>
                             </a>
                           </Link>
                         </li>
                         {
                           lists.map((item) => (
-                            <li key={item.category_id} className={`lists category-item px-3 py-2 ${category == item.category_id && ' primary-color font-semibold'}`} >
-                              <Link href={`/?category=${item.category_id}`}>
+                            <li key={item.category_id} className={`lists category-item px-3 py-2 ${category == item.category_id && ' btn-color-revers font-semibold'}`} >
+                              <Link href={`/shop?category=${item.category_id}`}>
                                 <a>
-                                  <div className="d-flex font-medium justify-content-between">
+                                  <div className="d-flex font-medium justify-content-between flex items-center justify-between space-y-2">
                                     <span className="">{item.category_name}</span>
+                                    <span className={`font-16 font-w-400 dark-blue-50 w-3 shrink-0 h-fit transition-all ${category == item.category_id ? "" : 'rotate-90'}`}>
+                                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                      </svg>
+                                    </span>
                                   </div>
                                 </a>
                               </Link>
@@ -507,11 +514,10 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                       !!category &&
                       lists.find((listItem) => listItem.category_id == category)?.subCategories.map((subitem, i) => (
                         <li className="px-3 py-2" key={i}>
-                          <Link href={`/?category=${category}&subCategoryId=${subitem.sub_category_id}`}>
+                          <Link href={`/shop?category=${category}&subCategoryId=${subitem.sub_category_id}`}>
                             <a>
                               <div className="d-flex justify-content-between">
-                                <span className={`text-xs font-w-400  ${subCategoryId == subitem.sub_category_id ? "primary-color" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
-                                {/* <span className="font-16 font-w-400 ">22</span> */}
+                                <span className={`text-xs font-w-400  ${subCategoryId == subitem.sub_category_id ? "btn-color-revers" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
                               </div>
                             </a>
                           </Link>
@@ -521,7 +527,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                   </ul>
                 </div>
               </div>
-            }{/* << Category list */}
+            }{/* << Mob Category list */}
           </div>
         </MediaQuery>
       }

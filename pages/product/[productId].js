@@ -3,7 +3,7 @@ import { useRouter, withRouter } from "next/router";
 import ReactPlayer from 'react-player'
 import { connect } from "react-redux";
 import Head from "next/head";
-import { AiOutlineHeart,AiFillHeart } from 'react-icons/ai'
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,15 +46,15 @@ const visualsStructure = {
     specifications: [],
     additionalinfo: [],
     similarProducts: [], //[...similarProducts]
-    wishlist:false
+    wishlist: false
 }
 import { addWishlistStart, removeWishlistStart } from '@redux/wishlist/wishlist-action'
 import { createSeasionId, getVariantItemByItemId } from "services/pickytoClient";
 import ReactTooltip from "react-tooltip";
 
-const ProductDetails = ({store,
+const ProductDetails = ({ store,
     cart, addToCart, removeFromCart,
-    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist, user, getProductVariant,addItemToWishlist,removeWishlistStart }) => {
+    fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist, user, getProductVariant, addItemToWishlist, removeWishlistStart }) => {
     const [success, onSuccess] = useState({})
     const [failure, onFailure] = useState(null)
     const [additionalinfo, setAdditionalInfo] = useState([])
@@ -66,7 +66,7 @@ const ProductDetails = ({store,
     const [allVariants, setAllVariants] = useState([])
     const [selectedVarientStyle, setSelectedVarientStyle] = useState([])
     const [keepVarients, setKeepVariants] = useState([])
-    const [wishlistAdded,setWishListAdded]=useState(null)
+    const [wishlistAdded, setWishListAdded] = useState(null)
 
 
     const colorVarients = ["COLOUR",
@@ -154,7 +154,7 @@ const ProductDetails = ({store,
                 images.push(success[`img_url_${i}`])
             }
         }
-        
+
         setVisuals({
             ...visuals,
             view: true,
@@ -179,7 +179,7 @@ const ProductDetails = ({store,
             similarProducts: [...similarProducts],
             additionalinfo: [...additionalinfo],
             item: success,
-            wishlist:success.wishlist
+            wishlist: success.wishlist
         })
     }, [success, similarProducts, additionalinfo, specifications])
     useEffect(() => { // SEO
@@ -442,7 +442,7 @@ const ProductDetails = ({store,
 
     const wishlist = () => {
         if (!user) {
-            toast.error("Please Sign in First",{
+            toast.error("Please Sign in First", {
                 autoClose: 2000
             })
         }
@@ -451,7 +451,7 @@ const ProductDetails = ({store,
                 id: Number(visuals.id),
                 storeId: store.store_id,
                 userId: user.customer_id,
-                setWishListAdded:setWishListAdded
+                setWishListAdded: setWishListAdded
             }
             addItemToWishlist(payload)
         }
@@ -461,7 +461,7 @@ const ProductDetails = ({store,
 
         const payload = {
             wishlistId: wishlistid,
-            setWishListAdded:setWishListAdded
+            setWishListAdded: setWishListAdded
         }
         removeWishlistStart(payload)
 
@@ -471,7 +471,7 @@ const ProductDetails = ({store,
 
     return (
         <>
-        <ToastContainer/>
+            <ToastContainer />
             <Head>
                 <title>{visuals.name}</title>
                 <meta name="description" content={`${descriptions}, Amazon.in: Online Shopping India - Buy mobiles, laptops, cameras, books, watches, apparel, shoes and e-Gift Cards. Free Shipping &amp; Cash on Delivery Available. `} />
@@ -494,11 +494,10 @@ const ProductDetails = ({store,
                             <div className="">
                                 <div className="flex md:hidden justify-between w-full">
                                     <img className="my-2" src="/img/square.png" />
-                                    {!wishlistAdded?<AiOutlineHeart onClick={wishlist} className="my-2" size={24} />:<AiFillHeart onClick={() => removeFromWishList(wishlistAdded)} className="my-2"  size={24} color="#F35252" />}
+                                    {!wishlistAdded ? <AiOutlineHeart onClick={wishlist} className="my-2" size={24} /> : <AiFillHeart onClick={() => removeFromWishList(wishlistAdded)} className="my-2" size={24} color="#F35252" />}
                                 </div>
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10  overflow-x-hidden">
                                     <div className="w-11/12 md:w-full ml-4 md:ml-0">
-                                        {/* <img src={visuals.images[0]} alt={visuals.name} /> */}
                                         <PdpImage name={visuals?.name} list={visuals?.images} />
                                     </div>
                                     <div className="relative overflow-auto no-scrollbar w-full h-full">
@@ -551,34 +550,34 @@ const ProductDetails = ({store,
                                             <div className=" hidden sm:block">
                                                 {
                                                     visuals.defaultVariantItem && visuals.defaultVariantItem.variant_item_status == "UNAVAILABLE" ? <Button className="w-full md:w-auto py-3 px-12 text-base border-2 border-slate-300 text-slate-400 rounded font-bold cursor-not-allowed" >Unavailable</Button>
-                                                    :
-                                                    quantityInCart ?
-                                                        <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
-                                                            if (visuals?.inventoryDetails) {
-                                                                return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
-                                                            }
-                                                            return false
-                                                        })()}
-                                                            onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
                                                         :
-                                                        <div className="flex items-center gap-5">
-                                                        <Button className="w-full sm:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
-                                                        <div>
-                                                            {!wishlistAdded?<p onClick={wishlist} className="text-base btn-color-revese cursor-pointer">
-                                                            <AiOutlineHeart className="my-2 inline mx-3" size={24} />
-                                                            Add to Wishlist
-                                                            </p>
+                                                        quantityInCart ?
+                                                            <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
+                                                                if (visuals?.inventoryDetails) {
+                                                                    return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
+                                                                }
+                                                                return false
+                                                            })()}
+                                                                onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
                                                             :
-                                                            <p onClick={() => removeFromWishList(wishlistAdded)} className="text-base btn-color-revese cursor-pointer">
-                                                            <AiFillHeart className="my-2 inline mx-3"  size={24} color="#F35252" />
-                                                            
-                                                             Remove from Wishlist</p>
+                                                            <div className="flex items-center gap-5">
+                                                                <Button className="w-full sm:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
+                                                                <div>
+                                                                    {!wishlistAdded ? <p onClick={wishlist} className="text-base btn-color-revese cursor-pointer">
+                                                                        <AiOutlineHeart className="my-2 inline mx-3" size={24} />
+                                                                        Add to Wishlist
+                                                                    </p>
+                                                                        :
+                                                                        <p onClick={() => removeFromWishList(wishlistAdded)} className="text-base btn-color-revese cursor-pointer">
+                                                                            <AiFillHeart className="my-2 inline mx-3" size={24} color="#F35252" />
 
-                                                            }
+                                                                            Remove from Wishlist</p>
 
-                                                            
-                                                        </div>
-                                                        </div>
+                                                                    }
+
+
+                                                                </div>
+                                                            </div>
                                                 }
                                             </div>
                                             {
@@ -774,17 +773,17 @@ const ProductDetails = ({store,
                 <div className="sm:hidden flex justify-center ">
                     {
                         visuals.defaultVariantItem && visuals.defaultVariantItem.variant_item_status == "UNAVAILABLE" ? <Button className="w-full md:w-auto py-3 px-12 text-base border-2 border-slate-300 text-slate-400 rounded font-bold cursor-not-allowed" >Unavailable</Button>
-                        :
-                        quantityInCart ?
-                            <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
-                                if (visuals?.inventoryDetails) {
-                                    return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
-                                }
-                                return false
-                            })()}
-                                onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
                             :
-                            <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
+                            quantityInCart ?
+                                <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
+                                    if (visuals?.inventoryDetails) {
+                                        return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
+                                    }
+                                    return false
+                                })()}
+                                    onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
+                                :
+                                <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
                     }
                 </div>
             </div>

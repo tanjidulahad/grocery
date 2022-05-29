@@ -83,7 +83,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
         isLoadding ?
           <div className='w-full  bg-white md:bg-[transparent]'>
             {/* <Header display={true} topic="Saved Address" /> */}
-            <p className="text-xl hidden md:block lg:block text-gray-900 font-bold bg-white p-4">
+            <p className="text-xl hidden md:block lg:block text-gray-900 font-bold bg-white px-4 sm:px-6 mb-0 sm:mb-6 py-0 sm:py-6 md:py-3">
               {' '}
               Saved Places
             </p>
@@ -117,7 +117,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
               // </div>
             }
             {
-              isTabletOrMobile && <div className=" md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 my-0 md:my-5 lg:my-5 mr-4 mb-5 ">
+              isTabletOrMobile && <div className=" md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 px-4 sm:px-6 mb-0 sm:mb-6 py-0 sm:py-6 md:py-3 space-y-14">
                 {
                   [...address].map((item, i) => (
                     <div className="w-full mt-4" key={i} >
@@ -148,61 +148,61 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
               <Button className="text-lg btn-color-revese btn-color-revers font-semibold ml-4 " onClick={() => setIsAddressActive(true)}>
                 Add New Address
               </Button> */}
-              <p className="text-xl w-full hidden md:block lg:block text-gray-900 font-bold bg-white p-4">
+              <p className="text-xl w-full hidden md:block lg:block text-gray-900 font-bold bg-white px-4 sm:px-6 mb-0 sm:mb-6 py-0 sm:py-6 md:py-3">
                 {' '}
                 Add New Address
               </p>
             </div>
             {/* for desktop view */}
-            <div className="my-4 hidden md:block bg-white">
-              <div className="py-2 md:p-4 px-2 md:px-8   md:w-1/2  ">
-                <span className=" font-bold text-lg md:block hidden  ">Country*</span>
+            <div className=" hidden md:block bg-white">
+              <div className="py-2 md:p-4 px-2 md:px-8  w-full xl:w-1/2  ">
+                <span className=" font-[500] text-lg md:block hidden  ">Country*</span>
                 <Input onChange={onChangeAddress} type="text" name='country' placeholder="Your Country/Region..." value={newAddress.country} className="h-[48px] my-2 rounded border border-gray-300 " />
               </div>
-              <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
-                <span className=" font-bold text-lg md:block hidden  ">Name*</span>
+              <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2  ">
+                <span className=" font-[500] text-lg md:block hidden  ">Name*</span>
                 <Input onChange={onChangeAddress} type="text" name='full_name' placeholder="Your full name..." value={newAddress.full_name} className="h-[48px] my-2 rounded border border-gray-300 " />
               </div>
 
-              <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
-                <span className=" font-bold text-lg md:block hidden  ">Mobile Number ( Commonly Used to Assist Delivery ) *</span>
+              <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2  ">
+                <span className=" font-[500] text-lg md:block hidden  ">Mobile Number ( Commonly Used to Assist Delivery ) *</span>
                 <Input onChange={onChangeAddress} type="text" name='phone' placeholder="Enter Your 10 digit Mobile Number" value={newAddress.phone} className="h-[48px] my-2 rounded border border-gray-300 " />
               </div>
-              <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
-                <span className=" font-bold text-lg md:block hidden  ">Flat no., House no./ House Name, Road no.*</span>
+              <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2  ">
+                <span className=" font-[500] text-lg md:block hidden  ">Flat no., House no./ House Name, Road no.*</span>
                 <Input onChange={onChangeAddress} type="text" name='address_line_1' placeholder="Address" value={newAddress.address_line_1} className="h-[48px] my-2 rounded border border-gray-300 " />
               </div>
-              <div className="w-full md:flex">
-                <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2   ">
-                  <span className=" font-bold text-lg md:block hidden  ">Colony, Area, Street, Village</span>
+              <div className="w-full grid grid-cols-1 lg:grid-cols-2">
+                <div className="py-2 md:p-4 px-2 md:px-8 w-full   ">
+                  <span className=" font-[500] text-lg md:block hidden  ">Colony, Area, Street, Village</span>
                   <Input onChange={onChangeAddress} type="text" name='address_line_2' placeholder="More Address Details" value={newAddress.address_line_2} className="h-[48px] my-2 rounded border border-gray-300 " />
                 </div>
-                <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
-                  <span className=" font-bold text-lg md:block hidden  ">City*</span>
+                <div className="py-2 md:p-4 px-2 md:px-8 w-full ">
+                  <span className=" font-[500] text-lg md:block hidden  ">City*</span>
                   <Input onChange={onChangeAddress} type="text" name='city' placeholder="City" value={newAddress.city} className="h-[48px] my-2 rounded border border-gray-300 " />
                 </div>
               </div>
 
-              <div className="py-2 px-2 md:py-4  w-full flex">
-                <div className="pr-1 md:p-4 md:px-2 md:px-8  md:w-1/2  ">
-                  <span className=" font-bold text-lg md:block hidden  ">State*</span>
+              <div className="w-full grid grid-cols-1 lg:grid-cols-2">
+                <div className="py-2 md:p-4 px-2 md:px-8 w-full  ">
+                  <span className=" font-[500] text-lg md:block hidden  ">State*</span>
                   <Input onChange={onChangeAddress} type="text" name='state' placeholder="state" value={newAddress.state} className="h-[48px] my-2 rounded border border-gray-300 " />
                 </div>
-                <div className="pl-1 md:p-4 md:px-2 md:px-8  md:w-1/2   ">
+                <div className="py-2 md:p-4 px-2 md:px-8 w-full     ">
 
-                  <span className="  font-bold text-lg md:block hidden  ">Zip Code*</span>
+                  <span className="  font-[500] text-lg md:block hidden  ">Zip Code*</span>
                   <Input onChange={onChangeAddress} type="text" name='zip_code' placeholder="zip_code" value={newAddress.zip_code} className="h-[48px] my-2  rounded border border-gray-300 " />
                 </div>
               </div>
               <div className="p-4 px-8 ">
-                <span className=" font-bold text-lg md:block hidden  ">Address Type*</span>
+                <span className=" font-[500] text-lg md:block hidden  ">Address Type*</span>
                 <div className=" justify-start items-start  p-2">
                   <div>
                     <input type="radio" name="address_tag" id="add-t-1" value='Home' onChange={onChangeAddress} checked={newAddress.address_tag == 'Home'} />
-                    <label className={`font-12 ml-4 font-w-600 type-of-address ${newAddress.address_tag == 'Home' ? "selected" : ""}`} htmlFor='add-t-1'> <span className="font-bold text-black">Home Address </span> ( product will be delivered between 7 am to 9 pm) </label></div>
+                    <label className={`font-12 ml-4 font-w-600 type-of-address ${newAddress.address_tag == 'Home' ? "selected" : ""}`} htmlFor='add-t-1'> <span className="font-[500] text-black">Home Address </span> ( product will be delivered between 7 am to 9 pm) </label></div>
                   <div className="mt-4">
                     <input type="radio" name="address_tag" value='Work' id="add-t-2" onChange={onChangeAddress} checked={newAddress.address_tag == 'Work'} />
-                    <label className={`font-12 ml-4 font-w-600 type-of-address ${newAddress.address_tag == 'Work' ? "selected" : ""}`} htmlFor='add-t-2' > <span className="font-bold text-black">Office/ Work Address </span> ( product will be delivered between 10 am - 6 pm) </label></div>
+                    <label className={`font-12 ml-4 font-w-600 type-of-address ${newAddress.address_tag == 'Work' ? "selected" : ""}`} htmlFor='add-t-2' > <span className="font-[500] text-black">Office/ Work Address </span> ( product will be delivered between 10 am - 6 pm) </label></div>
                 </div>
               </div>
               <div className="col-12 mt-4">
@@ -217,40 +217,40 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
             {
               isAddressActive &&
               <div className="mb-14 bg-white">
-                <div className="py-2 md:p-4 px-2 md:px-8   md:w-1/2  ">
+                <div className="py-2 md:p-4 px-2 md:px-8  w-full xl:w-1/2  ">
                   <span className=" font-bold text-lg md:block hidden  ">Country*</span>
                   <Input onChange={onChangeAddress} type="text" name='country' placeholder="Your Country/Region..." value={newAddress.country} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
                 </div>
-                <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
+                <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2  ">
                   <span className=" font-bold text-lg md:block hidden  ">Name*</span>
                   <Input onChange={onChangeAddress} type="text" name='full_name' placeholder="Your full name..." value={newAddress.full_name} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
                 </div>
 
-                <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
+                <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2  ">
                   <span className=" font-bold text-lg md:block hidden  ">Mobile Number ( Commonly Used to Assist Delivery ) *</span>
                   <Input onChange={onChangeAddress} type="text" name='phone' placeholder="Enter Your 10 digit Mobile Number" value={newAddress.phone} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
                 </div>
-                <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
+                <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2  ">
                   <span className=" font-bold text-lg md:block hidden  ">Flat no., House no./ House Name, Road no.*</span>
                   <Input onChange={onChangeAddress} type="text" name='address_line_1' placeholder="Address" value={newAddress.address_line_1} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
                 </div>
                 <div className="w-full md:flex">
-                  <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2   ">
+                  <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2   ">
                     <span className=" font-bold text-lg md:block hidden  ">Colony, Area, Street, Village</span>
                     <Input onChange={onChangeAddress} type="text" name='address_line_2' placeholder="More Address Details" value={newAddress.address_line_2} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
                   </div>
-                  <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
+                  <div className="py-2 md:p-4 px-2 md:px-8 w-full xl:w-1/2  ">
                     <span className=" font-bold text-lg md:block hidden  ">City*</span>
                     <Input onChange={onChangeAddress} type="text" name='city' placeholder="City" value={newAddress.city} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
                   </div>
                 </div>
 
                 <div className="py-2 px-2 md:py-4  w-full flex">
-                  <div className="pr-1 md:p-4 md:px-2 md:px-8  md:w-1/2  ">
+                  <div className="pr-1 md:p-4 md:px-2 md:px-8 w-full xl:w-1/2  ">
                     <span className=" font-bold text-lg md:block hidden  ">State*</span>
                     <Input onChange={onChangeAddress} type="text" name='state' placeholder="state" value={newAddress.state} className="h-[48px] my-2 rounded border-2 border-gray-300 " />
                   </div>
-                  <div className="pl-1 md:p-4 md:px-2 md:px-8  md:w-1/2   ">
+                  <div className="pl-1 md:p-4 md:px-2 md:px-8 w-full xl:w-1/2   ">
 
                     <span className="  font-bold text-lg md:block hidden  ">Zip Code*</span>
                     <Input onChange={onChangeAddress} type="text" name='zip_code' placeholder="zip_code" value={newAddress.zip_code} className="h-[48px] my-2  rounded border-2 border-gray-300 " />

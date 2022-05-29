@@ -64,7 +64,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
                         <div className="auth overflow-y-auto no-scrollbar">
                             <div className={`sm:hidden flex sticky top-0 justify-between items-center shadow-lg nav-bg h-[100px] w-full `} style={{ zIndex: 1200 }}>
                                 <div className={`flex items-center  mb-4`}>
-                                    <p className={`text-2xl text-[white] mx-4`}>Register</p>
+                                    <p className={`text-2xl text-[white] mx-4`}>Login</p>
                                 </div>
                                 <Button className='bg-transparent dark-blue sm:hidden block mx-6' onClick={showToggle} >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">

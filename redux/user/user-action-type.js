@@ -47,6 +47,8 @@ const authActionType = {
 
     AUTH_ERROR: "AUTH_ERROR",
 
+    LOG_OUT: 'LOG_OUT'
+
 }
 
 

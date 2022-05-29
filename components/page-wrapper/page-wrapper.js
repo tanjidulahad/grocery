@@ -113,6 +113,10 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                     .btn-hover-color:hover {
                     color: ${themeColors.bgColor};
                     }
+                    .btn-hover-revers:hover {
+                    color: ${themeColors.color};
+                    background-color:${themeColors.bgColor}
+                    }
                     .btn-nav-color {
                     color: $black-color-75;
                     fill: $black-color-75;

@@ -13,7 +13,6 @@ import OnlienPayment from '@components/online-payment/online-payment'
 import Loader from '@components/loading/loader'
 import PageWrapper from '@components/page-wrapper/page-wrapper'
 import AddressForm from '@components/address-form/address-form'
-import Stepper from '@components/stepper/stepper'
 
 // Actions
 import { clearCart, deleteItemFromCart } from '@redux/cart/cart-actions'
@@ -24,6 +23,7 @@ import {
 } from '@redux/checkout/checkout-action'
 import OrderSummry from '@components/order-summry/order-summry'
 import withAuth from '@components/auth/withAuth'
+import Stepper from '@components/stepper/stepper';
 
 const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 

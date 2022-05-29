@@ -7,7 +7,7 @@ import { Input } from '@components/inputs'
 import { applyCouponCodeStart } from '@redux/checkout/checkout-action'
 
 
-const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDetailsLoading }) => {
+const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDetailsLoading, isBillingHidden }) => {
     const purchaseDetails = checkout.purchaseDetails
     const [cpError, setCpError] = useState(null)
     const [couponCode, setCouponCode] = useState("")
@@ -45,10 +45,20 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                                 {cpError}
                             </div>
                         }
-                        <div className="mt-10  w-full">
-                            <h3 className="text-xl mb-5 font-semibold">
-                                Billing Details
-                            </h3>
+                        <div className="sm:mt-10  w-full">
+                            <div className='flex justify-between'>
+                                <h3 className="text-xl w-fit mb-5 font-semibold">
+                                    Billing Details
+                                </h3>
+                                {
+                                    isBillingHidden &&
+                                    <h3 className="text-lg w-fit mb-5 font-semibold">
+                                        ₹{Number(
+                                            purchaseDetails?.calculatedPurchaseTotal
+                                        ).toFixed(2)}
+                                    </h3>
+                                }
+                            </div>
                             {!!purchaseDetails && (
                                 <>
                                     <div className=" space-y-2 sm:space-y-3">

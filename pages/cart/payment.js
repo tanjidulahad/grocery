@@ -23,6 +23,7 @@ import {
 import CartList from '@components/cart-item/cart-list'
 import OrderSummry from '@components/order-summry/order-summry'
 import Stepper from '@components/stepper/stepper'
+import { useMediaQuery } from 'react-responsive'
 
 const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
@@ -42,7 +43,9 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
     const [payment, setpayment] = useState(false)
     const [active2, setactive2] = useState(false)
     const [confirmOrder, setConfirmOrder] = useState(false)
-    const [paymentSummryHeight, setPaymentSummryHeight] = useState(346)
+    const [paymentSummryHeight, setPaymentSummryHeight] = useState(100)
+    const [isBillingHidden, setIsBillingHidden] = useState(false)
+    const isTab = useMediaQuery({ minWidth: 640 })
     const [checkoutDetails, setcheckoutDetails] = useState({
         paymentMethod: '',
     })
@@ -182,7 +185,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
         }
         const paymentSummry = document.getElementById('payment-summry');
         if (paymentSummry) {
-            setPaymentSummryHeight(paymentSummry.offsetHeight)
+            // setPaymentSummryHeight(paymentSummry.offsetHeight)
         }
     }, [])
 
@@ -281,17 +284,11 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                                     </div>
                                 </div>
                             </div>
-                            <div className=' space-y-5'>
-                                <h3 className='text-2xl font-semibold text-center sm:text-left'>Review Order</h3>
-                                <div className=' space-y-5'>
-                                    <CartList />
-                                </div>
-                            </div>
                         </div>
                         {/* Billing Details >> */}
                         <div className='shrink-0 w-full md:w-5/12 xl:w-4/12'>
-                            <div id='payment-summry' className=' bg-white p-4 sm:p-10  fixed sm:static bottom-[70px] inset-x-0 '>
-                                <OrderSummry />
+                            <div id='payment-summry' onClick={() => setIsBillingHidden(!isBillingHidden)} className={`bg-white p-4 sm:p-10 fixed sm:static bottom-[70px] inset-x-0 `} style={{ bottom: isBillingHidden ? -149 : 70 }}>
+                                <OrderSummry isBillingHidden={isBillingHidden && !isTab} />
                             </div>
                             <div className='w-full flex fixed sm:static inset-x-0 justify-between items-center px-4 py-4 sm:py-0  bottom-[0] z-[1001] bg-white sm:bg-transparent'>
                                 <Button className="w-full sm:w-3/4 sm:mx-auto px-14 sm:px-0 py-3  block sm:mt-10 sm:py-4 white-color rounded btn-bg text-center"
@@ -302,10 +299,11 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                         </div>
                         {/* << Billing details */}
                     </div>
-                    <Button type='link' href='/cart/address' className="block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
+                    <Button type='link' href='/cart/address' className="hidden sm:block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z" />
-                        </svg>Back</Button>
+                        </svg>Back
+                    </Button>
                 </div>
             </div >
             {

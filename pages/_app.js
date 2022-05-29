@@ -28,6 +28,9 @@ import '@styles/saved-places.scss'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+if (process.env.NODE_ENV !== 'development') {
+  console.log = () => { };
+}
 
 function MyApp({ Component, pageProps }) {
   return (
