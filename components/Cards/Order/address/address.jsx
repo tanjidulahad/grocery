@@ -9,7 +9,7 @@ function address({ type, data, onEdit, onRemove, ids }) {
 
   return (
     <div className="w-full  h-full  bg-white">
-      <div className=" h-full md:p-4  w-full md:flex">
+      <div className=" h-full   w-full md:flex">
         <div className=" h-full w-full  m-2  border-[1px] rounded-xl border-[#C4C4C4] pr-4 md:border-[0px]  md:pr-0 md:mx-8 " onClick={() => { localStorage.setItem('addId', data.address_id) }}>
           <div className="hidden md:block h-full pb-4 btn-color-revers">
             <div className='w-full h-full flex flex-col items-stretch justify-between'>

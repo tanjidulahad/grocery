@@ -3,6 +3,7 @@ const INITIAL_STATE = {
     currentUser: null, // {}
     address: [],
     show: false, // true or false
+    customerWallet:null
 }
 
 const userReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -26,6 +27,11 @@ const userReducer = (state = INITIAL_STATE, { type, payload }) => {
             return {
                 ...state,
                 currentUser: payload,
+            }
+        case userActionType.SET_WALLET_BALANCE:
+            return {
+                ...state,
+                customerWallet: payload,
             }
 
         case userActionType.CLEARE_USER_START:

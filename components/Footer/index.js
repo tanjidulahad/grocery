@@ -41,23 +41,21 @@ function index() {
             style={{ alignItems: 'center' }}
           >
             <p className="text-white my-8">
-              <Link href='/privacy'>
+              <Link href='https://www.goplinto.com/privacy-policy/' passHref>
+                <a target="_blank">
                 Privacy Policy
+                </a>
               </Link>
             </p>
             <BsDot className="mx-4 my-8 " color={'gray'} size={20} />
             <p className="text-white my-8 ">
-              <Link href='/returns-refunds'>
+              <Link href='https://www.goplinto.com/refund-policy/' passHref>
+                <a target="_blank">
                 Return & Refunds
+                </a>
               </Link>
             </p>
 
-            <BsDot className="mx-4 my-8" color={'gray'} size={20} />
-            <p className="text-white my-8  ">
-              <Link href='/terms-of-use'>
-                Privacy Policy
-              </Link>
-            </p>
           </div>
           <div className=" h-1/3 mt-10 flex  justify-center  align-center">
             <a className='block' href='https://goplinto.com/' target={'_blank'}>

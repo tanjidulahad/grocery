@@ -69,8 +69,19 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
 
                     :
                     <>
-                        <div className="auth hidden md:block">
-                            <div className="p-6 auth-form-container rounded " style={{ border: "2px solid #F58634" }} >
+                        <div className="auth overflow-y-auto no-scrollbar">
+                            <div className={`sm:hidden flex sticky top-0 justify-between items-center shadow-lg nav-bg h-[100px] w-full `} style={{ zIndex: 1200 }}>
+                                <div className={`flex items-center  mb-4`}>
+                                    <p className={`text-2xl text-[white] mx-4`}>Register</p>
+                                </div>
+                                <Button className='bg-transparent dark-blue sm:hidden block mx-6' onClick={showToggle} >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+                                        <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                                        <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                                    </svg>
+                                </Button>
+                            </div>
+                            <div className="p-6 sm:absolute bottom-0 sm:bottom-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full bg-white sm:w-[512px] rounded " style={{ border: "2px solid #F58634" }} >
                                 <div className="flex justify-between items-center">
                                     {/* <h2 className="text-2xl font-semibold">Login</h2> */}
                                     <div className='w-fit flex   p-4' onClick={() => setIsVarificationPhone(!isVarificationPhone)}>
@@ -81,7 +92,7 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
                                             <MdEmail />
                                         </span>
                                     </div>
-                                    <Button className='bg-transparent dark-blue ' onClick={showToggle} >
+                                    <Button className='bg-transparent dark-blue hidden sm:block' onClick={showToggle} >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                                             <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
                                             <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
@@ -159,7 +170,7 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
                                         </div>
                                     </div>
                                     <div className="flex justify-center mt-4">
-                                        <Input disabled={isLoading} name='confirmPassword' className={`border py-4 w-3/4 rounded-lg ${error && ' border-red-400'}`} type="password" placeholder="Confirm password" onChange={onChangeHandler} value={state.confirmPassword} />
+                                        <Input disabled={isLoading} name='confirmPassword' className={`border py-4 w-3/4 rounded-lg ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Confirm password" onChange={onChangeHandler} value={state.confirmPassword} />
                                     </div>
                                     <div className="py-8 border-b-2 flex w-full justify-center">
                                         <Button className={`w-full rounded-lg btn-color text-lg font-medium btn-bg py-4 ${isLoading == true ? 'loading-btn' : ""}`} type="submit" disabled={isLoading == true}
@@ -206,120 +217,6 @@ const Register = ({ showToggle, setPage, forgotPassword, registerWithPassword, u
                                 <div className="auth-redirect mt-8 black-color text-lg" >
                                     <span>Already have an account? <Button className="bg-transparent red-color px-1" onClick={() => setPage(true)}>Login</Button> </span>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="mobauth md:hidden">
-                            <div className="p-6 pt-40 auth-form-container rounded "  >
-                                <div className="flex justify-start items-center">
-                                    {/* <h2 className="text-2xl font-semibold">Login</h2> */}
-                                    <div className='w-fit flex   py-4' onClick={() => setIsVarificationPhone(!isVarificationPhone)}>
-                                        <span className={`py-2 px-3   transition-all  duration-500 border-2 border-[#f58634] ${isVarificationPhone ? 'text-white font-medium btn-bgs bg-[#f58634]' : 'text-[#f58634]'}`}>
-                                            <BsFillTelephoneFill />
-                                        </span>
-                                        <span className={`py-2 px-3  transition-all duration-500 border-2 border-[#f58634] ${!isVarificationPhone ? 'text-white font-medium btn-bgs bg-[#f58634] ' : ' text-[#f58634] btn-color-reveses'}`}>
-                                            <MdEmail />
-                                        </span>
-                                    </div>
-                                    <Button className='hidden bg-transparent dark-blue ' onClick={showToggle} >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
-                                            <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                                            <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-                                        </svg>
-                                    </Button>
-
-                                </div>
-                                <div className="w-full  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
-                                    <img
-                                        className="w-20 h-20 object-contain"
-                                        src={
-                                            info.logo_img_url
-                                            ||
-                                            '/img/default.png'
-                                        }
-                                        alt="..."
-                                    />
-                                </div>
-
-                                <form onSubmit={onSubmitHandler}  >
-                                    <div className="flex justify-center mt-2">
-
-                                        <Input disabled={isLoading} name='fullName' className={`py-4 rounded-lg w-full ${error && ' border-red-400'}`} type="text" placeholder="Your name" onChange={onChangeHandler} value={state.name} />
-                                    </div>
-
-
-                                    {
-                                        isVarificationPhone ?
-                                            <div className=" flex justify-center mt-2">
-                                                <div className='w-full flex space-x-2 '>
-                                                    <div className='w-10 shrink-0 relative '>
-                                                        <PhoneInput
-                                                            inputClass='hidden'
-                                                            containerClass='py-4 w-full h-full rounded-lg'
-                                                            buttonClass='w-full flag-div'
-                                                            // country={'us'}
-                                                            enableAreaCodes={true}
-                                                            value={state.isdCode}
-                                                            onChange={phone => setState({ ...state, isdCode: phone })}
-                                                        />
-                                                    </div>
-                                                    <div className=' relative w-full'>
-                                                        <input disabled={isLoading} className='ml-2 absolute text-center text-sm top-1/2 -translate-y-1/2 w-11 outline-none rounded-lg' value={'+' + state.isdCode} />
-                                                        <Input disabled={isLoading} name='phone' className={`pl-14 py-4 ${error && ' border-red-400'} rounded-lg `} type="tel" placeholder="Enter 10 digit phone number" onChange={onChangeHandler} value={state.phone} />
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-                                            :
-                                            <div className='mt-4  flex justify-center   '>
-                                                <Input disabled={isLoading} name='emailId' className={`py-4 w-full ${error && ' border-red-400'} rounded-lg`} type="email" placeholder="Enter valid email" onChange={onChangeHandler} value={state.emailId} />
-                                            </div>
-                                    }
-                                    <div className='mt-4 h-fit flex justify-center  '>
-                                        {/* <Input disabled={isLoading} name='password' className={`py-3 ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} /> */}
-                                        {/* <h3 className='mb-1'>Password</h3> */}
-                                        <div className=' relative w-full'>
-                                            <Input disabled={isLoading} name='password' className={`py-4 rounded-lg  ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Create a password" onChange={onChangeHandler} value={state.password} />
-                                            <div className=' cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 p-4' onClick={() => setShowPass(!showPass)}>
-                                                {
-                                                    showPass ?
-                                                        <IoEyeOff size={25} color="#eeeff2" />
-                                                        :
-                                                        <IoEyeOutline size={25} color="#eeeff2" />
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-center mt-4">
-
-                                        <Input disabled={isLoading} name='confirmPassword' className={`py-4 w-full rounded-lg ${error && ' border-red-400'}`} type="password" placeholder="Confirm password" onChange={onChangeHandler} value={state.confirmPassword} />
-                                    </div>
-                                    <div className="py-8 border-b-2 flex  justify-center">
-                                        <Button className={`w-full rounded-lg btn-color text-lg font-medium btn-bg py-4 ${isLoading == true ? 'loading-btn' : ""}`} type="submit" disabled={isLoading == true}
-                                            style={{
-                                                backgroundColor: "#F58634", ...(isLoading == true) && {
-                                                    opacity: 0.7,
-                                                    cursor: "not-allowed"
-                                                },
-                                            }}>{isLoading == true ? 'Loading...' : 'Register'}</Button>
-                                    </div>
-
-                                </form>
-                                <div className="auth-redirect mt-8 black-color text-lg" >
-                                    <span>Already have an account? <Button className="bg-transparent red-color px-1" onClick={() => setPage(true)}>Login</Button> </span>
-                                </div>
-                            </div>
-                            <div className={`md:hidden fixed top-0     shadow-lg bg-[#48887B] h-[100px] w-full `} style={{ zIndex: 1200 }}>
-
-                                {/* <Tracker status={cartHeader.status}/> */}
-                                <div className={`flex items-center absolute bottom-0  mb-4`}>
-                                    {/* <BsArrowLeft className={`mx-4`} size={35} color={'white'}/> */}
-                                    <p className={`text-2xl text-[white] mx-4`}>Register</p>
-                                </div>
-
-
-
-
                             </div>
                         </div>
 

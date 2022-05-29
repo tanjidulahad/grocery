@@ -12,18 +12,18 @@
 // import Link from "@components/link"
 import Link from "next/link"
 
-const Button = ({ children = "", title = "", type = 'button', className = '', href = "/", ...props }) => {
+const Button = ({ children = "", title = "", type = 'button', className = '', href = "/", disabled = false, ...props }) => {
     return (
         <>
             {
                 type == 'link' ?
                     <Link href={href}  {...props}>
-                        <a className={`custom-button text-center ${' '}${className}`} {...props}>
+                        <a className={`custom-button text-center ${' '}${className} ${disabled && 'disabled'}`} {...props}>
                             {children || title || 'Click'}
                         </a>
                     </Link>
                     :
-                    <button className={`text-center custom-button outline-none ${' '}${className}`} type={type} {...props}>
+                    <button className={`text-center custom-button outline-none ${' '}${className}`} type={type} disabled={disabled} {...props}>
                         {children || title || 'Click'}
                     </button>
             }

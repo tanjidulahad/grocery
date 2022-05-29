@@ -11,7 +11,7 @@ import fetcher from '@redux/utility'
 import { useEffect, useState } from 'react'
 import { set } from 'nprogress'
 
-const profileWallet = ({user, info}) => {
+const profileWallet = ({user, info,customerWallet}) => {
   const [wallet, setwallet] = useState("")
   const [transaction, settransaction] = useState([])
 
@@ -19,11 +19,11 @@ const profileWallet = ({user, info}) => {
   const router = useRouter()
   useEffect(() => {
     const getDetail = async () => {
-      const data = await fetcher('GET', `?r=customer/get-customer-wallet-details&customerId=${user.customer_id}&storeId=${info.store_id}`)
+      // const data = await fetcher('GET', `?r=customer/get-customer-wallet-details&customerId=${user.customer_id}&storeId=${info.store_id}`)
       const transaction = await fetcher('GET', `?r=customer/get-wallet-transaction-details&customerId=${user.customer_id}`)
       console.log(transaction)
       settransaction(transaction.data)
-      setwallet(data.data)
+      // setwallet(data.data)
     }
 
     return getDetail()
@@ -34,7 +34,7 @@ const profileWallet = ({user, info}) => {
 
     <div className="md:grid md:grid-cols-1 bg-[transparent] md:gap-6 mt-28 md:mt-2 lg:mt-0">
       <div className="w-full h-max ">
-        <Wallet walletdata={wallet?.customer_wallet_balance} />
+        <Wallet walletdata={customerWallet?.customer_wallet_balance} />
       </div>
 
       <div className="w-full md:mb-[0px] ">
@@ -65,6 +65,7 @@ const profileWallet = ({user, info}) => {
 const mapStateToProps = state => ({
   user: state.user,
   info: state.store.info,
+  customerWallet: state.user.customerWallet,
 })
 
 export default connect(mapStateToProps,)(PageWrapper(withAuth(accountLayout(profileWallet))))

@@ -5,8 +5,8 @@ import { QuantityID } from "../inputs";
 import Rating from "@components/rating-stars/rating";
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 
-const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart }) => {
-    console.log("data from cart item",data)
+const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, isDetailsLoading }) => {
+    console.log("data from cart item", data)
 
     return (
         <div className="w-100 block space-y-3">
@@ -26,12 +26,12 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart }) => {
                         </a>
                     </Link>
                     {data.defaultVariantItem && data?.defaultVariantItem?.variant_item_attributes ? <p>{data?.defaultVariantItem?.variant_item_attributes && Object.keys(data?.defaultVariantItem?.variant_item_attributes).map(function (key) {
-                            if (key.includes('variant_value')) {
-                                if (data?.defaultVariantItem?.variant_item_attributes[key] != null) {
-                                    return <span>{data?.defaultVariantItem?.variant_item_attributes[key].variant_value_name}, </span>
-                                }
+                        if (key.includes('variant_value')) {
+                            if (data?.defaultVariantItem?.variant_item_attributes[key] != null) {
+                                return <span>{data?.defaultVariantItem?.variant_item_attributes[key].variant_value_name}, </span>
                             }
-                        })}</p>:
+                        }
+                    })}</p> :
                         <p>{data?.defaultVariantItem && Object.keys(data?.defaultVariantItem).map(function (key) {
                             if (key.includes('variant_value')) {
                                 if (data?.defaultVariantItem[key] != null) {
@@ -39,18 +39,18 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart }) => {
                                 }
                             }
                         })}</p>
-                        }
+                    }
                     <div className="flex justify-between items-center ">
                         <div className="lg:col-span-5">
                             <div className="">
                                 <span className="font-medium black-color-75  text-base sm:text-xl inline-block sm:mr-2">₹{data.defaultVariantItem ? data.defaultVariantItem.sale_price : data.sale_price}</span>
                                 {
                                     data.defaultVariantItem ?
-                                    data.defaultVariantItem.sale_price != data.defaultVariantItem.list_price &&
-                                    <span className=" text-base sm:text-base black-color-50 line-through ml-4 lg:ml-0 xl:ml-4 inline-block">(MRP ₹{data.defaultVariantItem.list_price})</span>
-                                    :
-                                    data.sale_price != data.price &&
-                                    <span className=" text-base sm:text-base black-color-50 line-through ml-4 lg:ml-0 xl:ml-4 inline-block">(MRP ₹{data.price})</span>
+                                        data.defaultVariantItem.sale_price != data.defaultVariantItem.list_price &&
+                                        <span className=" text-base sm:text-base black-color-50 line-through ml-4 lg:ml-0 xl:ml-4 inline-block">(MRP ₹{data.defaultVariantItem.list_price})</span>
+                                        :
+                                        data.sale_price != data.price &&
+                                        <span className=" text-base sm:text-base black-color-50 line-through ml-4 lg:ml-0 xl:ml-4 inline-block">(MRP ₹{data.price})</span>
                                 }
                             </div>
                         </div>
@@ -63,7 +63,7 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart }) => {
                                         }
                                         return false
                                     })()}
-                                        onPlush={() => addToCart(data)} onMinus={() => removeFromCart(data)} />
+                                        onPlush={() => addToCart(data)} onMinus={() => removeFromCart(data)} disabled={isDetailsLoading} />
                                 </div>
                             </div>
                         </div>
@@ -126,10 +126,14 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart }) => {
     )
 }
 
+const mapStateToProps = state => ({
+    isDetailsLoading: state.ui.isDetailsLoading,
+})
+
 const mapDispatchToProps = dispatch => ({
     addToCart: (item) => dispatch(addToCart(item)),
     removeFromCart: (item) => dispatch(removeFromCart(item)),
     deleteItemFromCart: (item) => dispatch(deleteItemFromCart(item)),
 })
 
-export default connect(null, mapDispatchToProps)(CartItem);
+export default connect(mapStateToProps, mapDispatchToProps)(CartItem);

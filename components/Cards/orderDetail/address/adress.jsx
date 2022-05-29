@@ -5,23 +5,23 @@ function adress({ address, place, orderDetails }) {
 
   return (
     <div className="w-full mt-1  rounded  bg-white">
-      <div className="my-4  w-full flex justify-between">
+      <div className="w-full flex justify-between">
 
         {
           place = 'order' ? <>
-            <div className="px-6   w-full flex ">
+            <div className="w-full flex ">
               <div className="  w-full mb-0  ">
-                <p className="text-center font-bold text-xl  text-dark">Shipping Details and Invoice</p>
+                <p className="text-center font-bold text-lg sm:text-xl  text-dark">Shipping Details and Invoice</p>
                 <div className="flex mt-6">
                   {/* <FiHome className='text-red-500' size={20} /> */}
                   <div>
-                    <p className="text-left font-bold text-lg  text-dark">Address</p>
+                    <p className="text-left font-bold  text-lg sm:text-xl text-dark">Address</p>
                     {
                       address &&
                       <>
                         <p className="text-left text-base my-4 mb-0 font-[100]  text-black"> {address?.address_line_1}, {address?.address_line_2 && ","} </p>
                         <p className="text-left text-base my-4 mt-0 mb-0 font-[100]  text-black"> {address?.city}, {address?.state} - {address?.zip_code}</p>
-                        <p className="text-left text-base my-4 mt-0 font-[100]  text-black"> mob. {address?.phone}</p>
+                        <p className="text-left text-base my-4 mb-0 mt-0 font-[100]  text-black"> mob. {address?.phone}</p>
                       </>
                     }
                   </div>

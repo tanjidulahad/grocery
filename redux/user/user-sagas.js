@@ -3,7 +3,7 @@ import axios from "axios";
 import fetcher, { nodefetcher } from "../utility";
 import userActionType from './user-action-type'
 import {
-    getLoginOtpSuccess, getRegisterOtpSuccess, autheError, otpVerificationSuccess, cleareUserStart, getAddressSuccess, getAddressStart, loginSuccess, updateCurrentUserDetails
+    getLoginOtpSuccess, getRegisterOtpSuccess, autheError, otpVerificationSuccess, cleareUserStart, getAddressSuccess, getAddressStart, loginSuccess, updateCurrentUserDetails, setWalletBalance
 } from "./user-action";
 import { clearCheckout } from "../checkout/checkout-action";
 
@@ -369,9 +369,30 @@ function* onUpdateUserDetailsStart() {
     })
 }
 
+function* onGetCustomerWallet() {
+    yield takeLatest(userActionType.GET_WALLET_BALANCE, function* ({ payload }) {
+        
+        const {customerId,storeId} = payload;
+        try {
+            const res = yield fetcher('GET', `?r=customer/get-customer-wallet-details&customerId=${customerId}&storeId=${storeId}`)
+            if (res.data) {                
+                yield put(setWalletBalance(res.data))
+            }
+        } catch (error) {
+            console.log(error)
+            // if (error.message == 'Network Error') {
+            //     yield put(riseError({ name: 'No Interner', message: "Please connect device to Internet!", onOk: () => { return }, onOkName: "Close" }))
+            // } else {
+            //     yield put(riseError({ name: error.name, message: "Operation faield!", onOk: () => { return }, onOkName: "CLOSE" }))
+            // }
+            // yield put(autheError(error))
+        }
+    })
+}
+
 export default function* userSagas() {
     yield all([call(onGetRegisterOtpStart), call(onGetLoginOtpStart), call(onOtpVerificationStart), call(onLogoutStart), call(onGetAddressStart), call(onAddAddressStart), call(onRemoveAddressStart), call(onUpdateAddressStart),
-    call(onRegisterWithPassword), call(onLoginWithPasswordStart), call(onForgotPasswordStart), call(onForgotPasswordOtpVerifyStart), call(onNewPasswordCreateStart), call(onUpdateUserDetailsStart)
+    call(onRegisterWithPassword), call(onLoginWithPasswordStart), call(onForgotPasswordStart), call(onForgotPasswordOtpVerifyStart), call(onNewPasswordCreateStart), call(onUpdateUserDetailsStart), call(onGetCustomerWallet)
     ])
 
 }

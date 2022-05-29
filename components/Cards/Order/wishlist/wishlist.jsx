@@ -40,18 +40,19 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                 <div className=" bg-white md:col-span-3 flex sm:space-x-4">
                     <Link href={`/product/${data?.item_id || '1234'}`}>
 
-                        <div className=" m-2 md:m-0 w-full flex md:w-max md:mr-2 ">
-                            <img className="md:block w-4 h-4" src="/img/veg.svg" />
-                            <img className=" my-6 md:my-0 md:mx-0  md:ml-4 w-full h-[120px] max-h-[120px] md:w-[100px] md:max-h-[100px] md:border-[0px] border-[#E7E7E7] md:border-[transparent]  object-cover rounded-md" src={data?.primary_img || '/img/default.png'} alt="product" />
-                            {/* <div className=" md:hidden my-0 m-2 md:m-0 bg-red-400">
-                                <AiFillHeart size={20} color="#F35252" />
-                            </div> */}
-                        </div>
+                        <a className="block m-2 md:m-0 md:w-max md:mr-2 h-[132px] w-full sm:w-[150px] sm:h-[150px] relative ">
+                            {
+                                data?.is_veg == 'Y' &&
+                                <img className="w-full h-full object-cover" src={data?.primary_img || '/img/default.png'} alt="product" />
+                            }
+                            <img className="md:block w-4 h-4 absolute top-2 left-2" src="/img/veg.svg" />
+
+                            <div className=" md:hidden absolute top-2 right-2 mt-1 m-2 md:m-0">
+                                <AiFillHeart onClick={() => removeFromWishList(data.entry_id)} size={20} color="#F35252" />
+                            </div>
+                        </a>
 
                     </Link>
-                    <div className=" md:hidden mt-1 m-2 md:m-0">
-                        <AiFillHeart onClick={() => removeFromWishList(data.entry_id)} size={20} color="#F35252" />
-                    </div>
                 </div>
                 <div className="hidden w-8/12 md:block lg:block">
                     <div>
@@ -128,7 +129,7 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                                         })()}
                                             onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                                         :
-                                        <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-3  `} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+                                        <Button className={`btn-color w-full  btn-bg max-h-min text-base font-medium rounded py-2  `} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
                                 }
 
                             </div>

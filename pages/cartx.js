@@ -56,20 +56,22 @@ const Cart = ({
 }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const purchaseDetails = checkout.purchaseDetails
+  const themeColor = displaySettings && (() => info.displaySettings.navbar_color)() || '#F64B5D'
   const [mobNavHeight, setMobNavHeight] = useState(0)
   const [initiateData, setInitiateData] = useState(null) // For cod
   const [confirmPayment, setConfirmPayment] = useState(null) // For online
   const [initiateStatus, setInitiateStatus] = useState('pending') // pending, loading, failure
   const [error, setError] = useState(null)
-  const [cpError, setCpError] = useState(null)
-  const [couponCode, setCouponCode] = useState("")
-  const [success, setOnSuccess] = useState(null)
+  const [cuccess, setOnSuccess] = useState(null)
   const [rzpOrder, setRzpOrder] = useState(null)
+  const [epError, setCpError] = useState(null)
+  const [couponCode, setCouponCode] = useState("")
   const [enablePayment, setEnablePayment] = useState(false)
   const [coupon, setcoupon] = useState('')
   const [payment, setpayment] = useState(false)
   const [active2, setactive2] = useState(false)
   const [confirmOrder, setConfirmOrder] = useState(false)
+  const [navbarHeight, setNavbarHeight] = useState(166)
   const [checkoutDetails, setcheckoutDetails] = useState({
     deliveryAddress: null,
     deliveryMethod: '',
@@ -138,6 +140,14 @@ const Cart = ({
       getPurchage(checkout.purchase?.purchase_id)
     }
   }, [])
+
+  useEffect(() => {
+    const navbar = document.getElementById('navbar')
+    console.log(navbar);
+    if (navbar) {
+      setNavbarHeight(navbar?.offsetHeight || 166)
+    }
+  })
 
   // Change function to chagen address payment and shipment methods
   const onChangeHandler = (e) => {
@@ -296,8 +306,6 @@ const Cart = ({
     setCouponCode("")
   }
 
-
-  console.log(userAddress?.filter(x => x?.address_id === +localStorage.getItem('addId')))
   if (!info) {
     // If store details are not awilable
     return <Loader />
@@ -364,7 +372,7 @@ const Cart = ({
           </div>
         </div>
         <div id="cart-total-btn md:hidden"
-          className=" border-[1px] border-[#E7E7E7]   md:border-[0px] mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0  bg-white sm:bg-transparent"
+          className=" border-[1px] border-[#E7E7E7]   md:border-[0px] mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 sm:p-0  bg-white sm:bg-transparent"
           style={{
             bottom: `${mobNavHeight}px`,
             zIndex: 1
@@ -402,7 +410,7 @@ const Cart = ({
           </div>
           <section className=" bg-white md:bg-[#f2f2f2]  relative pb-16">
             <div className=" mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-6 2xl:gap-10">
+              <div className="grid grid-cols-1 lg:grid-cols-12 lg:gap-6 xl:gap-16">
                 <div className="w-full col-span-12 md:col-span-7 lg:col-span-8 xl:col-span-8  ">
                   {payment && (
                     <>
@@ -1001,7 +1009,7 @@ const Cart = ({
                                     {cpError}
                                   </div>
                                 }
-                                <div className=" w-full">
+                                <div className="ml-2 w-full">
                                   <h3 className="text-xl hidden md:block font-semibold">
                                     Billing Details
                                   </h3>
@@ -1066,7 +1074,7 @@ const Cart = ({
                           </div>
                           {!!purchaseDetails && (
                             <>
-                              <div className="px-3 py-10 sm:px-10">
+                              <div className="px-3 py-10 sm:px-10 space-y-3">
                                 <div className="flex justify-between space-x-2 ">
                                   <h6 className="text-lg font-medium text-gray-400">
                                     Item Total
@@ -1080,75 +1088,73 @@ const Cart = ({
                                     </span>
                                   </div>
                                 </div>
-                                <div>
-                                  <div className="flex justify-between space-x-2 my-1">
-                                    <h6 className="text-lg  font-medium text-gray-400">
-                                      Delivery Charge
-                                    </h6>
-                                    <div>
-                                      <span className="text-lg black-color font-medium ml-2">
-                                        {purchaseDetails?.totalDeliveryCharge
-                                          ? `₹ ${Number(
-                                            purchaseDetails?.totalDeliveryCharge
-                                          ).toFixed(2)}`
-                                          : 'Free'}
-                                      </span>
-                                    </div>
+                                <div className="flex justify-between space-x-2  my-1">
+                                  <h6 className="text-lg  font-medium text-gray-400">
+                                    Delivery Charge
+                                  </h6>
+                                  <div>
+                                    <span className="text-lg black-color font-medium ml-2">
+                                      {purchaseDetails?.totalDeliveryCharge
+                                        ? `₹ ${Number(
+                                          purchaseDetails?.totalDeliveryCharge
+                                        ).toFixed(2)}`
+                                        : 'Free'}
+                                    </span>
                                   </div>
+                                </div>
 
+                                <div className="flex justify-between space-x-2 my-1">
+                                  <h6 className="text-lg  font-medium text-gray-400">
+                                    Tax
+                                  </h6>
+                                  <div>
+                                    <span className="text-lg black-color font-medium ml-2">
+                                      ₹{' '}
+                                      {Number(
+                                        purchaseDetails.totalTaxAmount
+                                      ).toFixed(2)}
+                                    </span>
+                                  </div>
+                                </div>
+                                {purchaseDetails?.totalConvenienceCharge ? (
                                   <div className="flex justify-between space-x-2 my-1">
                                     <h6 className="text-lg  font-medium text-gray-400">
-                                      Tax
+                                      Convenience Charge
                                     </h6>
                                     <div>
                                       <span className="text-lg black-color font-medium ml-2">
                                         ₹{' '}
                                         {Number(
-                                          purchaseDetails.totalTaxAmount
+                                          purchaseDetails.totalConvenienceCharge
                                         ).toFixed(2)}
                                       </span>
                                     </div>
                                   </div>
-                                  {purchaseDetails?.totalConvenienceCharge ? (
-                                    <div className="flex justify-between space-x-2 my-1">
-                                      <h6 className="text-lg  font-medium text-gray-400">
-                                        Convenience Charge
-                                      </h6>
-                                      <div>
-                                        <span className="text-lg black-color font-medium ml-2">
-                                          ₹{' '}
-                                          {Number(
-                                            purchaseDetails.totalConvenienceCharge
-                                          ).toFixed(2)}
-                                        </span>
-                                      </div>
-                                    </div>
-                                  ) : null}
-                                  <div className="flex justify-between space-x-2 my-1">
-                                    <h6 className="text-lg  font-medium text-gray-400">
-                                      Coupon Applied
-                                    </h6>
-                                    <div>
-                                      <span className="text-lg black-color font-medium ml-2">
-                                        ₹{' '}
-                                        {Number(
-                                          purchaseDetails.totalCouponSavingsAmount
-                                        ).toFixed(2)}
-                                      </span>
-                                    </div>
+                                ) : null}
+                                <div className="flex justify-between space-x-2 my-1">
+                                  <h6 className="text-lg  font-medium text-gray-400">
+                                    Coupon Applied
+                                  </h6>
+                                  <div>
+                                    <span className="text-lg black-color font-medium ml-2">
+                                      ₹{' '}
+                                      {Number(
+                                        purchaseDetails.totalCouponSavingsAmount
+                                      ).toFixed(2)}
+                                    </span>
                                   </div>
-                                  <div className="flex justify-between space-x-2 my-1">
-                                    <h6 className="text-lg success-color font-medium text-gray-400">
-                                      Discount
-                                    </h6>
-                                    <div>
-                                      <span className="text-lg success-color font-medium ml-2">
-                                        - ₹
-                                        {Number(
-                                          purchaseDetails.totalSavings
-                                        ).toFixed(2)}
-                                      </span>
-                                    </div>
+                                </div>
+                                <div className="flex justify-between space-x-2 my-1">
+                                  <h6 className="text-lg success-color font-medium text-gray-400">
+                                    Discount
+                                  </h6>
+                                  <div>
+                                    <span className="text-lg success-color font-medium ml-2">
+                                      - ₹
+                                      {Number(
+                                        purchaseDetails.totalSavings
+                                      ).toFixed(2)}
+                                    </span>
                                   </div>
                                 </div>
                                 <div className="flex justify-between mt-2 border-t-2 border-solid pt-2">
@@ -1175,7 +1181,7 @@ const Cart = ({
                   {/* tracking page  */}
                   <div
                     id="cart-total-btn"
-                    className=" border-[1px] border-[#E7E7E7] z-10 md:z-0  md:border-[0px] mt-0 sm:mt-20 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0 grid grid-cols-2 sm:grid-cols-1 bg-white sm:bg-transparent"
+                    className=" border-[1px] border-[#E7E7E7] z-10 md:z-0  md:border-[0px] mt-0 sm:mt-6 w-full left-0 fixed sm:relative bottom-0 p-4 sm:p-0 grid grid-cols-2 sm:grid-cols-1 bg-white sm:bg-transparent"
                     style={{
                       bottom: `${mobNavHeight}px`,
 
@@ -1188,22 +1194,17 @@ const Cart = ({
                           (
                             <>
                               {
-                                !payment && ((checkoutDetails?.paymentMethod == 'Y' && checkoutDetails.deliveryAddress) || checkoutDetails?.paymentMethod == 'N') ?
+                                !payment ?
                                   <Button
                                     className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
                                     onClick={() => { setpayment(!payment) }}
                                   >Proceed</Button> :
                                   <Button
                                     className="w-3/4 py-3 hidden md:block sm:py-4 white-color rounded btn-bg text-center"
-
                                     onClick={() => { initiatePayment() }}
                                     disabled={
-                                      cartHeader.status === 'payment' && checkoutDetails?.paymentMethod == ''
-
+                                      !((checkoutDetails?.deliveryMethod == 'Y' && checkoutDetails.deliveryAddress) || checkoutDetails?.deliveryMethod == 'N')
                                     }
-                                    style={{
-                                      opacity: `${checkoutDetails.paymentMethod === '' ? 0.6 : 1}`
-                                    }}
                                   >Proceed To Pay</Button>
                               }
                               {
@@ -1482,11 +1483,8 @@ const Cart = ({
           )}
         </div>
       </div >
-      <div className={`md:hidden fixed top-0  ${!cartHeader.active && 'hidden'}   shadow-lg bg-[#48887B] h-[124px] w-full `} style={{ zIndex: 1200 }}>
-
+      <div className={`md:hidden fixed top-0  ${!cartHeader.active && 'hidden'}   shadow-lg bg-[#48887B]  w-full `} style={{ zIndex: 1200, height: navbarHeight }}>
         <Tracker status={cartHeader.status} active2={active2} />
-
-
       </div>
 
     </>
