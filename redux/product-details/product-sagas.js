@@ -10,9 +10,10 @@ import { riseError } from "../global-error-handler/global-error-handler-action.t
 // Product Details
 function* onProductFetchStart() {
     yield takeLatest(productActionType.PRODUCT_DETAILS_FETCH_START, function* ({ payload }) {
-        const { onSuccess, onFailure, id,seassion_id } = payload;
+        const { onSuccess, onFailure, id, seassion_id } = payload;
         try {
             const res = yield fetcher('GET', `?r=catalog/get-item-details&itemId=${id}&customerId=${seassion_id}`)
+
             yield put(productDetailsFetchSuccess(res.data))
             if (onSuccess) {
                 onSuccess(res.data)
@@ -83,7 +84,7 @@ function* onGetAdditionalInfoStart() {
 
 function* onGetProductVariantStart() {
     yield takeLatest(productActionType.GET_PRODUCT_VARIENT_START, function* ({ payload }) {
-        const { setAllVariants,id } = payload
+        const { setAllVariants, id } = payload
         try {
             const res = yield fetcher('GET', `?r=catalog/get-variant-groups-by-item-id&itemId=${id}`);
             if (Array.isArray(res.data)) {

@@ -157,18 +157,25 @@ function* onGetSubCategoriesStart() {
 
 function* onGetShopProductsStart() {
     yield takeLatest(shopActionType.GET_SHOP_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, page, setStatus ,filterAndSortPayload,sortOrder,user} = payload;
-        console.log("filter from saga",payload)
+        const { storeId, page, setStatus, filterAndSortPayload, sortOrder, user } = payload;
+        console.log("filter from saga", payload)
         try {
-            const res = yield fetcher(`${filterAndSortPayload==undefined?'GET':'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder !="false" ? sortOrder!= undefined ?`&sortOrder=${sortOrder}`:"":""}${user?`&customerId=${user.customer_id}`:""}`,filterAndSortPayload)
+            const res = yield fetcher(`${filterAndSortPayload == undefined ? 'GET' : 'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}${user ? `&customerId=${user.customer_id}` : ""}`, filterAndSortPayload)
+            console.log("product res", res.data)
+
             if (Array.isArray(res.data)) {
                 if (page > 1 && typeof page != 'undefined') {
                     yield put(getShopProductsPaginationSuccess(res.data))
                 } else {
                     yield put(getShopProductsSuccess(res.data))
+
+
                 }
                 setStatus('success')
+
             }
+
+
         } catch (error) {
             if (setStatus) setStatus('failed')
             if (error.message == 'Network Error') {
@@ -223,10 +230,10 @@ function* onProductSerachStart() {
 
 function* onGetFiltersGroup() {
     yield takeLatest(shopActionType.FETCH_FILTER_GROUPS, function* ({ payload }) {
-        const { storeId,setFiltersGroup } = payload
+        const { storeId, setFiltersGroup } = payload
         try {
             const res = yield fetcher('GET', `?r=catalog-search/get-filter-groups&storeId=${storeId}`);
-            if(res.data){
+            if (res.data) {
                 setFiltersGroup(res.data)
             }
 
@@ -237,10 +244,10 @@ function* onGetFiltersGroup() {
 }
 function* onGetBestSellerProduct() {
     yield takeLatest(shopActionType.GET_BEST_SELLER_PRODUCTS, function* ({ payload }) {
-        const { storeId,setBestSellerProducts } = payload
+        const { storeId, setBestSellerProducts } = payload
         try {
             const res = yield nodefetcher('GET', `/store-widgets/get-best-sellers-by-store?storeId=${storeId}`);
-            if(res.data){
+            if (res.data) {
                 setBestSellerProducts(res.data)
             }
 
@@ -251,10 +258,10 @@ function* onGetBestSellerProduct() {
 }
 function* onGetNewArrivalProducts() {
     yield takeLatest(shopActionType.GET_NEW_ARRIVALS_PRODUCTS, function* ({ payload }) {
-        const { storeId,setNewArrivalProducts } = payload
+        const { storeId, setNewArrivalProducts } = payload
         try {
             const res = yield nodefetcher('GET', `/store-widgets/get-new-arrivals-by-store?storeId=${storeId}`);
-            if(res.data){
+            if (res.data) {
                 setNewArrivalProducts(res.data)
             }
 

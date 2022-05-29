@@ -18,8 +18,8 @@ import PageWrapper from '@components/page-wrapper/page-wrapper'
 import accountLayout from '@components/layout/account-layout'
 import Review from '@components/Cards/Review/review'
 import { BsArrowLeft } from 'react-icons/bs'
-import Stepper from '@components/Stepper/Stepper';
 import withAuth from '@components/auth/withAuth';
+import Stepper from '@components/stepper/stepper';
 
 
 function orderDetail({ getOrderDetails, display }) {
