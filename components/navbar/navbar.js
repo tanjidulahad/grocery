@@ -25,6 +25,8 @@ import {
 } from "@redux/shop/shop-action";
 import { getCategoryStart, getShopProductsStart, getCategoryProductsStart, getSearchProductsStart } from "@redux/shop/shop-action";
 import { setSearchHandler } from '@redux/search/seatch-actions'
+import ContactUs from "@components/ContactUS/ContactUs";
+import MobContactUs from "@components/ContactUS/MobContactUs";
 
 const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler, displaySettings, openAuth, logOut, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, searchHandler, info, ref }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
@@ -39,14 +41,10 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress', '/account/orderdetail/[id]']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   const isDesktopOrLaptopx = useMediaQuery({ minWidth: 1020 })
-  // useEffect(() => {
-  //   getShopInfo(storeId);
-  //   getShopSeo(storeId);
-  //   getShopSettings(storeId);
-  //   getSocialProfile(storeId);
-  //   getShopDisplaySettings(storeId)
 
-  // }, [])
+  const [contactUsVisible, setContactUsVisible] = useState(false)
+  const [mobContactUsVisible, setMobContactUsVisible] = useState(false)
+
   useEffect(() => {
     setIsLogin(!!user)
   }, [user])
@@ -146,8 +144,8 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                     shop
                   </a>
                 </Link>
-                <a className="block whitespace-nowrap font-normal  tracking-tight lg:text-base">
-                  Contact
+                <a onClick={() => setContactUsVisible(true)} className="block whitespace-nowrap font-normal  tracking-tight lg:text-base cursor-pointer">
+                  Contact Us
                 </a>
               </div>
               <div className="flex items-center justify-end space-x-4">
@@ -402,16 +400,16 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </Link>
             </div>
             <div >
-              <Link href={'/'}>
-                <a className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Contact Us</a>
-              </Link>
+
+              <a onClick={() => setMobContactUsVisible(true)} className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Contact Us</a>
+
             </div> <div >
               <Link href={'https://goplinto.com/privacy-policy'}>
-                <a className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Privecy Policy</a>
+                <a target="_blank" className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Privecy Policy</a>
               </Link>
             </div> <div >
               <Link href={'https://goplinto.com/refund-policy'}>
-                <a className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Return & Refunds</a>
+                <a target="_blank" className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Return & Refunds</a>
               </Link>
             </div>
             <div >
@@ -541,6 +539,12 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
           </div>
         </MediaQuery>
       }
+      <>
+        <ContactUs contactUsVisible={contactUsVisible} setContactUsVisible={setContactUsVisible}></ContactUs>
+      </>
+      <>
+        <MobContactUs mobContactUsVisible={mobContactUsVisible} setMobContactUsVisible={setMobContactUsVisible}></MobContactUs>
+      </>
     </nav >
   )
 }

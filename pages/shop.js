@@ -507,7 +507,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
         <>{
           mobileSortOpen && <div className='lg:hidden md:hidden bg-white fixed h-[91vh] w-full  left-0 top-0 z-[1000] overflow-y-scroll'>
 
-            <h3 className='pt-5 pb-5 btn-bg' onClick={openMobileSort}><BsArrowLeft className={`mx-2 inline`} size={20} />Sort by</h3>
+            <h3 className='pt-5 pb-5 nav-bg' onClick={openMobileSort}><BsArrowLeft className={`mx-2 inline`} size={20} />Sort by</h3>
             <div className='mt-3 flex flex-wrap px-2 radio-custom'>
 
               <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Popularity' name="sort" value="false" />
@@ -519,7 +519,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
               <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Low' name="sort" value="ASC" />
               <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Low">Price (Low to High)</label>
             </div>
-            <h3 className='p-5 btn-bg'>Filter</h3>
+            {Object.keys(filtersGroup).length!=0&&<h3 className='p-5 nav-bg'>Filter</h3>}
             <div>
               <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='mobile-tab max-h-full overflow-hidden overflow-y-scroll'>
                 {
