@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from 'react'
 import { connect } from "react-redux";
 import { Button, Input } from '../inputs';
@@ -47,8 +45,8 @@ const CreateNewPassword = ({ showToggle, setPage, createNewPassword, loginSucces
         <>
             {
                 isSuccess ?
-                    <div className="mobauth md:auth">
-                        <div className="p-6 flex flex-col bg-white justify-center items-center auth-form-container rounded m-h-fit ">
+                    <div className="mobauth">
+                        <div className="p-6 flex flex-col bg-white justify-center items-center auth-form-container rounded m-h-fit " style={{ maxHeight: '50vh' }}>
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="154px" height="154px">
                                     <g fill="none" stroke="#22AE73" strokeWidth="2">
@@ -62,153 +60,87 @@ const CreateNewPassword = ({ showToggle, setPage, createNewPassword, loginSucces
                     </div>
                     :
                     <>
-                    <div className="hidden md:block auth">
-                        <div className="p-6 bg-white  auth-form-container rounded" style={{ height: 'fit-content' }} >
-                        <div className="flex justify-between items-center">
-                                <h2 className="text-2xl font-semibold">Create Password</h2>
-
-
-                                <Button className='bg-transparent dark-blue ' onClick={showToggle} >
+                        <div className="auth ">
+                            <div className={`sm:hidden fixed flex  top-0 justify-between items-center shadow-lg nav-bg h-[100px] w-full `} style={{ zIndex: 1200 }}>
+                                <div className={`flex items-center  mb-4`}>
+                                    <p className={`text-2xl text-[white] mx-4`}>Create Password</p>
+                                </div>
+                                <Button className='bg-transparent dark-blue sm:hidden block mx-6' onClick={showToggle} >
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
                                         <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
                                         <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                                     </svg>
                                 </Button>
-
                             </div>
+                            {/* <div className="p-6 bg-white  auth-form-container rounded" style={{ height: 'fit-content' }} > */}
+                            <div className="p-6 absolute bottom-0 sm:bottom-auto top-[100px] sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-full bg-white sm:w-[512px] rounded " style={{ border: "2px solid #F58634" }} >
+                                <div className="sm:flex justify-between items-center hidden ">
+                                    <h2 className="text-2xl font-semibold">Create Password</h2>
 
-                            <div className="w-full  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
-                <img
-                  className="w-20 h-20 object-contain"
-                  src={
-                    info.logo_img_url
-                    ||
-                    '/img/default.png'
-                  }
-                  alt="..."
-                />
-              </div>
-                            <form onSubmit={onSubmitHandler}>
-                                <div className="mt-10">
-                                    <div className='' style={{ maxWidth: 'fit-content' }} >
-                                        {
-                                            !!error &&
-                                            <span className='text-base red-color'>{error}</span>
+
+                                    <Button className='bg-transparent dark-blue hidden sm:block' onClick={showToggle} >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                                            <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                                        </svg>
+                                    </Button>
+
+                                </div>
+
+                                <div className="w-full  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
+                                    <img
+                                        className="w-20 h-20 object-contain"
+                                        src={
+                                            info.logo_img_url
+                                            ||
+                                            '/img/default.png'
                                         }
-                                    </div>
-                                    <div className='mt-6 h-fit '>
-                                        {/* <h3 className='mb-1'>Password</h3> */}
-                                        <div className='relative h-fit'>
-                                            <Input name='password' className={`py-3 ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} />
-                                            <div className=' cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 p-4' onClick={() => setShowPass(!showPass)}>
-                                                {
-                                                    showPass ?
-                                                        <IoEyeOff />
-                                                        :
-                                                        <IoEyeOutline />
-                                                }
+                                        alt="..."
+                                    />
+                                </div>
+                                <form onSubmit={onSubmitHandler}>
+                                    <div className="mt-10">
+                                        <div className='' style={{ maxWidth: 'fit-content' }} >
+                                            {
+                                                !!error &&
+                                                <span className='text-base red-color'>{error}</span>
+                                            }
+                                        </div>
+                                        <div className='mt-6 h-fit '>
+                                            {/* <h3 className='mb-1'>Password</h3> */}
+                                            <div className='relative h-fit'>
+                                                <Input name='password' className={` border input-focus ${error && ' border-red-400'} rounded-lg py-4 w-full`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} />
+                                                <div className=' cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 p-4' onClick={() => setShowPass(!showPass)}>
+                                                    {
+                                                        showPass ?
+                                                            <IoEyeOff />
+                                                            :
+                                                            <IoEyeOutline />
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className='mt-6 relative h-fit'>
-                                        {/* <h3 className='mb-1'>Confirm password</h3> */}
-                                        <Input name='confirmPassword' className={`py-3 ${error && ' border-red-400'}`} type="password" placeholder="Confirm password" value={state.confirmPassword} onChange={onChangeHandler} disabled={isLoading} />
-                                    </div>
-                                </div>
-
-                                <div className='my-8' >
-                                    <Button className={`w-full btn-bg btn-color py-4 rounded`} type="submit" disabled={isLoading}
-                                        style={{
-                                          backgroundColor:"#F58634", ...isLoading && {
-                                                opacity: 0.7,
-                                                cursor: "not-allowed"
-                                            },
-                                        }}>{isLoading ? 'Loading...' : 'Submit'} </Button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                     <div className="mobauth md:hidden">
-                     <div className="p-6 pt-60 bg-white auth-form-container rounded" style={{border:"2px solid #F58634"}}  >
-                        <div className="flex hidden justify-between items-center">
-                                <h2 className=" text-2xl font-semibold">Create Password</h2>
-
-
-                                <Button className='bg-transparent dark-blue ' onClick={showToggle} >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg" viewBox="0 0 16 16">
-                                        <path fillRule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                                        <path fillRule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-                                    </svg>
-                                </Button>
-
-                            </div>
-
-                            <div className="w-full  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
-                <img
-                  className="w-20 h-20 object-contain"
-                  src={
-                    info.logo_img_url
-                    ||
-                    '/img/default.png'
-                  }
-                  alt="..."
-                />
-              </div>
-                            <form onSubmit={onSubmitHandler}>
-                                <div className="mt-10">
-                                    <div className='' style={{ maxWidth: 'fit-content' }} >
-                                        {
-                                            !!error &&
-                                            <span className='text-base red-color'>{error}</span>
-                                        }
-                                    </div>
-                                    <div className='mt-6 h-fit '>
-                                        {/* <h3 className='mb-1'>Password</h3> */}
-                                        <div className='relative h-fit'>
-                                            <Input name='password' className={`py-3 ${error && ' border-red-400'}`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} />
-                                            <div className=' cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 p-4' onClick={() => setShowPass(!showPass)}>
-                                                {
-                                                    showPass ?
-                                                        <IoEyeOff />
-                                                        :
-                                                        <IoEyeOutline />
-                                                }
-                                            </div>
+                                        <div className='mt-6 relative h-fit'>
+                                            {/* <h3 className='mb-1'>Confirm password</h3> */}
+                                            <Input name='confirmPassword' className={` border input-focus ${error && ' border-red-400'} rounded-lg py-4 w-full`} type={showPass ? 'text' : 'password'} placeholder="Confirm password" value={state.confirmPassword} onChange={onChangeHandler} disabled={isLoading} />
                                         </div>
                                     </div>
-                                    <div className='mt-6 relative h-fit'>
-                                        {/* <h3 className='mb-1'>Confirm password</h3> */}
-                                        <Input name='confirmPassword' className={`py-3 ${error && ' border-red-400'}`} type="password" placeholder="Confirm password" value={state.confirmPassword} onChange={onChangeHandler} disabled={isLoading} />
+
+                                    <div className='my-8' >
+                                        <Button className={`w-full btn-bg btn-color py-4 rounded`} type="submit" disabled={isLoading}
+                                            style={{
+                                                ...isLoading && {
+                                                    opacity: 0.7,
+                                                    cursor: "not-allowed"
+                                                },
+                                            }}>{isLoading ? 'Loading...' : 'Submit'} </Button>
                                     </div>
-                                </div>
+                                </form>
 
-                                <div className='my-8' >
-                                    <Button className={`w-full btn-bg btn-color py-4 rounded`} type="submit" disabled={isLoading}
-                                        style={{
-                                          backgroundColor:"#F58634", ...isLoading && {
-                                                opacity: 0.7,
-                                                cursor: "not-allowed"
-                                            },
-                                        }}>{isLoading ? 'Loading...' : 'Submit'} </Button>
-                                </div>
-                            </form>
-
+                            </div>
                         </div>
-                         <div className={`md:hidden fixed top-0     shadow-lg bg-[#48887B] h-[100px] w-full `} style={{zIndex:1200}}>
 
- {/* <Tracker status={cartHeader.status}/> */}
- <div className={`flex items-center absolute bottom-0  mb-4`}>
-   {/* <BsArrowLeft className={`mx-4`} size={35} color={'white'}/> */}
-    <p className={`text-2xl text-[white] mx-4`}>Create Password</p>
- </div>
-
-
-
-
- </div>
-                     </div>
-                     </>
+                    </>
 
             }
         </>

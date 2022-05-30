@@ -55,7 +55,6 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
     }, [router])
 
     useEffect(() => { // Setting store colors
-        console.log(displaySettings);
         if (typeof window !== 'undefined') {
             let themeColors = {
                 // color: displaySettings.primary_color || '#fff',
@@ -107,8 +106,11 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                     .btn-color-revers {
                     color: ${themeColors.bgColor};
                     }
+                    .input-focus:focus {
+                    border-color: ${themeColors.bgColor};
+                    }
                     .btn-hover-color {
-                    transition: 0.3s ease-in-out;
+                    transition: 0.1s ease-in-out;
                     }
                     .btn-hover-color:hover {
                     color: ${themeColors.bgColor};

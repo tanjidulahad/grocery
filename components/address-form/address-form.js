@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Button, Input } from "@components/inputs";
 import { addAddressStart, getAddressStart, removeAddressStart, updateAddressStart } from "@redux/user/user-action";
 
-const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, updateAddress, edit = null, close }) => {
+const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, updateAddress, edit = null, close = () => { } }) => {
     const addressStructure = {
         address_fields: "",
         address_id: "",
@@ -63,12 +63,19 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
     console.log(edit, newAddress);
     return (
         <div className="">
-            <div className="heading border-gray-300 pb-4 border-b-2">
+            <div className="heading border-gray-300 pb-4 border-b-2 flex justify-between items-center">
                 {
                     newAddress?.address_id ?
                         <h2 className=" font-semibold text-2xl dark-blue titile">Update Address</h2>
                         :
                         <h2 className=" font-semibold text-2xl dark-blue titile">Add a New Address</h2>
+                }
+                {
+                    !!close &&
+                    <span className=" cursor-pointer" onClick={close} >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg></span>
                 }
             </div>
             <div className="add-body-container">
@@ -139,7 +146,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                                 }</Button>
                             </div>
                             <div className="">
-                                <Button className="btn-color-revers text-sm md:text-base" onClick={() => { setNewAddress(addressStructure); }}>Don’t {Object(newAddress).hasOwnProperty('address_id') ? 'update' : 'Save'}</Button>
+                                <Button className="btn-color-revers text-sm md:text-base" onClick={() => { setNewAddress(addressStructure); close() }}>Don’t {Object(newAddress).hasOwnProperty('address_id') ? 'update' : 'Save'}</Button>
                             </div>
                         </div>
                     </div>

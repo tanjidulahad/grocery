@@ -1,8 +1,8 @@
+import { useState, useEffect, memo } from 'react';
 import Link from "@components/link"
 import { connect } from 'react-redux';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsChevronDown } from 'react-icons/bs'
-import { useState, useEffect } from 'react';
 import MediaQuery from 'react-responsive';
 import { Router, useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
@@ -39,14 +39,14 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress', '/account/orderdetail/[id]']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   const isDesktopOrLaptopx = useMediaQuery({ minWidth: 1020 })
-  useEffect(() => {
-    getShopInfo(storeId);
-    getShopSeo(storeId);
-    getShopSettings(storeId);
-    getSocialProfile(storeId);
-    getShopDisplaySettings(storeId)
+  // useEffect(() => {
+  //   getShopInfo(storeId);
+  //   getShopSeo(storeId);
+  //   getShopSettings(storeId);
+  //   getSocialProfile(storeId);
+  //   getShopDisplaySettings(storeId)
 
-  }, [])
+  // }, [])
   useEffect(() => {
     setIsLogin(!!user)
   }, [user])
@@ -204,29 +204,39 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                           style={{ boxShadow: '0px 4px 8px #2424243F' }}
                         >
                           <ul className="list-none black-color-75 text-base font-medium space-y-6">
-                            <li className="btn-hover-colors hover:text-[#48887B]">
+                            <li className="btn-hover-color hover:text-[#48887B]">
                               <Link href="/account">
                                 <a>Account</a>
                               </Link>
                             </li>
-                            <li className="btn-hover-colors cursor-pointer hover:text-[#48887B]">
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
+                              <Link href="/account/wallet">
+                                <a>Wallet</a>
+                              </Link>
+                            </li>
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
                               <Link href="/account/myorders">
                                 <a>My Orders</a>
                               </Link>
                             </li>
-                            <li className="btn-hover-colors cursor-pointer hover:text-[#48887B]">
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
                               <Link href="/account/savedplaces">
                                 <a>Saved Places</a>
                               </Link>
                             </li>
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
+                              <Link href="/account/wishlist/">
+                                <a>Wishlist</a>
+                              </Link>
+                            </li>
                             <li
-                              className="btn-hover-colors cursor-pointer hover:text-[#48887B]"
+                              className="btn-hover-color cursor-pointer hover:text-[#48887B]"
                               onClick={() => {
                                 logOut()
                                 setIsLogin(false)
                               }}
                             >
-                              <span className="">Log Out</span>
+                              <span className="btn-hover-color">Log Out</span>
                             </li>
                           </ul>
                         </div>
@@ -559,4 +569,4 @@ const mapDispatchToProps = dispatch => ({
   getSearchProducts: (payload) => dispatch(getSearchProductsStart(payload)),
   setSearchHandler: (payload) => dispatch(setSearchHandler(payload))
 })
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(memo(Navbar))

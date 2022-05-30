@@ -8,10 +8,12 @@ import Link from 'next/link'
 import { orderPaymentConfirmStart } from "@redux/checkout/checkout-action"
 import PageWrapper from "@components/page-wrapper/page-wrapper"
 import Tracker from "@components/Cards/tracker"
+import Stepper from "@components/stepper/stepper"
 
-const ThankYou = ({ confirmOrder }) => {
+const ThankYou = ({ confirmOrder, display }) => {
     const [status, setStatus] = useState('loading') // loading, success, failure
     const [orderId, setOrderId] = useState(null)
+    const [mobNavHeight, setMobNavHeight] = useState(0)
     // const [price, setPrice] = useState(0)
     const router = useRouter();
     useEffect(() => {
@@ -24,7 +26,17 @@ const ThankYou = ({ confirmOrder }) => {
         // setPrice(data.amount)
 
     }, [router.isReady])
-    const [mobNavHeight, setMobNavHeight] = useState(0)
+    const steps = [{ lable: 'Delivery Address' },
+    { lable: 'Add payment method' },
+    { lable: 'Order placed' }
+    ];
+    const style = display ? {
+        labelClass: 'text-xs font-normal text-white',
+        compoleted: { color: display.secondary_color || '#F58634' },
+        active: { color: '#E83B3B' },
+        pending: { color: '#c5c5c5' },
+        check: { color: '#fff' },
+    } : {}
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const objerver = new ResizeObserver(function (e) {
@@ -43,6 +55,9 @@ const ThankYou = ({ confirmOrder }) => {
     }, [])
     return (
         <section >
+            <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
+                <Stepper steps={steps} activeStep={2} sx={style} />
+            </div>
             {
                 status == 'loading'
                     ?
@@ -67,20 +82,19 @@ const ThankYou = ({ confirmOrder }) => {
                                         </div>
                                     </div>
                                     <div className="text-center my-10 px-10 lg:px-0">
-                                        <h3 className="text-sm lg:text-xl font-bold text-[#1DAE81]">Order Placed. A confermation email has been sent.</h3>
+                                        <h3 className="text-sm md:text-2xl font-bold text-[#1DAE81]">Order Placed. A confermation email has been sent.</h3>
                                         <div className='pt-6 pb-10'>
                                             {/* <span className="text-sm lg:text-lg font-bold  pb-10">You saved  ₹{price} On this Order.</span> */}
                                         </div>
                                         <div className="flex justify-between ">
                                             <div className="w-1/2 flex items-center">
                                                 <Link href="/shop">
-
-                                                    <p className="flex text-sm lg:text-[16px] btn-color-revese justify-start cursor-pointer ">Continue Shopping</p>
+                                                    <p className=" text-sm sm:text-lg btn-color-revers justify-start cursor-pointer ">Continue Shopping</p>
                                                 </Link>
                                             </div>
                                             <div className="w-1/2 flex justify-end ml-4">
                                                 <Button
-                                                    className="px-1 py-2 lg:py-3  lg:px-2 white-color rounded btn-bg text-center mx-auto"
+                                                    className="px-8 py-2 text-sm sm:text-lg rounded btn-bg btn-color text-center mx-auto"
                                                     type="link"
                                                     href={`/account/orderdetail/${orderId}`}
                                                 >
@@ -167,20 +181,17 @@ const ThankYou = ({ confirmOrder }) => {
 
                             </div>
                         </div>
-
-
             }
-            <div className={`md:hidden fixed top-0     shadow-lg bg-[#48887B] h-[124px] w-full `} style={{ zIndex: 1200 }}>
-
-                <Tracker status={status === 'success' ? 'order' : 'failed'} active2={true} />
-
-            </div>
         </section>)
 }
+
+const mapStateToProps = state => ({
+    display: state.store.displaySettings
+})
 
 const mapDispatchToProps = dispatch => ({
     confirmOrder: (payload) => dispatch(orderPaymentConfirmStart(payload))
 })
 
-export default connect(null, mapDispatchToProps)(PageWrapper(ThankYou));
+export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(ThankYou));
 
