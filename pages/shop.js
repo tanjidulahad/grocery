@@ -90,7 +90,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }, [])
   const observer = useRef()
   const listLastElement = useCallback(node => {
-    console.log(observer);
+    console.log("observer",observer);
     if (status == 'loading') return;
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
@@ -99,20 +99,20 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
         // console.log(page + 1);
         // // console.log(Router);
         // console.log(status);
-        if (page < pageCount && !search) {
+        if (page < pageCount &&!search) {
           setPage(page + 1)
         }
       }
     })
     if (node) observer.current.observe(node)
-  }, [status, pageCount])
+  }, [status, pageCount,filterPayLoad,priceFilter])
 
 
   useEffect(() => {
     if (!page) return;
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus })
+      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus,page })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
@@ -130,7 +130,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   useEffect(() => {
     if (search) {
       setStatus('loading')
-      getSearchProducts({ storeId, q: search, setSearchResult, setStatus: (s) => { } })
+      getSearchProducts({ storeId, q: search, setSearchResult,page:1, setStatus })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
@@ -301,10 +301,10 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0">
               {
-                // status == 'success' || status == 'loading' ?
+                status == 'success' || status == 'loading' ?
 
-                //  (status == 'loading' || status == 'success')
-                products.length != 0 ?
+                products.length && (status == 'loading' || status == 'success')
+                 ?
                   <>
                     {
 
@@ -313,6 +313,21 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                           <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
                         </div>
                       ))}
+                      {
+                        status=='loading'&&
+                        <>
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem className={'hidden lg:block'} />
+                          <ProductItem className={'hidden xl:block'} />
+                          <ProductItem className={'hidden lg:block'} />
+                          <ProductItem className={'hidden xl:block'} />
+                        </>
+                      }
                     <div className="h-8 " ref={listLastElement}></div>
                   </>
 
@@ -346,8 +361,8 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                   <>
                     {
                       products.length == 0 && status == 'success' ?
-
-                        <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                      <div className='col-span-full' style={{height:"80vh"}}>
+                        <div className="flex justify-center items-center h-full">
                           <h6>
                             <span>No items found
 
@@ -357,6 +372,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
 
                             </span>
                           </h6>
+                        </div>
                         </div>
                         :
                         <>
@@ -371,39 +387,14 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                           <ProductItem className={'hidden lg:block'} />
                           <ProductItem className={'hidden xl:block'} />
                         </>
+                        
 
                     }
                   </>
+                  :""
 
-              }
-
-              {/* // : status == 'success' ?
-                //   <>
-                //     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                //       <h6>
-                //         <span className="">No items found{' '}
-                //           <Link href={`/`}>
-                //             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                //               Show All Products.
-                //             </a>
-                //           </Link>
-                //         </span>
-                //       </h6>
-                //     </div>
-                //   </>
-                //   :
-                //   <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                //     <h6 className="text-center">
-                //       <span className="">Unexpected error occurred{' '}
-                //         <span className="red-color block" onClick={Router.reload} style={{ cursor: 'pointer' }}>{' '}
-                //           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise inline" viewBox="0 0 16 16">
-                //             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
-                //             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
-                //           </svg> Please Reload
-                //         </span>
-                //       </span>
-                //     </h6>
-                //   </div> */}
+                  }
+                
 
             </div>
           </div>
