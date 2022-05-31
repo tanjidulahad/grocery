@@ -43,7 +43,7 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                         <a className="block m-2 md:m-0 md:w-max md:mr-2 h-[132px] w-full sm:w-[150px] sm:h-[150px] relative ">
                             {
                                 data?.is_veg == 'Y' &&
-                                <img className="w-full h-full object-cover" src={data?.primary_img || '/img/default.png'} alt="product" />
+                                <img className="lg:w-[140px] lg:h-[140px] lg:min-w-[140px] lg:rounded w-full h-full object-cover" src={data?.primary_img || '/img/default.png'} alt="product" />
                             }
                             <img className="md:block w-4 h-4 absolute top-2 left-2" src="/img/veg.svg" />
 
