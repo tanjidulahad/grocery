@@ -12,6 +12,7 @@ import { useMediaQuery } from 'react-responsive'
 import {
     getShopInfoStart, getShopSeoStart, getShopSettingsStart, getSocialProfileStart, getShopDisplaySettingsStart, getPageCountStart, getBannerStart,
     getCategoryStart,
+    getSubCategoryStart,
 } from "@redux/shop/shop-action";
 import { createSeasionId } from "services/pickytoClient";
 
@@ -28,7 +29,7 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getBanner }) => {
+const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner }) => {
     const router = useRouter()
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
@@ -133,6 +134,9 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                     .nav-items-color{
                         color: ${displaySettings?.navbar_color ? '#fff' : '#333333'}!important;
                     }
+                    .btn-nav-color-active{
+                        color: ${themeColors.bgColor};
+                    }
                     .footer-bg{
                         background-color: ${themeColors.footerColor}
                     }
@@ -204,6 +208,7 @@ const mapDispatchToProps = dispatch => ({
     getSocialProfile: (shopId) => dispatch(getSocialProfileStart(shopId)),
     getShopDisplaySettings: (storeId) => dispatch(getShopDisplaySettingsStart(storeId)),
     getCategories: (storeId) => dispatch(getCategoryStart(storeId)),
+    getSubCategories: (storeId) => dispatch(getSubCategoryStart(storeId)),
 })
 
 const HOC = connect(mapStateToProps, mapDispatchToProps)(verifier)
