@@ -13,6 +13,7 @@ function hexToRGB(hex, alpha) {
 
 const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openReturn, details }) => {
     const style = {
+        labelClass: '',
         compoleted: {
             color: '#E83B3B'
         },
@@ -58,7 +59,7 @@ const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openRe
                                         // minHeight: ' 80px',
                                         borderColor: vertical ? activeStep >= i + 1 || activeStep + 1 == i + 1 ? style.compoleted.color : style.pending.color : 'none'
                                     }}>
-                                        <span className={`text-sm font-semibold tracking-normal inline-block ${vertical && 'pl-6'} `}>
+                                        <span className={`text-sm font-semibold tracking-normal inline-block ${vertical && 'pl-6'} ${style.labelClass}`}>
                                             {item?.lable}
                                             <span className="block text-xs font-normal text-gray-400">
                                                 {item?.dsc}

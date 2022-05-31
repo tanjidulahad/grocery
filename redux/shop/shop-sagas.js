@@ -1,5 +1,5 @@
 import Router from 'next/router'
-import { takeLatest, all, call, put } from "redux-saga/effects";
+import { takeLatest, all, call, put, delay } from "redux-saga/effects";
 import fetcher, { nodefetcher } from "../utility";
 import shopActionType from './shop-action-type'
 import {
@@ -211,11 +211,17 @@ function* onGetCategoryProductsStart() {
 
 function* onProductSerachStart() {
     yield takeLatest(shopActionType.GET_SEARCH_START, function* ({ payload }) {
-        const { storeId, q, setSearchResult, setStatus } = payload //status == loading || failed || success
+        const { storeId, q, setSearchResult, setStatus,page } = payload //status == loading || failed || success
         try {
-            const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}`)
+            const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}${page?`&pageNum=${page}`:"&pageNum=1"}`)
             if (Array.isArray(res.data)) {
-                yield put(getSearchProductsSuccess(res.data))
+                if (page > 1 && typeof page != 'undefined') {
+                    yield put(getShopProductsPaginationSuccess(res.data))
+                } else {
+                    yield put(getShopProductsSuccess(res.data))
+
+
+                }
                 // setSearchResult(res.data)
                 if (setStatus) {
                     setStatus('success')

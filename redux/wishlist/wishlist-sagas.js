@@ -40,7 +40,7 @@ function* onWishlistItemAddStart() {
 function* onGetWishlistStart() {
     yield takeLatest(wishlistActionType.GET_WISHLIST_START, function* ({ payload }) {
         try {
-            const {userId,storeId,wishListedItem,setWishListedItem,page,setPage,setNoMore } = payload;
+            const {userId,storeId,wishListedItem,setWishListedItem,page,setPage,setNoMore,setLoading } = payload;
             // const pageNum = payload?.pageNum | 1;
             if (!userId) return //throw "Login before adding to wishlist"
             const res = yield fetcher('GET', `?r=customer/get-wishlist-items&customerId=${userId}&pageNum=${page}&storeId=${storeId}`);
@@ -61,9 +61,11 @@ function* onGetWishlistStart() {
             if (page == 1) {
 
                 setWishListedItem(data)
+                setLoading('success')
 
             } else {
                 setWishListedItem([...wishListedItem, ...data])
+                setLoading('success')
             }
 
         } catch (error) {

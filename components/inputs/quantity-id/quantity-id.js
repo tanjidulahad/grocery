@@ -39,7 +39,7 @@ const QuantityID = ({ value = 0, onPlush, onMinus, disabled = false, disabledPlu
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash-lg" viewBox="0 0 16 16">
                         <path fillRule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z" />
                     </svg></button>
-                <div className={`${pdp !== true ? 'w-1/2' : ' '}  w-1/2 h-full  flex justify-center bg-white  items-center`}>
+                <div className={`${pdp !== true ? 'w-1/2' : ' '}  w-1/2 h-full py-2 flex justify-center bg-white  items-center`}>
                     <span className="font-medium text-center  align-middle w-10">{value}</span>
                 </div>
                 <button className={`${!pdp ? 'w-1/4' : ''} p-2 ${border && 'bg-white border-l-[1px] border-[#CDCDCD]'}   flex justify-center sm:p-3 btn-color-reveses outline-none`} onClick={onPlushHandler} disabled={disabledPlush} style={{

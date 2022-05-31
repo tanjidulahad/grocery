@@ -15,6 +15,7 @@ import WishlistSkeleton from '@components/Cards/Order/wishlist/wishlistSkeleton'
 import { getWishlistStart, getWishlistSuccess, addWishlistStart, addWishlistSuccess, } from '@redux/wishlist/wishlist-action'
 
 function Wishlist({ user, info, getWishlist, wishItem }) {
+  const [loading,setLoading]=useState('loading')
   const [wishListedItem, setWishListedItem] = useState([])
   const [noMore, setNoMore] = useState(true)
   const [page, setPage] = useState(2)
@@ -28,7 +29,8 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
       wishListedItem: wishListedItem,
       setWishListedItem: setWishListedItem,
       setPage,
-      setNoMore
+      setNoMore,
+      setLoading
     }
     getWishlist(payload)
   }, [])
@@ -40,7 +42,8 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
       wishListedItem: wishListedItem,
       setWishListedItem: setWishListedItem,
       setPage,
-      setNoMore
+      setNoMore,
+      setLoading
     }
     getWishlist(payload)
   }
@@ -53,7 +56,7 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
           <span className=" btn-color-revers">{wishListedItem.length} items </span>  in your Wishlist</p>
       </div>
       {
-        wishListedItem.length == 0 ? <div className='mt-32 lg:mt-4'><WishlistSkeleton /></div> :
+        wishListedItem.length == 0 && loading=='loading' ? <div className='mt-32 lg:mt-4'><WishlistSkeleton /></div> :
           <InfiniteScroll
             dataLength={wishListedItem?.length}
             next={getMoreProducts}
@@ -69,6 +72,19 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
               )}
             </div>
           </InfiniteScroll>
+      }
+      {
+        wishListedItem.length == 0 && loading=='success'?
+        <div className='bg-white p-5'>
+        <div className='flex justify-center items-center'>
+          <img className='w-[150px] h-[150px]' src="/img/wishlist.png" alt="" />
+          
+        </div>
+        <div className='text-center mt-3'>
+        <p className='text-xl font-bold'>No Product in the Wishlist</p>
+        </div>
+        </div>
+        :""
       }
       <div className={`md:hidden fixed top-0 shadow-lg nav-bg h-[80px] w-full `} style={{ zIndex: 1200 }}>
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>

@@ -61,6 +61,26 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                             </div>
                             {!!purchaseDetails && (
                                 <>
+                                    {!!purchaseDetails?.deliveryAddressDetails &&
+                                        <div className='mb-4 sm:mb-6'>
+                                            <span className='font-semibold text-sm sm:text-base'>Deliver to:{' '}</span>
+                                            <span className=' font-extralight text-sm sm:text-base'>
+                                                <span className="home">
+                                                    {purchaseDetails?.deliveryAddressDetails?.address_line_1},{' '}
+                                                    {purchaseDetails?.deliveryAddressDetails?.address_line_2}{' '}
+                                                </span>
+                                                <span className="state-pin">
+                                                    {purchaseDetails?.deliveryAddressDetails?.city},{' '}
+                                                    {purchaseDetails?.deliveryAddressDetails?.state}{' '}
+                                                    {purchaseDetails?.deliveryAddressDetails?.country}{'-'}
+                                                    {purchaseDetails?.deliveryAddressDetails?.zip_code},{' '}
+                                                </span>
+                                                <span className="country font-w-bold">
+                                                    phone: +{purchaseDetails?.deliveryAddressDetails?.phone}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    }
                                     <div className=" space-y-2 sm:space-y-3">
                                         <div className="flex justify-between space-x-2 ">
                                             <h6 className="text-lg font-medium text-gray-400">

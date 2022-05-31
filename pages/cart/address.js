@@ -68,7 +68,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
     const [active2, setactive2] = useState(false)
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [checkoutDetails, setcheckoutDetails] = useState({
-        deliveryAddress: "",
+        deliveryAddress: purchaseDetails?.deliveryAddressDetails?.address_id || "",
     })
     const [navbarHeight, setNavbarHeight] = useState(166)
 
@@ -161,18 +161,20 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                                         </div>
 
                                                     </label>
-                                                    <button className="btn-color-revers my-2" onClick={() => { setNewAddress(item); setIsAddressActive(true) }}>
+                                                    <Button type='link' href='#address-form' className=" btn-color-revers my-2" onClick={() => { setNewAddress(item); setIsAddressActive(true) }}>
                                                         Edit
-                                                    </button>
-                                                    {checkoutDetails.deliveryAddress !=
-                                                        item.address_id && (
-                                                            <label
-                                                                className=" hidden sm:block my-2 btn-bg btn-color py-3.5  px-8 rounded max-w-fit"
-                                                                htmlFor={`address${i}`}
-                                                            >
-                                                                Deliver Here
-                                                            </label>
-                                                        )}
+                                                    </Button>
+                                                    {
+                                                        // checkoutDetails.deliveryAddress !=
+                                                        // item.address_id && (
+                                                        //     <label
+                                                        //         className=" hidden sm:block my-2 btn-bg btn-color py-3.5  px-8 rounded max-w-fit"
+                                                        //         htmlFor={`address${i}`}
+                                                        //     >
+                                                        //         Deliver Here
+                                                        //     </label>
+                                                        // )
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -180,9 +182,20 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                 ))}
                             </div>
                         </div>
-                        <div className='flex-1 p-6 sm:p-8 bg-white'>
-                            <AddressForm edit={newAddress} />
-                        </div>
+                        {
+                            !isAddressActive ?
+                                <div className='flex-1 p-6 sm:p-8  bg-white'>
+                                    <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => setIsAddressActive(true)}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg> Add new Address
+                                    </Button>
+                                </div>
+                                :
+                                <div className='flex-1 p-6 sm:p-8 bg-white' id={'address-form'}>
+                                    <AddressForm edit={newAddress} close={() => setIsAddressActive(false)} />
+                                </div>
+                        }
                     </div>
                     {/* Billing Details >> */}
                     <div className=' shrink-0 w-full md:w-5/12 xl:w-4/12'>
