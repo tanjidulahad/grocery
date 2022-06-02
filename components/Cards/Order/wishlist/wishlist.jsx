@@ -7,8 +7,10 @@ import Rating from "@components/rating-stars/rating";
 import { connect } from "react-redux";
 import { Button } from '@components/inputs';
 import { removeWishlistStart } from "@redux/wishlist/wishlist-action";
+import { useRouter } from 'next/router'
 
 function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishListedItem, setWishListedItem, cart }) {
+    const router=useRouter();
     const removeFromWishList = (wishlistid) => {
 
         const payload = {
@@ -38,12 +40,12 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
         <div className="w-100 block  ">
             <div className=" md:grid md:grid-cols-12 md:gap-4 mb-6 md:mt-4 lg:flex justify-between">
                 <div className=" bg-white md:col-span-3 flex sm:space-x-4">
-                    <Link href={`/product/${data?.item_id || '1234'}`}>
+                    {/* <Link href={`/product/${data?.item_id || '1234'}`}> */}
 
                         <a className="block m-2 md:m-0 md:w-max md:mr-2 h-[132px] w-full sm:w-[150px] sm:h-[150px] relative ">
                             {
                                 data?.is_veg == 'Y' &&
-                                <img className="lg:w-[140px] lg:h-[140px] lg:min-w-[140px] lg:rounded w-full h-full object-cover" src={data?.primary_img || '/img/default.png'} alt="product" />
+                                <img onClick={()=>router.push(`/product/${data?.item_id || '1234'}`)} className="lg:w-[140px] lg:h-[140px] lg:min-w-[140px] lg:rounded w-full h-full object-cover" src={data?.primary_img || '/img/default.png'} alt="product" />
                             }
                             <img className="md:block w-4 h-4 absolute top-2 left-2" src="/img/veg.svg" />
 
@@ -52,7 +54,7 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                             </div>
                         </a>
 
-                    </Link>
+                    {/* </Link> */}
                 </div>
                 <div className="hidden w-8/12 md:block lg:block">
                     <div>

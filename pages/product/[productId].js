@@ -503,18 +503,18 @@ const ProductDetails = ({ store,
                                     <div className="relative overflow-auto no-scrollbar w-full h-full">
                                         <div className=" lg:absolute w-full top-0">
                                             {/* <span className="text-sm md:text-lg black-color-75 capitalize ">{visuals.item.item_status.toLowerCase()}</span> */}
-                                            <h1 className="text-base md:text-lg xl:text-3xl mb-4 font-semibold md:font-bold capitalize">{visuals?.name.toLowerCase()}</h1>
+                                            <h1 className="text-base md:text-lg xl:text-3xl mb-1 font-semibold md:font-bold capitalize ml-2 lg:ml-0">{visuals?.name.toLowerCase()}</h1>
                                             {/* <div >
                                                         <Rating value={visuals?.rating.value} count={visuals?.rating.count} />
                                                     </div> */}
-                                            <div className="my-4 md:my-6">
-                                                <span className="text-lg md:text-xl my-6 black-color font-semibold">₹ {visuals.defaultVariantItem ? visuals.defaultVariantItem.sale_price : visuals.price.sale_price}</span>
+                                            <div className="md:my-6 ml-2 lg:ml-0">
+                                                <span className="text-lg md:text-xl black-color font-semibold">₹ {visuals.defaultVariantItem ? visuals.defaultVariantItem.sale_price : visuals.price.sale_price}</span>
                                                 {
                                                     visuals.price.sale_price != visuals.price.price &&
                                                     <span className="mx-2 md:mx-6 black-color-75 text-sm md:text-lg font-light line-through">₹ {visuals.defaultVariantItem ? visuals.defaultVariantItem.list_price : visuals.price.price}</span>
                                                 }
                                             </div>
-                                            <div className="my-6">
+                                            <div className=" my-1 lg:my-6 ml-2 lg:ml-0">
                                                 <p className={`text-sm md:text-base text-gray-500 font-bold text-justify md:text-left  normal-case ${!viewdscmore && visuals?.desc?.length > 200 && 'product-truncate'} transition`}>
                                                     {visuals?.desc}
                                                 </p>
@@ -638,7 +638,7 @@ const ProductDetails = ({ store,
                                 !!visuals.specifications.length &&
                                 <div className="w-full  pl-[7px] pr-[8px] py-[16px] md:pl-[0px] md:pr-[0px] md:py[16px]   bg-white ">
 
-                                    <div className="mt-6">
+                                    <div className="lg:mt-6">
                                         <div className=" border-static additional-info mb-8">
                                             <h2 className=" lg:text-2xl md:text-xl">
                                                 Highlights

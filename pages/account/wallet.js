@@ -32,7 +32,7 @@ const profileWallet = ({user, info,customerWallet}) => {
 
   return (
 
-    <div className="md:grid md:grid-cols-1 bg-[transparent] md:gap-6 mt-28 md:mt-2 lg:mt-0">
+    <div className="md:grid md:grid-cols-1 bg-[transparent] md:gap-6 mt-24 md:mt-2 lg:mt-0">
       <div className="w-full h-max ">
         <Wallet walletdata={customerWallet?.customer_wallet_balance} />
       </div>

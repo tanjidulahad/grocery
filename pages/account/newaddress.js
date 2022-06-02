@@ -134,7 +134,7 @@ function Savedplaces({
           <div className="w-full bg-white md:bg-[transparent] mt-28">
             {/* <Header display={true} topic="Saved Address" /> */}
 
-            <div className="my-4 mb-20 bg-white">
+            <div className="my-4 bg-white mb-[150px]">
               <div className="py-2 md:p-4 px-2 md:px-8 md:w-1/2  ">
                 <span className=" font-bold text-lg md:block hidden  ">
                   Country*
@@ -156,7 +156,7 @@ function Savedplaces({
                   onChange={onChangeAddress}
                   type="text"
                   name="full_name"
-                  placeholder="Full Name"
+                  placeholder="Full Name*"
                   value={newAddress.full_name}
                   className="h-[48px] my-2 rounded border border-gray-300 "
                 />
@@ -170,7 +170,7 @@ function Savedplaces({
                   onChange={onChangeAddress}
                   type="text"
                   name="phone"
-                  placeholder="Mobile Number"
+                  placeholder="Mobile Number*"
                   value={newAddress.phone}
                   className="h-[48px] my-2 rounded border border-gray-300 "
                 />
@@ -183,7 +183,7 @@ function Savedplaces({
                   onChange={onChangeAddress}
                   type="text"
                   name="address_line_1"
-                  placeholder="Flat, House no"
+                  placeholder="Flat, House no*"
                   value={newAddress.address_line_1}
                   className="h-[48px] my-2 rounded border border-gray-300 "
                 />
@@ -210,7 +210,7 @@ function Savedplaces({
                     onChange={onChangeAddress}
                     type="text"
                     name="city"
-                    placeholder="City"
+                    placeholder="City*"
                     value={newAddress.city}
                     className="h-[48px] my-2 rounded border border-gray-300 "
                   />
@@ -223,7 +223,7 @@ function Savedplaces({
                     onChange={onChangeAddress}
                     type="text"
                     name="state"
-                    placeholder="State"
+                    placeholder="State*"
                     value={newAddress.state}
                     className="h-[48px] my-2 rounded border border-gray-300 "
                   />
@@ -240,7 +240,7 @@ function Savedplaces({
                     onChange={onChangeAddress}
                     type="text"
                     name="zip_code"
-                    placeholder="Zip Code"
+                    placeholder="Zip Code*"
                     value={newAddress.zip_code}
                     className="h-[48px] my-2  rounded border border-gray-300 "
                   />

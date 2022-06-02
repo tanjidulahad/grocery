@@ -53,6 +53,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
             addAddress({ userId: user.customer_id, address: newAddress });
         }
         setNewAddress(addressStructure)
+        close()
     }
     useEffect(() => {
         if (edit) {

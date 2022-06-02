@@ -51,7 +51,10 @@ function orderDetail({ getOrderDetails, display }) {
       dsc: moment.unix(orderDetails?.orderPlacedTime).format('LLL')
     },
     {
-      lable: 'Order in Progress',
+      lable: 'Order Confirmed',
+    },
+    {
+      lable: 'Ready for Pickup',
     },
     {
       lable: 'Order Delivered Successfully',
@@ -72,7 +75,7 @@ function orderDetail({ getOrderDetails, display }) {
       else if (orderDetails?.orderStatus == "ORDER_DELIVERED_SUCCESS") {
         setOrderStatus(3)
       }
-      else if (orderDetails?.orderStatus == "ORDER_DECLINED_BY_RESTAURANT" || orderDetails?.orderStatus == "CANCELLED_BY_CUSTOMER") {
+      else if (orderDetails?.orderStatus == "ORDER_DECLINED_BY_RESTAURANT" || orderDetails?.orderStatus == "CANCELLED_BY_CUSTOMER" || orderDetails?.orderStatus =="ORDER_CANCELLED_BY_REST") {
         setIsCanceled(true)
         setOrderStatus(2)
       }
@@ -115,7 +118,7 @@ function orderDetail({ getOrderDetails, display }) {
                 <ErrorPage message={error.message} statusCode={error?.response?.status || error?.statusCode} />
                 :
                 <div className="grid grid-cols-1 lg:grid-cols-12 ">
-                  <div className="lg:col-span-12 lg:mb-10 space-y-0 sm:space-y-3 ">
+                  <div className="lg:col-span-12 lg:mb-10 space-y-3 ">
                     <div className="bg-white">
                       <List orderId={orderDetails.orderId} storeName={orderDetails.storeName} createTime={orderDetails.createTime} list={Object.values(orderDetails.orderItems)} />
                       {/* <Ordertracker data={{ orderId: orderDetails.orderId }} details={orderDetails} openReturn={setIsReturnActive} /> */}
