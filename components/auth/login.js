@@ -134,8 +134,8 @@ const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgo
                                                         />
                                                     </div>
                                                     <div className=' relative w-full'>
-                                                        <input disabled={isLoading} className='ml-2 absolute text-center text-sm top-1/2 -translate-y-1/2 w-11 outline-none rounded-lg' value={'+' + state.isdCode} />
-                                                        <Input disabled={isLoading} name='phone' className={`border pl-14 py-4 ${error && ' border-red-400'} rounded-lg `} type="tel" placeholder="Enter 10 digit phone number" onChange={onChangeHandler} value={state.phone} />
+                                                        <input disabled={isLoading} className='ml-2 input-focus absolute text-center text-sm top-1/2 -translate-y-1/2 w-11 outline-none rounded-lg' value={'+' + state.isdCode} />
+                                                        <Input disabled={isLoading} name='phone' className={`border input-focus pl-14 py-4 ${error && ' border-red-400'} rounded-lg `} type="tel" placeholder="Enter 10 digit phone number" onChange={onChangeHandler} value={state.phone} />
                                                     </div>
                                                 </div>
 
@@ -143,7 +143,7 @@ const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgo
 
                                             :
                                             <div className=' flex justify-center  '>
-                                                <Input disabled={isLoading} name='emailId' className={` border py-4 w-3/4 ${error && ' border-red-400'} rounded-lg`} type="email" placeholder="Enter valid email" onChange={onChangeHandler} value={state.emailId} />
+                                                <Input disabled={isLoading} name='emailId' className={` border input-focus py-4 w-3/4 ${error && ' border-red-400'} rounded-lg`} type="email" placeholder="Enter valid email" onChange={onChangeHandler} value={state.emailId} />
                                             </div>
                                     }
 
@@ -151,7 +151,7 @@ const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgo
                                         {
                                             !forgotPass &&
                                             <div className='mt-6 w-full flex justify-center relative h-fit w-3/4 '>
-                                                <Input disabled={isLoading} name='password' className={` border ${error && ' border-red-400'} rounded-lg py-4 w-full`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} />
+                                                <Input disabled={isLoading} name='password' className={` border input-focus ${error && ' border-red-400'} rounded-lg py-4 w-full`} type={showPass ? 'text' : 'password'} placeholder="Enter password" onChange={onChangeHandler} value={state.password} />
                                                 <div className=' cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 p-4' onClick={() => setShowPass(!showPass)}>
                                                     {
                                                         showPass ?

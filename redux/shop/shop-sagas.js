@@ -1,5 +1,5 @@
 import Router from 'next/router'
-import { takeLatest, all, call, put } from "redux-saga/effects";
+import { takeLatest, all, call, put, delay } from "redux-saga/effects";
 import fetcher, { nodefetcher } from "../utility";
 import shopActionType from './shop-action-type'
 import {

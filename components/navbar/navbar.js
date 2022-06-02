@@ -1,8 +1,8 @@
+import { useState, useEffect, memo } from 'react';
 import Link from "@components/link"
 import { connect } from 'react-redux';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsChevronDown } from 'react-icons/bs'
-import { useState, useEffect } from 'react';
 import MediaQuery from 'react-responsive';
 import { Router, useRouter } from 'next/router';
 import { useMediaQuery } from 'react-responsive';
@@ -30,6 +30,7 @@ import MobContactUs from "@components/ContactUS/MobContactUs";
 
 const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler, displaySettings, openAuth, logOut, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, searchHandler, info, ref }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
+  const [lists, setlists] = useState([])
   const [isLogin, setIsLogin] = useState(false)
   const [isCategoryOpen, setIsCategoryOpen] = useState(false)
   const [mobNaveHeight, setMobNaveHeight] = useState(10)
@@ -41,16 +42,10 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
   const exceptionRouteinMobile = ['/account/profile', '/account/myorders', '/account/wishlist', '/account/wallet', '/account/savedplaces', '/account/newaddress', '/account/orderdetail/[id]']
   const isDesktopOrLaptop = useMediaQuery({ minWidth: 640 })
   const isDesktopOrLaptopx = useMediaQuery({ minWidth: 1020 })
-  const [contactUsVisible, setContactUsVisible]=useState(false)
-  const [mobContactUsVisible, setMobContactUsVisible]=useState(false)
-  useEffect(() => {
-    getShopInfo(storeId);
-    getShopSeo(storeId);
-    getShopSettings(storeId);
-    getSocialProfile(storeId);
-    getShopDisplaySettings(storeId)
 
-  }, [])
+  const [contactUsVisible, setContactUsVisible] = useState(false)
+  const [mobContactUsVisible, setMobContactUsVisible] = useState(false)
+
   useEffect(() => {
     setIsLogin(!!user)
   }, [user])
@@ -96,10 +91,9 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
       // setq('') // Cleaning query string of search
     }
   }, [Router.query])
-  const [lists, setlists] = useState([])
   useEffect(() => {
     setlists(categories.length > 0 && categories)
-  }, [categories.length])
+  }, [categories])
 
   useEffect(() => {
     const body = document.body
@@ -150,7 +144,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                     shop
                   </a>
                 </Link>
-                <a onClick={()=>setContactUsVisible(true)} className="block whitespace-nowrap font-normal  tracking-tight lg:text-base cursor-pointer">
+                <a onClick={() => setContactUsVisible(true)} className="block whitespace-nowrap font-normal  tracking-tight lg:text-base cursor-pointer">
                   Contact Us
                 </a>
               </div>
@@ -208,29 +202,39 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                           style={{ boxShadow: '0px 4px 8px #2424243F' }}
                         >
                           <ul className="list-none black-color-75 text-base font-medium space-y-6">
-                            <li className="btn-hover-colors hover:text-[#48887B]">
+                            <li className="btn-hover-color hover:text-[#48887B]">
                               <Link href="/account">
                                 <a>Account</a>
                               </Link>
                             </li>
-                            <li className="btn-hover-colors cursor-pointer hover:text-[#48887B]">
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
+                              <Link href="/account/wallet">
+                                <a>Wallet</a>
+                              </Link>
+                            </li>
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
                               <Link href="/account/myorders">
                                 <a>My Orders</a>
                               </Link>
                             </li>
-                            <li className="btn-hover-colors cursor-pointer hover:text-[#48887B]">
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
                               <Link href="/account/savedplaces">
                                 <a>Saved Places</a>
                               </Link>
                             </li>
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
+                              <Link href="/account/wishlist/">
+                                <a>Wishlist</a>
+                              </Link>
+                            </li>
                             <li
-                              className="btn-hover-colors cursor-pointer hover:text-[#48887B]"
+                              className="btn-hover-color cursor-pointer hover:text-[#48887B]"
                               onClick={() => {
                                 logOut()
                                 setIsLogin(false)
                               }}
                             >
-                              <span className="">Log Out</span>
+                              <span className="btn-hover-color">Log Out</span>
                             </li>
                           </ul>
                         </div>
@@ -286,7 +290,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </h5>
-                <div className=" absolute -right-10 w-60 bg-white  others-list">
+                <div className=" absolute -right-10 w-60 bg-white  others-list " >
                   <ul className=" w-auto">
                     {
                       lists.length && lists.slice(isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
@@ -296,8 +300,9 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                               {item.category_name}
                             </a>
                           </Link>
-                          <div className=" absolute top-0 right-full bg-white text-black sub-cat-list">
-                            <ul className="w-60 flex flex-col sticky bottom-0 overflow-x-clip overflow-y-auto" style={{ maxHeight: '300px' }}>
+                          <div className=" absolute bottom-0 right-full bg-white text-black sub-cat-list">
+                            {/* <div className=" absolute top-0 right-full bg-white text-black sub-cat-list"> */}
+                            <ul className="w-60 flex flex-col sticky bottom-0 overflow-x-clip overflow-y-auto" style={{ maxHeight: '200px' }}>
                               {
                                 item.subCategories.map((subItem, j) => (
                                   <li className=" text-black" key={j + 'll'}>
@@ -347,7 +352,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
                     <IoMdCart size={30} color={"white"} />
                     {
                       !!totalItems &&
-                      <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center bg-[#F58634] rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
+                      <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center btn-bg rounded-full text-white items-center text-xs text-center btn-bgs btn-color border border-white">
                         {
                           totalItems
                         }
@@ -396,9 +401,9 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </Link>
             </div>
             <div >
-              
-                <a onClick={()=>setMobContactUsVisible(true)} className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Contact Us</a>
-              
+
+              <a onClick={() => setMobContactUsVisible(true)} className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Contact Us</a>
+
             </div> <div >
               <Link href={'https://goplinto.com/privacy-policy'}>
                 <a target="_blank" className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Privecy Policy</a>
@@ -421,21 +426,23 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
         <MediaQuery maxWidth={640}>
           <div id='mob-navbar' className={`mob-navbar z-10 py-2 flex sm:justify-end items-center white-color justify-between w-full fixed sm:relative bottom-[-1px] left-0 right-0 bg-white sm:bg-transparent `} style={{ boxShadow: 'rgb(194 190 190 / 65%) 1px -4px 16px 0px' }}>
             <div className='text-black w-1/4 flex flex-col  '>
-              <Button type='link' href='/' className={`block sm:hidden text-center text-xs ${router.asPath == '/' || router.pathname == '/[name]/[storeId]' && 'btn-nav-color-actives text-[#48887B]'}`}>
+              <Button type='link' href='/' className={`block sm:hidden text-center text-xs ${router.asPath == '/' && 'btn-nav-color-active text-[#48887B]'}`}>
                 <div className={` w-[24px] h-[24px] mx-auto`}>
-                  <img src="/img/Home.png" />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
                 </div>
                 <span>Home</span>
               </Button>
             </div>
             <div className='text-center text-xs font-medium text-black w-1/4'>
-              <Button className={`btn-nav-color ${router.asPath.includes('cart') && 'btn-nav-color-active'}`} type='link' href='/shop'>
+              <Button className={`btn-nav-color ${router.asPath.includes('shop') && 'btn-nav-color-active'}`} type='link' href='/shop'>
                 <div className={` w-[24px] h-[24px] mx-auto`}>
                   {
-                    !router.asPath.includes('cart') ?
-                      <img src="/img/shop.png" />
-                      :
-                      <img src="/img/shopactive.png" />
+                    <svg className='h-6 w-6' viewBox="0 0 31 31" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22.4444 23.8333H14.1111V18.2778H12.7222V23.8333H8.55555V18.2778H7.16666V23.8333C7.16666 24.2017 7.31299 24.555 7.57345 24.8154C7.83392 25.0759 8.18719 25.2222 8.55555 25.2222H22.4444C22.8128 25.2222 23.1661 25.0759 23.4265 24.8154C23.687 24.555 23.8333 24.2017 23.8333 23.8333V18.2778H22.4444V23.8333Z" />
+                      <path d="M26.4653 12.2153L23.632 6.5486C23.517 6.31721 23.3397 6.12247 23.1201 5.9863C22.9005 5.85012 22.6473 5.77791 22.3889 5.77777H8.61112C8.35273 5.77791 8.0995 5.85012 7.8799 5.9863C7.6603 6.12247 7.48305 6.31721 7.36806 6.5486L4.53473 12.2153C4.43799 12.4094 4.38805 12.6234 4.3889 12.8403V14.9792C4.38826 15.3037 4.50128 15.6182 4.70834 15.868C5.01435 16.2188 5.3923 16.4996 5.81649 16.6914C6.24068 16.8831 6.70117 16.9812 7.16667 16.9792C7.92624 16.9803 8.66263 16.7177 9.25001 16.2361C9.83737 16.718 10.5736 16.9813 11.3333 16.9813C12.0931 16.9813 12.8293 16.718 13.4167 16.2361C14.004 16.718 14.7403 16.9813 15.5 16.9813C16.2597 16.9813 16.996 16.718 17.5833 16.2361C18.1707 16.718 18.9069 16.9813 19.6667 16.9813C20.4264 16.9813 21.1626 16.718 21.75 16.2361C22.4057 16.7745 23.2445 17.0376 24.0902 16.9703C24.9359 16.9029 25.7225 16.5103 26.2847 15.875C26.4943 15.6261 26.6098 15.3115 26.6111 14.9861V12.8403C26.612 12.6234 26.562 12.4094 26.4653 12.2153ZM23.8333 15.5903C23.5367 15.5896 23.2446 15.518 22.9812 15.3815C22.7179 15.245 22.491 15.0475 22.3195 14.8055L21.75 14.0278L21.1875 14.8055C21.0127 15.0438 20.7842 15.2376 20.5206 15.3711C20.257 15.5047 19.9657 15.5742 19.6701 15.5742C19.3746 15.5742 19.0833 15.5047 18.8197 15.3711C18.5561 15.2376 18.3276 15.0438 18.1528 14.8055L17.5833 14.0278L17.0208 14.8055C16.846 15.0438 16.6176 15.2376 16.354 15.3711C16.0903 15.5047 15.799 15.5742 15.5035 15.5742C15.208 15.5742 14.9166 15.5047 14.653 15.3711C14.3894 15.2376 14.1609 15.0438 13.9861 14.8055L13.4167 14.0278L12.8542 14.8055C12.6794 15.0438 12.4509 15.2376 12.1873 15.3711C11.9237 15.5047 11.6323 15.5742 11.3368 15.5742C11.0413 15.5742 10.7499 15.5047 10.4863 15.3711C10.2227 15.2376 9.99426 15.0438 9.81945 14.8055L9.25001 14.0278L8.68056 14.8055C8.50901 15.0475 8.28212 15.245 8.01878 15.3815C7.75544 15.518 7.46329 15.5896 7.16667 15.5903C6.90496 15.5935 6.6456 15.5406 6.40604 15.4351C6.16647 15.3297 5.95225 15.1743 5.77778 14.9792V12.8403L8.61112 7.16666H22.3889L25.2222 12.8333V14.9583C25.0488 15.1562 24.8353 15.3148 24.5958 15.4238C24.3563 15.5328 24.0964 15.5895 23.8333 15.5903V15.5903Z" />
+                    </svg>
 
                   }
                 </div>
@@ -443,20 +450,17 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               </Button>
             </div>
             <div className='text-center text-xs font-semibold text-black w-1/4'>
-              <Button className='  btn-nav-color ' onClick={() => setIsCategoryOpen(!isCategoryOpen)}>
-                <svg className='mx-auto' width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13.5417 19.7916H18.7501M13.5417 5.20831H21.8751H13.5417ZM13.5417 9.37498H18.7501H13.5417ZM13.5417 15.625H21.8751H13.5417Z" stroke="#1B0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M8.33333 4.16666H4.16667C3.59137 4.16666 3.125 4.63303 3.125 5.20832V9.37499C3.125 9.95029 3.59137 10.4167 4.16667 10.4167H8.33333C8.90863 10.4167 9.375 9.95029 9.375 9.37499V5.20832C9.375 4.63303 8.90863 4.16666 8.33333 4.16666Z" stroke="#1B0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M8.33333 14.5833H4.16667C3.59137 14.5833 3.125 15.0497 3.125 15.625V19.7916C3.125 20.3669 3.59137 20.8333 4.16667 20.8333H8.33333C8.90863 20.8333 9.375 20.3669 9.375 19.7916V15.625C9.375 15.0497 8.90863 14.5833 8.33333 14.5833Z" stroke="#1B0D0D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <Button className={`btn-nav-color text ${isCategoryOpen && 'btn-nav-color-active'}`} onClick={() => setIsCategoryOpen(!isCategoryOpen)}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                 </svg>
                 <span className=' text-xs font-medium tracking-tight'>Category</span>
               </Button>
             </div>
             <div className='text-center text-xs font-semibold text-black w-1/4'>
-              <Button className=' btn-nav-color' {...!!user ? { type: 'link', href: '/account' } : { onClick: openAuth }} href='/account'>
-                <svg className='mx-auto btn-nav-color' style={{ fill: '', color: 'inherit' }} width="25" height="25" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.33325 20.6667C2.95825 10.8306 17.0416 10.2842 18.6666 20.6667" stroke="black" stroke-width="1.5" />
-                  <path d="M14.6666 5.50001C14.6666 8.07734 12.5772 10.1667 9.99992 10.1667C7.42259 10.1667 5.33325 8.07734 5.33325 5.50001C5.33325 2.92268 7.42259 0.833344 9.99992 0.833344C12.5772 0.833344 14.6666 2.92268 14.6666 5.50001Z" stroke="black" stroke-width="1.5" />
+              <Button className={`btn-nav-color ${router.asPath.includes('account') && 'btn-nav-color-active'}`} {...!!user ? { type: 'link', href: '/account' } : { onClick: openAuth }} href='/account'>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
                 <span className=' text-xs font-medium tracking-tight'>User</span>
               </Button>
@@ -539,7 +543,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
         <ContactUs contactUsVisible={contactUsVisible} setContactUsVisible={setContactUsVisible}></ContactUs>
       </>
       <>
-       <MobContactUs mobContactUsVisible={mobContactUsVisible} setMobContactUsVisible={setMobContactUsVisible}></MobContactUs>
+        <MobContactUs mobContactUsVisible={mobContactUsVisible} setMobContactUsVisible={setMobContactUsVisible}></MobContactUs>
       </>
     </nav >
   )
@@ -569,4 +573,4 @@ const mapDispatchToProps = dispatch => ({
   getSearchProducts: (payload) => dispatch(getSearchProductsStart(payload)),
   setSearchHandler: (payload) => dispatch(setSearchHandler(payload))
 })
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(memo(Navbar))

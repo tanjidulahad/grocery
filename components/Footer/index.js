@@ -128,133 +128,135 @@ function index({ info, socialProfile }) {
     //   </div>
     // </footer>
     <div className='nav-bg hidden sm:block'>
-      <div className='px-20 py-10 '>
-        <div className='grid grid-cols-4 '>
-          {/* store info */}
-          <div className='col-span-1 text-white'>
-            <div>
-              <img className="h-48 w-48 max-h-48" src={info?.logo_img_url} />
-            </div>
-            <p className='mt-2 font-montRegular'>{info?.store_desc}</p>
-            <div className='space-y-2'>
-              {/* <div>
+      <div className=' bg-black bg-opacity-70'>
+        <div className='px-20 py-10 '>
+          <div className='grid grid-cols-4 '>
+            {/* store info */}
+            <div className='col-span-1 text-white'>
+              <div>
+                <img className="h-48 w-48 max-h-48" src={info?.logo_img_url} />
+              </div>
+              <p className='mt-2 font-montRegular'>{info?.store_desc}</p>
+              <div className='space-y-2'>
+                {/* <div>
                 <span><img className='inline mr-2' src={location.src} alt="" />{storeDetails?.city}, {storeDetails?.country}</span>
               </div>
               <div>
                 <span><img className='inline mr-2' src={call.src} alt="" />+{storeDetails?.primary_phone}</span>
               </div> */}
-            </div>
+              </div>
 
-          </div>
-          {/* links */}
-          <div className='col-span-3 ml-24'>
-            <div className={`grid ${socialProfile.length ? "grid-cols-4" : "grid-cols-3"}`}>
-              <div className='space-y-3'>
-                <h3 className='text-xl font-montMedium text-white'>Menu</h3>
-                <div className='w-fit space-y-3'>
-                  <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push('/')}>Home</p>
-                  <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push('/shop')}>Shop</p>
-                  {/* <p className='text-gray-200 font-montRegular text-base cursor-pointer'>About Us</p> */}
-                  <p onClick={() => setContactUsVisible(true)} className='text-gray-200 font-montRegular text-base cursor-pointer'>Contact Us</p>
+            </div>
+            {/* links */}
+            <div className='col-span-3 ml-24'>
+              <div className={`grid ${socialProfile.length ? "grid-cols-4" : "grid-cols-3"}`}>
+                <div className='space-y-3'>
+                  <h3 className='text-xl font-montMedium text-white'>Menu</h3>
+                  <div className='w-fit space-y-3'>
+                    <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push('/')}>Home</p>
+                    <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push('/shop')}>Shop</p>
+                    {/* <p className='text-gray-200 font-montRegular text-base cursor-pointer'>About Us</p> */}
+                    <p onClick={() => setContactUsVisible(true)} className='text-gray-200 font-montRegular text-base cursor-pointer'>Contact Us</p>
+                  </div>
                 </div>
-              </div>
-              <div className='space-y-3'>
-                <h3 className='text-xl font-montMedium text-white'>Account</h3>
-                <div className='w-fit space-y-3'>
-                  <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push("/account")}>My Profile</p>
-                  <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push('/account/wishlist')}>Wishlist</p>
-                  <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push("/account/myorders")}>Orders</p>
-                  <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push("/account/savedplaces")}>Saved Address</p>
+                <div className='space-y-3'>
+                  <h3 className='text-xl font-montMedium text-white'>Account</h3>
+                  <div className='w-fit space-y-3'>
+                    <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push("/account")}>My Profile</p>
+                    <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push('/account/wishlist')}>Wishlist</p>
+                    <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push("/account/myorders")}>Orders</p>
+                    <p className='text-gray-200 font-montRegular text-base cursor-pointer' onClick={() => router.push("/account/savedplaces")}>Saved Address</p>
+                  </div>
                 </div>
-              </div>
-              {
-                socialProfile.length ? <div className='space-y-3'>
-                  <h3 className='text-xl font-montMedium text-white'>Social</h3>
+                {
+                  socialProfile.length ? <div className='space-y-3'>
+                    <h3 className='text-xl font-montMedium text-white'>Social</h3>
+                    <div className='w-fit space-y-3'>
+                      {
+                        socialProfile.map(function (item, idx) {
+                          if (item.social_account_link) {
+                            return <p><Link key={idx} href={`https://${item.social_account_link}`}><a target="_blank" className='text-gray-200 font-montRegular text-base cursor-pointer capitalize'>{(item.social_account_name).toLowerCase()}</a></Link></p>
+                          }
+                        })
+                      }
+                    </div>
+                  </div> : ""
+                }
+                <div className='space-y-3'>
+                  <h3 className='text-xl font-montMedium text-white '>Other Links</h3>
                   <div className='w-fit space-y-3'>
                     {
-                      socialProfile.map(function (item, idx) {
-                        if (item.social_account_link) {
-                          return <p><Link key={idx} href={`https://${item.social_account_link}`}><a target="_blank" className='text-gray-200 font-montRegular text-base cursor-pointer capitalize'>{(item.social_account_name).toLowerCase()}</a></Link></p>
-                        }
-                      })
+                      otherLinks.map((item, idx) => <p onClick={() => window.location.href = `${item.url}`} key={idx} className='text-gray-200 font-montRegular text-base cursor-pointer'>{item.name}</p>)
                     }
                   </div>
-                </div> : ""
-              }
-              <div className='space-y-3'>
-                <h3 className='text-xl font-montMedium text-white '>Other Links</h3>
-                <div className='w-fit space-y-3'>
-                  {
-                    otherLinks.map((item, idx) => <p onClick={() => window.location.href = `${item.url}`} key={idx} className='text-gray-200 font-montRegular text-base cursor-pointer'>{item.name}</p>)
-                  }
                 </div>
+
               </div>
 
             </div>
+          </div>
+          {/* contact us */}
+          <>
+            <ContactUs contactUsVisible={contactUsVisible} setContactUsVisible={setContactUsVisible}></ContactUs>
+          </>
+        </div>
+        <div className='w-full flex items-center justify-center'>
+          <span className='mr-3 text-white'>Powered by</span><img src={'https://devo2.goplinto.com/profileLogos/goplinto_logo.png'} className='h-6  object-contain' />
+        </div>
 
-          </div>
-        </div>
-        {/* contact us */}
-        <>
-          <ContactUs contactUsVisible={contactUsVisible} setContactUsVisible={setContactUsVisible}></ContactUs>
-        </>
-      </div>
-      <div className='w-full flex items-center justify-center'>
-        <span className='mr-3 text-white'>Powered by</span><img src={'https://devo2.goplinto.com/profileLogos/goplinto_logo.png'} className='h-6  object-contain' />
-      </div>
-
-      <div className='px-2 md:px-6 w-full flex flex-row items-start justify-between mt-9 md:pb-10 space-x-1 md:space-x-4'>
-        <div className={`w-full basis-2/12 flex-grow flex flex-col flex-auto justify-center space-y-3 items-center`} >
-          <p className='inline-block w-full text-[#FFFFFFB3] text-center  mb-2 text-[6px] md:text-sm lg:text-base md:px-2' >{'Cloud Hosted on'}</p>
-          <div className={`w-full flex flex-row justify-between items-start max-h-8 `}>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/aws dark mode copy@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/Azure web services copy@2x.png'} className='w-full h-full object-contain' />
+        <div className='px-2 md:px-6 w-full flex flex-row items-start justify-between mt-9 md:pb-10 space-x-1 md:space-x-4'>
+          <div className={`w-full basis-2/12 flex-grow flex flex-col flex-auto justify-center space-y-3 items-center`} >
+            <p className='inline-block w-full text-[#FFFFFFB3] text-center  mb-2 text-[6px] md:text-sm lg:text-base md:px-2' >{'Cloud Hosted on'}</p>
+            <div className={`w-full flex flex-row justify-between items-start max-h-8 `}>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/aws dark mode copy@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/Azure web services copy@2x.png'} className='w-full h-full object-contain' />
+              </div>
             </div>
           </div>
-        </div>
-        <div className={`w-full basis-3/12 flex-grow flex flex-col flex-auto justify-center items-center space-y-3 divide-x-2`} >
-          <p className='w-full text-center text-[#FFFFFFB3]  mb-2 text-[6px] md:text-sm lg:text-base md:px-2' >{'Secured Payments with'}</p>
-          <div className={`w-full flex flex-row justify-between items-start px-4 border-gray-400`}>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/pci-compliant.f0aea468@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/ssl-final@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/https (1)@2x.png'} className='w-full h-full object-contain' />
+          <div className={`w-full basis-3/12 flex-grow flex flex-col flex-auto justify-center items-center space-y-3 divide-x-2`} >
+            <p className='w-full text-center text-[#FFFFFFB3]  mb-2 text-[6px] md:text-sm lg:text-base md:px-2' >{'Secured Payments with'}</p>
+            <div className={`w-full flex flex-row justify-between items-start px-4 border-gray-400`}>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/pci-compliant.f0aea468@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/ssl-final@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/https (1)@2x.png'} className='w-full h-full object-contain' />
+              </div>
             </div>
           </div>
-        </div>
-        <div className={`w-full basis-7/12 flex-grow flex flex-col flex-auto justify-center items-center space-y-3 divide-x-2`} >
-          <p className='w-full text-center text-[#FFFFFFB3] mb-2 text-[6px] md:text-sm lg:text-base md:px-2' >{'Payments accepted via'}</p>
-          <div className={`w-full flex flex-row justify-between items-baseline pl-6 border-gray-400`}>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/amex@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/master card@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/visa copy@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/upi@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/paytm@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/pe copy 2@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/google pay copy@2x.png'} className='w-full h-full object-contain' />
-            </div>
-            <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
-              <img src={'/img/& more.svg'} className='w-full h-full object-contain' />
+          <div className={`w-full basis-7/12 flex-grow flex flex-col flex-auto justify-center items-center space-y-3 divide-x-2`} >
+            <p className='w-full text-center text-[#FFFFFFB3] mb-2 text-[6px] md:text-sm lg:text-base md:px-2' >{'Payments accepted via'}</p>
+            <div className={`w-full flex flex-row justify-between items-baseline pl-6 border-gray-400`}>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/amex@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/master card@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/visa copy@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/upi@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/paytm@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/pe copy 2@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/google pay copy@2x.png'} className='w-full h-full object-contain' />
+              </div>
+              <div className=' h-[12px] md:h-12 w-[12px] md:w-10 lg:w-16'>
+                <img src={'/img/& more.svg'} className='w-full h-full object-contain' />
+              </div>
             </div>
           </div>
         </div>

@@ -349,13 +349,13 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                 confirmOrder &&
                 <div className="fixed inset-0 z-50 bg-slate-500 bg-opacity-50 " >
                     <div className=" absolute left-1/2 h-fit bottom-0 sm:bottom-auto sm:top-1/2 bg-white rounded-md w-full -translate-x-1/2 sm:-translate-y-1/2 p-6" style={{ maxWidth: "556px" }}>
-                        <h2 className="text-center text-2xl btn-color-revers m-auto"> {'Proceed?'}</h2>
+                        <h2 className="text-center text-2xl btn-color-revers m-auto">Proceed?</h2>
                         <div className="py-4 text-center text-base font-medium w-full mb-6">
                             Confirm your Order for  Cash On Delivery
                         </div>
                         <div className="flex justify-between space-x-4 pt-4 w-full text-white">
-                            <Button className="py-3 w-full  font-semibold hover:bg-red-500 hover:text-white text-red-500 border-2 border-red-500 rounded transition-all " onClick={() => setConfirmOrder(false)}>Cancel</Button>
-                            <Button className="py-3 w-full bg-red-500  font-semibold   border-2  rounded transition-all" onClick={() => { initiatePayment(); setConfirmOrder(false) }} >Confirm</Button>
+                            <Button className="py-3 w-full  font-semibold  btn-color-revers btn-border border-2  rounded transition-all " onClick={() => setConfirmOrder(false)}>Cancel</Button>
+                            <Button className="py-3 w-full btn-bg btn-color  font-semibold border-2  rounded transition-all" onClick={() => { initiatePayment(); setConfirmOrder(false) }} >Confirm</Button>
                         </div>
                     </div>
                 </div >
