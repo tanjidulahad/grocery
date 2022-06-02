@@ -9,7 +9,7 @@ function wallet(walletdata) {
     <div className="w-full mt-4  md:mt-0">
       <div className="my-2  bg-white  w-full flex justify-between">
         <div className="lg:pl-4 w-full flex ">
-          <div className="  w-full mx-4 md:mx-2 my-2 ">
+          <div className="  w-full mx-4 md:mx-2 lg:my-2 ">
             <p className="text-left font-bold text-lg traxt-dark ">Wallet Balance</p>
             <p className="text-left text-xl my-2 font-extrabold text-[#48887B] ">₹ {+walletdata.walletdata}</p>
           </div>

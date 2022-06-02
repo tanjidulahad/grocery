@@ -81,7 +81,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
       <ToastContainer></ToastContainer>
       {
         isLoadding ?
-          <div className='w-full  bg-white md:bg-[transparent]'>
+          <div className='w-full  bg-white md:bg-[transparent] '>
             {/* <Header display={true} topic="Saved Address" /> */}
             <p className="text-xl hidden md:block lg:block text-gray-900 font-bold bg-white px-4 sm:px-6 mb-0 sm:mb-6 py-0 sm:py-6 md:py-3">
               {' '}
@@ -117,7 +117,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
               // </div>
             }
             {
-              isTabletOrMobile && <div className=" md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 px-4 sm:px-6 mb-0 sm:mb-6 py-0 sm:py-6 md:py-3 space-y-14">
+              isTabletOrMobile && <div className=" md:grid lg:grid-cols-2 md:grid-cols-1 bg-white gap-6 px-4 sm:px-6 sm:mb-6 py-0 sm:py-6 md:py-3 space-y-14 mb-[100px]">
                 {
                   [...address].map((item, i) => (
                     <div className="w-full mt-4" key={i} >

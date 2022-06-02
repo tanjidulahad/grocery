@@ -206,7 +206,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                 <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
                     <Stepper steps={steps} activeStep={checkoutDetails.paymentMethod ? 2 : 1} sx={style} />
                 </div>
-                <div className="w-full py-10 space-y-5 bg-white sm:bg-transparent">
+                <div className="w-full py-10 space-y-5 bg-white sm:bg-transparent mb-[100px] lg:mb-0">
                     <div className='px-4 mb-20 md:hidden grid grid-cols-6  space-x-1'>
                         <Input className=' border-static border col-span-4 rounded py-3' placeholder={'Coupon Code'} onChange={(e) => {
                             setCpError("");
@@ -288,7 +288,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                         {/* Billing Details >> */}
                         <div className='shrink-0 w-full md:w-5/12 xl:w-4/12'>
                             <div id='payment-summry' onClick={() => setIsBillingHidden(!isBillingHidden)} className={`bg-white p-4 sm:p-10 fixed sm:static bottom-[70px] inset-x-0 `} style={{ bottom: isBillingHidden ? -149 : 70 }}>
-                                <OrderSummry isBillingHidden={isBillingHidden && !isTab} />
+                                <OrderSummry isBillingHidden={isBillingHidden && !isTab} isTab={isTab}/>
                             </div>
                             <div className='w-full flex fixed sm:static inset-x-0 justify-between items-center px-4 py-4 sm:py-0  bottom-[0] z-[1001] bg-white sm:bg-transparent'>
                                 <Button className="w-full sm:w-3/4 sm:mx-auto px-14 sm:px-0 py-3  block sm:mt-10 sm:py-4 white-color rounded btn-bg text-center"

@@ -92,6 +92,9 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                     .btn-border{
                     border-color: ${themeColors.bgColor};
                     }
+                    .nav-border{
+                    border-color: ${themeColors.navColor};
+                    }
                     .btn-bg {
                     background-color: ${themeColors.bgColor};
                     }

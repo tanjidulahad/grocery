@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Link from "@components/link";
 import Router from "next/router";
 import { connect } from 'react-redux';
-import { getWalletBalance, logOutStart } from '@redux/user/user-action';
+import { getWalletBalance,logOut, logOutStart } from '@redux/user/user-action';
 import { AiOutlineUser } from 'react-icons/ai'
 
 function mobprofile({ user, logout, getWalletBalance, customerWallet, info }) {
@@ -231,7 +231,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logOutStart()),
+  logout: () => dispatch(logOut()),
   getWalletBalance: (data) => dispatch(getWalletBalance(data))
 })
 

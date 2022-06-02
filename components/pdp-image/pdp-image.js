@@ -140,7 +140,7 @@ const PdpImage = ({ list: images = [], alt = 'goplinto product image' }) => {
                                     ))
                                 }
                             </div>
-                            <div className={`${openSlider ? 'slider-active' : 'slider'} z-10 mob-pdp-image-slider fixed inset-x-0  -bottom-full bg-black-color-75 flex items-end`}>
+                            <div className={`${openSlider ? 'slider-active' : 'slider'} z-[1000] mob-pdp-image-slider fixed inset-x-0  -bottom-full bg-black-color-75 flex items-end`}>
                                 <div className='w-full bg-white pb-16'>
                                     <div className='p-6 w-full black-color cursor-pointer' onClick={() => setOpenSlider(false)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-x-lg ml-auto" viewBox="0 0 16 16">

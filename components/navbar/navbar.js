@@ -28,7 +28,7 @@ import { setSearchHandler } from '@redux/search/seatch-actions'
 import ContactUs from "@components/ContactUS/ContactUs";
 import MobContactUs from "@components/ContactUS/MobContactUs";
 
-const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler, displaySettings, openAuth, logOut, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, searchHandler, info, ref }) => {
+const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler, displaySettings, openAuth, logOut, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, searchHandler, info, ref }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
   const [lists, setlists] = useState([])
   const [isLogin, setIsLogin] = useState(false)
@@ -335,9 +335,9 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             <div className=" flex justify-between ">
               <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
               <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
-                <div className="w-20 h-20 rounded text-center shrink-0 flex  justify-center overflow-hidden items-center">
+                <div className="w-20 max-h-[55px] rounded text-center shrink-0 flex  justify-center overflow-hidden items-center">
                   <img
-                    className=" h-full w-full object-cover"
+                    className=" h-full w-full object-contain"
                     src={info.logo_img_url || '/img/default.png'} alt="..."
                   />
                 </div>
@@ -374,12 +374,12 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
       }
       {
         Menu &&
-        <div className="w-full transition duration-150 ease-in-out bg-white h-[130vh] absolute z-[inherit] top-0 ">
-          <div className="my-4  flex   w-full h-[200px]">
+        <div className="w-full transition duration-150 ease-in-out bg-white h-[130vh] absolute z-[inherit] top-0">
+          <div className="my-4 flex w-full">
             <AiOutlineClose onClick={() => { setmenu(false) }} className="ml-6" color={'gray'} size={40} />
-            <div className="  shrink-0 flex  mx-16  overflow-hidden rounded-md items-center">
+            <div className="rounded-md max-h-[80px] w-full ml-24">
               <img
-                className="w-[200px] h-[200px] object-cover"
+                className="h-full"
                 src={
                   info.logo_img_url
                   ||
@@ -406,7 +406,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
 
             </div> <div >
               <Link href={'https://goplinto.com/privacy-policy'}>
-                <a target="_blank" className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Privecy Policy</a>
+                <a target="_blank" className=" block py-6 cursor-pointer px-14 text-lg font-[600]">Privacy Policy</a>
               </Link>
             </div> <div >
               <Link href={'https://goplinto.com/refund-policy'}>
@@ -415,6 +415,28 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
             </div>
             <div >
               {/* <p className="py-6 px-14 text-base font-[600]">About</p> */}
+            </div>
+          </div>
+
+          {/* logo and tagline */}
+          <div className='bg-black fixed bottom-0 inset-x-0 py-4'>
+            {/* Social links */}
+            {
+              socialProfile.length ?
+                  <div className='flex space-x-2 ml-4'>
+                    {
+                      socialProfile.map(function (item, idx) {
+                        if (item.social_account_link) {
+                          return <img onClick={() => window.location.href = `https://${item.social_account_link}`} className='w-[30px] h-[30px] max-h-[30px] rounded-full cursor-pointer' key={idx} src={item?.logo_img_url ? item.logo_img_url : "/img/default.png"}></img>
+                        }
+                      })
+                    }
+              </div>
+                : ""
+            }
+            <div className='flex flex-col justify-center items-center mt-4'>
+              <h3 className='text-white text-[12px] font-semibold my-2'>This online  Store Created using</h3>
+              <img onClick={()=>window.location.href="https://www.goplinto.com/"} className='w-[124px]' src="/img/logo.png" alt="" />
             </div>
           </div>
 
@@ -439,7 +461,7 @@ const Navbar = ({ user, cart, categories, getCategoryStart, getCategoryProducts,
               <Button className={`btn-nav-color ${router.asPath.includes('shop') && 'btn-nav-color-active'}`} type='link' href='/shop'>
                 <div className={` w-[24px] h-[24px] mx-auto`}>
                   {
-                    <svg className='h-6 w-6' viewBox="0 0 31 31" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <svg className='h-6 w-6' viewBox="0 0 31 31" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path d="M22.4444 23.8333H14.1111V18.2778H12.7222V23.8333H8.55555V18.2778H7.16666V23.8333C7.16666 24.2017 7.31299 24.555 7.57345 24.8154C7.83392 25.0759 8.18719 25.2222 8.55555 25.2222H22.4444C22.8128 25.2222 23.1661 25.0759 23.4265 24.8154C23.687 24.555 23.8333 24.2017 23.8333 23.8333V18.2778H22.4444V23.8333Z" />
                       <path d="M26.4653 12.2153L23.632 6.5486C23.517 6.31721 23.3397 6.12247 23.1201 5.9863C22.9005 5.85012 22.6473 5.77791 22.3889 5.77777H8.61112C8.35273 5.77791 8.0995 5.85012 7.8799 5.9863C7.6603 6.12247 7.48305 6.31721 7.36806 6.5486L4.53473 12.2153C4.43799 12.4094 4.38805 12.6234 4.3889 12.8403V14.9792C4.38826 15.3037 4.50128 15.6182 4.70834 15.868C5.01435 16.2188 5.3923 16.4996 5.81649 16.6914C6.24068 16.8831 6.70117 16.9812 7.16667 16.9792C7.92624 16.9803 8.66263 16.7177 9.25001 16.2361C9.83737 16.718 10.5736 16.9813 11.3333 16.9813C12.0931 16.9813 12.8293 16.718 13.4167 16.2361C14.004 16.718 14.7403 16.9813 15.5 16.9813C16.2597 16.9813 16.996 16.718 17.5833 16.2361C18.1707 16.718 18.9069 16.9813 19.6667 16.9813C20.4264 16.9813 21.1626 16.718 21.75 16.2361C22.4057 16.7745 23.2445 17.0376 24.0902 16.9703C24.9359 16.9029 25.7225 16.5103 26.2847 15.875C26.4943 15.6261 26.6098 15.3115 26.6111 14.9861V12.8403C26.612 12.6234 26.562 12.4094 26.4653 12.2153ZM23.8333 15.5903C23.5367 15.5896 23.2446 15.518 22.9812 15.3815C22.7179 15.245 22.491 15.0475 22.3195 14.8055L21.75 14.0278L21.1875 14.8055C21.0127 15.0438 20.7842 15.2376 20.5206 15.3711C20.257 15.5047 19.9657 15.5742 19.6701 15.5742C19.3746 15.5742 19.0833 15.5047 18.8197 15.3711C18.5561 15.2376 18.3276 15.0438 18.1528 14.8055L17.5833 14.0278L17.0208 14.8055C16.846 15.0438 16.6176 15.2376 16.354 15.3711C16.0903 15.5047 15.799 15.5742 15.5035 15.5742C15.208 15.5742 14.9166 15.5047 14.653 15.3711C14.3894 15.2376 14.1609 15.0438 13.9861 14.8055L13.4167 14.0278L12.8542 14.8055C12.6794 15.0438 12.4509 15.2376 12.1873 15.3711C11.9237 15.5047 11.6323 15.5742 11.3368 15.5742C11.0413 15.5742 10.7499 15.5047 10.4863 15.3711C10.2227 15.2376 9.99426 15.0438 9.81945 14.8055L9.25001 14.0278L8.68056 14.8055C8.50901 15.0475 8.28212 15.245 8.01878 15.3815C7.75544 15.518 7.46329 15.5896 7.16667 15.5903C6.90496 15.5935 6.6456 15.5406 6.40604 15.4351C6.16647 15.3297 5.95225 15.1743 5.77778 14.9792V12.8403L8.61112 7.16666H22.3889L25.2222 12.8333V14.9583C25.0488 15.1562 24.8353 15.3148 24.5958 15.4238C24.3563 15.5328 24.0964 15.5895 23.8333 15.5903V15.5903Z" />
                     </svg>
@@ -556,7 +578,8 @@ const mapStateToProps = state => ({
   categories: state.store.categories,
   displaySettings: state.store.displaySettings,
   // Search handler from plp
-  searchHandler: state.search.searchHandler
+  searchHandler: state.search.searchHandler,
+  socialProfile: state.store.socialProfile
 })
 
 const mapDispatchToProps = dispatch => ({

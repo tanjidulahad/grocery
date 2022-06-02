@@ -97,11 +97,11 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
     <div >
       <ToastContainer />
       {/* slider div */}
-      <div className='my-4 pt-6 lg:mx-14 sm:px-4'>
+      <div className='my-2 lg:my-4 lg:mx-14 sm:px-4'>
         <div>
           <Slider {...bannersettings}>
-            {banner.map((item, idx) => <div key={idx}>
-              <img className='lg:w-full lg:h-[500px] lg:max-h-[500px]' src={item.banner_img_url} alt="" />
+            {banner.map((item, idx) => <div className='max-h-[180px] lg:w-full lg:h-[500px] lg:max-h-[500px]' key={idx}>
+              <img className='w-full h-auto' src={item.banner_img_url} alt="" />
             </div>)}
           </Slider>
         </div>

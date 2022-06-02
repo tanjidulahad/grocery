@@ -299,7 +299,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                 </div> */}
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-2 px-3 md:px-0">
               {
                 status == 'success' || status == 'loading' ?
 

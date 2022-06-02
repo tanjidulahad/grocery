@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { connect } from 'react-redux'
 import { Button } from '@components/inputs'
 import { Input } from '@components/inputs'
+import { BsChevronCompactDown,BsChevronCompactUp } from "react-icons/bs";
 
 // Actions
 import { applyCouponCodeStart } from '@redux/checkout/checkout-action'
 
 
-const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDetailsLoading, isBillingHidden }) => {
+const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDetailsLoading, isBillingHidden,isTab }) => {
     const purchaseDetails = checkout.purchaseDetails
     const [cpError, setCpError] = useState(null)
     const [couponCode, setCouponCode] = useState("")
@@ -49,7 +50,9 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                             <div className='flex justify-between'>
                                 <h3 className="text-xl w-fit mb-5 font-semibold">
                                     Billing Details
+                                    {!isBillingHidden ?<BsChevronCompactDown className='inline ml-2 sm:hidden'></BsChevronCompactDown>:<BsChevronCompactUp className='inline ml-2 sm:hidden'></BsChevronCompactUp>}
                                 </h3>
+
                                 {
                                     isBillingHidden &&
                                     <h3 className="text-lg w-fit mb-5 font-semibold">

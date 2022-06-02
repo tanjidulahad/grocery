@@ -8,8 +8,10 @@ import Otp from './otp'
 import { loginSuccess, authShowToggle, getLoginOtpStart, loginWithPasswordStart, forgotPasswordStart } from '@redux/user/user-action'
 import { BsFillTelephoneFill } from 'react-icons/bs'
 import { MdEmail } from 'react-icons/md'
+
 // Login Component
-const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword, setPage, info }) => {
+const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgotPassword, setPage, info }) => {
+    
     const [isVarificationPhone, setIsVarificationPhone] = useState(true)
     const [forgotPass, setForgotPass] = useState(false)
     const [showPass, setShowPass] = useState(false)
@@ -21,6 +23,7 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
         emailId: "",
         phone: "",
         isdCode: "91",
+        deviceId:fcmToken
     })
     // const [user, setUser] = useState(null) // {}
     const [error, setError] = useState("") // ""
@@ -45,6 +48,8 @@ const Login = ({ showToggle, loginWithPassword, userloginSuccess, forgotPassword
         } else {
             loginWithPassword({ state, setError, setStatus: setIsLoading })
         }
+
+        
     }
     useEffect(() => {
         setState(state => ({ ...state, verificationType: isVarificationPhone ? "PHONE" : 'EMAIL' }))
