@@ -216,7 +216,7 @@ const Register = ({fcmToken, showToggle, setPage, forgotPassword, registerWithPa
                                     }}>{status == 'loading' ? 'Loading...' : 'Get OTP'}</Button>
                             </div> */}
                                 <div className="auth-redirect mt-8 black-color text-lg" >
-                                    <span>Already have an account? <Button className="bg-transparent red-color px-1" onClick={() => setPage(true)}>Login</Button> </span>
+                                    <span>Already have an account? <Button className="bg-transparent btn-color-revers px-1" onClick={() => setPage(true)}>Login</Button> </span>
                                 </div>
                             </div>
                         </div>

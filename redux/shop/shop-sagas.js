@@ -164,10 +164,16 @@ function* onGetShopProductsStart() {
             console.log("product res", res.data)
 
             if (Array.isArray(res.data)) {
+                var available=res.data.filter(function(item){
+                    if(item.item_status=="AVAILABLE"){
+                        return true
+                    }
+                }
+                )
                 if (page > 1 && typeof page != 'undefined') {
-                    yield put(getShopProductsPaginationSuccess(res.data))
+                    yield put(getShopProductsPaginationSuccess(available))
                 } else {
-                    yield put(getShopProductsSuccess(res.data))
+                    yield put(getShopProductsSuccess(available))
 
 
                 }
@@ -194,10 +200,16 @@ function* onGetCategoryProductsStart() {
             const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}&sortOrder=ASC`
             const res = yield fetcher('GET', query)
             if (Array.isArray(res.data)) {
+                var available=res.data.filter(function(item){
+                    if(item.item_status=="AVAILABLE"){
+                        return true
+                    }
+                }
+                )
                 if (page > 1 && typeof page != 'undefined') {
-                    yield put(getShopProductsPaginationSuccess(res.data))
+                    yield put(getShopProductsPaginationSuccess(available))
                 } else {
-                    yield put(getShopProductsSuccess(res.data))
+                    yield put(getShopProductsSuccess(available))
                 }
                 // yield put(getShopProductsSuccess(res.data))
                 if (setStatus) setStatus('success')
@@ -215,10 +227,16 @@ function* onProductSerachStart() {
         try {
             const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}${page?`&pageNum=${page}`:"&pageNum=1"}`)
             if (Array.isArray(res.data)) {
+                var available=res.data.filter(function(item){
+                    if(item.item_status=="AVAILABLE"){
+                        return true
+                    }
+                }
+                )
                 if (page > 1 && typeof page != 'undefined') {
-                    yield put(getShopProductsPaginationSuccess(res.data))
+                    yield put(getShopProductsPaginationSuccess(available))
                 } else {
-                    yield put(getShopProductsSuccess(res.data))
+                    yield put(getShopProductsSuccess(available))
 
 
                 }
@@ -239,8 +257,14 @@ function* onGetFiltersGroup() {
         const { storeId, setFiltersGroup } = payload
         try {
             const res = yield fetcher('GET', `?r=catalog-search/get-filter-groups&storeId=${storeId}`);
-            if (res.data) {
-                setFiltersGroup(res.data)
+            var available=res.data.filter(function(item){
+                if(item.item_status=="AVAILABLE"){
+                    return true
+                }
+            }
+            )
+            if (available) {
+                setFiltersGroup(available)
             }
 
         } catch (error) {
@@ -253,8 +277,14 @@ function* onGetBestSellerProduct() {
         const { storeId, setBestSellerProducts } = payload
         try {
             const res = yield nodefetcher('GET', `/store-widgets/get-best-sellers-by-store?storeId=${storeId}`);
-            if (res.data) {
-                setBestSellerProducts(res.data)
+            var available=res.data.filter(function(item){
+                if(item.item_status=="AVAILABLE"){
+                    return true
+                }
+            }
+            )
+            if (available) {
+                setBestSellerProducts(available)
             }
 
         } catch (error) {
@@ -267,8 +297,14 @@ function* onGetNewArrivalProducts() {
         const { storeId, setNewArrivalProducts } = payload
         try {
             const res = yield nodefetcher('GET', `/store-widgets/get-new-arrivals-by-store?storeId=${storeId}`);
+            var available=res.data.filter(function(item){
+                if(item.item_status=="AVAILABLE"){
+                    return true
+                }
+            }
+            )
             if (res.data) {
-                setNewArrivalProducts(res.data)
+                setNewArrivalProducts(available)
             }
 
         } catch (error) {

@@ -20,10 +20,10 @@ const QuantityID = ({ value = 0, onPlush, onMinus, disabled = false, disabledPlu
     }
 
     return (
-        <div className="inline-block quantity-id relative w-full" style={{
+        <div className="quantity-id" style={{
             ...disabled && { cursor: "not-allowed", }
         }} >
-            <div className={`flex ${pdp && 'w-max'} h-10 sm:h-auto justify-between items-center btn-border border-2 btn-bg-light overflow-hidden rounded-md`} style={{
+            <div className={`flex ${pdp && 'w-[200px]'} h-10 sm:h-auto justify-between items-center btn-border border-2 btn-bg-light overflow-hidden rounded-md`} style={{
                 ...h && { height: h },
                 // border: border || "2px solid #F58634",
                 opacity: disabled ? 0.5 : 1,

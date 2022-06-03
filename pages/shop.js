@@ -299,7 +299,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                 </div> */}
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-2 px-3 md:px-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-2 px-3 md:px-0 mb-[20px] md:mb-0">
               {
                 status == 'success' || status == 'loading' ?
 
@@ -366,7 +366,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                           <h6>
                             <span>No items found
 
-                              <a onClick={handleShowAllProduct} className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                              <a onClick={handleShowAllProduct} className="btn-color-revers p-2 " style={{ cursor: 'pointer' }}>{' '}
                                 Show All Products.
                               </a>
 

@@ -27,6 +27,7 @@ import { getCategoryStart, getShopProductsStart, getCategoryProductsStart, getSe
 import { setSearchHandler } from '@redux/search/seatch-actions'
 import ContactUs from "@components/ContactUS/ContactUs";
 import MobContactUs from "@components/ContactUS/MobContactUs";
+import { SocialIcon } from 'react-social-icons';
 
 const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCategoryProducts, getShopProducts, getSearchProducts, setSearchHandler, displaySettings, openAuth, logOut, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, searchHandler, info, ref }) => {
   const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
@@ -141,7 +142,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                 </Link>
                 <Link href={'/shop'}>
                   <a className="block whitespace-nowrap font-normal  tracking-tight  lg:text-base">
-                    shop
+                    Shop
                   </a>
                 </Link>
                 <a onClick={() => setContactUsVisible(true)} className="block whitespace-nowrap font-normal  tracking-tight lg:text-base cursor-pointer">
@@ -202,9 +203,19 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                           style={{ boxShadow: '0px 4px 8px #2424243F' }}
                         >
                           <ul className="list-none black-color-75 text-base font-medium space-y-6">
-                            <li className="btn-hover-color hover:text-[#48887B]">
+                            {/* <li className="btn-hover-color hover:text-[#48887B]">
                               <Link href="/account">
                                 <a>Account</a>
+                              </Link>
+                            </li> */}
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
+                              <Link href="/account/myorders">
+                                <a>My Orders</a>
+                              </Link>
+                            </li>
+                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
+                              <Link href="/account/wishlist">
+                                <a>Wishlist</a>
                               </Link>
                             </li>
                             <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
@@ -213,18 +224,8 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                               </Link>
                             </li>
                             <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
-                              <Link href="/account/myorders">
-                                <a>My Orders</a>
-                              </Link>
-                            </li>
-                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
-                              <Link href="/account/savedplaces">
+                              <Link href="/account/savedplaces/">
                                 <a>Saved Places</a>
-                              </Link>
-                            </li>
-                            <li className="btn-hover-color cursor-pointer hover:text-[#48887B]">
-                              <Link href="/account/wishlist/">
-                                <a>Wishlist</a>
                               </Link>
                             </li>
                             <li
@@ -427,7 +428,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                     {
                       socialProfile.map(function (item, idx) {
                         if (item.social_account_link) {
-                          return <img onClick={() => window.location.href = `https://${item.social_account_link}`} className='w-[30px] h-[30px] max-h-[30px] rounded-full cursor-pointer' key={idx} src={item?.logo_img_url ? item.logo_img_url : "/img/default.png"}></img>
+                          return <SocialIcon style={{width:"30px",height:'30px',maxHeight:'30px',borderRadius:'50%'}} bgColor="#fff" fgColor="#000" url={(item.social_account_link.indexOf('http://')==0 || item.social_account_link.indexOf('https://')==0)? `${item.social_account_link}`: `https://${item.social_account_link}`} onClick={() => window.location.href = (item.social_account_link.indexOf('http://')==0 || item.social_account_link.indexOf('https://')==0)? `${item.social_account_link}`: `https://${item.social_account_link}`} key={idx}/>
                         }
                       })
                     }

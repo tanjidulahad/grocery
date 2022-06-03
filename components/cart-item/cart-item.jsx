@@ -16,7 +16,7 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, isDetai
                         <span className=" absolute">
 
                         </span>
-                        <img className="w-full h-full object-cover" src={data.primary_img || '/img/default.png'} alt="product" />
+                        <img className="w-full h-full object-cover" src={data.defaultVariantItem ? Object.keys(data.defaultVariantItem).length&&data?.defaultVariantItem?.variant_value_1?.variant_value_images?.img_url_1:(data.primary_img || '/img/default.png')}  alt="product" />
                     </a>
                 </Link>
                 <div className="flex-1 space-y-2 md:space-y-4">

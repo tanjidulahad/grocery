@@ -29,7 +29,7 @@ function wallet(walletdata) {
           </div>
         </div>
       </div>
-      <div className="mb-4  bg-white    w-full ">
+      {/* <div className="mb-4  bg-white    w-full ">
         <div className=' w-full md:mx-2 md:m-4 mt-4'>
           <p className="text-left font-bold text-lg traxt-dark  px-4  pt-4 ">Add Money</p>
           <div className="mt-4 bg-white  ">
@@ -53,7 +53,7 @@ function wallet(walletdata) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

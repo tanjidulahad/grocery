@@ -8,17 +8,19 @@ import { addToCart, removeFromCart } from "../../redux/cart/cart-actions";
 import { AiOutlineHeart, AiFillStar, AiFillHeart } from 'react-icons/ai'
 import { addWishlistStart, removeWishlistStart } from "@redux/wishlist/wishlist-action";
 import { toast } from "react-toastify";
+import { authShowToggle } from "@redux/user/user-action";
 
 
 
-const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist, removeWishlistStart }) => {
+const ProductItem = ({openAuth, className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist, removeWishlistStart }) => {
     const tip = useRef(null)
     const [wishlistAdded, setWishListAdded] = useState(data?.wishlistId)
     const wishlist = () => {
         if (!user.currentUser) {
-            toast.error("Please Sign in First", {
-                autoClose: 2000
-            })
+            // toast.error("Please Sign in First", {
+            //     autoClose: 2000
+            // })
+            openAuth()
         }
         else {
             const payload = {
@@ -95,7 +97,9 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
                                 })()}
                                     onPlush={() => addToCart(productDataForCart)} onMinus={() => removeFromCart(productDataForCart)} />
                                 :
+
                                 <Button className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-3  ${className}`} onClick={() => addToCart(productDataForCart)} >ADD TO CART</Button>
+
                             :
                             <p onClick={() => Router.push(`/product/${data.item_id}`)} className={`btn-color w-full btn-bg max-h-min text-xs sm:text-base font-medium rounded py-3 text-center cursor-pointer`} >View</p>
                     }
@@ -115,7 +119,7 @@ const ProductItem = ({ className, store, data, user, addToCart, removeFromCart, 
                     <Button type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
                         <a onMouseMove={tipFun} >
                             {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
-                            <img className="w-full h-full object-cover" src={`${data.primary_img || '/img/default.png'}`} alt={`${data.item_name}`} />
+                            <img className="w-full h-full object-cover" src={data.is_customizable=='Y' ? (data.img_url_1 || '/img/default.png') : data.primary_img ? data.primary_img : '/img/default.png'} alt={`${data.item_name}`} />
                             {/* </div> */}
                             {
                                 data.item_name.length > 40 &&
@@ -178,6 +182,7 @@ const mapStateToProps = state => ({
 
 })
 const mapDispatchToProps = dispatch => ({
+    openAuth: () => dispatch(authShowToggle()),
     addToCart: (item) => dispatch(addToCart(item)),
     removeFromCart: (item) => dispatch(removeFromCart(item)),
     addItemToWishlist: (item) => dispatch(addWishlistStart(item)),

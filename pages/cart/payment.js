@@ -25,7 +25,7 @@ import OrderSummry from '@components/order-summry/order-summry'
 import Stepper from '@components/stepper/stepper'
 import { useMediaQuery } from 'react-responsive'
 
-const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+const Address = ({customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
     const purchaseDetails = checkout.purchaseDetails
     const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
@@ -44,7 +44,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
     const [active2, setactive2] = useState(false)
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [paymentSummryHeight, setPaymentSummryHeight] = useState(100)
-    const [isBillingHidden, setIsBillingHidden] = useState(false)
+    const [isBillingHidden, setIsBillingHidden] = useState(true)
     const isTab = useMediaQuery({ minWidth: 640 })
     const [checkoutDetails, setcheckoutDetails] = useState({
         paymentMethod: '',
@@ -279,7 +279,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                                         <input type="Radio" />
                                         <div>
                                             <h4 className=''>Add Wallet Balance</h4>
-                                            <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹250</span></span>
+                                            <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹ {+customerWallet?.customer_wallet_balance}</span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -374,6 +374,7 @@ const mapStateToProps = (state) => ({
     userAddress: state.user.address,
     isDetailsLoading: state.ui.isDetailsLoading,
     checkout: state.checkout,
+    customerWallet: state.user.customerWallet,
 })
 const mapDispatchToProps = (dispatch) => ({
     setBackendCart: (data) => dispatch(setBackendCartStart(data)),

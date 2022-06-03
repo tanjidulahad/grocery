@@ -15,6 +15,7 @@ import {
     getSubCategoryStart,
 } from "@redux/shop/shop-action";
 import { createSeasionId } from "services/pickytoClient";
+import { getWalletBalance } from "@redux/user/user-action";
 
 
 function hexToRGB(hex, alpha) {
@@ -29,11 +30,19 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner }) => {
+const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner,getWalletBalance }) => {
     const router = useRouter()
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
+
+    // calling wallet api
+    useEffect(() => {
+        if (user != null) {
+          getWalletBalance({ customerId: user.customer_id, storeId: store.storeId })
+        }
+      }, [user])
+
     useEffect(() => {
         var seassion_id
         const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
@@ -212,6 +221,7 @@ const mapDispatchToProps = dispatch => ({
     getShopDisplaySettings: (storeId) => dispatch(getShopDisplaySettingsStart(storeId)),
     getCategories: (storeId) => dispatch(getCategoryStart(storeId)),
     getSubCategories: (storeId) => dispatch(getSubCategoryStart(storeId)),
+    getWalletBalance: (data) => dispatch(getWalletBalance(data))
 })
 
 const HOC = connect(mapStateToProps, mapDispatchToProps)(verifier)

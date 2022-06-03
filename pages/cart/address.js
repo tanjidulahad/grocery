@@ -116,7 +116,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
             <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
                 <Stepper steps={steps} activeStep={checkoutDetails.deliveryAddress ? 1 : 0} sx={style} />
             </div>
-            <div className="w-full p-0 sm:py-10 space-y-5 pb-[80px] sm:pb-10">
+            <div className="w-full p-0 sm:py-10 space-y-5 pb-[80px] sm:pb-10 mb-[20px] md:mb-0">
                 <h3 className='text-2xl hidden sm:block font-semibold'>Select a delivery address</h3>
                 <div className='flex flex-col md:flex-row justify-between md:space-x-6'>
                     <div className=' space-y-5'>

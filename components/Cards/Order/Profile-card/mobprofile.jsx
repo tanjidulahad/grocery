@@ -8,11 +8,11 @@ import { AiOutlineUser } from 'react-icons/ai'
 function mobprofile({ user, logout, getWalletBalance, customerWallet, info }) {
   const active = Router?.router?.state?.pathname.split('/')[2]
 
-  useEffect(() => {
-    if (customerWallet == null) {
-      getWalletBalance({ customerId: user.customer_id, storeId: info.store_id })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (customerWallet == null) {
+  //     getWalletBalance({ customerId: user.customer_id, storeId: info.store_id })
+  //   }
+  // }, [])
 
   return (
     <div>
@@ -61,7 +61,7 @@ function mobprofile({ user, logout, getWalletBalance, customerWallet, info }) {
 
                     </p>
                     <p className="text-base md:text-sm  font-semibold leading-4  text-gray-400">
-                      {user?.email_id === null ? "N/A" : user?.email_id}
+                      {user?.email_id}
 
                     </p>
                   </div>
@@ -70,14 +70,14 @@ function mobprofile({ user, logout, getWalletBalance, customerWallet, info }) {
             </div>
           </div>
 
-          <div className={`${!user && 'hidden'}  w-max mt-4 mr-2 `}>
+          {/* <div className={`${!user && 'hidden'}  w-max mt-4 mr-2 `}>
             <Link href='/account/profile ' >
               <svg width="20" height="20" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M13.474 3.40799L15.592 5.52499L13.474 3.40799ZM14.836 1.54299L9.109 7.27C8.81309 7.56549 8.61128 7.94198 8.529 8.35199L8 11L10.648 10.47C11.058 10.388 11.434 10.187 11.73 9.891L17.457 4.16399C17.6291 3.9919 17.7656 3.78759 17.8588 3.56273C17.9519 3.33788 17.9998 3.09688 17.9998 2.85349C17.9998 2.61011 17.9519 2.36911 17.8588 2.14426C17.7656 1.9194 17.6291 1.71509 17.457 1.54299C17.2849 1.3709 17.0806 1.23438 16.8557 1.14124C16.6309 1.04811 16.3899 1.00017 16.1465 1.00017C15.9031 1.00017 15.6621 1.04811 15.4373 1.14124C15.2124 1.23438 15.0081 1.3709 14.836 1.54299V1.54299Z" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M16 13V16C16 16.5304 15.7893 17.0391 15.4142 17.4142C15.0391 17.7893 14.5304 18 14 18H3C2.46957 18 1.96086 17.7893 1.58579 17.4142C1.21071 17.0391 1 16.5304 1 16V5C1 4.46957 1.21071 3.96086 1.58579 3.58579C1.96086 3.21071 2.46957 3 3 3H6" stroke="black" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </Link>
-          </div>
+          </div> */}
         </div>
 
         <div className=" mb-6 ">

@@ -54,7 +54,7 @@ function orderDetail({ getOrderDetails, display }) {
       lable: 'Order Confirmed',
     },
     {
-      lable: 'Ready for Pickup',
+      lable: 'Order Shipped',
     },
     {
       lable: 'Order Delivered Successfully',
