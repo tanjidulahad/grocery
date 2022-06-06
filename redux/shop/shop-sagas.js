@@ -194,11 +194,11 @@ function* onGetShopProductsStart() {
 }
 function* onGetCategoryProductsStart() {
     yield takeLatest(shopActionType.GET_CATEGORY_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, categoryId, subCategoryId, page, setStatus } = payload //status == loading || failed || success
+        const { storeId, categoryId, subCategoryId, page, setStatus,filterAndSortPayload ,sortOrder,user } = payload //status == loading || failed || success
         try {
-            yield put(clearProductList());
-            const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}&sortOrder=ASC`
-            const res = yield fetcher('GET', query)
+            // yield put(clearProductList());
+            const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}`
+            const res = yield fetcher(`${filterAndSortPayload == undefined ? 'GET' : 'POST'}`, query,filterAndSortPayload)
             if (Array.isArray(res.data)) {
                 var available=res.data.filter(function(item){
                     if(item.item_status=="AVAILABLE"){
@@ -257,14 +257,8 @@ function* onGetFiltersGroup() {
         const { storeId, setFiltersGroup } = payload
         try {
             const res = yield fetcher('GET', `?r=catalog-search/get-filter-groups&storeId=${storeId}`);
-            var available=res.data.filter(function(item){
-                if(item.item_status=="AVAILABLE"){
-                    return true
-                }
-            }
-            )
-            if (available) {
-                setFiltersGroup(available)
+            if (res.data) {
+                setFiltersGroup(res.data)
             }
 
         } catch (error) {

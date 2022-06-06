@@ -72,6 +72,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     },
   };
 
+  console.log("router", Router)
 
   useEffect(() => { // Componentdidmount
     if (!categories.length) getCategoryStart(storeId);
@@ -90,7 +91,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }, [])
   const observer = useRef()
   const listLastElement = useCallback(node => {
-    console.log("observer",observer);
+    console.log("observer", observer);
     if (status == 'loading') return;
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
@@ -99,20 +100,21 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
         // console.log(page + 1);
         // // console.log(Router);
         // console.log(status);
-        if (page < pageCount &&!search) {
+        if (page < pageCount && !search) {
           setPage(page + 1)
         }
       }
     })
     if (node) observer.current.observe(node)
-  }, [status, pageCount,filterPayLoad,priceFilter])
+  }, [status, pageCount, filterPayLoad, priceFilter])
 
 
   useEffect(() => {
+
     if (!page) return;
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus,page })
+      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus, page })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
@@ -128,9 +130,10 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }, [Router.query, page])
 
   useEffect(() => {
+
     if (search) {
       setStatus('loading')
-      getSearchProducts({ storeId, q: search, setSearchResult,page:1, setStatus })
+      getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
@@ -257,7 +260,15 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }
 
   useEffect(() => {
-    getShopProducts({ storeId, filterAndSortPayload, sortOrder, user, setStatus })
+
+    if (Object.keys(filterAndSortPayload).length != 0) {
+      if (category) {
+        getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus,filterAndSortPayload ,sortOrder,user})
+      }
+      else {
+        getShopProducts({ storeId, filterAndSortPayload, sortOrder, user, setStatus })
+      }
+    }
   }, [filterAndSortPayload])
 
   const handleShowAllProduct = () => {
@@ -265,7 +276,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     setFilterAndSortPayload({})
   }
 
-  console.log("all products", products)
   console.log(status)
   return (
     < >
@@ -303,18 +313,18 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
               {
                 status == 'success' || status == 'loading' ?
 
-                products.length && (status == 'loading' || status == 'success')
-                 ?
-                  <>
-                    {
-
-                      products.map((item, i) => (
-                        <div className='w-full'>
-                          <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
-                        </div>
-                      ))}
+                  products.length && (status == 'loading' || status == 'success')
+                    ?
+                    <>
                       {
-                        status=='loading'&&
+
+                        products.map((item, i) => (
+                          <div className='w-full'>
+                            <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
+                          </div>
+                        ))}
+                      {
+                        status == 'loading' &&
                         <>
                           <ProductItem />
                           <ProductItem />
@@ -328,73 +338,73 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                           <ProductItem className={'hidden xl:block'} />
                         </>
                       }
-                    <div className="h-8 " ref={listLastElement}></div>
-                  </>
+                      <div className="h-8 " ref={listLastElement}></div>
+                    </>
 
-                  //  products.length ==0 && status == 'success' ?
-                  //   <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                  //     <h6>
-                  //       <span>No items found{' '}
-                  //         <Link href={`/shop`}>
-                  //           <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                  //             Show All Products.
-                  //           </a>
-                  //         </Link>
-                  //       </span>
-                  //     </h6>
-                  //   </div>
+                    //  products.length ==0 && status == 'success' ?
+                    //   <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                    //     <h6>
+                    //       <span>No items found{' '}
+                    //         <Link href={`/shop`}>
+                    //           <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                    //             Show All Products.
+                    //           </a>
+                    //         </Link>
+                    //       </span>
+                    //     </h6>
+                    //   </div>
 
 
-                  //   : products?.length < 1 && status == 'success' ?
-                  //     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                  //       <h6>
-                  //         <span className="">No items found{' '}
-                  //           <Link href={`/shop`}>
-                  //             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                  //               Show All Products.
-                  //             </a>
-                  //           </Link>
-                  //         </span>
-                  //       </h6>
-                  //     </div>
-                  :
-                  <>
-                    {
-                      products.length == 0 && status == 'success' ?
-                      <div className='col-span-full' style={{height:"80vh"}}>
-                        <div className="flex justify-center items-center h-full">
-                          <h6>
-                            <span>No items found
+                    //   : products?.length < 1 && status == 'success' ?
+                    //     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                    //       <h6>
+                    //         <span className="">No items found{' '}
+                    //           <Link href={`/shop`}>
+                    //             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                    //               Show All Products.
+                    //             </a>
+                    //           </Link>
+                    //         </span>
+                    //       </h6>
+                    //     </div>
+                    :
+                    <>
+                      {
+                        products.length == 0 && status == 'success' ?
+                          <div className='col-span-full' style={{ height: "80vh" }}>
+                            <div className="flex justify-center items-center h-full">
+                              <h6>
+                                <span>No items found
 
-                              <a onClick={handleShowAllProduct} className="btn-color-revers p-2 " style={{ cursor: 'pointer' }}>{' '}
-                                Show All Products.
-                              </a>
+                                  <a onClick={handleShowAllProduct} className="btn-color-revers p-2 " style={{ cursor: 'pointer' }}>{' '}
+                                    Show All Products.
+                                  </a>
 
-                            </span>
-                          </h6>
-                        </div>
-                        </div>
-                        :
-                        <>
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem className={'hidden lg:block'} />
-                          <ProductItem className={'hidden xl:block'} />
-                          <ProductItem className={'hidden lg:block'} />
-                          <ProductItem className={'hidden xl:block'} />
-                        </>
-                        
+                                </span>
+                              </h6>
+                            </div>
+                          </div>
+                          :
+                          <>
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem className={'hidden lg:block'} />
+                            <ProductItem className={'hidden xl:block'} />
+                            <ProductItem className={'hidden lg:block'} />
+                            <ProductItem className={'hidden xl:block'} />
+                          </>
 
-                    }
-                  </>
-                  :""
 
-                  }
-                
+                      }
+                    </>
+                  : ""
+
+              }
+
 
             </div>
           </div>
@@ -510,7 +520,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
               <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Low' name="sort" value="ASC" />
               <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Low">Price (Low to High)</label>
             </div>
-            {Object.keys(filtersGroup).length!=0&&<h3 className='p-5 nav-bg'>Filter</h3>}
+            {Object.keys(filtersGroup).length != 0 && <h3 className='p-5 nav-bg'>Filter</h3>}
             <div>
               <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='mobile-tab max-h-full overflow-hidden overflow-y-scroll'>
                 {

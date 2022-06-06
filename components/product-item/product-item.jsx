@@ -119,7 +119,7 @@ const ProductItem = ({openAuth, className, store, data, user, addToCart, removeF
                     <Button type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
                         <a onMouseMove={tipFun} >
                             {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
-                            <img className="w-full h-full object-cover" src={data.is_customizable=='Y' ? (data.img_url_1 || '/img/default.png') : data.primary_img ? data.primary_img : '/img/default.png'} alt={`${data.item_name}`} />
+                            <img className="w-full h-full object-cover" src={data.primary_img ? data.primary_img : data.defaultVariantItem ? data.defaultVariantItem?.variant_value_1?.variant_value_images != undefined ? JSON.parse(data.defaultVariantItem?.variant_value_1?.variant_value_images).img_url_1 : '/img/default.png':'/img/default.png'}  />
                             {/* </div> */}
                             {
                                 data.item_name.length > 40 &&

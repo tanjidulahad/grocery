@@ -53,7 +53,7 @@ import { createSeasionId, getVariantItemByItemId } from "services/pickytoClient"
 import ReactTooltip from "react-tooltip";
 import { authShowToggle } from "@redux/user/user-action";
 
-const ProductDetails = ({openAuth, store,
+const ProductDetails = ({ openAuth, store,
     cart, addToCart, removeFromCart,
     fetchProductDetails, fetchSimilarProducts, getAdditionalInfo, getSpecifications, addWishlist, user, getProductVariant, addItemToWishlist, removeWishlistStart }) => {
     const [success, onSuccess] = useState({})
@@ -149,11 +149,20 @@ const ProductDetails = ({openAuth, store,
             setDefaultVarian(getVariant)
         }
         // SetingUp images
-        const images = [success.primary_img || '/img/default.png']
-        for (let i = 1; i <= 5; i++) {
-            if (success[`img_url_${i}`]) {
-                images.push(success[`img_url_${i}`])
+        var images = [success.primary_img || '/img/default.png']
+
+
+
+        if (success.is_customizable == "N") {
+            for (let i = 1; i <= 5; i++) {
+                if (success[`img_url_${i}`]) {
+                    images.push(success[`img_url_${i}`])
+                }
             }
+        }
+        else {
+            const defImg = Object.values(success?.defaultVariantItem?.variant_value_1?.variant_value_images != undefined ? success.defaultVariantItem?.variant_value_1?.variant_value_images : '').filter(Boolean)
+            images=defImg
         }
 
         setVisuals({
@@ -469,7 +478,7 @@ const ProductDetails = ({openAuth, store,
 
     }
 
-    console.log("wishlisht added", wishlistAdded)
+    console.log("su", success)
 
     return (
         <>
@@ -580,7 +589,7 @@ const ProductDetails = ({openAuth, store,
                                                             </div>
                                                             :
                                                             <div className="flex items-center gap-5">
-                                                                    <Button className="w-full sm:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
+                                                                <Button className="w-full sm:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
                                                                 <div>
                                                                     {!wishlistAdded ? <p onClick={wishlist} className="text-base btn-color-revese cursor-pointer">
                                                                         <AiOutlineHeart className="my-2 inline mx-3" size={24} />
