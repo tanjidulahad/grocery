@@ -10,7 +10,7 @@ function orderlList({ list, storeName, orderId, createTime, openReturn }) {
           list?.map((item, i) => (
             <div key={i} className=" rounded bg-white flex justify-start space-x-4 mt-2 sm:mt-0 p-0 sm:p-4 items-center px-4 sm:px-6">
               <Button className="mt-2 rounded bg-gray-900 md:w-[131px] md:h-[131px] w-20 h-20 shrink-0 block" type='link' href={`/product/${item.orderItemId}`}>
-                <img className="w-full h-full rounded object-cover opacity-80" src={item.customizationDetails ? Object.keys(item.customizationDetails.variant_item_attributes).length&&item?.customizationDetails?.variant_item_attributes?.variant_value_1?.variant_value_images?.img_url_1:(item.itemImg || '/img/default.png')} />
+                <img className="w-full h-full rounded object-cover opacity-80" src={item.customizationDetails ? Object.keys(item.customizationDetails.variant_item_attributes).length&&item?.customizationDetails?.variant_item_attributes?.variant_value_1?.variant_value_images !=null ? item?.customizationDetails?.variant_item_attributes?.variant_value_1?.variant_value_images?.img_url_1:(item.itemImg || '/img/default.png'):'/img/default.png'} />
               </Button>
               <div className="   items-center space-y-4 ">
                 <Button type='link' href={`/product/${item.orderItemId}`}>

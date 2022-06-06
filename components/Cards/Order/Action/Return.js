@@ -52,7 +52,7 @@ function Ret({ action, items, closeRetun, user, orderId }) {
     }
 
       }).catch(err => {
-        if(err.response.data.message=="Sorry, the order can not be cancelled once confirmed!"){
+        if(err?.response?.data?.message=="Sorry, the order can not be cancelled once confirmed!"){
           toast.error("Request Already Placed",{
             autoClose: 2000
         })
@@ -106,11 +106,14 @@ function Ret({ action, items, closeRetun, user, orderId }) {
           </div>
           <div className="p-4">
             <h3 className="text-sm  text-gray-600">
-              {final
-                ? 'Why are you returning this order?'
-                : `Choose items to ${action}`}
+              {
+              // final
+              //   ? 'Why are you returning this order?'
+                 `Choose items to ${action}`
+                }
             </h3>
-            {final ? (
+            {
+            // final ? (
               <>
                 <div className="mt-4 mx-1 flex flex-around  ">
                   <Radio
@@ -181,65 +184,66 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                   </Button>
                 </div>
               </>
-            ) : (
-              <>
-                {Object.values(items).map((item, i) => (
-                  <div className="mt-4 mx-1 flex flex-around" key={i}>
-                    <Checkbox
-                      className="mt-3 "
-                      name="orderId"
-                      id={item.orderItemId}
-                      value={item.orderItemId}
-                      onChange={onChangeHandler}
-                    />
-                    <label className="flex" htmlFor={item.orderItemId}>
-                      <div className="mx-4 w-10 h-10 rounded bg-gray-900">
-                        <img
-                          className="w-full h-full rounded object-center opacity-80"
-                          src={item.itemImg || '/img/default.png'}
-                        />
-                      </div>
-                      <h3
-                        className="text-sm  text-gray-600 flex align-centers"
-                        style={{ alignItems: 'center' }}
-                      >
-                        {item.itemName}
-                      </h3>
-                    </label>
-                  </div>
-                ))}
-                {/* <div className="mt-4 mx-1 flex flex-around  ">
-                  <Radio className="mt-3 " />
-                  <div className="mx-4 w-10 h-10 rounded bg-gray-900">
-                    <img
-                      className="w-full h-full rounded object-center opacity-80"
-                      src="https://b.zmtcdn.com/data/reviews_photos/1e2/19f261b43d11344ce5f483c20a0941e2_1561214851.jpg?fit=around|771.75:416.25&crop=771.75:416.25;*,*"
-                    />
-                  </div>
-                  <h3
-                    className="text-sm flex text-gray-600 "
-                    style={{ alignItems: 'center' }}
-                  >
-                    Plain Briyani
-                  </h3>
-                </div> */}
 
-                <div className="flex justify-end ">
-                  <Button
-                    className={`w-max m-2 btn-color text-lg font-medium btn-bg px-4 py-1 rounded `}
-                    type="button"
-                    onClick={(e) => {
-                      setfinal(
-                        payload.orderItemId.length === 0 ? final : !final
-                      )
+            //   <>
+            //     {Object.values(items).map((item, i) => (
+            //       <div className="mt-4 mx-1 flex flex-around" key={i}>
+                  //  <Checkbox
+            //           className="mt-3 "
+            //           name="orderId"
+            //           id={item.orderItemId}
+            //           value={item.orderItemId}
+            //           onChange={onChangeHandler}
+            //         />
+            //         <label className="flex" htmlFor={item.orderItemId}>
+            //           <div className="mx-4 w-10 h-10 rounded bg-gray-900">
+            //             <img
+            //               className="w-full h-full rounded object-center opacity-80"
+            //               src={item.itemImg || '/img/default.png'}
+            //             />
+            //           </div>
+            //           <h3
+            //             className="text-sm  text-gray-600 flex align-centers"
+            //             style={{ alignItems: 'center' }}
+            //           >
+            //             {item.itemName}
+            //           </h3>
+            //         </label>
+            //       </div>
+            //     ))}
+            //     {/* <div className="mt-4 mx-1 flex flex-around  ">
+            //       <Radio className="mt-3 " />
+            //       <div className="mx-4 w-10 h-10 rounded bg-gray-900">
+            //         <img
+            //           className="w-full h-full rounded object-center opacity-80"
+            //           src="https://b.zmtcdn.com/data/reviews_photos/1e2/19f261b43d11344ce5f483c20a0941e2_1561214851.jpg?fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+            //         />
+            //       </div>
+            //       <h3
+            //         className="text-sm flex text-gray-600 "
+            //         style={{ alignItems: 'center' }}
+            //       >
+            //         Plain Briyani
+            //       </h3>
+            //     </div> */}
 
-                    }}
-                  >
-                    Next
-                  </Button>
-                </div>
-              </>
-            )}
+            //     <div className="flex justify-end ">
+            //       <Button
+            //         className={`w-max m-2 btn-color text-lg font-medium btn-bg px-4 py-1 rounded `}
+            //         type="button"
+            //         onClick={(e) => {
+            //           setfinal(
+            //             payload.orderItemId.length === 0 ? final : !final
+            //           )
+
+            //         }}
+            //       >
+            //         Next
+            //       </Button>
+            //     </div>
+            //   </>
+            // )
+          }
           </div>
         </section>
       </div>
