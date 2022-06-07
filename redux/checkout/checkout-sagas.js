@@ -8,6 +8,7 @@ import {
     orderPaymentConfirmStart, orderPaymentConfirmSuccess, orderPaymentConfirmError, getPurchageSuccess, getPurchageStart,
     createNewRzpOrderSuccess, getPurchaseFailure,
     clearCheckout,
+    applyCouponCodeSuccess,
 } from './checkout-action'
 import { clearCart, updateCartSuccess } from "../cart/cart-actions";
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
@@ -281,10 +282,12 @@ function* onCouponCodeApplyStart() {
         try {
             const res = yield fetcher('GET', `/?r=orders/validate-coupon&storeId=${storeId}&couponCode=${couponCode}&orderId=${orderId}&customerId=${userId}`)
             if (typeof res.data == 'object' && res.data?.status == "INVALID_COUPON_CODE") {
-                onError('Invalid coupon code!')
+                yield put(applyCouponCodeSuccess('Invalid coupon code!'))
+                // onError('Invalid coupon code!')
             } else if (res.data) {
                 yield put(getPurchageStart(purchaseId))
-                onSuccess('Apllied Successfully!.')
+                yield put(applyCouponCodeSuccess(`${couponCode} Apllied Successfully!.`))
+                // onSuccess('Apllied Successfully!.')
             } else {
                 onError('Operation Failed!.')
             }

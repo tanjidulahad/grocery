@@ -42,7 +42,7 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
         if (user != null) {
           getWalletBalance({ customerId: user.customer_id, storeId: store?.info?.store_id })
         }
-      }, [user])
+      }, [user,store.info])
 
     useEffect(() => {
         var seassion_id

@@ -30,22 +30,28 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                         <div className='mb-3 md:grid hidden grid-cols-6 space-x-2'>
                             <Input className=' border-static border col-span-4 rounded py-3' placeholder={'Coupon Code'} onChange={(e) => {
                                 setCpError("");
+                                setOnSuccess("")
                                 setCouponCode(e.target.value)
                             }} value={couponCode} />
                             <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
                         </div>
-                        {
-                            !!success &&
+                        {checkout.couponInfo?
+                            checkout.couponInfo!="Invalid coupon code!"?
                             <div className='mb-4 border-green-500 border rounded text-center text-green-600 bg-green-300 bg-opacity-20 py-3'>
-                                Applied successfully
+                                {checkout.couponInfo}
                             </div>
+                            :
+                            <div className='mb-4 border-red-500 border rounded text-center text-red-600 bg-red-300 bg-opacity-20 py-3'>
+                                {checkout.couponInfo}
+                            </div>
+                            :""
                         }
-                        {
+                        {/* {
                             !!cpError &&
                             <div className='mb-4 border-red-500 border rounded text-center text-red-600 bg-red-300 bg-opacity-20 py-3'>
                                 {cpError}
                             </div>
-                        }
+                        } */}
                         <div className="sm:mt-10  w-full">
                             <div className='flex justify-between'>
                                 <h3 className="text-xl w-fit mb-5 font-semibold">

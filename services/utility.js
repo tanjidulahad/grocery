@@ -538,7 +538,8 @@ export let timezones = {
     },
     "America/Argentina/ComodRivadavia": {
         a: "America/Argentina/Catamarca",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Argentina/Cordoba": {
         u: -180,
@@ -597,7 +598,8 @@ export let timezones = {
     },
     "America/Atka": {
         a: "America/Adak",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Bahia": {
         u: -180,
@@ -640,7 +642,8 @@ export let timezones = {
     },
     "America/Buenos_Aires": {
         a: "America/Argentina/Buenos_Aires",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Cambridge_Bay": {
         u: -420,
@@ -661,7 +664,8 @@ export let timezones = {
     },
     "America/Catamarca": {
         a: "America/Argentina/Catamarca",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Cayenne": {
         u: -180,
@@ -689,7 +693,8 @@ export let timezones = {
     },
     "America/Cordoba": {
         a: "America/Argentina/Cordoba",
-        r: 1
+        r: 1,
+        C:["US"]
     },
     "America/Costa_Rica": {
         u: -360,
@@ -751,7 +756,8 @@ export let timezones = {
     },
     "America/Ensenada": {
         a: "America/Tijuana",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Fort_Nelson": {
         u: -420,
@@ -759,7 +765,8 @@ export let timezones = {
     },
     "America/Fort_Wayne": {
         a: "America/Indiana/Indianapolis",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Fortaleza": {
         u: -180,
@@ -772,7 +779,8 @@ export let timezones = {
     },
     "America/Godthab": {
         a: "America/Nuuk",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Goose_Bay": {
         u: -240,
@@ -862,7 +870,8 @@ export let timezones = {
     },
     "America/Indianapolis": {
         a: "America/Indiana/Indianapolis",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Inuvik": {
         u: -420,
@@ -880,7 +889,8 @@ export let timezones = {
     },
     "America/Jujuy": {
         a: "America/Argentina/Jujuy",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Juneau": {
         u: -540,
@@ -899,7 +909,8 @@ export let timezones = {
     },
     "America/Knox_IN": {
         a: "America/Indiana/Knox",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Kralendijk": {
         a: "America/Puerto_Rico",
@@ -921,7 +932,8 @@ export let timezones = {
     },
     "America/Louisville": {
         a: "America/Kentucky/Louisville",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Lower_Princes": {
         a: "America/Puerto_Rico",
@@ -961,7 +973,8 @@ export let timezones = {
     },
     "America/Mendoza": {
         a: "America/Argentina/Mendoza",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Menominee": {
         u: -360,
@@ -1090,7 +1103,8 @@ export let timezones = {
     },
     "America/Porto_Acre": {
         a: "America/Rio_Branco",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Porto_Velho": {
         u: -240,
@@ -1154,11 +1168,13 @@ export let timezones = {
     },
     "America/Rosario": {
         a: "America/Argentina/Cordoba",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Santa_Isabel": {
         a: "America/Tijuana",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "America/Santarem": {
         u: -180,
@@ -1184,7 +1200,8 @@ export let timezones = {
     },
     "America/Shiprock": {
         a: "America/Denver",
-        r: 1
+        r: 1,
+        c: ["GL"]
     },
     "America/Sitka": {
         u: -540,
@@ -1374,7 +1391,8 @@ export let timezones = {
     },
     "Asia/Ashkhabad": {
         a: "Asia/Ashgabat",
-        r: 1
+        r: 1,
+        c: ["TM"]
     },
     "Asia/Atyrau": {
         u: 300,
@@ -1429,11 +1447,13 @@ export let timezones = {
     },
     "Asia/Chongqing": {
         a: "Asia/Shanghai",
-        r: 1
+        r: 1,
+        c:["CN"]
     },
     "Asia/Chungking": {
         a: "Asia/Shanghai",
-        r: 1
+        r: 1,
+        c:["CN"]
     },
     "Asia/Colombo": {
         u: 330,
@@ -1441,7 +1461,8 @@ export let timezones = {
     },
     "Asia/Dacca": {
         a: "Asia/Dhaka",
-        r: 1
+        r: 1,
+        c:["BD"]
     },
     "Asia/Damascus": {
         u: 120,
@@ -1476,7 +1497,8 @@ export let timezones = {
     },
     "Asia/Harbin": {
         a: "Asia/Shanghai",
-        r: 1
+        r: 1,
+        c:["CN"]
     },
     "Asia/Hebron": {
         u: 120,
@@ -1501,7 +1523,8 @@ export let timezones = {
     },
     "Asia/Istanbul": {
         a: "Europe/Istanbul",
-        r: 1
+        r: 1,
+        c:["TR"]
     },
     "Asia/Jakarta": {
         u: 420,
@@ -1530,7 +1553,8 @@ export let timezones = {
     },
     "Asia/Kashgar": {
         a: "Asia/Urumqi",
-        r: 1
+        r: 1,
+        c: ["NP"]
     },
     "Asia/Kathmandu": {
         u: 345,
@@ -1538,7 +1562,8 @@ export let timezones = {
     },
     "Asia/Katmandu": {
         a: "Asia/Kathmandu",
-        r: 1
+        r: 1,
+        c: ["NP"]
     },
     "Asia/Khandyga": {
         u: 540,
@@ -1567,7 +1592,8 @@ export let timezones = {
     },
     "Asia/Macao": {
         a: "Asia/Macau",
-        r: 1
+        r: 1,
+        c: ["MO"]
     },
     "Asia/Macau": {
         u: 480,
@@ -1638,7 +1664,8 @@ export let timezones = {
     },
     "Asia/Rangoon": {
         a: "Asia/Yangon",
-        r: 1
+        r: 1,
+        c:["MM"]
     },
     "Asia/Riyadh": {
         u: 180,
@@ -1646,7 +1673,8 @@ export let timezones = {
     },
     "Asia/Saigon": {
         a: "Asia/Ho_Chi_Minh",
-        r: 1
+        r: 1,
+        c: ["RU"]
     },
     "Asia/Sakhalin": {
         u: 660,
@@ -1691,11 +1719,13 @@ export let timezones = {
     },
     "Asia/Tel_Aviv": {
         a: "Asia/Jerusalem",
-        r: 1
+        r: 1,
+        c: ["IR"]
     },
     "Asia/Thimbu": {
         a: "Asia/Thimphu",
-        r: 1
+        r: 1,
+        c: ["BT"]
     },
     "Asia/Thimphu": {
         u: 360,
@@ -1711,7 +1741,8 @@ export let timezones = {
     },
     "Asia/Ujung_Pandang": {
         a: "Asia/Makassar",
-        r: 1
+        r: 1,
+        c: ["MN"]
     },
     "Asia/Ulaanbaatar": {
         u: 480,
@@ -1719,7 +1750,8 @@ export let timezones = {
     },
     "Asia/Ulan_Bator": {
         a: "Asia/Ulaanbaatar",
-        r: 1
+        r: 1,
+        c: ["MN"]
     },
     "Asia/Urumqi": {
         u: 360,
@@ -1775,7 +1807,8 @@ export let timezones = {
     },
     "Atlantic/Faeroe": {
         a: "Atlantic/Faroe",
-        r: 1
+        r: 1,
+        c: ["FO"]
     },
     "Atlantic/Faroe": {
         u: 0,
@@ -1811,7 +1844,8 @@ export let timezones = {
     },
     "Australia/ACT": {
         a: "Australia/Sydney",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Adelaide": {
         u: 570,
@@ -1829,11 +1863,13 @@ export let timezones = {
     },
     "Australia/Canberra": {
         a: "Australia/Sydney",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Currie": {
         a: "Australia/Hobart",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Darwin": {
         u: 570,
@@ -1850,7 +1886,8 @@ export let timezones = {
     },
     "Australia/LHI": {
         a: "Australia/Lord_Howe",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Lindeman": {
         u: 600,
@@ -1868,11 +1905,13 @@ export let timezones = {
     },
     "Australia/NSW": {
         a: "Australia/Sydney",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/North": {
         a: "Australia/Darwin",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Perth": {
         u: 480,
@@ -1880,11 +1919,13 @@ export let timezones = {
     },
     "Australia/Queensland": {
         a: "Australia/Brisbane",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/South": {
         a: "Australia/Adelaide",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Sydney": {
         u: 600,
@@ -1893,35 +1934,43 @@ export let timezones = {
     },
     "Australia/Tasmania": {
         a: "Australia/Hobart",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Victoria": {
         a: "Australia/Melbourne",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/West": {
         a: "Australia/Perth",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Australia/Yancowinna": {
         a: "Australia/Broken_Hill",
-        r: 1
+        r: 1,
+        c: ["AU"]
     },
     "Brazil/Acre": {
         a: "America/Rio_Branco",
-        r: 1
+        r: 1,
+        c: ["BR"]
     },
     "Brazil/DeNoronha": {
         a: "America/Noronha",
-        r: 1
+        r: 1,
+        c: ["BR"]
     },
     "Brazil/East": {
         a: "America/Sao_Paulo",
-        r: 1
+        r: 1,
+        c: ["BR"]
     },
     "Brazil/West": {
         a: "America/Manaus",
-        r: 1
+        r: 1,
+        c: ["BR"]
     },
     CET: {
         u: 60,
@@ -1937,7 +1986,8 @@ export let timezones = {
     },
     "Canada/Central": {
         a: "America/Winnipeg",
-        r: 1
+        r: 1,
+        c: ["CA"]
     },
     "Canada/Eastern": {
         a: "America/Toronto",
@@ -1946,166 +1996,214 @@ export let timezones = {
     },
     "Canada/Mountain": {
         a: "America/Edmonton",
-        r: 1
+        r: 1,
+        c: ["CA"]
     },
     "Canada/Newfoundland": {
         a: "America/St_Johns",
-        r: 1
+        r: 1,
+        c: ["CA"]
     },
     "Canada/Pacific": {
         a: "America/Vancouver",
-        r: 1
+        r: 1,
+        c: ["CA"]
     },
     "Canada/Saskatchewan": {
         a: "America/Regina",
-        r: 1
+        r: 1,
+        c: ["CA"]
     },
     "Canada/Yukon": {
         a: "America/Whitehorse",
-        r: 1
+        r: 1,
+        c: ["CA"]
     },
     "Chile/Continental": {
         a: "America/Santiago",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Chile/EasterIsland": {
         a: "Pacific/Easter",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     Cuba: {
         a: "America/Havana",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     EET: {
         u: 120,
-        d: 180
+        d: 180,
+        c:["US"]
     },
     EST: {
-        u: -300
+        u: -300,
+        c:["US"]
     },
     EST5EDT: {
         u: -300,
-        d: -240
+        d: -240,
+        c:["US"]
     },
     Egypt: {
         a: "Africa/Cairo",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     Eire: {
         a: "Europe/Dublin",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Etc/GMT": {
-        u: 0
+        u: 0,
+        c:["US"]
     },
     "Etc/GMT+0": {
         a: "Etc/GMT",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Etc/GMT+1": {
-        u: -60
+        u: -60,
+        c:["US"]
     },
     "Etc/GMT+10": {
-        u: -600
+        u: -600,
+        c:["US"]
     },
     "Etc/GMT+11": {
-        u: -660
+        u: -660,
+        c:["US"]
     },
     "Etc/GMT+12": {
-        u: -720
+        u: -720,
+        c:["US"]
     },
     "Etc/GMT+2": {
-        u: -120
+        u: -120,
+        c:["US"]
     },
     "Etc/GMT+3": {
-        u: -180
+        u: -180,
+        c:["US"]
     },
     "Etc/GMT+4": {
-        u: -240
+        u: -240,
+        c:["US"]
     },
     "Etc/GMT+5": {
-        u: -300
+        u: -300,
+        c:["US"]
     },
     "Etc/GMT+6": {
-        u: -360
+        u: -360,
+        c:["US"]
     },
     "Etc/GMT+7": {
-        u: -420
+        u: -420,
+        c:["US"]
     },
     "Etc/GMT+8": {
-        u: -480
+        u: -480,
+        c:["US"]
     },
     "Etc/GMT+9": {
-        u: -540
+        u: -540,
+        c:["US"]
     },
     "Etc/GMT-0": {
         a: "Etc/GMT",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Etc/GMT-1": {
-        u: 60
+        u: 60,
+        c:["US"]
     },
     "Etc/GMT-10": {
-        u: 600
+        u: 600,
+        c:["US"]
     },
     "Etc/GMT-11": {
-        u: 660
+        u: 660,
+        c:["US"]
     },
     "Etc/GMT-12": {
-        u: 720
+        u: 720,
+        c:["US"]
     },
     "Etc/GMT-13": {
-        u: 780
+        u: 780,
+        c:["US"]
     },
     "Etc/GMT-14": {
-        u: 840
+        u: 840,
+        c:["US"]
     },
     "Etc/GMT-2": {
-        u: 120
+        u: 120,
+        c:["US"]
     },
     "Etc/GMT-3": {
-        u: 180
+        u: 180,
+        c:["US"]
     },
     "Etc/GMT-4": {
-        u: 240
+        u: 240,
+        c:["US"]
     },
     "Etc/GMT-5": {
-        u: 300
+        u: 300,
+        c:["US"]
     },
     "Etc/GMT-6": {
-        u: 360
+        u: 360,
+        c:["US"]
     },
     "Etc/GMT-7": {
-        u: 420
+        u: 420,
+        c:["US"]
     },
     "Etc/GMT-8": {
-        u: 480
+        u: 480,
+        c:["US"]
     },
     "Etc/GMT-9": {
-        u: 540
+        u: 540,
+        c:["US"]
     },
     "Etc/GMT0": {
         a: "Etc/GMT",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Etc/Greenwich": {
         a: "Etc/GMT",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Etc/UCT": {
         a: "Etc/UTC",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Etc/UTC": {
-        u: 0
+        u: 0,
+        c:["US"]
     },
     "Etc/Universal": {
         a: "Etc/UTC",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Etc/Zulu": {
         a: "Etc/UTC",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "Europe/Amsterdam": {
         u: 60,
@@ -2273,7 +2371,8 @@ export let timezones = {
     },
     "Europe/Nicosia": {
         a: "Asia/Nicosia",
-        r: 1
+        r: 1,
+        c: ["RU"]
     },
     "Europe/Oslo": {
         u: 60,
@@ -2354,7 +2453,8 @@ export let timezones = {
     },
     "Europe/Tiraspol": {
         a: "Europe/Chisinau",
-        r: 1
+        r: 1,
+        c: ["AL"]
     },
     "Europe/Ulyanovsk": {
         u: 240,
@@ -2410,7 +2510,8 @@ export let timezones = {
         c: ["CH", "DE", "LI"]
     },
     Factory: {
-        u: 0
+        u: 0,
+        c: ["CH", "DE", "LI"]
     },
     GB: {
         a: "Europe/London",
@@ -2424,34 +2525,42 @@ export let timezones = {
     },
     GMT: {
         a: "Etc/GMT",
+        c: ["GB"],
         r: 1
     },
     "GMT+0": {
         a: "Etc/GMT",
+        c: ["GB"],
         r: 1
     },
     "GMT-0": {
         a: "Etc/GMT",
+        c: ["GB"],
         r: 1
     },
     GMT0: {
         a: "Etc/GMT",
-        r: 1
+        r: 1,
+        c: ["GB"],
     },
     Greenwich: {
         a: "Etc/GMT",
-        r: 1
+        r: 1,
+        c: ["GB"],
     },
     HST: {
-        u: -600
+        u: -600,
+        c: ["GB"],
     },
     Hongkong: {
         a: "Asia/Hong_Kong",
-        r: 1
+        r: 1,
+        c: ["CN"],
     },
     Iceland: {
         a: "Atlantic/Reykjavik",
-        r: 1
+        r: 1,
+        c: ["CN"],
     },
     "Indian/Antananarivo": {
         a: "Africa/Nairobi",
@@ -2502,50 +2611,62 @@ export let timezones = {
     },
     Iran: {
         a: "Asia/Tehran",
-        r: 1
+        r: 1,
+        c: ["TR"],
     },
     Israel: {
         a: "Asia/Jerusalem",
-        r: 1
+        r: 1,
+        c:["IL"]
     },
     Jamaica: {
         a: "America/Jamaica",
-        r: 1
+        r: 1,
+        c:["JM"]
     },
     Japan: {
         a: "Asia/Tokyo",
-        r: 1
+        r: 1,
+        c:["JP"]
     },
     Kwajalein: {
         a: "Pacific/Kwajalein",
-        r: 1
+        r: 1,
+        c:["JP"]
     },
     Libya: {
         a: "Africa/Tripoli",
-        r: 1
+        r: 1,
+        c:["LY"]
     },
     MET: {
         u: 60,
-        d: 120
+        d: 120,
+        c:["LY"]
     },
     MST: {
-        u: -420
+        u: -420,
+        c:["LY"]
     },
     MST7MDT: {
         u: -420,
-        d: -360
+        d: -360,
+        c:["LY"]
     },
     "Mexico/BajaNorte": {
         a: "America/Tijuana",
-        r: 1
+        r: 1,
+        c: ["MX"]
     },
     "Mexico/BajaSur": {
         a: "America/Mazatlan",
-        r: 1
+        r: 1,
+        c: ["MX"]
     },
     "Mexico/General": {
         a: "America/Mexico_City",
-        r: 1
+        r: 1,
+        c: ["MX"]
     },
     NZ: {
         a: "Pacific/Auckland",
@@ -2554,19 +2675,23 @@ export let timezones = {
     },
     "NZ-CHAT": {
         a: "Pacific/Chatham",
-        r: 1
+        r: 1,
+        c: ["NZ"],
     },
     Navajo: {
         a: "America/Denver",
-        r: 1
+        r: 1,
+        c: ["NZ"],
     },
     PRC: {
         a: "Asia/Shanghai",
-        r: 1
+        r: 1,
+        c: ["NZ"],
     },
     PST8PDT: {
         u: -480,
-        d: -420
+        d: -420,
+        c: ["NZ"],
     },
     "Pacific/Apia": {
         u: 780,
@@ -2601,7 +2726,8 @@ export let timezones = {
     },
     "Pacific/Enderbury": {
         a: "Pacific/Kanton",
-        r: 1
+        r: 1,
+        c: ["VU"]
     },
     "Pacific/Fakaofo": {
         u: 780,
@@ -2705,7 +2831,8 @@ export let timezones = {
     },
     "Pacific/Ponape": {
         a: "Pacific/Pohnpei",
-        r: 1
+        r: 1,
+        c: ["FM"]
     },
     "Pacific/Port_Moresby": {
         u: 600,
@@ -2739,7 +2866,8 @@ export let timezones = {
     },
     "Pacific/Truk": {
         a: "Pacific/Chuuk",
-        r: 1
+        r: 1,
+        c: ["TO"]
     },
     "Pacific/Wake": {
         u: 720,
@@ -2751,23 +2879,28 @@ export let timezones = {
     },
     "Pacific/Yap": {
         a: "Pacific/Chuuk",
-        r: 1
+        r: 1,
+        c: ["TO"]
     },
     Poland: {
         a: "Europe/Warsaw",
-        r: 1
+        r: 1,
+        c:["PL"]
     },
     Portugal: {
         a: "Europe/Lisbon",
-        r: 1
+        r: 1,
+        c:["PT"]
     },
     ROC: {
         a: "Asia/Taipei",
-        r: 1
+        r: 1,
+        c: ["SG"],
     },
     ROK: {
         a: "Asia/Seoul",
-        r: 1
+        r: 1,
+        c: ["SG"],
     },
     Singapore: {
         a: "Asia/Singapore",
@@ -2776,19 +2909,23 @@ export let timezones = {
     },
     Turkey: {
         a: "Europe/Istanbul",
-        r: 1
+        r: 1,
+        c:["TR"]
     },
     UCT: {
         a: "Etc/UTC",
-        r: 1
+        r: 1,
+        c:["TR"]
     },
     "US/Alaska": {
         a: "America/Anchorage",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Aleutian": {
         a: "America/Adak",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Arizona": {
         a: "America/Phoenix",
@@ -2797,15 +2934,18 @@ export let timezones = {
     },
     "US/Central": {
         a: "America/Chicago",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/East-Indiana": {
         a: "America/Indiana/Indianapolis",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Eastern": {
         a: "America/New_York",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Hawaii": {
         a: "Pacific/Honolulu",
@@ -2814,19 +2954,23 @@ export let timezones = {
     },
     "US/Indiana-Starke": {
         a: "America/Indiana/Knox",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Michigan": {
         a: "America/Detroit",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Mountain": {
         a: "America/Denver",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Pacific": {
         a: "America/Los_Angeles",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "US/Samoa": {
         a: "Pacific/Pago_Pago",
@@ -2835,22 +2979,27 @@ export let timezones = {
     },
     UTC: {
         a: "Etc/UTC",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     Universal: {
         a: "Etc/UTC",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     "W-SU": {
         a: "Europe/Moscow",
-        r: 1
+        r: 1,
+        c:["US"]
     },
     WET: {
         u: 0,
-        d: 60
+        d: 60,
+        c:["US"]
     },
     Zulu: {
         a: "Etc/UTC",
-        r: 1
+        r: 1,
+        c:["US"]
     }
 };
