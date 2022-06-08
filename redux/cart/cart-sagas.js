@@ -5,7 +5,7 @@ import cartActionType from "./cart-action-type";
 import { readyCartData } from "@utils/utill";
 
 // Actions
-import { getPurchageStart, setBackendCartStart, setBackendCartStoreStart, addItemTopurchaseStart, updateQuantityToPurchaseStart, deleteFromPurchaseStart, setCartError } from "../checkout/checkout-action";
+import { getPurchageStart, setBackendCartStart, setBackendCartStoreStart, addItemTopurchaseStart, updateQuantityToPurchaseStart, deleteFromPurchaseStart, setCartError, clearCheckout } from "../checkout/checkout-action";
 import { getOrderDetailsStart } from "@redux/orders/orders-action";
 import { updateCartSuccess } from "./cart-actions";
 
@@ -86,12 +86,24 @@ function* purchaseItemUpdator({ payload }) {
 // function* onAddToCartStart() {
 //     yield takeLatest(cartActionType.ADD_TO_CART, purchaseItemUpdator)
 // }
-// function* onRemoveFromCartStart() {
-//     yield takeLatest(cartActionType.REMOVE_FROM_CART, purchaseItemUpdator)
-// }
-// function* onDeleteFromCartStart() {
-//     yield takeLatest(cartActionType.DELETE_FROM_CART, purchaseItemUpdator)
-// }
+function* onRemoveFromCartStart() {
+    yield takeLatest(cartActionType.REMOVE_FROM_CART,function* (){
+        const state = Reducstore.getState()
+        const cart = state.cart;
+        if(cart.length==0){
+            yield put (clearCheckout())
+        }
+    } )
+}
+function* onDeleteFromCartStart() {
+    yield takeLatest(cartActionType.DELETE_FROM_CART, function* (){
+        const state = Reducstore.getState()
+        const cart = state.cart;
+        if(cart.length==0){
+            yield put (clearCheckout())
+        }
+    })
+}
 
 
 
@@ -99,8 +111,8 @@ function* purchaseItemUpdator({ payload }) {
 export default function* cartSagas() {
     yield all([
         //     call(onAddToCartStart),
-        // call(onRemoveFromCartStart),
-        // call(onDeleteFromCartStart)
+        call(onRemoveFromCartStart),
+        call(onDeleteFromCartStart)
     ]);
 }
 

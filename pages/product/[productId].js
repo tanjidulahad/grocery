@@ -162,7 +162,11 @@ const ProductDetails = ({ openAuth, store,
         }
         else {
             const defImg = Object.values(success?.defaultVariantItem?.variant_value_1?.variant_value_images != undefined ? success.defaultVariantItem?.variant_value_1?.variant_value_images : '').filter(Boolean)
-            images=defImg
+            if (defImg.length!=0) {
+                images = defImg
+            }else{
+                images=['/img/default.png']
+            }
         }
 
         setVisuals({
@@ -803,7 +807,7 @@ const ProductDetails = ({ openAuth, store,
                         visuals.defaultVariantItem && visuals.defaultVariantItem.variant_item_status == "UNAVAILABLE" ? <Button className="w-full md:w-auto py-3 px-12 text-base border-2 border-slate-300 text-slate-400 rounded font-bold cursor-not-allowed" >Unavailable</Button>
                             :
                             quantityInCart ?
-                                <QuantityID value={quantityInCart} pdp={true} disabledPlush={(() => {
+                                <QuantityID w={"100%"} value={quantityInCart} pdp={true} disabledPlush={(() => {
                                     if (visuals?.inventoryDetails) {
                                         return visuals?.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0 || visuals.inventoryDetails.inventory_quantity <= quantityInCart
                                     }
@@ -811,7 +815,7 @@ const ProductDetails = ({ openAuth, store,
                                 })()}
                                     onPlush={itemAddToCart} onMinus={itemRemoveFromCart} />
                                 :
-                                <Button className="w-full md:w-auto py-3 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
+                                <Button className="w-full md:w-auto py-2 px-12 text-base btn-bg btn-color rounded" onClick={itemAddToCart} >ADD TO CART</Button>
                     }
                 </div>
             </div>

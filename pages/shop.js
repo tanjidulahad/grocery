@@ -242,7 +242,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }
 
   const handleFilterAndSort = () => {
-    console.log(priceFilter)
     // let finalPayloadForSortAndFilter = { ...filterPayLoad, ...priceFilter }
     // console.log("finalpayloadforsortand filter",finalPayloadForSortAndFilter)
     setFilterAndSortPayload({ filter_groups: filterPayLoad, priceRange: priceFilter })
@@ -299,7 +298,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                 </div> */}
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-2 px-3 md:px-0 mb-[20px] md:mb-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-2 px-3 md:px-0 mb-[60px] md:mb-0">
               {
                 status == 'success' || status == 'loading' ?
 
@@ -476,7 +475,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                                 [Number(filtersGroup[groupid]?.min_value)]: `${Number(filtersGroup[groupid]?.min_value)}`,
                                 [Number(filtersGroup[groupid]?.max_value)]: `${Number(filtersGroup[groupid]?.max_value)}`,
                               }
-                              } onAfterChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
+                              } onAfterChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length?Object.values(priceFilter)[1]:Number(filtersGroup[groupid].min_value),Object.values(priceFilter).length?Object.values(priceFilter)[0]: Number(filtersGroup[groupid].max_value)]} />
                             </div>
                           </TabPane>
                         )
@@ -540,7 +539,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                               [Number(filtersGroup[groupid].min_value)]: `${Number(filtersGroup[groupid].min_value)}`,
                               [Number(filtersGroup[groupid].max_value)]: `${Number(filtersGroup[groupid].max_value)}`,
                             }
-                            } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
+                            } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length?Object.values(priceFilter)[1]:Number(filtersGroup[groupid].min_value),Object.values(priceFilter).length?Object.values(priceFilter)[0]: Number(filtersGroup[groupid].max_value)]} />
                           </div>
                         </TabPane>
                       )

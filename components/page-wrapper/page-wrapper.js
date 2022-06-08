@@ -35,13 +35,14 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
+    console.log("from page wraper store",store.info)
 
     // calling wallet api
     useEffect(() => {
         if (user != null) {
-          getWalletBalance({ customerId: user.customer_id, storeId: store.storeId })
+          getWalletBalance({ customerId: user.customer_id, storeId: store?.info?.store_id })
         }
-      }, [user])
+      }, [user,store.info])
 
     useEffect(() => {
         var seassion_id
