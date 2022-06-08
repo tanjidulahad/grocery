@@ -98,7 +98,7 @@ export const initiateOrderPymentStart = (purchaseId) => ({
     payload: purchaseId
 })
 export const initiateOrderPymentSuccess = (data) => ({
-    type: checkoutActionType.INITIATE_PAYMENT_START_START,
+    type: checkoutActionType.INITIATE_PAYMENT_START_SUCCESS,
     payload: data
 })
 // Confirm Order

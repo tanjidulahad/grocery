@@ -24,6 +24,7 @@ import {
 import OrderSummry from '@components/order-summry/order-summry'
 import withAuth from '@components/auth/withAuth'
 import Stepper from '@components/stepper/stepper';
+import { redirect } from '@components/link';
 
 const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
@@ -69,12 +70,15 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [checkoutDetails, setcheckoutDetails] = useState({
         deliveryAddress: purchaseDetails?.deliveryAddressDetails?.address_id || "",
+        deliveryMethod: purchaseDetails?.isDelivery || ""
+
     })
     const [navbarHeight, setNavbarHeight] = useState(166)
-
     const [newAddress, setNewAddress] = useState(addressStructure)
     const [isAddressActive, setIsAddressActive] = useState(false);
-
+    if (!purchaseDetails) {
+        redirect('/cart')
+    }
     const onChangeHandler = (e) => {
         const { name, value } = e.target
         setcheckoutDetails({
@@ -88,14 +92,25 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
             })
         }
     }
+    const onChangeMethodHandler = (e) => {
+        const { name, value } = e.target
+        setcheckoutDetails({
+            ...checkoutDetails,
+            [name]: value,
+        })
+        if (checkout.purchase) {
+            setShipmentMethod({ purchaseId: checkout.purchase?.purchase_id, flag: value });
+
+        }
+    }
     // Componentdidmount effects
     useEffect(() => {
         if (user) {
             getAddress({ userId: user.customer_id })
         }
-        if (checkout.purchase) {
-            setShipmentMethod({ purchaseId: checkout.purchase?.purchase_id, flag: 'Y' });
-        }
+        // if (checkout.purchase) {
+        //     setShipmentMethod({ purchaseId: checkout.purchase?.purchase_id, flag: 'Y' });
+        // }
     }, [])
 
     const steps = [{ lable: 'Delivery Address' },
@@ -110,92 +125,120 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
         check: { color: '#fff' },
     } : {}
     return (
-        <div className="wrapper bg-[#f2f2f2] w-full ">
+        <div className="wrapper bg-white sm:bg-[#f2f2f2] w-full ">
             <ToastContainer />
             {/* Stepper Header */}
             <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
                 <Stepper steps={steps} activeStep={checkoutDetails.deliveryAddress ? 1 : 0} sx={style} />
             </div>
-            <div className="w-full p-0 sm:py-10 space-y-5 pb-[80px] sm:pb-10 mb-[20px] md:mb-0">
-                <h3 className='text-2xl hidden sm:block font-semibold'>Select a delivery address</h3>
+
+            <div className="w-full p-0 py-2 sm:pt-0 sm:py-10 mt-10 space-y-5 pb-[80px] sm:pb-10 mb-[20px] md:mb-0">
+                <h3 className='text-2xl px-4 sm:px-0 block font-semibold'>Select a delivery Method</h3>
                 <div className='flex flex-col md:flex-row justify-between md:space-x-6'>
-                    <div className=' space-y-5'>
-                        <div className='flex-1 bg-white'>
-                            <div className="grid px-2 grid-cols-1 xl:grid-cols-2 gap-y-4 ">
-                                {userAddress.map((item, i) => (
-                                    <div className="address border sm:border-0 rounded-md flex h-full" key={i + i}>
-                                        <div className="p-6 sm:p-8 flex delivery-inputs spance-x-2 w-full">
-                                            <Radio
-                                                className='mt-1'
-                                                id={`address${i}`}
-                                                name="deliveryAddress"
-                                                checked={
-                                                    checkoutDetails.deliveryAddress ==
-                                                    item.address_id
-                                                }
-                                                value={item.address_id}
-                                                onChange={onChangeHandler}
-                                            />
-                                            <div className="flex">
-                                                <div className="ml-2 w-full">
-                                                    <label htmlFor={`address${i}`}>
-                                                        <h3 className="text-base font-semibold">
-                                                            {item.full_name}<span className=' font-normal'>{' '}({item.address_tag})</span>
-
-                                                        </h3>
-                                                        <div className="my-3 block">
-                                                            <span className="home">
-                                                                {item?.address_line_1},{' '}
-                                                                {item?.address_line_2}
-                                                            </span>
-                                                            <span className="state-pin">
-                                                                {item?.city}, {item?.state}{' '}
-                                                                {item?.zip_code},{' '}
-                                                            </span>
-                                                            <span className="country">
-                                                                {item?.country},{' '}
-                                                            </span>
-                                                            <span className="country font-w-bold">
-                                                                +91 {item?.phone}
-                                                            </span>
-                                                        </div>
-
-                                                    </label>
-                                                    <Button type='link' href='#address-form' className=" btn-color-revers my-2" onClick={() => { setNewAddress(item); setIsAddressActive(true) }}>
-                                                        Edit
-                                                    </Button>
-                                                    {
-                                                        // checkoutDetails.deliveryAddress !=
-                                                        // item.address_id && (
-                                                        //     <label
-                                                        //         className=" hidden sm:block my-2 btn-bg btn-color py-3.5  px-8 rounded max-w-fit"
-                                                        //         htmlFor={`address${i}`}
-                                                        //     >
-                                                        //         Deliver Here
-                                                        //     </label>
-                                                        // )
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                    <div className=' space-y-5 w-full'>
+                        <div className='sm:space-y-5 w-full divide-y-2 sm:divide-y-0 border-y-2 sm:border-y-0'>
+                            {
+                                storeSettings.is_delivery_available == 'Y' &&
+                                <div className=" bg-white">
+                                    <label className={`py-8 px-4 sm:px-8 flex justify-between items-center delivery-inputs border-color border-gray-400 ${checkoutDetails.deliveryMethod == 'Y' ? 'border-solid border-static' : ''} sm:border-2 rounded block w-full`} htmlFor="delivery">
+                                        <span className="font-semibold text-base">Delivery</span>
+                                        <Radio id='delivery' name='deliveryMethod' value={'Y'} onChange={onChangeMethodHandler} checked={checkoutDetails.deliveryMethod == 'Y'} />
+                                    </label>
+                                </div>
+                            }
+                            {
+                                storeSettings.is_parcel_available == 'Y' &&
+                                <div className="bg-white">
+                                    <label className={`py-8 px-4 sm:px-8 flex justify-between items-center delivery-inputs border-color border-gray-400 ${checkoutDetails.deliveryMethod == 'N' ? 'border-solid border-static' : ''} sm:border-2 rounded block w-full`} htmlFor="pickup">
+                                        <span className="font-semibold text-base">Self Pick Up</span>
+                                        <Radio id='pickup' name='deliveryMethod' value={'N'} onChange={onChangeMethodHandler} checked={checkoutDetails.deliveryMethod == 'N'} />
+                                    </label>
+                                </div>
+                            }
                         </div>
                         {
-                            !isAddressActive ?
-                                <div className='flex-1 p-6 sm:p-8  bg-white'>
-                                    <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => setIsAddressActive(true)}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg> Add new Address
-                                    </Button>
+                            checkoutDetails.deliveryMethod == 'Y' &&
+                            <>
+                                <h3 className='text-2xl px-4 sm:px-0 block font-semibold'>Select a delivery address</h3>
+                                <div className='flex-1 bg-white'>
+                                    <div className="grid px-2 grid-cols-1 xl:grid-cols-2 gap-y-4 ">
+                                        {userAddress.map((item, i) => (
+                                            <div className="address border sm:border-0 rounded-md flex h-full" key={i + i}>
+                                                <div className="px-4 sm:px-6 py-6 sm:py-8 flex delivery-inputs spance-x-2 w-full">
+                                                    <Radio
+                                                        className='mt-1'
+                                                        id={`address${i}`}
+                                                        name="deliveryAddress"
+                                                        checked={
+                                                            checkoutDetails.deliveryAddress ==
+                                                            item.address_id
+                                                        }
+                                                        value={item.address_id}
+                                                        onChange={onChangeHandler}
+                                                    />
+                                                    <div className="flex">
+                                                        <div className="ml-2 w-full">
+                                                            <label htmlFor={`address${i}`}>
+                                                                <h3 className="text-base font-semibold">
+                                                                    {item.full_name}<span className=' font-normal'>{' '}({item.address_tag})</span>
+
+                                                                </h3>
+                                                                <div className="my-3 block">
+                                                                    <span className="home">
+                                                                        {item?.address_line_1},{' '}
+                                                                        {item?.address_line_2}
+                                                                    </span>
+                                                                    <span className="state-pin">
+                                                                        {item?.city}, {item?.state}{' '}
+                                                                        {item?.zip_code},{' '}
+                                                                    </span>
+                                                                    <span className="country">
+                                                                        {item?.country},{' '}
+                                                                    </span>
+                                                                    <span className="country font-w-bold">
+                                                                        +91 {item?.phone}
+                                                                    </span>
+                                                                </div>
+
+                                                            </label>
+                                                            <Button type='link' href='#address-form' className=" btn-color-revers my-2" onClick={() => { setNewAddress(item); setIsAddressActive(true) }}>
+                                                                Edit
+                                                            </Button>
+                                                            {
+                                                                // checkoutDetails.deliveryAddress !=
+                                                                // item.address_id && (
+                                                                //     <label
+                                                                //         className=" hidden sm:block my-2 btn-bg btn-color py-3.5  px-8 rounded max-w-fit"
+                                                                //         htmlFor={`address${i}`}
+                                                                //     >
+                                                                //         Deliver Here
+                                                                //     </label>
+                                                                // )
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                :
-                                <div className='flex-1 p-6 sm:p-8 bg-white' id={'address-form'}>
-                                    <AddressForm edit={newAddress} close={() => setIsAddressActive(false)} />
-                                </div>
+                                {
+                                    !isAddressActive ?
+                                        <div className='flex-1 px-4 sm:px-8 py-6 sm:py-8  bg-white'>
+                                            <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => setIsAddressActive(true)}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg> Add new Address
+                                            </Button>
+                                        </div>
+                                        :
+                                        <div className='flex-1 p-6 sm:p-8 bg-white' id={'address-form'}>
+                                            <AddressForm edit={newAddress} close={() => setIsAddressActive(false)} />
+                                        </div>
+                                }
+                            </>
                         }
+
                     </div>
                     {/* Billing Details >> */}
                     <div className=' shrink-0 w-full md:w-5/12 xl:w-4/12'>
@@ -212,15 +255,20 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                     ).toFixed(2)}
                                 </span>
                             </div>
-                            <Button type='link' disabled={isDetailsLoading || !checkoutDetails.deliveryAddress} href='/cart/payment' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
+                            <Button type='link' disabled={
+                                !(checkoutDetails.deliveryMethod == 'Y' && checkoutDetails.deliveryAddress || checkoutDetails.deliveryMethod == 'N') || isDetailsLoading
+                            } href='/cart/payment' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
                         </div>
                     </div>
                     {/* << Billing details */}
                 </div>
-                <Button type='link' href='/cart' className="block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z" />
-                    </svg>Back</Button>
+                <div className='px-4 sm:px-0'>
+                    <Button type='link' href='/cart' className="block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z" />
+                        </svg>Back</Button>
+
+                </div>
             </div>
         </div>
     )
@@ -232,6 +280,7 @@ const mapStateToProps = (state) => ({
     storeSettings: state.store.settings,
     user: state.user.currentUser,
     userAddress: state.user.address,
+    isDetailsLoading: state.ui.isDetailsLoading,
     checkout: state.checkout,
     display: state.store.displaySettings
 })

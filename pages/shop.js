@@ -39,6 +39,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   const Router = useRouter();
   const { category, subCategoryId, search } = Router.query;
   const [status, setStatus] = useState('loading') //status == loading || failed || success
+  const [title, setTitle] = useState("All Items")
   // const [q, setq] = useState(search ? search : '');
   // UI Vars
   const [page, setPage] = useState(1)
@@ -72,34 +73,14 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     },
   };
 
-  console.log("router", Router)
-
-  useEffect(() => { // Componentdidmount
-    if (!categories.length) getCategoryStart(storeId);
-    // setSearchHandler((e) => {
-    //   const value = e;
-    //   if (value.trim().length > 0) {
-    //     setStatus('loading')
-    //     redirect(`/?search=${value}`)
-    //   } else {
-    //     setSearchResult([])
-    //     redirect(`/`)
-    //   }
-
-    //   setq(value)
-    // })
-  }, [])
   const observer = useRef()
   const listLastElement = useCallback(node => {
-    console.log("observer", observer);
+    // console.log("observer", observer);
     if (status == 'loading') return;
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && pageCount && products?.length >= 20) {
-        // console.log("visible");
-        // console.log(page + 1);
-        // // console.log(Router);
-        // console.log(status);
+
         if (page < pageCount && !search) {
           setPage(page + 1)
         }
@@ -108,9 +89,11 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     if (node) observer.current.observe(node)
   }, [status, pageCount, filterPayLoad, priceFilter])
 
+  useEffect(() => { // Componentdidmount
+    if (!categories.length) getCategoryStart(storeId);
+  }, [])
 
   useEffect(() => {
-
     if (!page) return;
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
@@ -130,7 +113,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }, [Router.query, page])
 
   useEffect(() => {
-
     if (search) {
       setStatus('loading')
       getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus })
@@ -144,9 +126,22 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     } else {
       getShopProducts({ storeId, setStatus, user })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      // setq('') // Cleaning query string of search
       getFilterGroups({ storeId, setFiltersGroup })
     }
+
+    let tittleName = "All Items"
+    if (category || subCategoryId || search) {
+      const cat = categories.find(item => item.category_id == category)
+      if (cat) {
+        tittleName = cat.category_name
+
+        const subcat = cat.subCategories.find(subItem => subItem.sub_category_id == subCategoryId)
+        if (subcat) {
+          tittleName = subcat.sub_category_name
+        }
+      }
+    }
+    setTitle(search || tittleName)
   }, [category, subCategoryId, search])
 
   useEffect(() => { // UI function
@@ -186,8 +181,8 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     const dsc = products.reduce((dsc, item) => dsc + ", " + item.item_name + ', ' + item.item_desc, "")
     setDescription(dsc)
   }, [products])
-  useEffect(() => {
 
+  useEffect(() => {
     if (category) {
       getPageCount({ storeId, categoryId: category })
     } else {
@@ -200,8 +195,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   const openMobileSort = () => {
     setMobileSortOpen(!mobileSortOpen)
   }
-
-  // console.log("filters group", filtersGroup)
 
   const handleFilter = (groupid, value, e) => {
     var newFilterArray = []
@@ -225,7 +218,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
       newFilterArray = [...filterArray, { [groupid]: value }]
       setFilterArray(newFilterArray)
     }
-
   }
 
   const filtergroupBy = (arr, key) => {
@@ -260,10 +252,9 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }
 
   useEffect(() => {
-
     if (Object.keys(filterAndSortPayload).length != 0) {
       if (category) {
-        getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus,filterAndSortPayload ,sortOrder,user})
+        getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus, filterAndSortPayload, sortOrder, user })
       }
       else {
         getShopProducts({ storeId, filterAndSortPayload, sortOrder, user, setStatus })
@@ -276,7 +267,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     setFilterAndSortPayload({})
   }
 
-  console.log(status)
   return (
     < >
       <Head>
@@ -292,7 +282,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
           <div className=" wrapper w-full ">
             <div className="md:mr-16">
               <div className="flex justify-between my-2 bg-white p-2 py-4 md:py-0 md:p-0 md:my-4">
-                <p className="flex items-center font-bold md:ml-3 ">All Items</p>
+                <p className="flex items-center font-bold md:ml-3 ">{title || 'All Items'}</p>
                 {
                   isTabletOrMobile ? <div className="flex font-bold cursor-pointer" onClick={openMobileSort}>
                     <BsFilterLeft size={20} className='' />

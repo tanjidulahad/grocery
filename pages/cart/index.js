@@ -86,7 +86,11 @@ const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, 
                     <div className='flex justify-center items-center' style={{ minHeight: '85vh' }}>
                         <div className='w-64 h-64'>
                             <img src="/img/empty.png" alt="..." />
-                            <h4 class="my-4">Your Cart is Empty,<span class="btn-color-revers my-6"><a href="/shop"> Shop now!</a></span></h4>
+                            <h4 class="my-4">Your Cart is Empty,<span class="btn-color-revers my-6">
+                                <Link href="/shop">
+                                    <a > Shop now!</a>
+                                </Link>
+                            </span></h4>
                         </div>
                     </div>
             }

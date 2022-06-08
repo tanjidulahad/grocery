@@ -424,20 +424,20 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
             {/* Social links */}
             {
               socialProfile.length ?
-                  <div className='flex space-x-2 ml-4'>
-                    {
-                      socialProfile.map(function (item, idx) {
-                        if (item.social_account_link) {
-                          return <SocialIcon style={{width:"30px",height:'30px',maxHeight:'30px',borderRadius:'50%'}} bgColor="#fff" fgColor="#000" url={(item.social_account_link.indexOf('http://')==0 || item.social_account_link.indexOf('https://')==0)? `${item.social_account_link}`: `https://${item.social_account_link}`} onClick={() => window.location.href = (item.social_account_link.indexOf('http://')==0 || item.social_account_link.indexOf('https://')==0)? `${item.social_account_link}`: `https://${item.social_account_link}`} key={idx}/>
-                        }
-                      })
-                    }
-              </div>
+                <div className='flex space-x-2 ml-4'>
+                  {
+                    socialProfile.map(function (item, idx) {
+                      if (item.social_account_link) {
+                        return <SocialIcon style={{ width: "30px", height: '30px', maxHeight: '30px', borderRadius: '50%' }} bgColor="#fff" fgColor="#000" url={(item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`} onClick={() => window.location.href = (item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`} key={idx} />
+                      }
+                    })
+                  }
+                </div>
                 : ""
             }
             <div className='flex flex-col justify-center items-center mt-4'>
               <h3 className='text-white text-[12px] font-semibold my-2'>This online  Store Created using</h3>
-              <img onClick={()=>window.location.href="https://www.goplinto.com/"} className='w-[124px]' src="/img/logo.png" alt="" />
+              <img onClick={() => window.location.href = "https://www.goplinto.com/"} className='w-[124px]' src="/img/logo.png" alt="" />
             </div>
           </div>
 
@@ -495,19 +495,24 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                 <div className=" relative inset-0 overflow-auto w-full h-full ">
                   <div className="grid grid-cols-12 w-full relative">
                     <div className=" col-span-12 px-3 py-2.5 border-b-2 flex justify-between items-center sticky top-0 z-10 bg-white">
-                      <h2 className=" font-semibold text-base text-black">Shop by Category</h2>
+                      <h2 className=" font-semibold text-base text-black">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                        Shop by Category
+                      </h2>
                       <span className=" cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                           <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
                       </span>
                     </div>
-                    <div className=" col-span-6 w-full text-black border-r border-gray-200">
+                    <div className=" col-span-7 w-full text-black border-r bg-[#F5F5F5] border-gray-200">
                       <ul className=" ">
-                        <li className={`${!category && 'bg-white font-semibold'} px-3 py-2`}>
+                        <li className={`${!category && 'bg-white btn-color-revers font-semibold'} px-3 py-2`}>
                           <Link href={`/shop`}>
                             <a >
-                              <div className="d-flex font-medium justify-content-between flex items-center justify-between space-y-2">
+                              <div className="d-flex justify-content-between flex items-center justify-between space-y-2">
                                 <span className=" ">All Products </span>
                                 <span className={`font-16 font-w-400 dark-blue-50 w-3 shrink-0 h-fit transition-all ${!category ? "" : 'rotate-90'}`}><svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -518,10 +523,10 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                         </li>
                         {
                           lists.map((item) => (
-                            <li key={item.category_id} className={`lists category-item px-3 py-2 ${category == item.category_id && ' btn-color-revers font-semibold'}`} >
+                            <li key={item.category_id} className={`lists category-item px-3 py-2 ${category == item.category_id && ' btn-color-revers bg-white font-semibold'}`} >
                               <Link href={`/shop?category=${item.category_id}`}>
                                 <a>
-                                  <div className="d-flex font-medium justify-content-between flex items-center justify-between space-y-2">
+                                  <div className="d-flex justify-content-between flex items-center justify-between space-y-2">
                                     <span className="">{item.category_name}</span>
                                     <span className={`font-16 font-w-400 dark-blue-50 w-3 shrink-0 h-fit transition-all ${category == item.category_id ? "" : 'rotate-90'}`}>
                                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -539,16 +544,16 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
 
                   </div>
                 </div>
-                <div className="absolute top-[46px] h-full text-black right-0 w-6/12 overflow-y-auto no-scrollbar ">
+                <div className="absolute top-[46px] h-full text-black right-0 w-5/12 overflow-y-auto no-scrollbar ">
                   <ul className="top-0">
                     {
                       !!category &&
                       lists.find((listItem) => listItem.category_id == category)?.subCategories.map((subitem, i) => (
-                        <li className="px-3 py-2" key={i}>
+                        <li className="px-3 py-2" key={i} onClick={() => setIsCategoryOpen(false)}>
                           <Link href={`/shop?category=${category}&subCategoryId=${subitem.sub_category_id}`}>
                             <a>
                               <div className="d-flex justify-content-between">
-                                <span className={`text-xs font-w-400  ${subCategoryId == subitem.sub_category_id ? "btn-color-revers" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
+                                <span className={`text-xs font-w-400  ${subCategoryId == subitem.sub_category_id ? "btn-color-revers font-semibold" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
                               </div>
                             </a>
                           </Link>

@@ -73,6 +73,7 @@ function* onSetDeliveryAddressToPurchese() {
             const res = yield fetcher('GET', `?r=orders/set-delivery-address-id&purchaseId=${purchaseId}&deliveryAddressId=${addressId}`)
             if (res.data) {
                 yield put(setDeliveryAddressSuccess(res.data))
+                yield put(getPurchageStart(purchaseId))
             }
         } catch (error) {
             if (error.message == 'Network Error') {
@@ -113,6 +114,7 @@ function* onPaymentMethodToPurchese() {
             const res = yield fetcher('GET', `?r=orders/set-convenience-flag&purchaseId=${purchaseId}&flagStatus=${flag}`)
             if (res.data) {
                 yield put(setPaymentMethodSuccess(res.data))
+                yield put(getPurchageStart(purchaseId))
             }
         } catch (error) {
             if (error.message == 'Network Error') {
@@ -137,7 +139,9 @@ function* onInitiatePayment() {
             if (res.data) {
                 // const amount = res.data.calculatedPurchaseTotal
                 setInitiateData(res.data)
-                setInitiateStatus('success')
+                if (setInitiateStatus) {
+                    setInitiateStatus('success')
+                }
                 // if (method == 'COD') { // COD or Pay On Delivery
                 //     yield put(orderPaymentConfirmStart({ amount, purchaseId, method, customerId }))
                 // }
