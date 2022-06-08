@@ -11,7 +11,7 @@ function hexToRGB(hex, alpha) {
 }
 
 
-const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openReturn, details }) => {
+const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openReturn, details, isCanceled }) => {
     const style = {
         labelClass: '',
         compoleted: {
@@ -44,9 +44,15 @@ const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openRe
                                             }} >
                                                 {
                                                     activeStep >= i + 1 &&
-                                                    <svg xmlns="http://www.w3.org/2000/svg" style={{ color: style.check.color }} className="h-5 w-5 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                                    </svg>
+                                                        item?.icon ?
+                                                        <svg xmlns="http://www.w3.org/2000/svg" style={{ color: style.check.color }} className="h-5 w-5 p-1" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                        </svg>
+                                                        :
+                                                        <svg xmlns="http://www.w3.org/2000/svg" style={{ color: style.check.color }} className="h-5 w-5 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                                        </svg>
+
                                                 }
                                             </div>
                                             :
@@ -86,8 +92,8 @@ const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openRe
                 <div className="mt-4 w-full border-t-2 border-[#00000] h-full">
                     <div className=" px-4 my-4  w-full flex justify-end  items-center  ">
                         {
-                            details.orderStatus !== "CANCELLED_BY_CUSTOMER" ?
-                                <p className='btn-color-revers cursor-pointer mr-14 font-bold' onClick={() => openReturn(true)}>Cancel</p>
+                            !isCanceled ?
+                                <p className='btn-color-revers cursor-pointer mr-14 font-bold' onClick={openReturn}>Cancel</p>
                                 :
                                 <p className='btn-color-revers cursor-pointer mr-14 font-bold'  >Order Cancelled</p>
                         }

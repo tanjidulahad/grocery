@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useRouter } from 'next/router'
 import moment from 'moment';
 
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Ordertracker from '@components/Cards/orderDetail/orderTracker/ordertracker.jsx'
@@ -22,7 +22,7 @@ import withAuth from '@components/auth/withAuth';
 import Stepper from '@components/stepper/stepper';
 
 
-function orderDetail({ getOrderDetails, display }) {
+function orderDetail({ getOrderDetails, display,info }) {
   const [isReturnActive, setIsReturnActive] = useState(false)
   const [orderDetails, setOrderDetails] = useState(null) // {}
   const [error, setError] = useState(null)
@@ -54,13 +54,26 @@ function orderDetail({ getOrderDetails, display }) {
       lable: 'Order Confirmed',
     },
     {
-      lable: 'Ready for Pickup',
+      lable: 'Order Shipped',
     },
     {
       lable: 'Order Delivered Successfully',
     }
 
   ];
+
+  const cancledStep = [
+    {
+      lable: 'Order is Placed',
+      dsc: moment.unix(orderDetails?.orderPlacedTime).format('LLL')
+    },
+    {
+      lable: 'Order Canceled',
+      icon: true
+    }
+
+  ]
+
   useEffect(() => {
     if (orderDetails?.orderStatus) {
       if (orderDetails?.orderStatus == "PAYMENT_COMPLETED") {
@@ -75,9 +88,9 @@ function orderDetail({ getOrderDetails, display }) {
       else if (orderDetails?.orderStatus == "ORDER_DELIVERED_SUCCESS") {
         setOrderStatus(3)
       }
-      else if (orderDetails?.orderStatus == "ORDER_DECLINED_BY_RESTAURANT" || orderDetails?.orderStatus == "CANCELLED_BY_CUSTOMER" || orderDetails?.orderStatus =="ORDER_CANCELLED_BY_REST") {
+      else if (orderDetails?.orderStatus == "ORDER_DECLINED_BY_RESTAURANT" || orderDetails?.orderStatus == "CANCELLED_BY_CUSTOMER" || orderDetails?.orderStatus == "ORDER_CANCELLED_BY_REST") {
         setIsCanceled(true)
-        setOrderStatus(2)
+        setOrderStatus(1)
       }
     }
   }, [orderDetails])
@@ -95,6 +108,17 @@ function orderDetail({ getOrderDetails, display }) {
       color: '#fff'
     },
   } : {}
+
+  const handleCancel = () => {
+    if (orderDetails?.orderStatus == "ORDER_CONFIRMED_BY_REST" || orderDetails?.orderStatus == "PENDING_PICKUP_BY_CUST" || orderDetails?.orderStatus == "ORDER_DELIVERED_SUCCESS") {
+      toast.error(`Order can’t be canceled after confirmation, please reach out to ${"+"+info?.primary_phone}`, {
+        autoClose: 2000
+      })
+    }
+    else{
+      setIsReturnActive(true)
+    }
+  }
 
   return (
     <>
@@ -123,7 +147,7 @@ function orderDetail({ getOrderDetails, display }) {
                       <List orderId={orderDetails.orderId} storeName={orderDetails.storeName} createTime={orderDetails.createTime} list={Object.values(orderDetails.orderItems)} />
                       {/* <Ordertracker data={{ orderId: orderDetails.orderId }} details={orderDetails} openReturn={setIsReturnActive} /> */}
                       <div className='py-8 ml-8 lg:ml-14'>
-                        <Stepper vertical={true} steps={steps} activeStep={orderStatus + 1} sx={style} openReturn={setIsReturnActive} details={orderDetails} />
+                        <Stepper vertical={true} steps={isCanceled ? cancledStep : steps} activeStep={orderStatus + 1} sx={style} openReturn={handleCancel} details={orderDetails} isCanceled={isCanceled} />
                       </div>
                     </div>
                     {
@@ -234,7 +258,8 @@ function orderDetail({ getOrderDetails, display }) {
 }
 
 const mapStateToProps = state => ({
-  display: state.store.displaySettings
+  display: state.store.displaySettings,
+  info: state.store.info,
 })
 
 const mapDispatchToProps = dispatch => ({

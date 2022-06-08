@@ -8,6 +8,7 @@ import {
     orderPaymentConfirmStart, orderPaymentConfirmSuccess, orderPaymentConfirmError, getPurchageSuccess, getPurchageStart,
     createNewRzpOrderSuccess, getPurchaseFailure,
     clearCheckout,
+    applyCouponCodeSuccess,
 } from './checkout-action'
 import { clearCart, updateCartSuccess } from "../cart/cart-actions";
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
@@ -73,6 +74,7 @@ function* onSetDeliveryAddressToPurchese() {
             const res = yield fetcher('GET', `?r=orders/set-delivery-address-id&purchaseId=${purchaseId}&deliveryAddressId=${addressId}`)
             if (res.data) {
                 yield put(setDeliveryAddressSuccess(res.data))
+                yield put(getPurchageStart(purchaseId))
             }
         } catch (error) {
             if (error.message == 'Network Error') {
@@ -113,6 +115,7 @@ function* onPaymentMethodToPurchese() {
             const res = yield fetcher('GET', `?r=orders/set-convenience-flag&purchaseId=${purchaseId}&flagStatus=${flag}`)
             if (res.data) {
                 yield put(setPaymentMethodSuccess(res.data))
+                yield put(getPurchageStart(purchaseId))
             }
         } catch (error) {
             if (error.message == 'Network Error') {
@@ -137,7 +140,9 @@ function* onInitiatePayment() {
             if (res.data) {
                 // const amount = res.data.calculatedPurchaseTotal
                 setInitiateData(res.data)
-                setInitiateStatus('success')
+                if (setInitiateStatus) {
+                    setInitiateStatus('success')
+                }
                 // if (method == 'COD') { // COD or Pay On Delivery
                 //     yield put(orderPaymentConfirmStart({ amount, purchaseId, method, customerId }))
                 // }
@@ -281,10 +286,12 @@ function* onCouponCodeApplyStart() {
         try {
             const res = yield fetcher('GET', `/?r=orders/validate-coupon&storeId=${storeId}&couponCode=${couponCode}&orderId=${orderId}&customerId=${userId}`)
             if (typeof res.data == 'object' && res.data?.status == "INVALID_COUPON_CODE") {
-                onError('Invalid coupon code!')
+                yield put(applyCouponCodeSuccess('Invalid coupon code!'))
+                // onError('Invalid coupon code!')
             } else if (res.data) {
                 yield put(getPurchageStart(purchaseId))
-                onSuccess('Apllied Successfully!.')
+                yield put(applyCouponCodeSuccess(`${couponCode} Apllied Successfully!.`))
+                // onSuccess('Apllied Successfully!.')
             } else {
                 onError('Operation Failed!.')
             }

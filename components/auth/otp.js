@@ -6,7 +6,7 @@ import OtpInput from 'react-otp-input';
 import { otpVerificationStart, authShowToggle, forgotPasswordOtpVerifyStart } from '@redux/user/user-action';
 import { set } from 'nprogress';
 
-const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, userId, info, forgotPass, forgotPasswordOtpVerify }) => {
+const Otp = ({ showToggle, username, resend, setPage, otpVerify, verificationType, onSuccess, userId, info, forgotPass, forgotPasswordOtpVerify }) => {
     const [otp, setOtp] = useState("");
     const [error, setError] = useState("") // ""
     const [status, setStatus] = useState("")
@@ -38,7 +38,7 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, onSuccess, user
                 setError,
                 setStatus,
                 setUser,
-                mode: username.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ? 'email' : 'phone',
+                mode: verificationType,
             })
         }
 

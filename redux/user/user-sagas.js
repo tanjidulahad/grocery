@@ -92,9 +92,15 @@ function* onGetRegisterOtpStart() {
 
 function* onOtpVerificationStart() {
     yield takeLatest(userActionType.OTP_VERIFICATION_START, function* ({ payload }) {
-        const { userId, storeId, otp, setError, setStatus, setUser } = payload;
+        const { userId, storeId, otp, setError, setStatus, setUser, mode } = payload;
         try {
-            const res = yield nodefetcher('GET', `/customer/email-login-validate-otp?customerId=${userId}&otp=${otp}&storeId=${storeId}`)
+            // const res = yield nodefetcher('GET', `/customer/email-login-validate-otp?customerId=${userId}&otp=${otp}&storeId=${storeId}`)
+            const res = yield nodefetcher('POST', `/customer/verify-account`, {
+                customerId: userId,
+                storeId,
+                otpCode: otp,
+                verificationType: mode
+            })
             if (res.data.status == 'success') {
                 // setUser(res.data.customerDetails)
                 yield put(loginSuccess(res.data.customerDetails))
@@ -133,11 +139,15 @@ function* onRegisterWithPassword() {
 
 function* onLoginWithPasswordStart() {
     yield takeLatest(userActionType.LOGIN_WITH_PASSWORD_START, function* ({ payload }) {
-        const { state, setStatus, setError } = payload;
+        const { state, setStatus, setError, setUser } = payload;
         try {
             const { data } = yield nodefetcher('POST', `/customer/login`, state)
             if (data.status == 'success') {
-                yield put(loginSuccess(data.customerDetails))
+                if (data.customerDetails.is_account_verified == 'N') {
+                    return setUser(data.customerDetails.customer_id)
+                } else {
+                    yield put(loginSuccess(data.customerDetails))
+                }
                 setStatus('success')
             }
             else {
@@ -278,7 +288,7 @@ function* onAddAddressStart() {
         try {
             const res = yield fetcher('POST', `?r=customer/add-address&customerId=${userId}`, { customerAddressDetails: address })
             if (res.data) {
-                toast.success("Saved Successfully",{
+                toast.success("Saved Successfully", {
                     autoClose: 2000
                 })
                 yield put(getAddressStart({ userId, setError }))
@@ -303,7 +313,7 @@ function* onUpdateAddressStart() {
             const res = yield fetcher('POST', `?r=customer/update-address&addressId=${addressId}&customerId=${userId}`, { customerAddressDetails: address })
             console.log(res);
             if (res.data) {
-                toast.success("Updated Successfully",{
+                toast.success("Updated Successfully", {
                     autoClose: 2000
                 })
                 yield put(getAddressStart({ userId, setError }))
@@ -326,7 +336,7 @@ function* onRemoveAddressStart() {
         try {
             const res = yield fetcher('GET', `?r=customer/remove-address&customerId=${userId}&addressId=${addressId}`)
             if (res.data) {
-                toast.success("Removed Successfully",{
+                toast.success("Removed Successfully", {
                     autoClose: 2000
                 })
                 yield put(getAddressStart({ userId, setError }))
@@ -347,14 +357,14 @@ function* onRemoveAddressStart() {
 
 function* onUpdateUserDetailsStart() {
     yield takeLatest(userActionType.UPDATE_USER_DETAILS, function* ({ payload }) {
-        const {customerId} = payload;
+        const { customerId } = payload;
         try {
             const res = yield fetcher('POST', `?r=customer/update-login-details&customerId=${customerId}`, payload)
             if (res.data) {
-                toast.success("Updated Successfully",{
+                toast.success("Updated Successfully", {
                     autoClose: 2000
                 })
-                
+
                 yield put(updateCurrentUserDetails(res.data))
             }
         } catch (error) {
@@ -371,11 +381,11 @@ function* onUpdateUserDetailsStart() {
 
 function* onGetCustomerWallet() {
     yield takeLatest(userActionType.GET_WALLET_BALANCE, function* ({ payload }) {
-        
-        const {customerId,storeId} = payload;
+
+        const { customerId, storeId } = payload;
         try {
             const res = yield fetcher('GET', `?r=customer/get-customer-wallet-details&customerId=${customerId}&storeId=${storeId}`)
-            if (res.data) {                
+            if (res.data) {
                 yield put(setWalletBalance(res.data))
             }
         } catch (error) {

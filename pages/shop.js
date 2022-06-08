@@ -39,6 +39,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   const Router = useRouter();
   const { category, subCategoryId, search } = Router.query;
   const [status, setStatus] = useState('loading') //status == loading || failed || success
+  const [title, setTitle] = useState("All Items")
   // const [q, setq] = useState(search ? search : '');
   // UI Vars
   const [page, setPage] = useState(1)
@@ -72,47 +73,31 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     },
   };
 
-
-  useEffect(() => { // Componentdidmount
-    if (!categories.length) getCategoryStart(storeId);
-    // setSearchHandler((e) => {
-    //   const value = e;
-    //   if (value.trim().length > 0) {
-    //     setStatus('loading')
-    //     redirect(`/?search=${value}`)
-    //   } else {
-    //     setSearchResult([])
-    //     redirect(`/`)
-    //   }
-
-    //   setq(value)
-    // })
-  }, [])
   const observer = useRef()
   const listLastElement = useCallback(node => {
-    console.log("observer",observer);
+    // console.log("observer", observer);
     if (status == 'loading') return;
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && pageCount && products?.length >= 20) {
-        // console.log("visible");
-        // console.log(page + 1);
-        // // console.log(Router);
-        // console.log(status);
-        if (page < pageCount &&!search) {
+
+        if (page < pageCount && !search) {
           setPage(page + 1)
         }
       }
     })
     if (node) observer.current.observe(node)
-  }, [status, pageCount,filterPayLoad,priceFilter])
+  }, [status, pageCount, filterPayLoad, priceFilter])
 
+  useEffect(() => { // Componentdidmount
+    if (!categories.length) getCategoryStart(storeId);
+  }, [])
 
   useEffect(() => {
     if (!page) return;
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus,page })
+      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus, page })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
@@ -130,7 +115,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   useEffect(() => {
     if (search) {
       setStatus('loading')
-      getSearchProducts({ storeId, q: search, setSearchResult,page:1, setStatus })
+      getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
@@ -141,9 +126,22 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     } else {
       getShopProducts({ storeId, setStatus, user })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      // setq('') // Cleaning query string of search
       getFilterGroups({ storeId, setFiltersGroup })
     }
+
+    let tittleName = "All Items"
+    if (category || subCategoryId || search) {
+      const cat = categories.find(item => item.category_id == category)
+      if (cat) {
+        tittleName = cat.category_name
+
+        const subcat = cat.subCategories.find(subItem => subItem.sub_category_id == subCategoryId)
+        if (subcat) {
+          tittleName = subcat.sub_category_name
+        }
+      }
+    }
+    setTitle(search || tittleName)
   }, [category, subCategoryId, search])
 
   useEffect(() => { // UI function
@@ -183,8 +181,8 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     const dsc = products.reduce((dsc, item) => dsc + ", " + item.item_name + ', ' + item.item_desc, "")
     setDescription(dsc)
   }, [products])
-  useEffect(() => {
 
+  useEffect(() => {
     if (category) {
       getPageCount({ storeId, categoryId: category })
     } else {
@@ -197,8 +195,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   const openMobileSort = () => {
     setMobileSortOpen(!mobileSortOpen)
   }
-
-  // console.log("filters group", filtersGroup)
 
   const handleFilter = (groupid, value, e) => {
     var newFilterArray = []
@@ -222,7 +218,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
       newFilterArray = [...filterArray, { [groupid]: value }]
       setFilterArray(newFilterArray)
     }
-
   }
 
   const filtergroupBy = (arr, key) => {
@@ -247,7 +242,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }
 
   const handleFilterAndSort = () => {
-    console.log(priceFilter)
     // let finalPayloadForSortAndFilter = { ...filterPayLoad, ...priceFilter }
     // console.log("finalpayloadforsortand filter",finalPayloadForSortAndFilter)
     setFilterAndSortPayload({ filter_groups: filterPayLoad, priceRange: priceFilter })
@@ -257,7 +251,14 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }
 
   useEffect(() => {
-    getShopProducts({ storeId, filterAndSortPayload, sortOrder, user, setStatus })
+    if (Object.keys(filterAndSortPayload).length != 0) {
+      if (category) {
+        getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus, filterAndSortPayload, sortOrder, user })
+      }
+      else {
+        getShopProducts({ storeId, filterAndSortPayload, sortOrder, user, setStatus })
+      }
+    }
   }, [filterAndSortPayload])
 
   const handleShowAllProduct = () => {
@@ -265,8 +266,6 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     setFilterAndSortPayload({})
   }
 
-  console.log("all products", products)
-  console.log(status)
   return (
     < >
       <Head>
@@ -282,7 +281,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
           <div className=" wrapper w-full ">
             <div className="md:mr-16">
               <div className="flex justify-between my-2 bg-white p-2 py-4 md:py-0 md:p-0 md:my-4">
-                <p className="flex items-center font-bold md:ml-3 ">All Items</p>
+                <p className="flex items-center font-bold md:ml-3 ">{title || 'All Items'}</p>
                 {
                   isTabletOrMobile ? <div className="flex font-bold cursor-pointer" onClick={openMobileSort}>
                     <BsFilterLeft size={20} className='' />
@@ -299,22 +298,22 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                 </div> */}
               </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-2 px-3 md:px-0">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-2 px-3 md:px-0 mb-[60px] md:mb-0">
               {
                 status == 'success' || status == 'loading' ?
 
-                products.length && (status == 'loading' || status == 'success')
-                 ?
-                  <>
-                    {
-
-                      products.map((item, i) => (
-                        <div className='w-full'>
-                          <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
-                        </div>
-                      ))}
+                  products.length && (status == 'loading' || status == 'success')
+                    ?
+                    <>
                       {
-                        status=='loading'&&
+
+                        products.map((item, i) => (
+                          <div className='w-full'>
+                            <ProductItem className={'mx-auto'} key={i} data={item} addItemToWishlist={addWishlist} />
+                          </div>
+                        ))}
+                      {
+                        status == 'loading' &&
                         <>
                           <ProductItem />
                           <ProductItem />
@@ -328,73 +327,73 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                           <ProductItem className={'hidden xl:block'} />
                         </>
                       }
-                    <div className="h-8 " ref={listLastElement}></div>
-                  </>
+                      <div className="h-8 " ref={listLastElement}></div>
+                    </>
 
-                  //  products.length ==0 && status == 'success' ?
-                  //   <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                  //     <h6>
-                  //       <span>No items found{' '}
-                  //         <Link href={`/shop`}>
-                  //           <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                  //             Show All Products.
-                  //           </a>
-                  //         </Link>
-                  //       </span>
-                  //     </h6>
-                  //   </div>
+                    //  products.length ==0 && status == 'success' ?
+                    //   <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                    //     <h6>
+                    //       <span>No items found{' '}
+                    //         <Link href={`/shop`}>
+                    //           <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                    //             Show All Products.
+                    //           </a>
+                    //         </Link>
+                    //       </span>
+                    //     </h6>
+                    //   </div>
 
 
-                  //   : products?.length < 1 && status == 'success' ?
-                  //     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
-                  //       <h6>
-                  //         <span className="">No items found{' '}
-                  //           <Link href={`/shop`}>
-                  //             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                  //               Show All Products.
-                  //             </a>
-                  //           </Link>
-                  //         </span>
-                  //       </h6>
-                  //     </div>
-                  :
-                  <>
-                    {
-                      products.length == 0 && status == 'success' ?
-                      <div className='col-span-full' style={{height:"80vh"}}>
-                        <div className="flex justify-center items-center h-full">
-                          <h6>
-                            <span>No items found
+                    //   : products?.length < 1 && status == 'success' ?
+                    //     <div className="flex justify-center items-center" style={{ height: "30vh" }}>
+                    //       <h6>
+                    //         <span className="">No items found{' '}
+                    //           <Link href={`/shop`}>
+                    //             <a className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
+                    //               Show All Products.
+                    //             </a>
+                    //           </Link>
+                    //         </span>
+                    //       </h6>
+                    //     </div>
+                    :
+                    <>
+                      {
+                        products.length == 0 && status == 'success' ?
+                          <div className='col-span-full' style={{ height: "80vh" }}>
+                            <div className="flex justify-center items-center h-full">
+                              <h6>
+                                <span>No items found
 
-                              <a onClick={handleShowAllProduct} className="red-color p-2 " style={{ cursor: 'pointer' }}>{' '}
-                                Show All Products.
-                              </a>
+                                  <a onClick={handleShowAllProduct} className="btn-color-revers p-2 " style={{ cursor: 'pointer' }}>{' '}
+                                    Show All Products.
+                                  </a>
 
-                            </span>
-                          </h6>
-                        </div>
-                        </div>
-                        :
-                        <>
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem />
-                          <ProductItem className={'hidden lg:block'} />
-                          <ProductItem className={'hidden xl:block'} />
-                          <ProductItem className={'hidden lg:block'} />
-                          <ProductItem className={'hidden xl:block'} />
-                        </>
-                        
+                                </span>
+                              </h6>
+                            </div>
+                          </div>
+                          :
+                          <>
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem />
+                            <ProductItem className={'hidden lg:block'} />
+                            <ProductItem className={'hidden xl:block'} />
+                            <ProductItem className={'hidden lg:block'} />
+                            <ProductItem className={'hidden xl:block'} />
+                          </>
 
-                    }
-                  </>
-                  :""
 
-                  }
-                
+                      }
+                    </>
+                  : ""
+
+              }
+
 
             </div>
           </div>
@@ -476,7 +475,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                                 [Number(filtersGroup[groupid]?.min_value)]: `${Number(filtersGroup[groupid]?.min_value)}`,
                                 [Number(filtersGroup[groupid]?.max_value)]: `${Number(filtersGroup[groupid]?.max_value)}`,
                               }
-                              } onAfterChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
+                              } onAfterChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length?Object.values(priceFilter)[1]:Number(filtersGroup[groupid].min_value),Object.values(priceFilter).length?Object.values(priceFilter)[0]: Number(filtersGroup[groupid].max_value)]} />
                             </div>
                           </TabPane>
                         )
@@ -510,7 +509,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
               <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Low' name="sort" value="ASC" />
               <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Low">Price (Low to High)</label>
             </div>
-            {Object.keys(filtersGroup).length!=0&&<h3 className='p-5 nav-bg'>Filter</h3>}
+            {Object.keys(filtersGroup).length != 0 && <h3 className='p-5 nav-bg'>Filter</h3>}
             <div>
               <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='mobile-tab max-h-full overflow-hidden overflow-y-scroll'>
                 {
@@ -540,7 +539,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                               [Number(filtersGroup[groupid].min_value)]: `${Number(filtersGroup[groupid].min_value)}`,
                               [Number(filtersGroup[groupid].max_value)]: `${Number(filtersGroup[groupid].max_value)}`,
                             }
-                            } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Number(filtersGroup[groupid].min_value), Number(filtersGroup[groupid].max_value)]} />
+                            } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length?Object.values(priceFilter)[1]:Number(filtersGroup[groupid].min_value),Object.values(priceFilter).length?Object.values(priceFilter)[0]: Number(filtersGroup[groupid].max_value)]} />
                           </div>
                         </TabPane>
                       )

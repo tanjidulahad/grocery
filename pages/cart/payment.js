@@ -24,8 +24,9 @@ import CartList from '@components/cart-item/cart-list'
 import OrderSummry from '@components/order-summry/order-summry'
 import Stepper from '@components/stepper/stepper'
 import { useMediaQuery } from 'react-responsive'
+import withAuth from '@components/auth/withAuth'
 
-const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
     const purchaseDetails = checkout.purchaseDetails
     const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
@@ -44,18 +45,29 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
     const [active2, setactive2] = useState(false)
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [paymentSummryHeight, setPaymentSummryHeight] = useState(100)
-    const [isBillingHidden, setIsBillingHidden] = useState(false)
+    const [isBillingHidden, setIsBillingHidden] = useState(true)
     const isTab = useMediaQuery({ minWidth: 640 })
     const [checkoutDetails, setcheckoutDetails] = useState({
         paymentMethod: '',
+        walletPay: false
     })
-
+    if (!purchaseDetails) {
+        redirect('/cart')
+    }
     const onChangeHandler = (e) => {
-        const { name, value } = e.target
-        console.log(checkoutDetails, 'line133', name, value)
+        const { name, value, checked } = e.target
+        if (name == 'walletPay') {
+            setcheckoutDetails({
+                ...checkoutDetails,
+                [name]: checked == checkoutDetails.walletPay ? !checked : checked,
+                paymentMethod: ""
+            })
+            return;
+        }
         setcheckoutDetails({
             ...checkoutDetails,
             [name]: value,
+            walletPay: false
         })
         if (checkout.purchase) {
             setPaymentMethod({
@@ -64,6 +76,10 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
             })
         }
     }
+    useEffect(() => {
+        console.log('checkoutDetails', checkoutDetails);
+    })
+
     const onCouponAppyHandler = () => {
         if (couponCode.length < 3) return;
         const order = Object.values(checkout.purchaseDetails.orders).find(item => item.storeId == info.store_id);
@@ -109,12 +125,18 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
         }
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
             setInitiateStatus('loading')
+            initiateOrder({
+                purchaseId: purchase?.purchase_id,
+                method: paymentMethod,
+                customerId: user.customer_id,
+                // setInitiateStatus,
+                setInitiateData,
+            })
             createNewRzpOrder({
                 purchaseId: purchase?.purchase_id,
                 totalPurchaseAmount: purchaseDetails?.calculatedPurchaseTotal,
                 currency: purchaseDetails?.currencyCode,
                 setRzpOrder,
-                setError,
                 setError,
             })
         }
@@ -125,7 +147,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
             const orderId = Object.keys(purchaseDetails.orders)[0]
             const paymentMethod = checkoutDetails.paymentMethod == 'Y' ? 'PAY' : 'COD'
             let encoded = ''
-            if (initiateData) {
+            if (checkoutDetails.paymentMethod != 'Y') {
                 const { purchase } = checkout
                 const amount = initiateData?.calculatedPurchaseTotal
                 encoded = btoa(
@@ -143,7 +165,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                     JSON.stringify({
                         amount,
                         purchaseId,
-                        id,
+                        id: confirmPayment?.id,
                         method: paymentMethod,
                         customerId,
                         orderId,
@@ -247,40 +269,44 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                                         </label>
                                     )}
                                     {storeSettings?.is_cod_accepted == 'Y' && (
-                                        <label
-                                            className="p-5 sm:p-8 md:p-6 delivery-inputs bg-white rounded block w-full"
-                                            htmlFor="cod"
-                                        >
-                                            <div className="flex justify-between items-center ">
-                                                <div className="">
-                                                    <h3 className="font-semibold text-base block">
-                                                        Cash On Delivery
-                                                    </h3>
-                                                    <span className="block text-xs sm:text-base black-color-75 tracking-tight">
-                                                        (Cash, UPI)
-                                                    </span>
+                                        <div className=' relative'>
+                                            <label
+                                                className="p-5 sm:p-8 md:p-6 delivery-inputs bg-white rounded block w-full"
+                                                htmlFor="cod"
+                                            >
+                                                <div className="flex justify-between items-center ">
+                                                    <div className="">
+                                                        <h3 className="font-semibold text-base block">
+                                                            Cash On Delivery
+                                                        </h3>
+                                                        <span className="block text-xs sm:text-base black-color-75 tracking-tight">
+                                                            (Cash, UPI)
+                                                        </span>
+                                                    </div>
+                                                    <Radio
+                                                        className="mr-2"
+                                                        id="cod"
+                                                        name="paymentMethod"
+                                                        value="N"
+                                                        onChange={onChangeHandler}
+                                                        checked={checkoutDetails.paymentMethod == 'N'}
+                                                    />
                                                 </div>
-                                                <Radio
-                                                    className="mr-2"
-                                                    id="cod"
-                                                    name="paymentMethod"
-                                                    value="N"
-                                                    onChange={onChangeHandler}
-                                                    checked={checkoutDetails.paymentMethod == 'N'}
-                                                />
-                                            </div>
-                                            <span className="md:ml-4 sm:ml-0 text-xs red-color tracking-tighter">
-                                                Cash on delivery is not eligible for wallet
-                                                transactions
-                                            </span>
-                                        </label>
+                                                <span className="md:ml-4 sm:ml-0 text-xs red-color tracking-tighter">
+                                                    Cash on delivery is not eligible for wallet
+                                                    transactions
+                                                </span>
+                                            </label>
+                                            <div className={checkoutDetails.walletPay && `rounded absolute inset-0 bg-[#d2d2d2] bg-opacity-75 cursor-not-allowed`} />
+
+                                        </div>
                                     )}
                                     <div className='p-5 md:p-0 flex justify-start items-center space-x-4'>
-                                        <input type="Radio" />
-                                        <div>
+                                        <input id='wallet' type="Radio" name="walletPay" value={'walletPay'} checked={checkoutDetails.walletPay} onClick={onChangeHandler} />
+                                        <label htmlFor='wallet'>
                                             <h4 className=''>Add Wallet Balance</h4>
-                                            <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹250</span></span>
-                                        </div>
+                                            <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹ {+customerWallet?.customer_wallet_balance}</span></span>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -288,7 +314,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                         {/* Billing Details >> */}
                         <div className='shrink-0 w-full md:w-5/12 xl:w-4/12'>
                             <div id='payment-summry' onClick={() => setIsBillingHidden(!isBillingHidden)} className={`bg-white p-4 sm:p-10 fixed sm:static bottom-[70px] inset-x-0 `} style={{ bottom: isBillingHidden ? -149 : 70 }}>
-                                <OrderSummry isBillingHidden={isBillingHidden && !isTab} isTab={isTab}/>
+                                <OrderSummry isBillingHidden={isBillingHidden && !isTab} isTab={isTab} />
                             </div>
                             <div className='w-full flex fixed sm:static inset-x-0 justify-between items-center px-4 py-4 sm:py-0  bottom-[0] z-[1001] bg-white sm:bg-transparent'>
                                 <Button className="w-full sm:w-3/4 sm:mx-auto px-14 sm:px-0 py-3  block sm:mt-10 sm:py-4 white-color rounded btn-bg text-center"
@@ -308,9 +334,9 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
             </div >
             {
                 initiateStatus == 'loading' && !rzpOrder ?
-                    <div className="fixed inset-0 left-0 bg-black-color-75">
+                    <div className="fixed inset-0 left-0 bg-black-color-75 z-[1000]">
                         <div className="relative w-full h-full">
-                            <div className="flex items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <div className="flex w-full flex-col justify-center sm:flex-row items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                                 <h5 className="white-color-75">We are processing your order </h5>
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" style={{ margin: 'auto', display: 'block' }} width="75px" height="75px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -329,7 +355,7 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
                             </div>
                         </div>
                     </div>
-                    : initiateStatus == 'loading' && rzpOrder
+                    : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y'
                         ? <OnlienPayment themeColor={themeColor}  {...{ store: info, user, checkout, setConfirmPayment, rzpOrder, setInitiateStatus, setError }} />
                         : null
             }
@@ -347,13 +373,13 @@ const Address = ({ user, userAddress, isDetailsLoading, displaySettings, storeSe
             </div>
             {
                 confirmOrder &&
-                <div className="fixed inset-0 z-50 bg-slate-500 bg-opacity-50 " >
+                <div className="fixed inset-0 bg-slate-500 bg-opacity-50 z-[1001] " >
                     <div className=" absolute left-1/2 h-fit bottom-0 sm:bottom-auto sm:top-1/2 bg-white rounded-md w-full -translate-x-1/2 sm:-translate-y-1/2 p-6" style={{ maxWidth: "556px" }}>
                         <h2 className="text-center text-2xl btn-color-revers m-auto">Proceed?</h2>
                         <div className="py-4 text-center text-base font-medium w-full mb-6">
                             Confirm your Order for  Cash On Delivery
                         </div>
-                        <div className="flex justify-between space-x-4 pt-4 w-full text-white">
+                        <div className="flex justify-between sm:space-x-4 space-x-2 pt-4 w-full text-white">
                             <Button className="py-3 w-full  font-semibold  btn-color-revers btn-border border-2  rounded transition-all " onClick={() => setConfirmOrder(false)}>Cancel</Button>
                             <Button className="py-3 w-full btn-bg btn-color  font-semibold border-2  rounded transition-all" onClick={() => { initiatePayment(); setConfirmOrder(false) }} >Confirm</Button>
                         </div>
@@ -374,6 +400,7 @@ const mapStateToProps = (state) => ({
     userAddress: state.user.address,
     isDetailsLoading: state.ui.isDetailsLoading,
     checkout: state.checkout,
+    customerWallet: state.user.customerWallet,
 })
 const mapDispatchToProps = (dispatch) => ({
     setBackendCart: (data) => dispatch(setBackendCartStart(data)),
@@ -394,4 +421,4 @@ const mapDispatchToProps = (dispatch) => ({
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
     authToggle: () => dispatch(authShowToggle()),
 })
-export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(Address))
+export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(withAuth(Payment)))

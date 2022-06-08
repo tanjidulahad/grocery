@@ -50,6 +50,12 @@ function* onGetWishlistStart() {
             // }
 
             const { data } = res;
+            var available=data.filter(function(item){
+                if(item.item_status=="AVAILABLE"){
+                    return true
+                }
+            }
+            )
 
             if (data.length === 0 || data.length < 9) {
                 setNoMore(false)
@@ -60,11 +66,11 @@ function* onGetWishlistStart() {
             }
             if (page == 1) {
 
-                setWishListedItem(data)
+                setWishListedItem(available)
                 setLoading('success')
 
             } else {
-                setWishListedItem([...wishListedItem, ...data])
+                setWishListedItem([...wishListedItem, ...available])
                 setLoading('success')
             }
 

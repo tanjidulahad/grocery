@@ -48,7 +48,9 @@ const CartList = ({ user, userAddress, storeSettings, cart, info, checkout, setB
     }
     useEffect(() => {
         // Do nothing if don't have storeId, user and cart length is zero
-        if (!info || !user || !cart.length) return
+        if (!info || !user || !cart.length){
+            return
+        }
         const data = {
             [info.store_id]: [
                 ...cart.map((item) => ({
@@ -81,6 +83,9 @@ const CartList = ({ user, userAddress, storeSettings, cart, info, checkout, setB
         // }
     }, [user, totalItems, info])
 
+
+
+    console.log("all cart items",cart)
 
     return (
         <div className='w-full sm:space-y-5'>

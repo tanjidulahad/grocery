@@ -27,7 +27,7 @@ export const addCartItem = (cartItems, cartItemToAdd) => {
     console.log("existingCartItem", extingCartItem)
     if (extingCartItem) {
         return cartItems.map(cartItem => (
-            cartItem.defaultVariantItem ? cartItem.defaultVariantItem.variant_item_id == cartItemToAdd.defaultVariantItem.variant_item_id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem : cartItem.item_id === cartItemToAdd.item_id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
+            cartItemToAdd.defaultVariantItem && cartItem.defaultVariantItem ? cartItem.defaultVariantItem.variant_item_id == cartItemToAdd.defaultVariantItem.variant_item_id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem : cartItem.item_id === cartItemToAdd.item_id ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem
         ))
     }
     else {
@@ -86,7 +86,7 @@ export const removeFromCart = (cartItems, cartItemToRemove) => {
 
     if (extingCartItem) {
         return cartItems.map(cartItem => (
-            cartItem.defaultVariantItem ? cartItem.defaultVariantItem.variant_item_id == cartItemToRemove.defaultVariantItem.variant_item_id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem : cartItem.item_id === cartItemToRemove.item_id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem
+            cartItemToRemove.defaultVariantItem && cartItem.defaultVariantItem ? cartItem.defaultVariantItem.variant_item_id == cartItemToRemove.defaultVariantItem.variant_item_id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem : cartItem.item_id === cartItemToRemove.item_id ? { ...cartItem, quantity: cartItem.quantity - 1 } : cartItem
         ))
     }
 }

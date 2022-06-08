@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { AiOutlineClose } from "react-icons/ai";
 import { connect } from 'react-redux';
+import { SocialIcon } from 'react-social-icons';
 
 const MobContactUs = ({ mobContactUsVisible, setMobContactUsVisible, info, socialProfile }) => {
     const customStyles = {
@@ -77,7 +78,7 @@ const MobContactUs = ({ mobContactUsVisible, setMobContactUsVisible, info, socia
                                         {
                                             socialProfile.map(function (item, idx) {
                                                 if (item.social_account_link) {
-                                                    return <img onClick={() => window.location.href = `https://${item.social_account_link}`} className='w-8 h-8 max-h-8 rounded-full cursor-pointer' key={idx} src={item?.logo_img_url ? item.logo_img_url : "/img/default.png"}></img>
+                                                    return <SocialIcon style={{width:"2rem",height:'2rem',maxHeight:'2rem',borderRadius:'50%'}} bgColor="#fff" fgColor="#000" url={(item.social_account_link.indexOf('http://')==0 || item.social_account_link.indexOf('https://')==0)? `${item.social_account_link}`: `https://${item.social_account_link}`} onClick={() => window.location.href = (item.social_account_link.indexOf('http://')==0 || item.social_account_link.indexOf('https://')==0)? `${item.social_account_link}`: `https://${item.social_account_link}`} key={idx}/>
                                                 }
                                             })
                                         }

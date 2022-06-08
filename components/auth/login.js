@@ -10,8 +10,8 @@ import { BsFillTelephoneFill } from 'react-icons/bs'
 import { MdEmail } from 'react-icons/md'
 
 // Login Component
-const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgotPassword, setPage, info }) => {
-    
+const Login = ({ fcmToken, showToggle, loginWithPassword, userloginSuccess, forgotPassword, setPage, info }) => {
+
     const [isVarificationPhone, setIsVarificationPhone] = useState(true)
     const [forgotPass, setForgotPass] = useState(false)
     const [showPass, setShowPass] = useState(false)
@@ -23,7 +23,7 @@ const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgo
         emailId: "",
         phone: "",
         isdCode: "91",
-        deviceId:fcmToken
+        deviceId: fcmToken
     })
     // const [user, setUser] = useState(null) // {}
     const [error, setError] = useState("") // ""
@@ -46,10 +46,10 @@ const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgo
         if (forgotPass) {
             forgotPassword({ state, setError, setIsLoading, setUser })
         } else {
-            loginWithPassword({ state, setError, setStatus: setIsLoading })
+            loginWithPassword({ state, setError, setStatus: setIsLoading, setUser })
         }
 
-        
+
     }
     useEffect(() => {
         setState(state => ({ ...state, verificationType: isVarificationPhone ? "PHONE" : 'EMAIL' }))
@@ -188,6 +188,7 @@ const Login = ({fcmToken, showToggle, loginWithPassword, userloginSuccess, forgo
                         </div>
                     </>
                     : <Otp username={isVarificationPhone ? state.isdCode + ' ' + state.phone : state.emailId}
+                        verificationType={state.verificationType}
                         setPage={setPage} userId={user} forgotPass={forgotPass} resend={() => forgotPassword({ state })}
                     />
             }

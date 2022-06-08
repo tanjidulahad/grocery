@@ -9,11 +9,11 @@ function Sideprofilecard({ user, logout, customerWallet, info, getWalletBalance 
   let active = Router?.router?.state?.pathname.split('/')[2]
   active = active === undefined ? 'account' : active
 
-  useEffect(() => {
-    if (customerWallet == null) {
-      getWalletBalance({ customerId: user.customer_id, storeId: info.store_id })
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (customerWallet == null) {
+  //     getWalletBalance({ customerId: user.customer_id, storeId: info.store_id })
+  //   }
+  // }, [])
 
   // console.log("active path",Router.router.state.asPath.split('/')[2])
 
@@ -47,7 +47,7 @@ function Sideprofilecard({ user, logout, customerWallet, info, getWalletBalance 
                 {user?.phone}
               </p>
               <p className="lg:text-sm text-xs flex  justify-center font-medium text-center  text-gray-500">
-                {user?.email_id === null ? "N/A" : user?.email_id}
+                {user?.email_id}
 
               </p>
             </div>
@@ -58,33 +58,33 @@ function Sideprofilecard({ user, logout, customerWallet, info, getWalletBalance 
       <div className="border-t-2 border-gray w-full">
         <div className="mt-12  ">
           {
-            active === 'account' ?
-              <div className=" h-10 my-6">
-                <Link href='/account ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold btn-color-revers items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                    </svg>
-                    <span>
-                      Account
-                    </span>
-                  </p>
+            // active === 'account' ?
+            //   <div className=" h-10 my-6">
+            //     <Link href='/account ' >
+            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold btn-color-revers items-center space-x-2">
+            //         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            //           <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+            //         </svg>
+            //         <span>
+            //           Account
+            //         </span>
+            //       </p>
 
-                </Link>
-              </div> :
-              <div className=" cursor-pointer h-10 my-6">
-                <Link href='/account ' >
-                  <p className=" flex mx-8 py-2 text-lg relative  font-semibold  items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <span>
-                      Account
-                    </span>
-                  </p>
+            //     </Link>
+            //   </div> :
+            //   <div className=" cursor-pointer h-10 my-6">
+            //     <Link href='/account ' >
+            //       <p className=" flex mx-8 py-2 text-lg relative  font-semibold  items-center space-x-2">
+            //         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            //           <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            //         </svg>
+            //         <span>
+            //           Account
+            //         </span>
+            //       </p>
 
-                </Link>
-              </div>
+            //     </Link>
+            //   </div>
 
 
           }

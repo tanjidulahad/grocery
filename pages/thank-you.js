@@ -21,6 +21,7 @@ const ThankYou = ({ confirmOrder, display }) => {
         const { id } = router.query
         const data = JSON.parse(atob(id))
         console.log(id, data);
+        console.log();
         setOrderId(data.orderId)
         confirmOrder({ ...data, setStatus })
         // setPrice(data.amount)
@@ -56,7 +57,7 @@ const ThankYou = ({ confirmOrder, display }) => {
     return (
         <section >
             <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
-                <Stepper steps={steps} activeStep={2} sx={style} />
+                <Stepper steps={steps} activeStep={3} sx={style} />
             </div>
             {
                 status == 'loading'
