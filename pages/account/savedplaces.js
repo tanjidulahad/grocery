@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 import { connect } from 'react-redux'
 import accountLayout from '@components/layout/account-layout'
 import Header from '@components/MobHeader/index'
@@ -78,7 +77,7 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
   }
   return (
     <>
-      <ToastContainer></ToastContainer>
+      
       {
         isLoadding ?
           <div className='w-full  bg-white md:bg-[transparent] '>

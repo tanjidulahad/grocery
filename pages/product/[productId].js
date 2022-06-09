@@ -486,7 +486,7 @@ const ProductDetails = ({ openAuth, store,
 
     return (
         <>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
             <Head>
                 <title>{visuals.name}</title>
                 <meta name="description" content={`${descriptions}, Amazon.in: Online Shopping India - Buy mobiles, laptops, cameras, books, watches, apparel, shoes and e-Gift Cards. Free Shipping &amp; Cash on Delivery Available. `} />

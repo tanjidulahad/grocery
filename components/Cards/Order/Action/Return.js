@@ -3,7 +3,9 @@ import { useState } from 'react'
 import { Button, Radio, Checkbox } from '@components/inputs'
 import fetcher from '@redux/utility'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router';
 function Ret({ action, items, closeRetun, user, orderId }) {
+  const router = useRouter()
   const [final, setfinal] = useState(false)
   console.log(items, orderId)
   const [reason, setreason] = useState({
@@ -45,17 +47,19 @@ function Ret({ action, items, closeRetun, user, orderId }) {
       setPayload({ ...payload, cancelReason: reason.custom ? reason.custom : reason.reason1 ? reason.reason1 : reason.reason2 && reason.reason2 })
       fetcher('post', `/?r=my-orders/cancel-order&orderId=${orderId}`, payload).then(response => {
         console.log(response);
-        if(response){
-        toast.success("Request Placed Successfully",{
-          autoClose: 2000
-      })
-    }
+        if (response) {
+          toast.success("Request Placed Successfully", {
+            autoClose: 2000
+          })
+          router.push('/account/myorders')         
+
+        }
 
       }).catch(err => {
-        if(err?.response?.data?.message=="Sorry, the order can not be cancelled once confirmed!"){
-          toast.error("Request Already Placed",{
+        if (err?.response?.data?.message == "Sorry, the order can not be cancelled once confirmed!") {
+          toast.error("Request Already Placed", {
             autoClose: 2000
-        })
+          })
         }
       })
     }
@@ -78,7 +82,7 @@ function Ret({ action, items, closeRetun, user, orderId }) {
   return (
     <div id="return" className="auth ">
       <div className="mt-80 md:mt-0 lg:mt-0 md:roundec-lg lg:rounded-lg ">
-        <section className='auth-form-container '>
+        <section className='absolute max-w-[95%] sm:min-w-[512px] top-[50%] left-[50%] bg-white translate-x-[-50%] translate-y-[-50%]'>
           <div className="flex p-4 justify-between items-center border-b-2 border-gray-200 ">
             <h2 className="text-base font-semibold">{action} Order</h2>
             <Button
@@ -107,13 +111,13 @@ function Ret({ action, items, closeRetun, user, orderId }) {
           <div className="p-4">
             <h3 className="text-sm  text-gray-600">
               {
-              // final
-              //   ? 'Why are you returning this order?'
-                 `Choose items to ${action}`
-                }
+                // final
+                //   ? 'Why are you returning this order?'
+                `Choose items to ${action}`
+              }
             </h3>
             {
-            // final ? (
+              // final ? (
               <>
                 <div className="mt-4 mx-1 flex flex-around  ">
                   <Radio
@@ -185,65 +189,65 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                 </div>
               </>
 
-            //   <>
-            //     {Object.values(items).map((item, i) => (
-            //       <div className="mt-4 mx-1 flex flex-around" key={i}>
-                  //  <Checkbox
-            //           className="mt-3 "
-            //           name="orderId"
-            //           id={item.orderItemId}
-            //           value={item.orderItemId}
-            //           onChange={onChangeHandler}
-            //         />
-            //         <label className="flex" htmlFor={item.orderItemId}>
-            //           <div className="mx-4 w-10 h-10 rounded bg-gray-900">
-            //             <img
-            //               className="w-full h-full rounded object-center opacity-80"
-            //               src={item.itemImg || '/img/default.png'}
-            //             />
-            //           </div>
-            //           <h3
-            //             className="text-sm  text-gray-600 flex align-centers"
-            //             style={{ alignItems: 'center' }}
-            //           >
-            //             {item.itemName}
-            //           </h3>
-            //         </label>
-            //       </div>
-            //     ))}
-            //     {/* <div className="mt-4 mx-1 flex flex-around  ">
-            //       <Radio className="mt-3 " />
-            //       <div className="mx-4 w-10 h-10 rounded bg-gray-900">
-            //         <img
-            //           className="w-full h-full rounded object-center opacity-80"
-            //           src="https://b.zmtcdn.com/data/reviews_photos/1e2/19f261b43d11344ce5f483c20a0941e2_1561214851.jpg?fit=around|771.75:416.25&crop=771.75:416.25;*,*"
-            //         />
-            //       </div>
-            //       <h3
-            //         className="text-sm flex text-gray-600 "
-            //         style={{ alignItems: 'center' }}
-            //       >
-            //         Plain Briyani
-            //       </h3>
-            //     </div> */}
+              //   <>
+              //     {Object.values(items).map((item, i) => (
+              //       <div className="mt-4 mx-1 flex flex-around" key={i}>
+              //  <Checkbox
+              //           className="mt-3 "
+              //           name="orderId"
+              //           id={item.orderItemId}
+              //           value={item.orderItemId}
+              //           onChange={onChangeHandler}
+              //         />
+              //         <label className="flex" htmlFor={item.orderItemId}>
+              //           <div className="mx-4 w-10 h-10 rounded bg-gray-900">
+              //             <img
+              //               className="w-full h-full rounded object-center opacity-80"
+              //               src={item.itemImg || '/img/default.png'}
+              //             />
+              //           </div>
+              //           <h3
+              //             className="text-sm  text-gray-600 flex align-centers"
+              //             style={{ alignItems: 'center' }}
+              //           >
+              //             {item.itemName}
+              //           </h3>
+              //         </label>
+              //       </div>
+              //     ))}
+              //     {/* <div className="mt-4 mx-1 flex flex-around  ">
+              //       <Radio className="mt-3 " />
+              //       <div className="mx-4 w-10 h-10 rounded bg-gray-900">
+              //         <img
+              //           className="w-full h-full rounded object-center opacity-80"
+              //           src="https://b.zmtcdn.com/data/reviews_photos/1e2/19f261b43d11344ce5f483c20a0941e2_1561214851.jpg?fit=around|771.75:416.25&crop=771.75:416.25;*,*"
+              //         />
+              //       </div>
+              //       <h3
+              //         className="text-sm flex text-gray-600 "
+              //         style={{ alignItems: 'center' }}
+              //       >
+              //         Plain Briyani
+              //       </h3>
+              //     </div> */}
 
-            //     <div className="flex justify-end ">
-            //       <Button
-            //         className={`w-max m-2 btn-color text-lg font-medium btn-bg px-4 py-1 rounded `}
-            //         type="button"
-            //         onClick={(e) => {
-            //           setfinal(
-            //             payload.orderItemId.length === 0 ? final : !final
-            //           )
+              //     <div className="flex justify-end ">
+              //       <Button
+              //         className={`w-max m-2 btn-color text-lg font-medium btn-bg px-4 py-1 rounded `}
+              //         type="button"
+              //         onClick={(e) => {
+              //           setfinal(
+              //             payload.orderItemId.length === 0 ? final : !final
+              //           )
 
-            //         }}
-            //       >
-            //         Next
-            //       </Button>
-            //     </div>
-            //   </>
-            // )
-          }
+              //         }}
+              //       >
+              //         Next
+              //       </Button>
+              //     </div>
+              //   </>
+              // )
+            }
           </div>
         </section>
       </div>

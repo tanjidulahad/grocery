@@ -47,9 +47,9 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                                 data?.is_veg == 'Y' &&
                                 <img onClick={()=>router.push(`/product/${data?.item_id || '1234'}`)} className="lg:w-[140px] lg:h-[140px] lg:min-w-[140px] lg:rounded w-full h-full object-cover" src={data?.primary_img || '/img/default.png'} alt="product" />
                             }
-                            <img className="md:block w-4 h-4 absolute top-2 left-2" src="/img/veg.svg" />
+                            <img className="md:block w-4 h-4 absolute top-0 left-2" src="/img/veg.svg" />
 
-                            <div className=" md:hidden absolute top-2 right-2 mt-1 m-2 md:m-0">
+                            <div className=" md:hidden absolute top-0 right-2 md:m-0">
                                 <AiFillHeart onClick={() => removeFromWishList(data.entry_id)} size={20} color="#F35252" />
                             </div>
                         </a>

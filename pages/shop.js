@@ -275,7 +275,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
         <meta name="keywords" content={`${description} ${info.name}, Amazon.in, Amazon, Online Shopping, online shopping india, india shopping online, amazon india, amazn, buy online, buy mobiles online, buy books online, buy movie dvd's online, kindle, kindle fire hd, kindle e-readers, ebooks, computers, laptop, toys, trimmers, watches, fashion jewellery, home, kitchen, small appliances, beauty, Sports, Fitness &amp; Outdoors`} />
 
       </Head>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <section>
         <div className="bg-[#F5F5F5] md:bg-white">
           <div className=" wrapper w-full ">

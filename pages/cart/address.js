@@ -126,7 +126,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
     } : {}
     return (
         <div className="wrapper bg-white sm:bg-[#f2f2f2] w-full ">
-            <ToastContainer />
+            {/* <ToastContainer /> */}
             {/* Stepper Header */}
             <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
                 <Stepper steps={steps} activeStep={checkoutDetails.deliveryAddress ? 1 : 0} sx={style} />
@@ -225,7 +225,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                 {
                                     !isAddressActive ?
                                         <div className='flex-1 px-4 sm:px-8 py-6 sm:py-8  bg-white'>
-                                            <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => setIsAddressActive(true)}>
+                                            <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => {setIsAddressActive(true);setNewAddress(addressStructure)}}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg> Add new Address

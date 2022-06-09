@@ -83,7 +83,7 @@ const ThankYou = ({ confirmOrder, display }) => {
                                         </div>
                                     </div>
                                     <div className="text-center my-10 px-10 lg:px-0">
-                                        <h3 className="text-sm md:text-2xl font-bold text-[#1DAE81]">Order Placed. A confermation email has been sent.</h3>
+                                        <h3 className="text-sm md:text-2xl font-bold text-[#1DAE81]">Order Placed. A confirmation email has been sent.</h3>
                                         <div className='pt-6 pb-10'>
                                             {/* <span className="text-sm lg:text-lg font-bold  pb-10">You saved  ₹{price} On this Order.</span> */}
                                         </div>

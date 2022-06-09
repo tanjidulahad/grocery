@@ -68,7 +68,7 @@ function Profile({ type, fullname, email_id, phone, id,updateUserDetails }) {
   return (
 
     <div className={` w-full h-[100vh] md:h-auto ${type === 'index' ? "lg:w-full" : "lg:w-1/2"}  md:w-full  `}>
-      <ToastContainer></ToastContainer>
+      {/* <ToastContainer></ToastContainer> */}
       {/* <p className="m-8 mb-4 text-lg text-dark h md:block lg:block" >My Profile</p> */}
       {/* <div className="rounded w-[200px] h-[200px] bg-gray-100 text-gray-400 m-8 lg:mx-8 md:mx-8 lg:my-0 md:my-0 z-100 flex justify-center items-center">
         <span className='text-3xl font-extrabold	' >

@@ -60,7 +60,8 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
 
     // This handler function comming from PLP page via redux
   }
-  const onSearched = () => {
+  const onSearched = (e) => {
+    e.preventDefault()
     console.log('queryrr', query);
     if (query.length) {
       redirect(`/shop?search=${query}`)
@@ -125,14 +126,18 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
             </Button>
           </div>
           <div className=" items-center justify-end flex md:basis-10/12 lg:basis-9/12 space-x-6 lg:space-x-14">
-            <div className=" flex flex-1 flex-row justify-between w-full ">
+            
+            {/* <div className=" flex flex-1 flex-row justify-between w-full "> */}
+            <form onSubmit={onSearched} className=" flex flex-1 flex-row justify-between w-full ">
               <div className=" w-full flex rounded">
                 <Input className=" px-4 p-2.5 lg:p-3 text-sm border rounded-r-none border-[#48887B] rounded  outline-none" placeholder='Search' onChange={onInputChangeHandler} />
                 <div className="btn-bg px-8  cursor-pointer rounded-r flex items-center " onClick={onSearched}>
                   <AiOutlineSearch color={'white'} size={20} />
                 </div>
               </div>
-            </div>
+              </form>
+            {/* </div> */}
+            
             <div className=" flex flex-row justify-between items-center nav-items-color text-black space-x-14">
               <div className=" w-full flex justify-around space-x-4 lg:space-x-6 xl:space-x-14">
                 <Link href={'/'}>
@@ -363,12 +368,14 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                 </Button>
               </div>
             </div>
-            <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
+            {/* <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}> */}
+              <form onSubmit={onSearched} action="" className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
               <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
               <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
                 <FiSearch color={'black'} size={20} />
               </div>
-            </div>
+              </form>
+            {/* </div> */}
           </div>
           :
           ""
@@ -553,7 +560,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                           <Link href={`/shop?category=${category}&subCategoryId=${subitem.sub_category_id}`}>
                             <a>
                               <div className="d-flex justify-content-between">
-                                <span className={`text-xs font-w-400  ${subCategoryId == subitem.sub_category_id ? "btn-color-revers font-semibold" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
+                                <span className={`font-w-400 text-base  ${subCategoryId == subitem.sub_category_id ? "btn-color-revers font-semibold" : 'dark-blue-50'}`} >{subitem.sub_category_name}</span>
                               </div>
                             </a>
                           </Link>
