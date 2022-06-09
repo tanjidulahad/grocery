@@ -49,7 +49,7 @@ function Wishlist({ user, info, getWishlist, wishItem }) {
   }
   return (
     <div className="relative -top-[19px] bg-[#f3f4f6] md:relative md:-top-[0px] md:bg-[transparent]">
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <div className='hidden md:block bg-white '>
         <p className=" hidden md:block text-xl mx-2 bg-white p-4 mt-4 md:mt-0 lg:mt-0 md:mx-0 lg:mx-0 text-gray-900 font-bold">
 

@@ -95,7 +95,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
   }, [router.isReady])
   return (
     <div >
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       {/* slider div */}
       <div className='my-2 lg:my-4 lg:mx-14 sm:px-4'>
         <div>

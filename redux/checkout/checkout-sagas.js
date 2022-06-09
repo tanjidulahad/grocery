@@ -290,7 +290,7 @@ function* onCouponCodeApplyStart() {
                 // onError('Invalid coupon code!')
             } else if (res.data) {
                 yield put(getPurchageStart(purchaseId))
-                yield put(applyCouponCodeSuccess(`${couponCode} Apllied Successfully!.`))
+                yield put(applyCouponCodeSuccess(`${couponCode} applied successfully!.`))
                 // onSuccess('Apllied Successfully!.')
             } else {
                 onError('Operation Failed!.')

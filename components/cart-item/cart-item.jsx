@@ -6,6 +6,7 @@ import Rating from "@components/rating-stars/rating";
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 
 const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, isDetailsLoading }) => {
+    console.log("cart item",data)
 
     return (
         <div className="w-100 block space-y-3">
@@ -15,10 +16,10 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, isDetai
                         <span className=" absolute">
 
                         </span>
-                        <img className="w-full h-full object-cover" src={data.defaultVariantItem ? Object.keys(data.defaultVariantItem).length&&data?.defaultVariantItem?.variant_value_1?.variant_value_images !=null?data?.defaultVariantItem?.variant_value_1?.variant_value_images.img_url_1:(data.primary_img || '/img/default.png'):'/img/default.png'}  alt="product" />
+                        <img className="w-full h-full object-cover" src={data.defaultVariantItem ? Object.keys(data.defaultVariantItem).length&&data?.defaultVariantItem?.variant_value_1?.variant_value_images !=null?data?.defaultVariantItem?.variant_value_1?.variant_value_images.img_url_1: '/img/default.png':data.primary_img ? data.primary_img:'/img/default.png'}  alt="product" />
                     </a>
                 </Link>
-                <div className="flex-1 space-y-2 md:space-y-4">
+                <div className="flex-1 space-y-2 md:space-y-4 mt-0 md:mt-4">
                     <Link href={`/product/${data.item_id}`}>
                         <a className="block">
                             <h3 className=" lg:text-base text-sm capitalize cart-item-title line-truncate-2">{data.item_name.toLowerCase()}</h3>

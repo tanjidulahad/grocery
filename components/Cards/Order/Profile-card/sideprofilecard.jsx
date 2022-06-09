@@ -4,6 +4,9 @@ import Router from "next/router";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function Sideprofilecard({ user, logout, customerWallet, info, getWalletBalance }) {
 
   let active = Router?.router?.state?.pathname.split('/')[2]
@@ -18,6 +21,8 @@ function Sideprofilecard({ user, logout, customerWallet, info, getWalletBalance 
   // console.log("active path",Router.router.state.asPath.split('/')[2])
 
   return (
+    <>
+    {/* <ToastContainer /> */}
     <div className="w-full  h-full hidden md:block lg:block rounded-t-md bg-white shadow-lg md:pb-20">
 
       <div className="w-full  ">
@@ -226,6 +231,7 @@ function Sideprofilecard({ user, logout, customerWallet, info, getWalletBalance 
         </div>
       </div>
     </div>
+    </>
   );
 }
 
