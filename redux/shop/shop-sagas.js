@@ -157,15 +157,15 @@ function* onGetSubCategoriesStart() {
 
 function* onGetShopProductsStart() {
     yield takeLatest(shopActionType.GET_SHOP_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, page, setStatus, filterAndSortPayload, sortOrder, user } = payload;
+        const { storeId, page, setStatus, filterAndSortPayload, sortOrder = 'ASC', user } = payload;
         console.log("filter from saga", payload)
         try {
             const res = yield fetcher(`${filterAndSortPayload == undefined ? 'GET' : 'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}${user ? `&customerId=${user.customer_id}` : ""}`, filterAndSortPayload)
             console.log("product res", res.data)
 
             if (Array.isArray(res.data)) {
-                var available=res.data.filter(function(item){
-                    if(item.item_status=="AVAILABLE"){
+                var available = res.data.filter(function (item) {
+                    if (item.item_status == "AVAILABLE") {
                         return true
                     }
                 }
@@ -194,14 +194,14 @@ function* onGetShopProductsStart() {
 }
 function* onGetCategoryProductsStart() {
     yield takeLatest(shopActionType.GET_CATEGORY_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, categoryId, subCategoryId, page, setStatus,filterAndSortPayload ,sortOrder,user } = payload //status == loading || failed || success
+        const { storeId, categoryId, subCategoryId, page, setStatus, filterAndSortPayload, sortOrder, user } = payload //status == loading || failed || success
         try {
             // yield put(clearProductList());
             const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}`
-            const res = yield fetcher(`${filterAndSortPayload == undefined ? 'GET' : 'POST'}`, query,filterAndSortPayload)
+            const res = yield fetcher(`${filterAndSortPayload == undefined ? 'GET' : 'POST'}`, query, filterAndSortPayload)
             if (Array.isArray(res.data)) {
-                var available=res.data.filter(function(item){
-                    if(item.item_status=="AVAILABLE"){
+                var available = res.data.filter(function (item) {
+                    if (item.item_status == "AVAILABLE") {
                         return true
                     }
                 }
@@ -223,12 +223,12 @@ function* onGetCategoryProductsStart() {
 
 function* onProductSerachStart() {
     yield takeLatest(shopActionType.GET_SEARCH_START, function* ({ payload }) {
-        const { storeId, q, setSearchResult, setStatus,page } = payload //status == loading || failed || success
+        const { storeId, q, setSearchResult, setStatus, page } = payload //status == loading || failed || success
         try {
-            const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}${page?`&pageNum=${page}`:"&pageNum=1"}`)
+            const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}${page ? `&pageNum=${page}` : "&pageNum=1"}`)
             if (Array.isArray(res.data)) {
-                var available=res.data.filter(function(item){
-                    if(item.item_status=="AVAILABLE"){
+                var available = res.data.filter(function (item) {
+                    if (item.item_status == "AVAILABLE") {
                         return true
                     }
                 }
@@ -271,8 +271,8 @@ function* onGetBestSellerProduct() {
         const { storeId, setBestSellerProducts } = payload
         try {
             const res = yield nodefetcher('GET', `/store-widgets/get-best-sellers-by-store?storeId=${storeId}`);
-            var available=res.data.filter(function(item){
-                if(item.item_status=="AVAILABLE"){
+            var available = res.data.filter(function (item) {
+                if (item.item_status == "AVAILABLE") {
                     return true
                 }
             }
@@ -291,8 +291,8 @@ function* onGetNewArrivalProducts() {
         const { storeId, setNewArrivalProducts } = payload
         try {
             const res = yield nodefetcher('GET', `/store-widgets/get-new-arrivals-by-store?storeId=${storeId}`);
-            var available=res.data.filter(function(item){
-                if(item.item_status=="AVAILABLE"){
+            var available = res.data.filter(function (item) {
+                if (item.item_status == "AVAILABLE") {
                     return true
                 }
             }
