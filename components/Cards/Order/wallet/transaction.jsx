@@ -42,16 +42,16 @@ function transaction({ item, transaction = 'add' }) {
 
             </div>
 
-            {items?.purchase_id === "" ?
+            {items.transaction_type == 'ORDER_REFUND' ?
               <div className=' w-full md:m-4 mt-4'>
                 <div className='flex '>
                   <p className="text-left font-bold text-xs lg:text-base traxt-dark  md:ml-4 ">Money Added</p>
-                  <span className="text-left font-[100] md:text-sm text-xs text-gray-600 md:ml-2  ">(Order ID- #1208)</span>
+                  <span className="text-left font-[100] md:text-sm text-xs text-gray-600 md:ml-2  ">(Order ID- {items?.transaction_ref_id})</span>
                 </div>
-                <p className="text-left  md:text-base text-sm traxt-dark  md:mx-4 ">Updated Balance Rs. 553</p>
+                {/* <p className="text-left  md:text-base text-sm traxt-dark  md:mx-4 ">Updated Balance Rs. 553</p> */}
 
 
-                <p className="text-left text-sm  font-bold  text-[#48887B]  md:mx-4 ">{moment.unix(items?.last_modified_date).format("DD-MM-YY")}</p>
+                <p className="text-left text-sm  font-bold  text-[#48887B]  md:mx-4 ">{moment.unix(items?.transaction_time).format("DD-MM-YY")}</p>
 
 
 
@@ -59,11 +59,11 @@ function transaction({ item, transaction = 'add' }) {
               <div className=' w-full mt-4'>
                 <div className='flex items-center'>
                   <p className="text-left font-bold text-xs lg:text-base traxt-dark ml-4 md:ml-0">Paid for</p>
-                  <span className="text-left font-[100] text-sm text-gray-600 ml-2 md:ml-0 lg:ml-2 my-2 ">(Order ID- {items?.payment_plan_id})</span>
+                  <span className="text-left font-[100] text-sm text-gray-600 ml-2 md:ml-0 lg:ml-2 my-2 ">(Order ID- {items?.transaction_ref_id})</span>
                 </div>
                 {/* <p className="text-left  text-base traxt-dark  mx-4 ">Maggie combo of 4</p> */}
 
-                <p className="text-left text-sm  font-bold  btn-color-revese  ml-4 md:ml-0 ">{moment.unix(items?.last_modified_date).format("DD-MM-YY")}</p>
+                <p className="text-left text-sm  font-bold  btn-color-revese  ml-4 md:ml-0 ">{moment.unix(items?.transaction_time).format("DD-MM-YY")}</p>
 
 
 
@@ -73,10 +73,10 @@ function transaction({ item, transaction = 'add' }) {
 
             <div className="flex items-center">
               {
-                items?.purchase_id === "" ?
-                  <p className=" text-right font-bold text-sm lg:text-lg mt-4  text-green-600 w-max mr-2 md:mr-4 ">₹ {+items?.payment_amount}</p>
+                items?.transaction_type == 'ORDER_REFUND' ?
+                  <p className=" text-right font-bold text-sm lg:text-lg mt-4  text-green-600 w-max mr-2 md:mr-4 ">₹ {+items?.transaction_amount}</p>
                   :
-                  <p className=" text-right font-bold text-sm lg:text-lg mt-4  text-red-600 w-max mr-2 md:mr-4 ">- ₹ {+items?.payment_amount}</p>
+                  <p className=" text-right font-bold text-sm lg:text-lg mt-4  text-red-600 w-max mr-2 md:mr-4 ">- ₹ {+items?.transaction_amount}</p>
 
               }
 

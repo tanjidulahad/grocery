@@ -97,7 +97,9 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                 color:${themeColors.bgColor};
               }
             .ant-tabs-nav .ant-tabs-tab-active {
-                border-left: 3px solid ${themeColors.bgColor} !important;
+                border: 3px solid ${themeColors.bgColor} !important;
+                border-radius:8px !important;
+                background-color: white !important;
               }
                     .btn-border{
                     border-color: ${themeColors.bgColor};

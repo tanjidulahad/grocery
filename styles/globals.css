@@ -248,13 +248,29 @@ nav {
 } */
 
 /* antd */
+.ant-tabs-nav-list{
+  background-color: #F2F2F2 !important;
+}
 .ant-tabs-card .ant-tabs-tab-btn {
-  padding-top: 14px !important;
-  padding-bottom: 14px !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
   font-size: 20px;
+  /* margin-top: 10px !important; */
+}
+
+@media only screen and (max-width: 576px) {
+  .ant-tabs-card .ant-tabs-tab-btn {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    /* margin-top: 10px !important; */
+  }
 }
 .ant-tabs-tab {
   border: none !important;
+  background-color: #F2F2F2 !important;
+}
+.ant-tabs-tab:first-child{
+  margin-top: 10px !important;
 }
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
   color: #363636 !important;
