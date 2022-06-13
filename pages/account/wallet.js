@@ -11,7 +11,7 @@ import fetcher from '@redux/utility'
 import { useEffect, useState } from 'react'
 import { set } from 'nprogress'
 
-const profileWallet = ({user, info,customerWallet}) => {
+const profileWallet = ({ user, info, customerWallet }) => {
   const [wallet, setwallet] = useState("")
   const [transaction, settransaction] = useState([])
 
@@ -59,11 +59,10 @@ const profileWallet = ({user, info,customerWallet}) => {
 
       </div>
     </div>
-    )
+  )
 
 }
 const mapStateToProps = state => ({
-  user: state.user,
   info: state.store.info,
   customerWallet: state.user.customerWallet,
 })
