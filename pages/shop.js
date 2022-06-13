@@ -408,15 +408,29 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
           >
             <div className=''>
               <div className='flex justify-between pt-4 px-4'>
-                <h2 className='text-2xl'>Filters</h2>
+                <div className='flex items-center gap-4 ml-2'>
+                  <svg width="26" height="15" viewBox="0 0 26 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0.75" y1="3.46875" x2="24.5625" y2="3.46875" stroke="#B6B6B6" stroke-width="1.5" stroke-linecap="round" />
+                    <line x1="0.75" y1="11.9062" x2="24.5625" y2="11.9062" stroke="#B6B6B6" stroke-width="1.5" stroke-linecap="round" />
+                    <circle cx="7.03125" cy="3.28125" r="2.53125" fill="#B6B6B6" stroke="#B6B6B6" stroke-width="1.5" />
+                    <circle cx="20.1562" cy="11.7188" r="2.53125" fill="#B6B6B6" stroke="#B6B6B6" stroke-width="1.5" />
+                  </svg>
+                  <h2 className='text-xl'>Filter | Sort</h2>
+                </div>
                 <p className='cursor-pointer text-xl font-thin' onClick={() => setFilterModalVisible(false)}><AiOutlineClose /></p>
               </div>
               <div className="pt-4">
                 <div className="w-full border-t border-gray-400"></div>
               </div>
               <div>
-                <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='h-[40vh]'>
-                  <TabPane tab={`Sort by`} key="sort" className='h-[40vh] overflow-hidden overflow-y-scroll' >
+                <Tabs tabPosition='left' type="card" size="large" tabBarGutter='0' className='h-[50vh]'>
+                  <TabPane tab={
+                    <>
+                      <p className='text-left'>Sort by</p>
+                      {/* <p className='text-[12px] text-left btn-color-revers'>some text</p> */}
+                    </>
+                  }
+                    key="sort" className='h-[40vh] overflow-hidden overflow-y-scroll' >
                     <div className='mt-2'>
                       <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} id='rel' type="radio" name='sort' value="false" />
                       <label className='text-[18px] ml-2' htmlFor="rel">Relevance</label>
@@ -433,7 +447,13 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                   {
                     Object.keys(filtersGroup).map(function (groupid) {
                       if (groupid != 'priceRange') {
-                        return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid} className='h-[40vh] overflow-hidden overflow-y-scroll' >
+                        return (<TabPane tab={
+                          <>
+                            <p className='text-left'>{filtersGroup[groupid].filter_group_name}</p>
+                            {filterPayLoad[groupid]?.length && <p className='text-[12px] text-left btn-color-revers'>{filterPayLoad[groupid]?.length} items selected</p>}
+                          </>
+                        }
+                          key={groupid} className='max-h-[40vh] overflow-hidden overflow-y-scroll' >
                           {
                             Object.keys(filtersGroup[groupid].filter_group_values).map(function (value) {
                               return (
@@ -475,7 +495,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                                 [Number(filtersGroup[groupid]?.min_value)]: `${Number(filtersGroup[groupid]?.min_value)}`,
                                 [Number(filtersGroup[groupid]?.max_value)]: `${Number(filtersGroup[groupid]?.max_value)}`,
                               }
-                              } onAfterChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length?Object.values(priceFilter)[1]:Number(filtersGroup[groupid].min_value),Object.values(priceFilter).length?Object.values(priceFilter)[0]: Number(filtersGroup[groupid].max_value)]} />
+                              } onAfterChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length ? Object.values(priceFilter)[1] : Number(filtersGroup[groupid].min_value), Object.values(priceFilter).length ? Object.values(priceFilter)[0] : Number(filtersGroup[groupid].max_value)]} />
                             </div>
                           </TabPane>
                         )
@@ -484,10 +504,11 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                   }
 
                 </Tabs>
+
               </div>
-              <div className='flex justify-end gap-6 pb-9 sort-btn'>
-                <p onClick={() => setFilterModalVisible(false)} className='text-base px-5 py-2 btn-color-revese cursor-pointer'>Cancel</p>
-                <p onClick={handleFilterAndSort} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded cursor-pointer'>Apply</p>
+              <div className='absolute right-0 bottom-0 gap-6 pb-9 sort-btn'>
+                <p onClick={() => setFilterModalVisible(false)} className='text-base px-5 py-2 btn-color-revese cursor-pointer inline'>Cancel</p>
+                <p onClick={handleFilterAndSort} className='btn-bg text-white text-base mr-10 px-5 py-2 rounded cursor-pointer inline'>Apply</p>
               </div>
             </div>
 
@@ -515,7 +536,12 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                 {
                   Object.keys(filtersGroup).map(function (groupid) {
                     if (groupid != 'priceRange') {
-                      return (<TabPane tab={`${filtersGroup[groupid].filter_group_name}`} key={groupid}>
+                      return (<TabPane tab={
+                        <>
+                        <p className='text-left'>{filtersGroup[groupid].filter_group_name}</p>
+                        {filterPayLoad[groupid]?.length && <p className='text-[10px] text-left btn-color-revers'>{filterPayLoad[groupid]?.length} items selected</p>}
+                      </>
+                      } key={groupid}>
                         {
                           Object.keys(filtersGroup[groupid].filter_group_values).map(function (value) {
                             return (
@@ -539,7 +565,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                               [Number(filtersGroup[groupid].min_value)]: `${Number(filtersGroup[groupid].min_value)}`,
                               [Number(filtersGroup[groupid].max_value)]: `${Number(filtersGroup[groupid].max_value)}`,
                             }
-                            } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length?Object.values(priceFilter)[1]:Number(filtersGroup[groupid].min_value),Object.values(priceFilter).length?Object.values(priceFilter)[0]: Number(filtersGroup[groupid].max_value)]} />
+                            } onChange={priceSliderhandler} range max={Number(filtersGroup[groupid].max_value)} min={Number(filtersGroup[groupid].min_value)} defaultValue={[Object.values(priceFilter).length ? Object.values(priceFilter)[1] : Number(filtersGroup[groupid].min_value), Object.values(priceFilter).length ? Object.values(priceFilter)[0] : Number(filtersGroup[groupid].max_value)]} />
                           </div>
                         </TabPane>
                       )

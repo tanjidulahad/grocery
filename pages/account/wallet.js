@@ -20,7 +20,7 @@ const profileWallet = ({ user, info, customerWallet }) => {
   useEffect(() => {
     const getDetail = async () => {
       // const data = await fetcher('GET', `?r=customer/get-customer-wallet-details&customerId=${user.customer_id}&storeId=${info.store_id}`)
-      const transaction = await fetcher('GET', `?r=customer/get-wallet-transaction-details&customerId=${user.customer_id}`)
+      const transaction = await fetcher('GET', `?r=customer/get-wallet-transactions&customerId=${user?.customer_id}&storeId=${info?.store_id}`)
       console.log(transaction)
       settransaction(transaction.data)
       // setwallet(data.data)

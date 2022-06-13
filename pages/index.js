@@ -101,7 +101,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
         <div>
           <Slider {...bannersettings}>
             {banner.map((item, idx) => <div className='max-h-[180px] lg:w-full lg:h-[500px] lg:max-h-[500px]' key={idx}>
-              <img className='w-full h-auto' src={item.banner_img_url} alt="" />
+              <img className='w-full h-auto min-h-[180px] lg:min-h-[500px]' src={item.banner_img_url} alt="" />
             </div>)}
           </Slider>
         </div>
