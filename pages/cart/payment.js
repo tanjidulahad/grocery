@@ -56,11 +56,10 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
     }
     const onChangeHandler = (e) => {
         const { name, value, checked } = e.target
-        if (name == 'walletPay') {
+        if (name == 'walletPay' && checkoutDetails.paymentMethod == 'Y') {
             setcheckoutDetails({
                 ...checkoutDetails,
                 [name]: checked == checkoutDetails.walletPay ? !checked : checked,
-                paymentMethod: ""
             })
             return;
         }
@@ -125,6 +124,16 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
         }
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
             setInitiateStatus('loading')
+            if (checkoutDetails.walletPay) {
+                initiateOrder({
+                    purchaseId: purchase?.purchase_id,
+                    method: paymentMethod,
+                    customerId: user.customer_id,
+                    // setInitiateStatus,
+                    setInitiateData,
+                })
+                return;
+            }
             initiateOrder({
                 purchaseId: purchase?.purchase_id,
                 method: paymentMethod,
@@ -142,11 +151,28 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
         }
     }
     useEffect(() => {
-        if (initiateStatus == 'success' && (initiateData || setConfirmPayment)) {
+        let encoded = ''
+        if (checkoutDetails.walletPay && initiateData) {
+            const { purchase } = checkout
+            const orderId = Object.keys(purchaseDetails.orders)[0]
+            const amount = initiateData?.calculatedPurchaseTotal
+            encoded = btoa(
+                JSON.stringify({
+                    amount,
+                    purchaseId: purchase?.purchase_id,
+                    method: 'ONL',
+                    customerId: user.customer_id,
+                    id: '',
+                    useWalletAmount: true,
+                    orderId,
+                })
+            )
+            redirect(`/thank-you?id=${encoded}`)
+        } else if (initiateStatus == 'success' && (initiateData || setConfirmPayment)) {
             // const orderId = Object.keys(initiateData.orders)[0]
             const orderId = Object.keys(purchaseDetails.orders)[0]
             const paymentMethod = checkoutDetails.paymentMethod == 'Y' ? 'PAY' : 'COD'
-            let encoded = ''
+
             if (checkoutDetails.paymentMethod != 'Y') {
                 const { purchase } = checkout
                 const amount = initiateData?.calculatedPurchaseTotal
@@ -182,7 +208,7 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                 clearCart()
             }
         }
-    }, [initiateStatus])
+    }, [initiateStatus, initiateData])
     useEffect(() => {
         if (error) {
             setInitiateStatus('pending')
@@ -301,20 +327,24 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
 
                                         </div>
                                     )}
-                                    <div className='p-5 md:p-0 flex justify-start items-center space-x-4'>
-                                        <input id='wallet' type="Radio" name="walletPay" value={'walletPay'} checked={checkoutDetails.walletPay} onClick={onChangeHandler} />
-                                        <label htmlFor='wallet'>
-                                            <h4 className=''>Add Wallet Balance</h4>
-                                            <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹ {+customerWallet?.customer_wallet_balance}</span></span>
-                                        </label>
-                                    </div>
+                                    {console.log('fsdfsdf', +customerWallet?.customer_wallet_balance < checkout.purchaseDetails?.calculatedPurchaseTotal)}
+                                    {storeSettings?.is_payment_accepted == 'Y' && (
+                                        <div className={`p-5 md:p-0 flex justify-start items-center space-x-4 ${(checkoutDetails.paymentMethod != 'Y' || checkoutDetails.paymentMethod == '' || +customerWallet?.customer_wallet_balance < checkout.purchaseDetails?.calculatedPurchaseTotal) && 'opacity-50'}`}>
+                                            <input disabled={checkoutDetails.paymentMethod != 'Y' || (+customerWallet?.customer_wallet_balance < checkout.purchaseDetails?.calculatedPurchaseTotal)} id='wallet' type="Radio" name="walletPay" value={'walletPay'} checked={checkoutDetails.walletPay} onClick={onChangeHandler} />
+                                            <label htmlFor='wallet'>
+                                                <h4 className=''>Pay With Wallet</h4>
+                                                <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹ {+customerWallet?.customer_wallet_balance}</span></span>
+                                            </label>
+                                        </div>
+                                    )
+                                    }
                                 </div>
                             </div>
                         </div>
                         {/* Billing Details >> */}
                         <div className='shrink-0 w-full md:w-5/12 xl:w-4/12'>
                             <div id='payment-summry' onClick={() => setIsBillingHidden(!isBillingHidden)} className={`bg-white p-4 sm:p-10 fixed sm:static bottom-[70px] inset-x-0 `} style={{ bottom: isBillingHidden ? -149 : 70 }}>
-                                <OrderSummry isBillingHidden={isBillingHidden && !isTab} isTab={isTab} />
+                                <OrderSummry payWithWallet={checkoutDetails.walletPay} isBillingHidden={isBillingHidden && !isTab} isTab={isTab} />
                             </div>
                             <div className='w-full flex fixed sm:static inset-x-0 justify-between items-center px-4 py-4 sm:py-0  bottom-[0] z-[1001] bg-white sm:bg-transparent'>
                                 <Button className="w-full sm:w-3/4 sm:mx-auto px-14 sm:px-0 py-3  block sm:mt-10 sm:py-4 white-color rounded btn-bg text-center"

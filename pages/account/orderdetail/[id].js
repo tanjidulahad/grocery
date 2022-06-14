@@ -22,7 +22,7 @@ import withAuth from '@components/auth/withAuth';
 import Stepper from '@components/stepper/stepper';
 
 
-function orderDetail({ getOrderDetails, display,info }) {
+function orderDetail({ getOrderDetails, display, info }) {
   const [isReturnActive, setIsReturnActive] = useState(false)
   const [orderDetails, setOrderDetails] = useState(null) // {}
   const [error, setError] = useState(null)
@@ -111,11 +111,11 @@ function orderDetail({ getOrderDetails, display,info }) {
 
   const handleCancel = () => {
     if (orderDetails?.orderStatus == "ORDER_CONFIRMED_BY_REST" || orderDetails?.orderStatus == "PENDING_PICKUP_BY_CUST" || orderDetails?.orderStatus == "ORDER_DELIVERED_SUCCESS") {
-      toast.error(`Order can’t be canceled after confirmation, please reach out to ${"+"+info?.primary_phone}`, {
+      toast.error(`Order can’t be canceled after confirmation, please reach out to ${"+" + info?.primary_phone}`, {
         autoClose: 2000
       })
     }
-    else{
+    else {
       setIsReturnActive(true)
     }
   }
@@ -233,7 +233,7 @@ function orderDetail({ getOrderDetails, display,info }) {
                       !!orderDetails?.paymentDetails &&
                       <div className="flex px-4 sm:px-6 mb-0 sm:mb-6 py-0 sm:py-6 md:py-3 bg-white">
                         <p className="text-left mr-4 mb-0 font-[600]  text-base sm:text-xl  text-black"> Payment Method: </p>
-                        <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400">{orderDetails?.paymentDetails[0].payment_mode ? "Cash On Delivery (COD)" : 'Online'}</p>
+                        <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.paymentDetails[0].payment_mode == 'WALLET' ? 'Wallet' : orderDetails?.paymentDetails[0].payment_mode ? orderDetails?.paymentDetails[0].payment_mode : 'Online'}</p>
                       </div>
                     }
                   </div>

@@ -20,8 +20,8 @@ const ThankYou = ({ confirmOrder, display }) => {
         if (!router.isReady) return;
         const { id } = router.query
         const data = JSON.parse(atob(id))
-        console.log(id, data);
-        console.log();
+        // console.log(id, data);
+        // console.log();
         setOrderId(data.orderId)
         confirmOrder({ ...data, setStatus })
         // setPrice(data.amount)

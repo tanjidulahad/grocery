@@ -8,7 +8,7 @@ import { BsChevronCompactDown, BsChevronCompactUp } from "react-icons/bs";
 import { applyCouponCodeStart } from '@redux/checkout/checkout-action'
 
 
-const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDetailsLoading, isBillingHidden, isTab }) => {
+const OrderSummry = ({ user, payWithWallet, customerWallet, userAddress, info, checkout, applyCouponCode, isDetailsLoading, isBillingHidden, isTab }) => {
     const purchaseDetails = checkout.purchaseDetails
     const [cpError, setCpError] = useState(null)
     const [couponCode, setCouponCode] = useState("")
@@ -35,16 +35,16 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                             }} value={couponCode} />
                             <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
                         </div>
-                        {checkout.couponInfo?
-                            checkout.couponInfo!="Invalid coupon code!"?
-                            <div className='mb-4 border-green-500 border rounded text-center text-green-600 bg-green-300 bg-opacity-20 py-3'>
-                                {checkout.couponInfo}
-                            </div>
-                            :
-                            <div className='mb-4 border-red-500 border rounded text-center text-red-600 bg-red-300 bg-opacity-20 py-3'>
-                                {checkout.couponInfo}
-                            </div>
-                            :""
+                        {checkout.couponInfo ?
+                            checkout.couponInfo != "Invalid coupon code!" ?
+                                <div className='mb-4 border-green-500 border rounded text-center text-green-600 bg-green-300 bg-opacity-20 py-3'>
+                                    {checkout.couponInfo}
+                                </div>
+                                :
+                                <div className='mb-4 border-red-500 border rounded text-center text-red-600 bg-red-300 bg-opacity-20 py-3'>
+                                    {checkout.couponInfo}
+                                </div>
+                            : ""
                         }
                         {/* {
                             !!cpError &&
@@ -97,7 +97,7 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                                             </h6>
                                             <div>
                                                 <span className=" text-sm md:text-base lg:text-lg font-medium ml-2">
-                                                    ₹{' '}
+                                                    ₹
                                                     {Number(
                                                         purchaseDetails?.totalOrderAmount
                                                     ).toFixed(2)}
@@ -125,7 +125,7 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                                             </h6>
                                             <div>
                                                 <span className=" text-sm md:text-base lg:text-lg black-color font-medium ml-2">
-                                                    ₹{' '}
+                                                    ₹
                                                     {Number(
                                                         purchaseDetails.totalTaxAmount
                                                     ).toFixed(2)}
@@ -139,7 +139,7 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                                                 </h6>
                                                 <div>
                                                     <span className=" text-sm md:text-base lg:text-lg black-color font-medium ml-2">
-                                                        ₹{' '}
+                                                        ₹
                                                         {Number(
                                                             purchaseDetails.totalConvenienceCharge
                                                         ).toFixed(2)}
@@ -153,13 +153,31 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                                             </h6>
                                             <div>
                                                 <span className=" text-sm md:text-base lg:text-lg black-color font-medium ml-2">
-                                                    ₹{' '}
+                                                    ₹
                                                     {Number(
                                                         purchaseDetails.totalCouponSavingsAmount
                                                     ).toFixed(2)}
                                                 </span>
                                             </div>
                                         </div>
+                                        {
+                                            payWithWallet &&
+                                            <div className="flex justify-between space-x-2 my-1">
+                                                <h6 className=" text-sm md:text-base lg:text-lg  font-medium text-gray-400">
+                                                    Deduction from Wallet
+                                                </h6>
+                                                <div>
+                                                    <span className=" text-sm md:text-base lg:text-lg black-color font-medium ml-2">
+                                                        - ₹{''}
+                                                        {Number(
+                                                            (customerWallet?.customer_wallet_balance) >= purchaseDetails?.calculatedPurchaseTotal ?
+                                                                purchaseDetails?.calculatedPurchaseTotal
+                                                                : +customerWallet?.customer_wallet_balance
+                                                        ).toFixed(2)}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        }
                                         <div className="flex justify-between space-x-2 my-1">
                                             <h6 className=" text-sm md:text-base lg:text-lg success-color font-medium text-gray-400">
                                                 Discount
@@ -180,7 +198,11 @@ const OrderSummry = ({ user, userAddress, info, checkout, applyCouponCode, isDet
                                             <h2 className=" text-sm md:text-base lg:text-lg font-bold">
                                                 ₹{' '}
                                                 {Number(
-                                                    purchaseDetails?.calculatedPurchaseTotal
+                                                    payWithWallet ?
+                                                        (customerWallet?.customer_wallet_balance) >= purchaseDetails?.calculatedPurchaseTotal ?
+                                                            0
+                                                            : purchaseDetails?.calculatedPurchaseTotal - (+customerWallet?.customer_wallet_balance)
+                                                        : purchaseDetails?.calculatedPurchaseTotal
                                                 ).toFixed(2)}
                                             </h2>
                                         </div>
@@ -216,6 +238,7 @@ const mapStateToProps = (state) => ({
     userAddress: state.user.address,
     checkout: state.checkout,
     isDetailsLoading: state.ui.isDetailsLoading,
+    customerWallet: state.user.customerWallet,
 })
 const mapDispatchToProps = (dispatch) => ({
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
