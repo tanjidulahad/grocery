@@ -8,6 +8,7 @@ import NavBar from "@components/navbar/navbar";
 import Footer from '@components/Footer'
 import Popup from "@components/popup/popup";
 import { useMediaQuery } from 'react-responsive'
+import absoluteUrl from 'next-absolute-url'
 
 import {
     getShopInfoStart, getShopSeoStart, getShopSettingsStart, getSocialProfileStart, getShopDisplaySettingsStart, getPageCountStart, getBannerStart,
@@ -30,19 +31,43 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner,getWalletBalance }) => {
+const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner, getWalletBalance }) => {
     const router = useRouter()
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
-    console.log("from page wraper store",store.info)
+    console.log("from page wraper store", store.info)
+
+    useEffect(() => {
+        const { origin } = absoluteUrl()
+        var myDynamicManifest = {
+            "name": `${store?.info?.store_name}`,
+            "short_name": `${store?.info?.store_name}`,
+            "description": `${store?.info?.store_name}`,
+            "display": "standalone",
+            "scope": `${origin}`,
+            "start_url": `${origin}`,
+            "background_color": "#ffffff",
+            "theme_color": "#ffffff",
+            "icons": [{
+                "src": `${store?.info?.logo_img_url}`,
+                "sizes": "512x512",
+                "type": "image/png"
+            }]
+        }
+        const stringManifest = JSON.stringify(myDynamicManifest);
+        const blob = new Blob([stringManifest], { type: 'application/json' });
+        const manifestURL = URL.createObjectURL(blob);
+        document.querySelector('#my-manifest-placeholder').setAttribute('href', manifestURL);
+
+    }, [store.info])
 
     // calling wallet api
     useEffect(() => {
         if (user != null) {
-          getWalletBalance({ customerId: user.customer_id, storeId: store?.info?.store_id })
+            getWalletBalance({ customerId: user.customer_id, storeId: store?.info?.store_id })
         }
-      }, [user,store.info])
+    }, [user, store.info])
 
     useEffect(() => {
         var seassion_id
@@ -186,6 +211,8 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
     if (!store.isReadyToGo) {
         return <Loader />
     }
+
+
 
     console.log("global", router)
     return (
