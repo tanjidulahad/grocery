@@ -168,6 +168,8 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                 })
             )
             redirect(`/thank-you?id=${encoded}`)
+            clearCheckout()
+            clearCart()
         } else if (initiateStatus == 'success' && (initiateData || setConfirmPayment)) {
             // const orderId = Object.keys(initiateData.orders)[0]
             const orderId = Object.keys(purchaseDetails.orders)[0]
