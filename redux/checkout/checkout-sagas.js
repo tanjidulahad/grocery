@@ -137,10 +137,13 @@ function* onInitiatePayment() {
                 return
             };
             const res = yield fetcher('GET', `?r=orders/initiate-payment&purchaseId=${purchaseId}`)
+            console.log(1, 'dfsf');
             if (res.data) {
+                console.log(2, 'dfsf');
                 // const amount = res.data.calculatedPurchaseTotal
                 setInitiateData(res.data)
                 if (setInitiateStatus) {
+                    console.log(3, 'dfsf');
                     setInitiateStatus('success')
                 }
                 // if (method == 'COD') { // COD or Pay On Delivery
@@ -161,14 +164,14 @@ function* onInitiatePayment() {
 }
 function* onOrderConfirmPayment() {
     yield takeLatest(checkoutActionType.ORDER_PAYMENT_CONFIRM_START, function* ({ payload }) {
-        const { purchaseId, method, customerId, amount, id, setStatus } = payload; // cod ==  N, Online Pay == Y
+        const { purchaseId, method, customerId, amount, id = "", useWalletAmount, setStatus } = payload; // cod ==  N, Online Pay == Y
         console.log(payload);
         try {
             let res = {}
             if (method == 'COD') {
-                res = yield fetcher('POST', `?r=orders/confirm-order-payments&purchaseId=${purchaseId}&method=${method}`, { customerId, amount })
+                res = yield fetcher('POST', `?r=orders/confirm-order-payments&purchaseId=${purchaseId}&method=${method}`, { customerId, amount, })
             } else {
-                res = yield fetcher('POST', `?r=orders/confirm-order-payments&purchaseId=${purchaseId}`, { customerId, amount, id })
+                res = yield fetcher('POST', `?r=orders/confirm-order-payments&purchaseId=${purchaseId}`, { customerId, amount, useWalletAmount, id })
             }
             if (res.data) {
                 setStatus('success')
