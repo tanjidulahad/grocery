@@ -67,10 +67,15 @@ const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, 
                                                             ₹{' '}
                                                             {purchaseDetails?.calculatedPurchaseTotal ? Number(
                                                                 purchaseDetails?.calculatedPurchaseTotal
-                                                            ).toFixed(2):0}
+                                                            ).toFixed(2) : 0}
                                                         </span>
                                                     </div>
-                                                    <Button type='link' disabled={isDetailsLoading} href='/cart/address' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
+                                                    {
+                                                        info.store_status == "INACTIVE" ?
+                                                            <Button disabled={true} className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Closed</Button>
+                                                            :
+                                                            <Button type='link' disabled={isDetailsLoading} href='/cart/address' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
+                                                    }
                                                 </div>
                                             </>
                                             :

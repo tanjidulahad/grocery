@@ -10,7 +10,7 @@ import PageWrapper from "@components/page-wrapper/page-wrapper"
 import Tracker from "@components/Cards/tracker"
 import Stepper from "@components/stepper/stepper"
 
-const ThankYou = ({ confirmOrder, display }) => {
+const ThankYou = ({ confirmOrder, display, clearCart, clearCart }) => {
     const [status, setStatus] = useState('loading') // loading, success, failure
     const [orderId, setOrderId] = useState(null)
     const [mobNavHeight, setMobNavHeight] = useState(0)
@@ -53,6 +53,8 @@ const ThankYou = ({ confirmOrder, display }) => {
             })
             objerver.observe(document.body)
         }
+        clearCheckout()
+        clearCart()
     }, [])
     return (
         <section >
@@ -191,7 +193,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    confirmOrder: (payload) => dispatch(orderPaymentConfirmStart(payload))
+    confirmOrder: (payload) => dispatch(orderPaymentConfirmStart(payload)),
+    clearCheckout: () => dispatch(clearCheckout()),
+    clearCart: () => dispatch(clearCart()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(ThankYou));

@@ -75,9 +75,6 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
             })
         }
     }
-    useEffect(() => {
-        console.log('checkoutDetails', checkoutDetails);
-    })
 
     const onCouponAppyHandler = () => {
         if (couponCode.length < 3) return;
@@ -103,7 +100,10 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
 
     // Initial Payment function
     const initiatePayment = () => {
-        console.log(checkoutDetails.paymentMethod == "N" && !confirmOrder);
+
+        if (info.store_status == "INACTIVE") {
+            return;
+        }
         if (!checkoutDetails.paymentMethod) return
         if (checkoutDetails.paymentMethod == "N" && !confirmOrder) {
             setConfirmOrder(true)
@@ -219,6 +219,7 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
 
     // looking navbar height
     useEffect(() => {
+        setError({ message: 'Store is closed for now.' })
         if (typeof window !== 'undefined') {
             const objerver = new ResizeObserver(function (e) {
                 if (e[0].contentRect.width < 640 && mobNavHeight == 0) {
