@@ -1,24 +1,42 @@
+
 import { useEffect, useState } from 'react'
 import { connect } from "react-redux"
-import { useFirebase } from '../../firebase/useFirebase';
+// import { useFirebase } from '../../firebase/useFirebase';
 
 import { authShowToggle, getLoginOtpStart, getRegisterOtpStart, otpVerificationStart } from "../../redux/user/user-action";
 
 import Login from './login';
 import Register from './register';
+import { getMessaging, getToken } from "firebase/messaging";
+import firebaseApp from '../../firebase/firebase';
 
 
 
 
 const Auth = ({ show, user }) => {
     const [page, setPage] = useState(true) // true == login, false == Register
-    const [fcmToken,setFcmToken]=useState('')
+    const [fcmToken, setFcmToken] = useState('')
 
-    useEffect(()=>{
-        useFirebase().then(res=>{
-            setFcmToken(res)
-        })
-    },[])
+    useEffect(() => {
+        const msg = getMessaging(firebaseApp);
+        console.log("firebaseMsg", msg)
+        getToken(msg, { vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPIDKEY }).then((currentToken) => {
+            if (currentToken) {
+                console.log("token",currentToken)
+                setFcmToken(currentToken)
+            }
+        }).catch((err) => {
+
+        });
+        // msg.requestPermission().then(() => {
+        //     return msg.getToken();
+        // }).then((data) => {
+        //     console.warn("token", data)
+        // })
+        // useFirebase().then(res=>{
+        //     setFcmToken(res)
+        // })
+    }, [])
 
     return (
         <>

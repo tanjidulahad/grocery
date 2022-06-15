@@ -31,9 +31,9 @@ import "slick-carousel/slick/slick-theme.css";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-if (process.env.NODE_ENV !== 'development') {
-  console.log = () => { };
-}
+// if (process.env.NODE_ENV !== 'development') {
+//   console.log = () => { };
+// }
 
 function MyApp({ Component, pageProps }) {
   return (
