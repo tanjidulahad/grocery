@@ -9,12 +9,16 @@ import { AiOutlineHeart, AiFillStar, AiFillHeart } from 'react-icons/ai'
 import { addWishlistStart, removeWishlistStart } from "@redux/wishlist/wishlist-action";
 import { toast } from "react-toastify";
 import { authShowToggle } from "@redux/user/user-action";
+import { useEffect } from "react";
 
 
 
 const ProductItem = ({openAuth, className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist, removeWishlistStart }) => {
     const tip = useRef(null)
     const [wishlistAdded, setWishListAdded] = useState(data?.wishlistId)
+    useEffect(()=>{
+        setWishListAdded(data?.wishlistId)
+    },[data])
     const wishlist = () => {
         if (!user.currentUser) {
             // toast.error("Please Sign in First", {
@@ -136,7 +140,7 @@ const ProductItem = ({openAuth, className, store, data, user, addToCart, removeF
                         <div className="flex">
                             <p className="font-bold text-sm md:text-lg">₹ {data.sale_price}</p>
                             {
-                                data.sale_price != data.price && <span className="text-gray-400 font-thinner text-xs ml-2 flex items-center line-through"> (MPR.{data.price})</span>
+                                data.sale_price != data.price && <span className="text-gray-400 font-thinner text-xs ml-2 flex items-center line-through"> (MRP {data.price})</span>
                             }
 
                         </div>

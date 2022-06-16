@@ -46,7 +46,6 @@ function OrderCard({ status, message, data }) {
 
           </div>
         </div>
-
         {/* </div> */}
 
       </div>

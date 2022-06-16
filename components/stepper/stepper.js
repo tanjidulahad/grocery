@@ -56,14 +56,16 @@ const Stepper = ({ activeStep = 1, vertical = false, steps = [], sx = {}, openRe
                                                 }
                                             </div>
                                             :
+                                            // boxShadow: `0px 0px 0px 10px ${activeStep + 1 == i + 1 ? hexToRGB(style.compoleted.color, 0.15) : hexToRGB(style.pending.color, 0.15)}`,
+                                            //     backgroundColor: activeStep + 1 == i + 1 ? style.compoleted.color : style.pending.color,
                                             <div key={i} className={`h-5 w-5 shrink-0 rounded-full shadow-xl z-10 scale-75 ${!vertical && 'mb-4 flex-col'} `} style={{
-                                                boxShadow: `0px 0px 0px 10px ${activeStep + 1 == i + 1 ? hexToRGB(style.compoleted.color, 0.15) : hexToRGB(style.pending.color, 0.15)}`,
-                                                backgroundColor: activeStep + 1 == i + 1 ? style.compoleted.color : style.pending.color,
+                                                boxShadow: `0px 0px 0px 10px ${hexToRGB(style.pending.color, 0.15)}`,
+                                                backgroundColor: style.pending.color,
                                             }} />
                                     }
                                     <div className={`text-black w-full  ${vertical ? `text-left -ml-2.5 border-dashed ${i + 1 != steps.length && `h-24 border-l-2`}` : 'text-center'} inline-block`} style={{
                                         // minHeight: ' 80px',
-                                        borderColor: vertical ? activeStep >= i + 1 || activeStep + 1 == i + 1 ? style.compoleted.color : style.pending.color : 'none'
+                                        borderColor: vertical ? activeStep >= i + 1  ? style.compoleted.color : style.pending.color : 'none'
                                     }}>
                                         <span className={`text-sm font-semibold tracking-normal inline-block ${vertical && 'pl-6'} ${style.labelClass}`}>
                                             {item?.lable}

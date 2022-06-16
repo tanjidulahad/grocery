@@ -97,12 +97,12 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     if (!page) return;
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus, page })
+      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus, page,user })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getCategoryProducts({ storeId, categoryId: category, subCategoryId, page, setStatus })
+      getCategoryProducts({ storeId, categoryId: category, subCategoryId, page, setStatus,user })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else {
@@ -115,11 +115,11 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   useEffect(() => {
     if (search) {
       setStatus('loading')
-      getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus })
+      getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus,user })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
-      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus })
+      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus,user })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       getFilterGroups({ storeId, setFiltersGroup })
 
@@ -252,7 +252,10 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
 
   useEffect(() => {
     if (Object.keys(filterAndSortPayload).length != 0) {
-      if (category) {
+      if (search) {
+        getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus,filterAndSortPayload, sortOrder, user })  
+      }
+      else if (category) {
         getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus, filterAndSortPayload, sortOrder, user })
       }
       else {
