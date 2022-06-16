@@ -16,13 +16,14 @@ import { clearCart, deleteItemFromCart } from '@redux/cart/cart-actions'
 import { getAddressStart, addAddressStart, updateAddressStart, authShowToggle, } from '@redux/user/user-action'
 import {
     setBackendCartStart, getPurchageStart, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod,
-    initiateOrderPymentStart, clearCheckout, createNewRzpOrderStart, applyCouponCodeStart,
+    initiateOrderPymentStart, clearCheckout, createNewRzpOrderStart, applyCouponCodeStart, deleteFromPurchaseStart,
 } from '@redux/checkout/checkout-action'
 
 
-const CartList = ({ user, userAddress, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
-    const purchaseDetails = checkout.purchaseDetails
-    const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
+const CartList = ({ user, userAddress, storeSettings, deleteFromPurchase, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+    const purchaseDetails = checkout.purchaseDetails;
+    const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0);
+    const [shouldCall, setShouldCall] = useState(true)
     const [mobNavHeight, setMobNavHeight] = useState(0)
     const [initiateData, setInitiateData] = useState(null) // For cod
     const [confirmPayment, setConfirmPayment] = useState(null) // For online
@@ -39,16 +40,39 @@ const CartList = ({ user, userAddress, storeSettings, cart, info, checkout, setB
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [navbarHeight, setNavbarHeight] = useState(166)
 
-    const onCouponAppyHandler = () => {
-        if (couponCode.length < 3) return;
-        const order = Object.values(checkout.purchaseDetails.orders).find(item => item.storeId == info.store_id);
-        const orderId = order?.orderId
-        applyCouponCode({ purchaseId: checkout.purchase?.purchase_id, storeId: info.store_id, couponCode, orderId, userId: user.customer_id, onSuccess: setOnSuccess, onError: setCpError })
-        setCouponCode("")
+
+    const setCart = (item = null, removeItem = false) => {
+        if (!info || !user || !cart.length) {
+            return
+        }
+        if (removeItem && item) {
+            deleteItemFromCart(item)
+            const { orderItemId } = Object.values((Object.values(purchaseDetails.orders)[0]).orderItems).find(orderItem => orderItem.itemId == item.item_id) || {}
+            if (orderItemId) {
+                deleteFromPurchase({ orderItemId: orderItemId, purchaseId: checkout.purchase?.purchase_id })
+            }
+            return;
+        }
+        const data = {
+            [info.store_id]: [
+                ...cart.map((item) => ({
+                    item_id: item.item_id,
+                    barcode_id: null,
+                    quantity: item.quantity,
+                    variant_item_id: item.defaultVariantItem?.variant_item_id | null,
+                })),
+            ],
+        }
+        //  Creating browsercart
+        setBackendCart({ userId: user.customer_id, groupId: info.group_id, purchaseId: checkout?.purchase?.purchase_id, data })
     }
     useEffect(() => {
         // Do nothing if don't have storeId, user and cart length is zero
-        if (!info || !user || !cart.length){
+        // if (shouldCall) {
+        // setCart();
+        // }
+        // setShouldCall(false)
+        if (!info || !user || !cart.length) {
             return
         }
         const data = {
@@ -61,7 +85,6 @@ const CartList = ({ user, userAddress, storeSettings, cart, info, checkout, setB
                 })),
             ],
         }
-        console.log('Cartipdate');
         //  Creating browsercart
         setBackendCart({ userId: user.customer_id, groupId: info.group_id, purchaseId: checkout?.purchase?.purchase_id, data })
         // if (!checkout.purchase) {
@@ -83,10 +106,6 @@ const CartList = ({ user, userAddress, storeSettings, cart, info, checkout, setB
         // }
     }, [user, totalItems, info])
 
-
-
-    console.log("all cart items",cart)
-
     return (
         <div className='w-full sm:space-y-5'>
             {cart.map((item, i) => (
@@ -94,7 +113,7 @@ const CartList = ({ user, userAddress, storeSettings, cart, info, checkout, setB
                     <div className=" w-full bg-white rounded border-b-[1px] border-[#E7E7E7] md:border-[0px]">
                         {/* cart Item list */}
                         <div className="px-3 py-3 lg:py-4 lg:p-6  flex flex-col  divide-y sm:divide-y-0">
-                            <CartItem data={item} />
+                            <CartItem data={item} setCart={setCart} setShouldCall={setShouldCall} />
                         </div>
                     </div>
                 </div>
@@ -118,8 +137,7 @@ const mapDispatchToProps = (dispatch) => ({
     updateAddress: (data) => dispatch(updateAddressStart(data)),
     addAddressStart: (data) => dispatch(addAddressStart(data)),
 
-    setDeliveryAddressToPurchase: (id) =>
-        dispatch(setDeliveryAddressToPurchase(id)),
+    setDeliveryAddressToPurchase: (id) => dispatch(setDeliveryAddressToPurchase(id)),
     setPaymentMethod: (data) => dispatch(setPaymentMethod(data)),
     setShipmentMethod: (data) => dispatch(setShipmentMethod(data)),
 
@@ -130,5 +148,6 @@ const mapDispatchToProps = (dispatch) => ({
     deleteItemFromCart: (item) => dispatch(deleteItemFromCart(item)),
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
     authToggle: () => dispatch(authShowToggle()),
+    deleteFromPurchase: (item) => dispatch(deleteFromPurchaseStart(item)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(CartList)

@@ -162,10 +162,10 @@ const ProductDetails = ({ openAuth, store,
         }
         else {
             const defImg = Object.values(success?.defaultVariantItem?.variant_value_1?.variant_value_images != undefined ? success.defaultVariantItem?.variant_value_1?.variant_value_images : '').filter(Boolean)
-            if (defImg.length!=0) {
+            if (defImg.length != 0) {
                 images = defImg
-            }else{
-                images=['/img/default.png']
+            } else {
+                images = ['/img/default.png']
             }
         }
 
@@ -680,7 +680,7 @@ const ProductDetails = ({ openAuth, store,
                                             {
                                                 visuals.specifications.map((item, i) => (
                                                     <div className="flex items-center" key={i}>
-                                                        <GoPrimitiveDot />
+                                                        <GoPrimitiveDot className=" shrink-0" />
                                                         <p className="text-sm md:text-xl font-thin text-gray-500 mx-2 ">{item.attribute_value}</p>
                                                     </div>
                                                 ))

@@ -101,9 +101,9 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
     // Initial Payment function
     const initiatePayment = () => {
 
-        // if (info.store_status == "INACTIVE") {
-        //     return;
-        // }
+        if (info.store_status == "INACTIVE") {
+            return;
+        }
         if (!checkoutDetails.paymentMethod) return
         if (checkoutDetails.paymentMethod == "N" && !confirmOrder) {
             setConfirmOrder(true)
