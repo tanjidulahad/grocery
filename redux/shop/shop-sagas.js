@@ -197,7 +197,7 @@ function* onGetCategoryProductsStart() {
         const { storeId, categoryId, subCategoryId, page, setStatus, filterAndSortPayload, sortOrder, user } = payload //status == loading || failed || success
         try {
             // yield put(clearProductList());
-            const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}`
+            const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}${user ? `&customerId=${user.customer_id}` : ""}`
             const res = yield fetcher(`${filterAndSortPayload == undefined ? 'GET' : 'POST'}`, query, filterAndSortPayload)
             if (Array.isArray(res.data)) {
                 var available = res.data.filter(function (item) {
@@ -223,9 +223,9 @@ function* onGetCategoryProductsStart() {
 
 function* onProductSerachStart() {
     yield takeLatest(shopActionType.GET_SEARCH_START, function* ({ payload }) {
-        const { storeId, q, setSearchResult, setStatus, page } = payload //status == loading || failed || success
+        const { storeId, q, setSearchResult, setStatus, page,filterAndSortPayload, sortOrder, user  } = payload //status == loading || failed || success
         try {
-            const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}${page ? `&pageNum=${page}` : "&pageNum=1"}`)
+            const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}${user ? `&customerId=${user.customer_id}` : ""}`)
             if (Array.isArray(res.data)) {
                 var available = res.data.filter(function (item) {
                     if (item.item_status == "AVAILABLE") {
