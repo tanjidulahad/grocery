@@ -101,9 +101,9 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
     // Initial Payment function
     const initiatePayment = () => {
 
-        if (info.store_status == "INACTIVE") {
-            return;
-        }
+        // if (info.store_status == "INACTIVE") {
+        //     return;
+        // }
         if (!checkoutDetails.paymentMethod) return
         if (checkoutDetails.paymentMethod == "N" && !confirmOrder) {
             setConfirmOrder(true)
@@ -125,13 +125,18 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
             setInitiateStatus('loading')
             if (checkoutDetails.walletPay) {
-                initiateOrder({
-                    purchaseId: purchase?.purchase_id,
-                    method: paymentMethod,
-                    customerId: user.customer_id,
-                    // setInitiateStatus,
-                    setInitiateData,
-                })
+                if (confirmOrder) {
+                    initiateOrder({
+                        purchaseId: purchase?.purchase_id,
+                        method: paymentMethod,
+                        customerId: user.customer_id,
+                        // setInitiateStatus,
+                        setInitiateData,
+                    })
+                    return;
+                }
+                setConfirmOrder(true)
+                setInitiateStatus('pending')
                 return;
             }
             initiateOrder({

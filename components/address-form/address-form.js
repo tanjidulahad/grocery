@@ -98,21 +98,23 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                             <div className="text-base font-semibold mb-1">Address Line 2</div>
                             <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3 xl:w-1/2' type="text" name='address_line_2' placeholder="Address" value={newAddress.address_line_2} />
                         </div>
-                        <div className="mt-4 col-xl-6">
-                            <div className="text-base font-semibold mb-1">Country*</div>
-                            <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='state' disabled={true} placeholder="State" value={'India'} />
-                        </div>
-                        <div className="mt-4 col-xl-6">
-                            <div className="text-base font-semibold mb-1">State*</div>
-                            <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='state' placeholder="State" value={newAddress.state} />
-                        </div>
-                        <div className="mt-4 col-xl-6">
-                            <div className="text-base font-semibold mb-1">City*</div>
-                            <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='city' placeholder="Enter City Name" value={newAddress.city} />
-                        </div>
-                        <div className="mt-4 col-xl-6">
-                            <div className="text-base font-semibold mb-1">Zin code*</div>
-                            <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='zip_code' placeholder="Enter Your Area PIN " value={newAddress.zip_code} />
+                        <div className=" grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div className="mt-4 col-xl-6">
+                                <div className="text-base font-semibold mb-1">Country*</div>
+                                <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='state' disabled={true} placeholder="State" value={'India'} />
+                            </div>
+                            <div className="mt-4 col-xl-6">
+                                <div className="text-base font-semibold mb-1">State*</div>
+                                <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='state' placeholder="State" value={newAddress.state} />
+                            </div>
+                            <div className="mt-4 col-xl-6">
+                                <div className="text-base font-semibold mb-1">City*</div>
+                                <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='city' placeholder="Enter City Name" value={newAddress.city} />
+                            </div>
+                            <div className="mt-4 col-xl-6">
+                                <div className="text-base font-semibold mb-1">Zin code*</div>
+                                <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='zip_code' placeholder="Enter Your Area PIN " value={newAddress.zip_code} />
+                            </div>
                         </div>
                         <div className="mt-6 col-xl-12">
                             <div className="text-base font-semibold mb-1">Address Type</div>
@@ -123,7 +125,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                                         <span className=" font-semibold">
                                             Home Address
                                         </span>
-                                        <span className="text-sm font-normal">{' '}
+                                        <span className="text-sm font-normal hidden">{' '}
                                             ( product will be delivered between 7 am to 9 pm)
                                         </span>
                                     </label></div>
@@ -131,7 +133,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                                     <input type="radio" name="address_tag" value='Work' id="add-t-2" onChange={onChangeAddress} checked={newAddress.address_tag == 'Work'} />
                                     <label className={`text-base ml-4 font-medium ${newAddress.address_tag == 'Work' ? "selected" : ""}`} htmlFor='add-t-2' >
                                         <span className=" font-semibold">Office/ Work Address </span>
-                                        <span className="text-sm font-normal">{' '}
+                                        <span className="text-sm font-normal hidden">{' '}
                                             ( product will be delivered between 10 am - 6 pm)
                                         </span>
                                     </label></div>
@@ -147,7 +149,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                                 }</Button>
                             </div>
                             <div className="">
-                                <Button className="btn-color-revers text-sm md:text-base" onClick={() => { setNewAddress(addressStructure); close() }}>Don’t {Object(newAddress).hasOwnProperty('address_id') ? 'update' : 'Save'}</Button>
+                                <Button className="btn-color-revers text-sm md:text-base" onClick={() => { setNewAddress(addressStructure); close() }}>Cancel</Button>
                             </div>
                         </div>
                     </div>

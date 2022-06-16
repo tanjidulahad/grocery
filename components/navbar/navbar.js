@@ -270,13 +270,13 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                       }
                     </a>
                   </Link>
-                  <div className=" absolute bg-white text-black others-list">
+                  <div className=" absolute shadow-lg bg-white text-black others-list">
                     <ul className="">
                       {
                         item?.subCategories.map((subItem, j) => (
                           <li className=" relative others-list-item " key={j + 'll'}>
                             <Link href={`/shop?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
-                              <a className=" block py-2 px-4 hover:bg-gray-400">
+                              <a className={`block text-sm py-2 px-4 text-gray-500 hover:font-semibold hover:text-black ${subCategoryId == subItem.sub_category_id && 'btn-color-revers font-semibold'} `}>
                                 {subItem.sub_category_name}
                               </a>
                             </Link>
@@ -296,24 +296,24 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </h5>
-                <div className=" absolute -right-10 w-60 bg-white  others-list " >
+                <div className=" absolute shadow-lg -right-10 w-60 bg-white  others-list " >
                   <ul className=" w-auto">
                     {
                       lists.length && lists.slice(isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
                         <li className=" relative others-list-item " key={i}>
                           <Link href={`/shop?category=${item.category_id}`}>
-                            <a className=" block py-2 text-black hover:text-white px-4 hover:bg-gray-400">
+                            <a className={`block py-2 px-4 text-sm text-gray-500 hover:font-semibold hover:text-black ${category == item.category_id && 'btn-color-revers font-semibold'} `}>
                               {item.category_name}
                             </a>
                           </Link>
-                          <div className=" absolute bottom-0 right-full bg-white text-black sub-cat-list">
+                          <div className=" absolute shadow-lg bottom-0 right-full bg-white text-black sub-cat-list">
                             {/* <div className=" absolute top-0 right-full bg-white text-black sub-cat-list"> */}
                             <ul className="w-60 flex flex-col sticky bottom-0 overflow-x-clip overflow-y-auto" style={{ maxHeight: '200px' }}>
                               {
                                 item.subCategories.map((subItem, j) => (
                                   <li className=" text-black" key={j + 'll'}>
                                     <Link href={`/shop?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
-                                      <a className=" block py-2 px-4 hover:bg-gray-400">
+                                      <a className={`block py-2 text-sm px-4 text-gray-500 hover:font-semibold hover:text-black ${subCategoryId == subItem.sub_category_id && 'btn-color-revers font-semibold'}`}>
                                         {subItem.sub_category_name}
                                       </a>
                                     </Link>

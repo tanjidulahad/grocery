@@ -76,6 +76,7 @@ const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, 
                                                             :
                                                             <Button type='link' disabled={isDetailsLoading} href='/cart/address' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
                                                     }
+                                                    <Button type='link' disabled={isDetailsLoading} href='/cart/address' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
                                                 </div>
                                             </>
                                             :
