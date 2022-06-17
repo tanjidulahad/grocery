@@ -129,7 +129,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
             {/* <ToastContainer /> */}
             {/* Stepper Header */}
             <div className='h-[166px] flex justify-center items-center nav-bg w-full sm:hidden fixed sm:static inset-x-0 px-4 py-4  top-[0] z-[1001] bg-white sm:bg-transparent'>
-                <Stepper steps={steps} activeStep={checkoutDetails.deliveryAddress ? 1 : 0} sx={style} />
+                <Stepper steps={steps} activeStep={(checkoutDetails.deliveryAddress && checkoutDetails.deliveryMethod == 'Y') || checkoutDetails.deliveryMethod == 'N' ? 1 : 0} sx={style} />
             </div>
 
             <div className="w-full p-0 py-2 sm:pt-0 sm:py-10 mt-10 space-y-5 pb-[80px] sm:pb-10 mb-[20px] md:mb-0">
@@ -225,7 +225,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                 {
                                     !isAddressActive ?
                                         <div className='flex-1 px-4 sm:px-8 py-6 sm:py-8  bg-white'>
-                                            <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => {setIsAddressActive(true);setNewAddress(addressStructure)}}>
+                                            <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => { setIsAddressActive(true); setNewAddress(addressStructure) }}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg> Add new Address
@@ -263,7 +263,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                     {/* << Billing details */}
                 </div>
                 <div className='px-4 sm:px-0'>
-                    <Button type='link' href='/cart' className="block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
+                    <Button type='link' href='/cart' className="hidden sm:block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z" />
                         </svg>Back</Button>

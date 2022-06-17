@@ -75,9 +75,6 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
             })
         }
     }
-    useEffect(() => {
-        console.log('checkoutDetails', checkoutDetails);
-    })
 
     const onCouponAppyHandler = () => {
         if (couponCode.length < 3) return;
@@ -103,7 +100,10 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
 
     // Initial Payment function
     const initiatePayment = () => {
-        console.log(checkoutDetails.paymentMethod == "N" && !confirmOrder);
+
+        if (info.store_status == "INACTIVE") {
+            return;
+        }
         if (!checkoutDetails.paymentMethod) return
         if (checkoutDetails.paymentMethod == "N" && !confirmOrder) {
             setConfirmOrder(true)
@@ -125,13 +125,18 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
             setInitiateStatus('loading')
             if (checkoutDetails.walletPay) {
-                initiateOrder({
-                    purchaseId: purchase?.purchase_id,
-                    method: paymentMethod,
-                    customerId: user.customer_id,
-                    // setInitiateStatus,
-                    setInitiateData,
-                })
+                if (confirmOrder) {
+                    initiateOrder({
+                        purchaseId: purchase?.purchase_id,
+                        method: paymentMethod,
+                        customerId: user.customer_id,
+                        // setInitiateStatus,
+                        setInitiateData,
+                    })
+                    return;
+                }
+                setConfirmOrder(true)
+                setInitiateStatus('pending')
                 return;
             }
             initiateOrder({
@@ -168,6 +173,8 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                 })
             )
             redirect(`/thank-you?id=${encoded}`)
+            clearCheckout()
+            clearCart()
         } else if (initiateStatus == 'success' && (initiateData || setConfirmPayment)) {
             // const orderId = Object.keys(initiateData.orders)[0]
             const orderId = Object.keys(purchaseDetails.orders)[0]
@@ -217,6 +224,7 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
 
     // looking navbar height
     useEffect(() => {
+        setError({ message: 'Store is closed for now.' })
         if (typeof window !== 'undefined') {
             const objerver = new ResizeObserver(function (e) {
                 if (e[0].contentRect.width < 640 && mobNavHeight == 0) {

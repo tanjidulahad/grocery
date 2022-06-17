@@ -243,7 +243,7 @@ function orderDetail({ getOrderDetails, display, info }) {
         </div>
         {
           isReturnActive && orderDetails &&
-          <Return action={'return'} items={orderDetails.orderItems} orderId={orderDetails.orderId} closeRetun={setIsReturnActive} />
+          <Return action={'Cancel'} items={orderDetails.orderItems} orderId={orderDetails.orderId} closeRetun={setIsReturnActive} />
         }
       </section>
       <div className={`md:hidden fixed top-0 shadow-lg nav-bg h-[80px] w-full `} style={{ zIndex: 1200 }}>

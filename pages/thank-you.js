@@ -5,12 +5,13 @@ import { useRouter } from "next/router"
 import PageLoader from '@components/loading/loader'
 import Link from 'next/link'
 // Actions
-import { orderPaymentConfirmStart } from "@redux/checkout/checkout-action"
+import { clearCheckout, orderPaymentConfirmStart } from "@redux/checkout/checkout-action"
 import PageWrapper from "@components/page-wrapper/page-wrapper"
 import Tracker from "@components/Cards/tracker"
 import Stepper from "@components/stepper/stepper"
+import { clearCart } from "@redux/cart/cart-actions"
 
-const ThankYou = ({ confirmOrder, display }) => {
+const ThankYou = ({ confirmOrder, display, clearCheckout, clearCart }) => {
     const [status, setStatus] = useState('loading') // loading, success, failure
     const [orderId, setOrderId] = useState(null)
     const [mobNavHeight, setMobNavHeight] = useState(0)
@@ -53,6 +54,8 @@ const ThankYou = ({ confirmOrder, display }) => {
             })
             objerver.observe(document.body)
         }
+        clearCheckout()
+        clearCart()
     }, [])
     return (
         <section >
@@ -191,7 +194,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    confirmOrder: (payload) => dispatch(orderPaymentConfirmStart(payload))
+    confirmOrder: (payload) => dispatch(orderPaymentConfirmStart(payload)),
+    clearCheckout: () => dispatch(clearCheckout()),
+    clearCart: () => dispatch(clearCart()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(ThankYou));

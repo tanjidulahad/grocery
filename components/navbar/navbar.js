@@ -114,19 +114,19 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
         <div className="wrapper flex flex-row justify-between py-4 w-full">
           <div className=" flex items-center ">
             <Button className="md:w-max lg:w-full" type="link" href="/">
-              <div className="flex  justify-center md:w-max lg:w-full  items-center ">
+              <div className="flex  justify-center md:w-max lg:w-full  items-center space-x-2">
                 <div className="h-20 w-20  shrink-0 flex  justify-center overflow-hidden rounded-md items-center">
                   <img
                     className="w-100 h-100 object-contain"
                     src={info.logo_img_url || '/img/default.png'} alt="..."
-
                   />
                 </div>
+                <h1 className='text-xl lg:text-2xl font-extrabold nav-items-color'>{info.store_name}</h1>
               </div>
             </Button>
           </div>
           <div className=" items-center justify-end flex md:basis-10/12 lg:basis-9/12 space-x-6 lg:space-x-14">
-            
+
             {/* <div className=" flex flex-1 flex-row justify-between w-full "> */}
             <form onSubmit={onSearched} className=" flex flex-1 flex-row justify-between w-full ">
               <div className=" w-full flex rounded">
@@ -135,18 +135,18 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                   <AiOutlineSearch color={'white'} size={20} />
                 </div>
               </div>
-              </form>
+            </form>
             {/* </div> */}
-            
+
             <div className=" flex flex-row justify-between items-center nav-items-color text-black space-x-14">
               <div className=" w-full flex justify-around space-x-4 lg:space-x-6 xl:space-x-14">
                 <Link href={'/'}>
-                  <a className="block whitespace-nowrap font-normal  tracking-tight lg:text-base">
+                  <a className={`block whitespace-nowrap ${router.route == '/' ? 'font-semibold' : 'font-normal'} tracking-tight  lg:text-base`}>
                     Home
                   </a>
                 </Link>
                 <Link href={'/shop'}>
-                  <a className="block whitespace-nowrap font-normal  tracking-tight  lg:text-base">
+                  <a className={`block whitespace-nowrap ${router.route.includes('/shop') ? 'font-semibold' : 'font-normal'} tracking-tight  lg:text-base`}>
                     Shop
                   </a>
                 </Link>
@@ -270,13 +270,13 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                       }
                     </a>
                   </Link>
-                  <div className=" absolute bg-white text-black others-list">
+                  <div className=" absolute shadow-lg bg-white text-black others-list">
                     <ul className="">
                       {
                         item?.subCategories.map((subItem, j) => (
                           <li className=" relative others-list-item " key={j + 'll'}>
                             <Link href={`/shop?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
-                              <a className=" block py-2 px-4 hover:bg-gray-400">
+                              <a className={`block text-sm py-2 px-4 text-gray-500 hover:font-semibold hover:text-black ${subCategoryId == subItem.sub_category_id && 'btn-color-revers font-semibold'} `}>
                                 {subItem.sub_category_name}
                               </a>
                             </Link>
@@ -296,24 +296,24 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                     <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
                 </h5>
-                <div className=" absolute -right-10 w-60 bg-white  others-list " >
+                <div className=" absolute shadow-lg -right-10 w-60 bg-white  others-list " >
                   <ul className=" w-auto">
                     {
                       lists.length && lists.slice(isDesktopOrLaptopx ? 6 : 4).map((item, i) => (
                         <li className=" relative others-list-item " key={i}>
                           <Link href={`/shop?category=${item.category_id}`}>
-                            <a className=" block py-2 text-black hover:text-white px-4 hover:bg-gray-400">
+                            <a className={`block py-2 px-4 text-sm text-gray-500 hover:font-semibold hover:text-black ${category == item.category_id && 'btn-color-revers font-semibold'} `}>
                               {item.category_name}
                             </a>
                           </Link>
-                          <div className=" absolute bottom-0 right-full bg-white text-black sub-cat-list">
+                          <div className=" absolute shadow-lg bottom-0 right-full bg-white text-black sub-cat-list">
                             {/* <div className=" absolute top-0 right-full bg-white text-black sub-cat-list"> */}
                             <ul className="w-60 flex flex-col sticky bottom-0 overflow-x-clip overflow-y-auto" style={{ maxHeight: '200px' }}>
                               {
                                 item.subCategories.map((subItem, j) => (
                                   <li className=" text-black" key={j + 'll'}>
                                     <Link href={`/shop?category=${item.category_id}&subCategoryId=${subItem.sub_category_id}`}>
-                                      <a className=" block py-2 px-4 hover:bg-gray-400">
+                                      <a className={`block py-2 text-sm px-4 text-gray-500 hover:font-semibold hover:text-black ${subCategoryId == subItem.sub_category_id && 'btn-color-revers font-semibold'}`}>
                                         {subItem.sub_category_name}
                                       </a>
                                     </Link>
@@ -369,12 +369,12 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
               </div>
             </div>
             {/* <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}> */}
-              <form onSubmit={onSearched} action="" className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
+            <form onSubmit={onSearched} action="" className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
               <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
               <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
                 <FiSearch color={'black'} size={20} />
               </div>
-              </form>
+            </form>
             {/* </div> */}
           </div>
           :

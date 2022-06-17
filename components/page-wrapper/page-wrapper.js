@@ -36,8 +36,7 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
-    console.log("from page wraper store", store.info)
-
+    // console.log(router, 'router');
     useEffect(() => {
         const { origin } = absoluteUrl()
         var myDynamicManifest = {
