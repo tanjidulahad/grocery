@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useRef } from 'react';
 import Link from "@components/link"
 import { connect } from 'react-redux';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -46,6 +46,16 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
 
   const [contactUsVisible, setContactUsVisible] = useState(false)
   const [mobContactUsVisible, setMobContactUsVisible] = useState(false)
+  const [searchResult, setSearchResult] = useState([])
+  const Router = useRouter();
+  const { category, subCategoryId, search } = Router.query;
+  // const { category, subCategoryId } = Router.router.query
+  const [status, setStatus] = useState('loading') //status == loading || failed || success
+  const [q, setq] = useState(search ? search : '');
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [isOnTop, setIsOnTop] = useState(false)
+  const mobSearch = useRef(null)
 
   useEffect(() => {
     setIsLogin(!!user)
@@ -62,19 +72,26 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
   }
   const onSearched = (e) => {
     e.preventDefault()
-    console.log('queryrr', query);
+    // console.log('queryrr', query);
     if (query.length) {
       redirect(`/shop?search=${query}`)
     }
   }
 
 
-  const [searchResult, setSearchResult] = useState([])
-  const Router = useRouter();
-  const { category, subCategoryId, search } = Router.query;
-  // const { category, subCategoryId } = Router.router.query
-  const [status, setStatus] = useState('loading') //status == loading || failed || success
-  const [q, setq] = useState(search ? search : '');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const position = window.pageYOffset;
+      setScrollPosition(position);
+      // console.log(position);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+
+  }, [])
 
 
   useEffect(() => {
@@ -109,7 +126,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
   const name = Router?.route?.split('/')[3]
 
   return (
-    <nav id='navbar' className='sticky top-0' ref={ref} style={{ backgroundColor: `#F9F6ED` }}>
+    <nav id='navbar' className='sm:sticky top-0' ref={ref} style={{ backgroundColor: `#F9F6ED` }}>
       <div className={(router.pathname == "/[name]/[storeId] hidden md:block " || ['search', 'category'].some(val => router.asPath.includes(val))) || isDesktopOrLaptop ? `navbar-body  relative bg-[#F9F6ED] hidden md:block nav-bg` : 'hidden'} >
         <div className="wrapper flex flex-row justify-between py-4 w-full">
           <div className=" flex items-center ">
@@ -368,14 +385,17 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                 </Button>
               </div>
             </div>
-            {/* <div className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}> */}
-            <form onSubmit={onSearched} action="" className={" bg-[#F9F6ED]  rounded-lg mx-4  mt-1 shadow-lg flex rounded"}>
-              <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
-              <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
-                <FiSearch color={'black'} size={20} />
-              </div>
-            </form>
-            {/* </div> */}
+            {
+              scrollPosition >= 142 && <div className='h-[42px]' />
+            }
+            <div ref={mobSearch} className={`w-full ${scrollPosition >= 142 ? 'fixed inset-x-0 top-0 bg-white z-50 py-2 transition-all' : ""}`}>
+              <form onSubmit={onSearched} action="" className={" bg-[#F9F6ED] mx-4  mt-1 shadow-lg flex rounded"}>
+                <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
+                <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
+                  <FiSearch color={'black'} size={20} />
+                </div>
+              </form>
+            </div>
           </div>
           :
           ""
