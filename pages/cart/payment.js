@@ -224,7 +224,7 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
 
     // looking navbar height
     useEffect(() => {
-        setError({ message: 'Store is closed for now.' })
+        // setError({ message: 'Store is closed for now.' })
         if (typeof window !== 'undefined') {
             const objerver = new ResizeObserver(function (e) {
                 if (e[0].contentRect.width < 640 && mobNavHeight == 0) {
