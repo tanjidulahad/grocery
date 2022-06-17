@@ -94,8 +94,8 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
             {
               // !isAddressActive &&
               <div className="flex justify-center items-center btn-color-revese md:hidden mt-24" onClick={() => {
-                // router.push(`/account/newaddress`)
-                setIsAddressActive(true); setNewAddress(addressStructure)
+                router.push(`/account/newaddress`)
+                // setIsAddressActive(true); setNewAddress(addressStructure)
               }}>
                 <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12.5 3.125C17.6562 3.125 21.875 7.34375 21.875 12.5C21.875 17.6562 17.6562 21.875 12.5 21.875C7.34375 21.875 3.125 17.6562 3.125 12.5C3.125 7.34375 7.34375 3.125 12.5 3.125ZM12.5 1.5625C6.48438 1.5625 1.5625 6.48438 1.5625 12.5C1.5625 18.5156 6.48438 23.4375 12.5 23.4375C18.5156 23.4375 23.4375 18.5156 23.4375 12.5C23.4375 6.48438 18.5156 1.5625 12.5 1.5625Z" />
@@ -163,7 +163,9 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
                 {
                   !isAddressActive ?
                     <div className='flex-1 px-4 sm:px-8 py-6 sm:py-8  bg-white'>
-                      <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => { setIsAddressActive(true); setNewAddress(addressStructure) }}>
+                      <Button type='link' href='#address-form' className=' btn-color-revers' onClick={() => { 
+                        setIsAddressActive(true); setNewAddress(addressStructure)
+                         }}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg> Add new Address
@@ -481,8 +483,8 @@ function Savedplaces({ user, address, info, getAddress, addAddress, removeAddres
 
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
-          <BsArrowLeft className={`mx-4`} size={35} color={'white'} />
-          <p className={`text-2xl text-[white] mx-4`}>Saved Places</p>
+          <BsArrowLeft className={`mx-4 nav-items-color`} size={35} />
+          <p className={`text-2xl nav-items-color mx-4`}>Saved Places</p>
         </div>
       </div>
 

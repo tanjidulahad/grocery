@@ -358,7 +358,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
             <div className=" flex justify-between ">
               <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer nav-items-color" size={30} />
               <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
-                <div className="w-20 max-h-[55px] rounded text-center shrink-0 flex  justify-center overflow-hidden items-center">
+                <div className="w-20 max-h-[55px] rounded text-center shrink-0 flex  justify-center overflow sm:overflow-hidden items-center">
                   <img
                     className=" h-full w-full object-contain"
                     src={info.logo_img_url || '/img/default.png'} alt="..."
@@ -388,10 +388,10 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
             {
               scrollPosition >= 142 && <div className='h-[42px]' />
             }
-            <div ref={mobSearch} className={`w-full ${scrollPosition >= 142 ? 'fixed inset-x-0 top-0 bg-white z-50 py-2 transition-all' : ""}`}>
-              <form onSubmit={onSearched} action="" className={" bg-[#F9F6ED] mx-4  mt-1 shadow-lg flex rounded"}>
+            <div ref={mobSearch} className={`w-full ${scrollPosition >= 142 ? 'fixed inset-x-0 top-0 nav-bg z-50 py-2 transition-all' : ""}`}>
+              <form onSubmit={onSearched} action="" className={" bg-white mx-4  mt-1 shadow-lg flex rounded "}>
                 <Input className=" py-2 w-11/12 border-[0.1px] rounded-l-lg border-[#F9F6ED] bg-transparent focus:outline-none " placeholder='Search ' onChange={onInputChangeHandler} />
-                <div className="bg-[#F9F6ED] lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center " onClick={onSearched}>
+                <div className="bg-white lg:px-8 md:px-2 px-4 py-2  border-none outline-none cursor-pointer rounded-r-lg flex items-center ml-[-1px] " onClick={onSearched}>
                   <FiSearch color={'black'} size={20} />
                 </div>
               </form>
