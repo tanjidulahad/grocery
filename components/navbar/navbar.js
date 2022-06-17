@@ -167,7 +167,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                     </svg>
                     {
                       !!totalItems &&
-                      <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex bg-[#F58634] justify-center bg-red-600 rounded-full text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
+                      <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center btn-bg text-white items-center text-xs text-center rounded-full btn-bgs btn-color border border-white">
                         {
                           totalItems
 
@@ -339,7 +339,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
         !exceptionRouteinMobile.includes(router.pathname) ?
           <div className={`md:hidden nav-bg shadow-lg bg-[#48887B] py-2 w-full `}>
             <div className=" flex justify-between ">
-              <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer" color={'white'} size={30} />
+              <GiHamburgerMenu onClick={() => { setmenu(true) }} className="m-4 my-4 cursor-pointer nav-items-color" size={30} />
               <Button className="md:w-max mt-3 mb-3 lg:w-full" type="link" href="/">
                 <div className="w-20 max-h-[55px] rounded text-center shrink-0 flex  justify-center overflow-hidden items-center">
                   <img
@@ -355,7 +355,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                   href="/cart"
                 >
                   <span className=" text-white font-bold   relative">
-                    <IoMdCart size={30} color={"white"} />
+                    <IoMdCart size={30} className="nav-items-color" />
                     {
                       !!totalItems &&
                       <div className="absolute -top-2 -right-1 w-5 h-5 p-2 flex justify-center btn-bg rounded-full text-white items-center text-xs text-center btn-bgs btn-color border border-white">
