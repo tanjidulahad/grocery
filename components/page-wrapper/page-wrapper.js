@@ -172,7 +172,7 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
                         background-color: ${themeColors.navColor}!important;
                     }
                     .nav-items-color{
-                        color: ${displaySettings?.navbar_color ? '#fff' : '#333333'}!important;
+                        color: ${displaySettings?.navbar_color ? displaySettings?.navbar_color : '#fff'}!important;
                     }
                     .btn-nav-color-active{
                         color: ${themeColors.bgColor};
