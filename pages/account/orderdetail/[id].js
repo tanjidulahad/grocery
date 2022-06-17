@@ -96,7 +96,7 @@ function orderDetail({ getOrderDetails, display, info }) {
   }, [orderDetails])
   const style = display ? {
     compoleted: {
-      color: display.primary_color || '#E83B3B'
+      color: display.secondary_color || '#E83B3B'
     },
     active: {
       color: '#E83B3B'
@@ -249,8 +249,8 @@ function orderDetail({ getOrderDetails, display, info }) {
       <div className={`md:hidden fixed top-0 shadow-lg nav-bg h-[80px] w-full `} style={{ zIndex: 1200 }}>
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
-          <BsArrowLeft className={`mx-4`} size={35} color={'white'} />
-          <p className={`text-2xl text-[white] mx-4`}>Order Details</p>
+          <BsArrowLeft className={`mx-4 nav-items-color`} size={35} />
+          <p className={`text-2xl nav-items-color mx-4`}>Order Details</p>
         </div>
       </div>
     </>

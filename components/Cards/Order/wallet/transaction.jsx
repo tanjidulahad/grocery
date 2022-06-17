@@ -32,7 +32,7 @@ function transaction({ item, transaction = 'add' }) {
                     </defs>
                   </svg>
                   :
-                  <img className="w-[80px] h-[70px] max-h-[70px] max-w-[90px] lg:w-full lg:h-full lg:max-w-[90px] rounded object-cover opacity-80" src={'/img/default.png'} />
+                  <img className="w-[70px] h-[70px] max-h-[70px] max-w-[70px] lg:w-full lg:h-full lg:max-w-[90px] rounded object-cover opacity-80" src={'/img/default.png'} />
 
 
                 }

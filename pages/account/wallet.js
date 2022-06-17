@@ -50,8 +50,8 @@ const profileWallet = ({ user, info, customerWallet }) => {
 
         {/* <Tracker status={cartHeader.status}/> */}
         <div className={`flex items-center absolute bottom-0  mb-4`} onClick={router.back}>
-          <BsArrowLeft className={`mx-4`} size={35} color={'white'} />
-          <p className={`text-2xl text-[white] mx-4`}>Wallet</p>
+          <BsArrowLeft className={`mx-4 nav-items-color`} size={35} />
+          <p className={`text-2xl nav-items-color mx-4`}>Wallet</p>
         </div>
 
 
