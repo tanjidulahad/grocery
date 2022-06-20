@@ -28,7 +28,7 @@ const Otp = ({ showToggle, username, resend, setPage, otpVerify, verificationTyp
     const onSubmitHandler = () => {
         if (!otp) return setError("Enter valid OTP.");
         if (forgotPass) {
-            forgotPasswordOtpVerify({ state: { otpCode: otp, customerId: userId }, setError, setIsLoading, setIsSuccess, setUser })
+            forgotPasswordOtpVerify({ state: { otpCode: otp, customerId: userId,verificationType }, setError, setIsLoading, setIsSuccess, setUser })
         } else {
             otpVerify({
                 otp: otp,
