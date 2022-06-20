@@ -113,7 +113,7 @@ function Ret({ action, items, closeRetun, user, orderId }) {
               {
                 // final
                 //   ? 'Why are you returning this order?'
-                `Choose items to ${action}`
+                `Why are you cancelling this order ?`
               }
             </h3>
             {
@@ -123,7 +123,7 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                   <Radio
                     className="mt-3 "
                     name="r1"
-                    value="Product defective"
+                    value="Order got delayed"
                     onClick={(e) => {
                       onReasonHandler(e)
                     }}
@@ -133,14 +133,14 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                     className="text-sm flex text-gray-400 mt-2 mx-3"
                     style={{ alignItems: 'center' }}
                   >
-                    Product defective
+                    Order got delayed
                   </h3>
                 </div>
                 <div className="mt-4 mx-1 flex flex-around  ">
                   <Radio
                     className="mt-3 "
                     name="r1"
-                    value=" Delivery box damaged"
+                    value="Got it at a better price"
                     onClick={(e) => {
                       onReasonHandler(e)
                     }}
@@ -150,7 +150,7 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                     className="text-sm flex text-gray-400 mt-2 mx-3"
                     style={{ alignItems: 'center' }}
                   >
-                    Delivery box damaged
+                    Got it at a better price
                   </h3>
                 </div>
                 <div className="mt-4 mx-1 flex flex-around hidden md:block lg:block  ">
@@ -184,7 +184,7 @@ function Ret({ action, items, closeRetun, user, orderId }) {
                       onChangeHandler(e)
                     }}
                   >
-                    Place Return Request
+                    Place Cancel Request
                   </Button>
                 </div>
               </>
