@@ -101,7 +101,7 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
     // Initial Payment function
     const initiatePayment = () => {
 
-        if (info.store_status == "INACTIVE") {
+        if (info.store_status == "INACTIVE" || info.is_open_today == "N") {
             return;
         }
         if (!checkoutDetails.paymentMethod) return
@@ -123,41 +123,49 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
             })
         }
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
-            setInitiateStatus('loading')
+            
             if (checkoutDetails.walletPay) {
                 if (confirmOrder) {
+                    setInitiateStatus('loading')
                     initiateOrder({
                         purchaseId: purchase?.purchase_id,
                         method: paymentMethod,
                         customerId: user.customer_id,
-                        // setInitiateStatus,
+                        setInitiateStatus,
                         setInitiateData,
                     })
+                    // return;
+                }
+                else {
+                    setConfirmOrder(true)
+                    // setInitiateStatus('pending')
                     return;
                 }
-                setConfirmOrder(true)
-                setInitiateStatus('pending')
-                return;
+
             }
-            initiateOrder({
-                purchaseId: purchase?.purchase_id,
-                method: paymentMethod,
-                customerId: user.customer_id,
-                // setInitiateStatus,
-                setInitiateData,
-            })
-            createNewRzpOrder({
-                purchaseId: purchase?.purchase_id,
-                totalPurchaseAmount: purchaseDetails?.calculatedPurchaseTotal,
-                currency: purchaseDetails?.currencyCode,
-                setRzpOrder,
-                setError,
-            })
+            else {
+                setInitiateStatus('loading')
+                initiateOrder({
+                    purchaseId: purchase?.purchase_id,
+                    method: paymentMethod,
+                    customerId: user.customer_id,
+                    // setInitiateStatus,
+                    setInitiateData,
+                })
+                createNewRzpOrder({
+                    purchaseId: purchase?.purchase_id,
+                    totalPurchaseAmount: purchaseDetails?.calculatedPurchaseTotal,
+                    currency: purchaseDetails?.currencyCode,
+                    setRzpOrder,
+                    setError,
+                })
+            }
         }
     }
     useEffect(() => {
         let encoded = ''
-        if (checkoutDetails.walletPay && initiateData) {
+        console.log("from payment",initiateStatus,checkoutDetails.walletPay)
+        if (initiateStatus == 'success' && checkoutDetails.walletPay ) {
             const { purchase } = checkout
             const orderId = Object.keys(purchaseDetails.orders)[0]
             const amount = initiateData?.calculatedPurchaseTotal
@@ -173,8 +181,8 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                 })
             )
             redirect(`/thank-you?id=${encoded}`)
-            clearCheckout()
-            clearCart()
+            // clearCheckout()
+            // clearCart()
         } else if (initiateStatus == 'success' && (initiateData || setConfirmPayment)) {
             // const orderId = Object.keys(initiateData.orders)[0]
             const orderId = Object.keys(purchaseDetails.orders)[0]
@@ -337,8 +345,8 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                                     )}
                                     {console.log('fsdfsdf', +customerWallet?.customer_wallet_balance < checkout.purchaseDetails?.calculatedPurchaseTotal)}
                                     {storeSettings?.is_payment_accepted == 'Y' && (
-                                        <div className={`p-5 md:p-0 flex justify-start items-center space-x-4 ${(checkoutDetails.paymentMethod != 'Y' || checkoutDetails.paymentMethod == '' || +customerWallet?.customer_wallet_balance < checkout.purchaseDetails?.calculatedPurchaseTotal) && 'opacity-50'}`}>
-                                            <input disabled={checkoutDetails.paymentMethod != 'Y' || (+customerWallet?.customer_wallet_balance < checkout.purchaseDetails?.calculatedPurchaseTotal)} id='wallet' type="Radio" name="walletPay" value={'walletPay'} checked={checkoutDetails.walletPay} onClick={onChangeHandler} />
+                                        <div className={`p-5 md:p-0 flex justify-start items-center space-x-4 ${(checkoutDetails.paymentMethod != 'Y' || checkoutDetails.paymentMethod == '' || (+customerWallet?.customer_wallet_balance == 0)) && 'opacity-50'}`}>
+                                            <input disabled={checkoutDetails.paymentMethod != 'Y' || (+customerWallet?.customer_wallet_balance == 0)} id='wallet' type="Radio" name="walletPay" value={'walletPay'} checked={checkoutDetails.walletPay} onClick={onChangeHandler} />
                                             <label htmlFor='wallet'>
                                                 <h4 className=''>Pay With Wallet</h4>
                                                 <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹ {+customerWallet?.customer_wallet_balance}</span></span>
@@ -358,16 +366,16 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                                 <Button className="w-full sm:w-3/4 sm:mx-auto px-14 sm:px-0 py-3  block sm:mt-10 sm:py-4 white-color rounded btn-bg text-center"
                                     disabled={!checkoutDetails.paymentMethod || isDetailsLoading}
                                     onClick={() => initiatePayment()}
-                                >Pay now</Button>
+                                >Place order</Button>
                             </div>
                         </div>
                         {/* << Billing details */}
                     </div>
-                    <Button type='link' href='/cart/address' className="hidden sm:block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
+                    {/* <Button type='link' href='/cart/address' className="hidden sm:block w-fit btn-color-revers text-lg py-1 px-6 border mt-4 btn-border">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z" />
                         </svg>Back
-                    </Button>
+                    </Button> */}
                 </div>
             </div >
             {
@@ -393,7 +401,7 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                             </div>
                         </div>
                     </div>
-                    : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y'
+                    : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y' && !checkoutDetails.walletPay
                         ? <OnlienPayment themeColor={themeColor}  {...{ store: info, user, checkout, setConfirmPayment, rzpOrder, setInitiateStatus, setError }} />
                         : null
             }
@@ -415,7 +423,7 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
                     <div className=" absolute left-1/2 h-fit bottom-0 sm:bottom-auto sm:top-1/2 bg-white rounded-md w-full -translate-x-1/2 sm:-translate-y-1/2 p-6" style={{ maxWidth: "556px" }}>
                         <h2 className="text-center text-2xl btn-color-revers m-auto">Proceed?</h2>
                         <div className="py-4 text-center text-base font-medium w-full mb-6">
-                            Confirm your Order for  Cash On Delivery
+                            Confirm your Order
                         </div>
                         <div className="flex justify-between sm:space-x-4 space-x-2 pt-4 w-full text-white">
                             <Button className="py-3 w-full  font-semibold  btn-color-revers btn-border border-2  rounded transition-all " onClick={() => setConfirmOrder(false)}>Cancel</Button>
