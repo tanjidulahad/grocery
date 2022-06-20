@@ -143,13 +143,14 @@ function* onLoginWithPasswordStart() {
         try {
             const { data } = yield nodefetcher('POST', `/customer/login`, state)
             if (data.status == 'success') {
-                // if (data.customerDetails.is_account_verified == 'N') {
-                //     return setUser(data.customerDetails.customer_id)
-                // } else {
-                //     yield put(loginSuccess(data.customerDetails))
-                // }
-                yield put(loginSuccess(data.customerDetails))
-                setStatus('success')
+                if (data.customerDetails.is_account_verified == 'N') {
+                    return setUser(data.customerDetails.customer_id)
+                } else {
+                    yield put(loginSuccess(data.customerDetails))
+                    setStatus('success')
+                }
+                // yield put(loginSuccess(data.customerDetails))
+                // setStatus('success')
             }
             else {
                 throw new Error(data.message)
