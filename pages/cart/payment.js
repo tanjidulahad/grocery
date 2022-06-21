@@ -25,8 +25,9 @@ import OrderSummry from '@components/order-summry/order-summry'
 import Stepper from '@components/stepper/stepper'
 import { useMediaQuery } from 'react-responsive'
 import withAuth from '@components/auth/withAuth'
+import { getShopSettingsStart } from '@redux/shop/shop-action'
 
-const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+const Payment = ({getShopSettings, customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
     const purchaseDetails = checkout.purchaseDetails
     const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
@@ -86,6 +87,8 @@ const Payment = ({ customerWallet, user, userAddress, isDetailsLoading, displayS
 
 
     useEffect(() => {
+        const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
+        getShopSettings(storeId);
         if (user) {
             getAddress({ userId: user.customer_id })
         }
@@ -466,5 +469,6 @@ const mapDispatchToProps = (dispatch) => ({
     deleteItemFromCart: (item) => dispatch(deleteItemFromCart(item)),
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
     authToggle: () => dispatch(authShowToggle()),
+    getShopSettings: (shopId) => dispatch(getShopSettingsStart(shopId)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(withAuth(Payment)))
