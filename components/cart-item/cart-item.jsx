@@ -52,7 +52,7 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteF
             setCartItemImg(img)
         }
 
-    }, [])
+    }, [data])
     console.log("cart item img",cartItemImg)
     return (
         <div className="w-100 block space-y-3">
