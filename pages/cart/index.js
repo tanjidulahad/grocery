@@ -21,9 +21,10 @@ import {
     initiateOrderPymentStart, clearCheckout, createNewRzpOrderStart, applyCouponCodeStart,
 } from '@redux/checkout/checkout-action'
 import OrderSummry from '@components/order-summry/order-summry'
+import { getShopSettingsStart } from '@redux/shop/shop-action'
 
 
-const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode ,getShopSettings}) => {
     const purchaseDetails = checkout.purchaseDetails
     const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
     const [mobNavHeight, setMobNavHeight] = useState(0)
@@ -41,6 +42,11 @@ const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, 
     const [active2, setactive2] = useState(false)
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [navbarHeight, setNavbarHeight] = useState(166)
+
+    useEffect(()=>{
+        const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
+        getShopSettings(storeId);
+    },[])
 
     return (
         <>
@@ -71,10 +77,10 @@ const Cart = ({ user, userAddress, isDetailsLoading, storeSettings, cart, info, 
                                                         </span>
                                                     </div>
                                                     {
-                                                        (info.store_status == "INACTIVE" || info.is_open_today=="N")?
+                                                        (info.store_status == "INACTIVE" || info.is_open_today=="N" || purchaseDetails?.invalidReason=="STORE_CLOSED")?
                                                             <Button disabled={true} className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Store Closed</Button>
                                                             :
-                                                            <Button type='link' disabled={isDetailsLoading} href='/cart/address' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
+                                                            <Button type='link' disabled={isDetailsLoading || !purchaseDetails?.isPurchaseValid} href='/cart/address' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
                                                     }
                                                     {/* <Button type='link' disabled={isDetailsLoading} href='/cart/address' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button> */}
                                                 </div>
@@ -132,5 +138,6 @@ const mapDispatchToProps = (dispatch) => ({
     deleteItemFromCart: (item) => dispatch(deleteItemFromCart(item)),
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
     authToggle: () => dispatch(authShowToggle()),
+    getShopSettings: (shopId) => dispatch(getShopSettingsStart(shopId)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(Cart))

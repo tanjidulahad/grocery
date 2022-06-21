@@ -96,35 +96,35 @@ export const deleteFromCart = (cartItems, cartItemToRemove) => {
     // if (extingCartItem.quantity > 0) {
     //     return cartItems.filter(cartItem => cartItem.item_id !== cartItemToRemove.item_id)
     // }
-    const extingCartItem = cartItems.find(function(cartItem) {
-        if(cartItemToRemove.defaultVariantItem){
-            if(cartItem.defaultVariantItem){
-                if(cartItem.defaultVariantItem.variant_item_id==cartItemToRemove.defaultVariantItem.variant_item_id){
+    const extingCartItem = cartItems.find(function (cartItem) {
+        if (cartItemToRemove.defaultVariantItem) {
+            if (cartItem.defaultVariantItem) {
+                if (cartItem.defaultVariantItem.variant_item_id == cartItemToRemove.defaultVariantItem.variant_item_id) {
                     return cartItem
                 }
-                
+
             }
-        } 
-        else if(cartItem.item_id === cartItemToRemove.item_id){
-        return cartItem
+        }
+        else if (cartItem.item_id === cartItemToRemove.item_id) {
+            return cartItem
         }
     });
     if (extingCartItem.quantity > 0) {
         // return cartItems.filter(cartItem => cartItem.item_id !== cartItemToRemove.item_id)
-        return cartItems.filter(function(cartItem) {
-            if(cartItemToRemove.defaultVariantItem && cartItem.defaultVariantItem){
-                    if(cartItem.defaultVariantItem.variant_item_id==cartItemToRemove.defaultVariantItem.variant_item_id){
-                        return false
-                    }
-                    else{
-                        return true
-                    }
-    
-            } 
-            else if(cartItem.item_id == cartItemToRemove.item_id){
-            return false
+        return cartItems.filter(function (cartItem) {
+            if (cartItemToRemove.defaultVariantItem && cartItem.defaultVariantItem) {
+                if (cartItem.defaultVariantItem.variant_item_id == cartItemToRemove.defaultVariantItem.variant_item_id) {
+                    return false
+                }
+                else {
+                    return true
+                }
+
             }
-            else{
+            else if (cartItem.item_id == cartItemToRemove.item_id) {
+                return false
+            }
+            else {
                 return true
             }
         })
@@ -167,7 +167,9 @@ export const filterCart = (cartItems, orderDetails) => {
             orderId: item.orderId,
             store_name: orderDetails.orders[item.orderId]?.storeName,
             store_logo: '/img/default.webp',
-            defaultVariantItem: item.customizationDetails ? { ...item.customizationDetails } : null
+            defaultVariantItem: item.customizationDetails ? { ...item.customizationDetails } : null,
+            invalidReason: item.invalidReason,
+            isOrderItemValid: item.isOrderItemValid
         })
     }) // Item id and quantity filter
     console.log(backendCart);

@@ -25,8 +25,9 @@ import OrderSummry from '@components/order-summry/order-summry'
 import withAuth from '@components/auth/withAuth'
 import Stepper from '@components/stepper/stepper';
 import { redirect } from '@components/link';
+import { getShopSettingsStart } from '@redux/shop/shop-action';
 
-const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+const Address = ({getShopSettings, user, userAddress, display, isDetailsLoading, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
     const addressStructure = {
         address_fields: "",
@@ -105,6 +106,8 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
     }
     // Componentdidmount effects
     useEffect(() => {
+        const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID
+        getShopSettings(storeId);
         if (user) {
             getAddress({ userId: user.customer_id })
         }
@@ -157,7 +160,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                             }
                         </div>
                         {
-                            checkoutDetails.deliveryMethod == 'Y' &&
+                            (checkoutDetails.deliveryMethod == 'Y' && storeSettings.is_delivery_available=='Y')?
                             <>
                                 <h3 className='text-2xl px-4 sm:px-0 block font-semibold'>Select a delivery address</h3>
                                 <div className='flex-1 bg-white'>
@@ -237,6 +240,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                         </div>
                                 }
                             </>
+                            :""
                         }
 
                     </div>
@@ -256,7 +260,7 @@ const Address = ({ user, userAddress, display, isDetailsLoading, storeSettings, 
                                 </span>
                             </div>
                             <Button type='link' disabled={
-                                !(checkoutDetails.deliveryMethod == 'Y' && checkoutDetails.deliveryAddress || checkoutDetails.deliveryMethod == 'N') || isDetailsLoading
+                                !(checkoutDetails.deliveryMethod == 'Y' && checkoutDetails.deliveryAddress || checkoutDetails.deliveryMethod == 'N') || isDetailsLoading || (storeSettings.is_parcel_available == 'N' && checkoutDetails.deliveryMethod == 'N') || (storeSettings.is_delivery_available=='N' && checkoutDetails.deliveryMethod == 'Y')
                             } href='/cart/payment' className="w-fit sm:w-3/4 sm:mt-10 sm:mx-auto px-14 sm:px-0 py-3  block  sm:py-4 white-color rounded btn-bg text-center">Proceed </Button>
                         </div>
                     </div>
@@ -303,5 +307,6 @@ const mapDispatchToProps = (dispatch) => ({
     deleteItemFromCart: (item) => dispatch(deleteItemFromCart(item)),
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
     authToggle: () => dispatch(authShowToggle()),
+    getShopSettings: (shopId) => dispatch(getShopSettingsStart(shopId)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(withAuth(Address)))

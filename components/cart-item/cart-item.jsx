@@ -5,10 +5,55 @@ import { QuantityID } from "../inputs";
 import Rating from "@components/rating-stars/rating";
 import { IoIosCloseCircleOutline } from 'react-icons/io'
 import { deleteFromPurchaseStart } from "@redux/checkout/checkout-action";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteFromPurchase, isDetailsLoading }) => {
     console.log("cart item", data)
+    const [cartItemImg,setCartItemImg]=useState([])
+    useEffect(() => {
+        var img=[]
+        if (data.defaultVariantItem != null) {
+            if (data.defaultVariantItem.variant_item_attributes) {
+                console.log("images taking from: data.defaultVariantItem.variant_item_attributes")
+                for (let i = 1; i <= Object.keys(data.defaultVariantItem.variant_item_attributes).length; i++) {
+                    if (data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`] != null) {
+                        if (data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images != null) {
+                            img = Object.values(data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                            setCartItemImg(img)
+                        }
+                    }
 
+                }
+                if(!img.length){
+                    img=['/img/default.png']
+                }
+
+            }
+            else {
+                console.log("images taking from: data.defaultVariantItem")
+                for (let i = 1; i <= 5; i++) {
+                    if (data.defaultVariantItem[`variant_value_${i}`] != null) {
+                        if (data.defaultVariantItem[`variant_value_${i}`].variant_value_images != null) {
+                            img = Object.values(data.defaultVariantItem[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                            setCartItemImg(img)
+                        }
+                    }
+
+                }
+                if(!img.length){
+                    img=['/img/default.png']
+                }
+            }
+        }
+        else{
+            console.log("images taking from: data")
+            img=[data.primary_img || '/img/default.png']
+            setCartItemImg(img)
+        }
+
+    }, [])
+    console.log("cart item img",cartItemImg)
     return (
         <div className="w-100 block space-y-3">
             <div className="flex justify-between space-x-6">
@@ -17,7 +62,8 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteF
                         <span className=" absolute">
 
                         </span>
-                        <img className="w-full h-full object-cover" src={data.defaultVariantItem ? Object.keys(data.defaultVariantItem).length && data?.defaultVariantItem?.variant_value_1?.variant_value_images != null ? data?.defaultVariantItem?.variant_value_1?.variant_value_images.img_url_1 : '/img/default.png' : data.primary_img ? data.primary_img : '/img/default.png'} alt="product" />
+                        {/* <img className="w-full h-full object-cover" src={data.defaultVariantItem ? Object.keys(data.defaultVariantItem).length && data?.defaultVariantItem?.variant_value_1?.variant_value_images != null ? data?.defaultVariantItem?.variant_value_1?.variant_value_images.img_url_1 : '/img/default.png' : data.primary_img ? data.primary_img : '/img/default.png'} alt="product" /> */}
+                        <img className="w-full h-full object-cover" src={cartItemImg[0]} alt="product" />
                     </a>
                 </Link>
                 <div className="flex-1 space-y-2 md:space-y-4 mt-0 md:mt-4">
@@ -69,7 +115,12 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteF
                             </div>
                         </div>
                     </div>
+                    {!data.isOrderItemValid && <div>
+                        <p className="text-sm text-red-600 ">{data.invalidReason}</p>
+                        {data.invalidReason && <p className="text-xs text-red-600">(please remove this item to proceed)*</p>}
+                    </div>}
                 </div>
+
                 <div className="w-10 hidden md:flex justify-end items-start">
                     <div className=" w-fit h-fit  " onClick={(e) => { deleteItemFromCart(data) }}>
                         <div className="border-[1px] border-[#CDCDCD] flex md:hidden items-center rounded">
