@@ -45,7 +45,7 @@ const OrderItemDetails = ({ item }) => {
             setOrderItemImg(img)
         }
 
-    }, [])
+    }, [item])
     return (
         <div className=" rounded bg-white flex justify-start space-x-4 mt-2 sm:mt-0 p-0 sm:p-4 items-center px-4 sm:px-6">
             <Button className="mt-2 rounded bg-gray-900 md:w-[131px] md:h-[131px] w-20 h-20 shrink-0 block" type='link' href={`/product/${item.orderItemId}`}>
