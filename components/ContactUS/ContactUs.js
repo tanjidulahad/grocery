@@ -86,7 +86,7 @@ const ContactUs = ({ contactUsVisible, setContactUsVisible, info, socialProfile 
                                                 socialProfile.map(function (item, idx) {
                                                     if (item.social_account_link) {
                                                         return (
-                                                            <a className='block' href={(item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`} onClick={() => window.location.href = (item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`}
+                                                            <a target="_blank" className='block' href={(item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`}
                                                                 style={{ width: "2rem", height: '2rem', maxHeight: '2rem', borderRadius: '50%' }}
                                                                 bgColor="#fff" fgColor="#000"
                                                                 key={idx}>

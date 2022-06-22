@@ -455,7 +455,8 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                   {
                     socialProfile.map(function (item, idx) {
                       if (item.social_account_link) {
-                        return <SocialIcon style={{ width: "30px", height: '30px', maxHeight: '30px', borderRadius: '50%' }} bgColor="#fff" fgColor="#000" url={(item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`} onClick={() => window.location.href = (item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`} key={idx} />
+                        return <a target="_blank" href={(item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`}><img style={{ width: "30px", height: '30px', maxHeight: '30px', borderRadius: '50%' }} src={item?.logo_img_url || ''} alt="Goplinto" /></a>
+                        // <SocialIcon style={{ width: "30px", height: '30px', maxHeight: '30px', borderRadius: '50%' }} bgColor="#fff" fgColor="#000" url={(item.social_account_link.indexOf('http://') == 0 || item.social_account_link.indexOf('https://') == 0) ? `${item.social_account_link}` : `https://${item.social_account_link}`} key={idx} />
                       }
                     })
                   }

@@ -349,7 +349,7 @@ const Payment = ({getShopSettings, customerWallet, user, userAddress, isDetailsL
                                     {console.log('fsdfsdf', +customerWallet?.customer_wallet_balance < checkout.purchaseDetails?.calculatedPurchaseTotal)}
                                     {storeSettings?.is_payment_accepted == 'Y' && (
                                         <div className={`p-5 md:p-0 flex justify-start items-center space-x-4 ${(checkoutDetails.paymentMethod != 'Y' || checkoutDetails.paymentMethod == '' || (+customerWallet?.customer_wallet_balance == 0)) && 'opacity-50'}`}>
-                                            <input disabled={checkoutDetails.paymentMethod != 'Y' || (+customerWallet?.customer_wallet_balance == 0)} id='wallet' type="Radio" name="walletPay" value={'walletPay'} checked={checkoutDetails.walletPay} onClick={onChangeHandler} />
+                                            <input disabled={checkoutDetails.paymentMethod != 'Y' || (+customerWallet?.customer_wallet_balance == 0)} id='wallet' type="checkbox" name="walletPay" value={'walletPay'} checked={checkoutDetails.walletPay} onClick={onChangeHandler} />
                                             <label htmlFor='wallet'>
                                                 <h4 className=''>Pay With Wallet</h4>
                                                 <span className=' text-base'>Available Balance: <span className=' btn-color-revers'>₹ {+customerWallet?.customer_wallet_balance}</span></span>

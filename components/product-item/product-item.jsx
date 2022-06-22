@@ -13,12 +13,12 @@ import { useEffect } from "react";
 
 
 
-const ProductItem = ({openAuth, className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist, removeWishlistStart }) => {
+const ProductItem = ({ openAuth, className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist, removeWishlistStart }) => {
     const tip = useRef(null)
     const [wishlistAdded, setWishListAdded] = useState(data?.wishlistId)
-    useEffect(()=>{
+    useEffect(() => {
         setWishListAdded(data?.wishlistId)
-    },[data])
+    }, [data])
     const wishlist = () => {
         if (!user.currentUser) {
             // toast.error("Please Sign in First", {
@@ -115,7 +115,9 @@ const ProductItem = ({openAuth, className, store, data, user, addToCart, removeF
         <>
             <div className={`flex flex-col  items-stretch justify-between border-[#B6B6B6] h-full w-[160px] md:w-[221.85px] product-item w-max hover:sca ${className}`}>
                 <div className="tooltip block relative bg-white border rounded-sm h-[220px] md:h-[264.49px]">
-                    <img className="w-4 h-4 top-2 left-2 absolute" src="/img/veg.svg" />
+                    {data?.is_veg == 'Y' &&
+                        <img className="w-4 h-4 top-2 left-2 absolute" src="/img/veg.svg" />
+                    }
                     {wishlistAdded ? <AiFillHeart className="w-4 h-4 top-2 right-2 absolute text-[#F35252] hover:text-[#F35252] hover:scale-150 transition-all bg-white  rounded-[50%]" size={18} value={{ color: 'blue' }} onClick={() => removeFromWishList(wishlistAdded)} />
                         :
                         <AiOutlineHeart onClick={wishlist} className="w-4 h-4 top-2 right-2 absolute hover:text-[#F35252] hover:scale-150 transition-all bg-white rounded-[50%]" size={18} />}
@@ -123,8 +125,8 @@ const ProductItem = ({openAuth, className, store, data, user, addToCart, removeF
                     <Button type="link" href={`/product/${data.item_id}`} style={{ height: '-webkit-fill-available' }}>
                         <a onMouseMove={tipFun} >
                             {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
-                            {console.log("img",data.defaultVariantItem?.variant_value_1?.variant_value_images)}
-                            <img className="w-full h-full object-cover" src={data.primary_img ? data.primary_img : data.defaultVariantItem ? data.defaultVariantItem?.variant_value_1?.variant_value_images!=null ? JSON.parse(data.defaultVariantItem?.variant_value_1?.variant_value_images).img_url_1 : '/img/default.png':'/img/default.png'}  />
+                            {console.log("img", data.defaultVariantItem?.variant_value_1?.variant_value_images)}
+                            <img className="w-full h-full object-cover" src={data.primary_img ? data.primary_img : data.defaultVariantItem ? data.defaultVariantItem?.variant_value_1?.variant_value_images != null ? JSON.parse(data.defaultVariantItem?.variant_value_1?.variant_value_images).img_url_1 : '/img/default.png' : '/img/default.png'} />
                             {/* </div> */}
                             {
                                 data.item_name.length > 40 &&
