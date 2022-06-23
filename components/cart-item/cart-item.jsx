@@ -116,7 +116,7 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteF
                         </div>
                     </div>
                     {!data.isOrderItemValid && <div>
-                        <p className="text-sm text-red-600 ">{data.invalidReason}</p>
+                        {data.invalidReason &&<p className="text-sm text-red-600 ">Currently Unavailable</p>}
                         {data.invalidReason && <p className="text-xs text-red-600">(please remove this item to proceed)*</p>}
                     </div>}
                 </div>
