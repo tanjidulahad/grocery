@@ -58,6 +58,9 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   const [filterAndSortPayload, setFilterAndSortPayload] = useState({})
   const [triggerFilter, setTriggerFilter] = useState('No')
   const [sortOrder, setSortOrder] = useState("false")
+  const [sort,setSort]=useState("false")
+  const [filterAndSortApplied,setFilterAndSortApplied]=useState(false)
+  const [filterAndSortActive,setFilterAndSortActive]=useState(false)
   const customStyles = {
     overlay: { zIndex: 1000 },
     content: {
@@ -97,12 +100,12 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
     if (!page) return;
     if (search) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus, page,user })
+      getSearchProducts({ storeId, q: search.trim(), setSearchResult, setStatus, page,user,status,filterAndSortPayload,sortOrder })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
-      getCategoryProducts({ storeId, categoryId: category, subCategoryId, page, setStatus,user })
+      getCategoryProducts({ storeId, categoryId: category, subCategoryId, page, setStatus,user,filterAndSortPayload ,sortOrder})
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else {
@@ -115,16 +118,16 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   useEffect(() => {
     if (search) {
       setStatus('loading')
-      getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus,user })
+      getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus,user,status,filterAndSortPayload,sortOrder })
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else if (category) {
-      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus,user })
+      getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus,user ,filterAndSortPayload,sortOrder})
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       getFilterGroups({ storeId, setFiltersGroup })
 
     } else {
-      getShopProducts({ storeId, setStatus, user })
+      getShopProducts({ storeId, setStatus, user,filterAndSortPayload,sortOrder })
       setStatus('loading') // Set to success default Because its run whene All  products are fetching
       getFilterGroups({ storeId, setFiltersGroup })
     }
@@ -141,7 +144,7 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
         }
       }
     }
-    setTitle(search || tittleName)
+    setTitle(search?"Search results" : tittleName)
   }, [category, subCategoryId, search])
 
   useEffect(() => { // UI function
@@ -238,10 +241,12 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   }
 
   const handleSortOrder = (e) => {
-    setSortOrder(e.target.value)
+    setSort(e.target.value)
+    // setSortOrder(e.target.value)
   }
 
   const handleFilterAndSort = () => {
+    setSortOrder(sort)
     // let finalPayloadForSortAndFilter = { ...filterPayLoad, ...priceFilter }
     // console.log("finalpayloadforsortand filter",finalPayloadForSortAndFilter)
     setFilterAndSortPayload({ filter_groups: filterPayLoad, priceRange: priceFilter })
@@ -252,14 +257,21 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
 
   useEffect(() => {
     if (Object.keys(filterAndSortPayload).length != 0) {
+      setFilterAndSortActive(true)
       if (search) {
-        getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus,filterAndSortPayload, sortOrder, user })  
+        setStatus('loading')
+        setFilterAndSortApplied(true)
+        getSearchProducts({ storeId, q: search, setSearchResult, page: 1, setStatus,filterAndSortPayload, sortOrder, user ,setFilterAndSortApplied})  
       }
       else if (category) {
-        getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus, filterAndSortPayload, sortOrder, user })
+        setStatus('loading')
+        setFilterAndSortApplied(true)
+        getCategoryProducts({ storeId, categoryId: category, subCategoryId: subCategoryId, page: 1, setStatus, filterAndSortPayload, sortOrder, user,setFilterAndSortApplied })
       }
       else {
-        getShopProducts({ storeId, filterAndSortPayload, sortOrder, user, setStatus })
+        setStatus('loading')
+        setFilterAndSortApplied(true)
+        getShopProducts({ storeId, filterAndSortPayload, sortOrder, user, setStatus,setFilterAndSortApplied })
       }
     }
   }, [filterAndSortPayload])
@@ -267,7 +279,9 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
   const handleShowAllProduct = () => {
     getShopProducts({ storeId, sortOrder, user, setStatus })
     setFilterAndSortPayload({})
+    setFilterAndSortActive(false)
   }
+  console.log("filter",Object.keys(filterPayLoad).length,Object.keys(priceFilter).length,sortOrder)
 
   return (
     < >
@@ -289,10 +303,12 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                   isTabletOrMobile ? <div className="flex font-bold cursor-pointer" onClick={openMobileSort}>
                     <BsFilterLeft size={20} className='' />
                     <p className="flex items-center "> Filter / Sort By</p>
+                    {filterAndSortActive && (Object.keys(filterPayLoad).length!=0 || Object.keys(priceFilter).length!=0 || sortOrder!="false")?<img className='w-[14px] h-[14px] max-h-[14px] max-w-[14px]' src="/img/filterdot.png" alt="" />:""}
                   </div>
-                    : <div className="flex font-bold cursor-pointer" onClick={() => setFilterModalVisible(true)}>
+                    : <div className="flex font-bold cursor-pointer border border-gray-300 p-2" onClick={() => setFilterModalVisible(true)}>
                       <BsFilterLeft size={20} className='' />
                       <p className="flex items-center "> Filter / Sort By</p>
+                      {filterAndSortActive && (Object.keys(filterPayLoad).length!=0 || Object.keys(priceFilter).length!=0 || sortOrder!="false")?<img className='w-[14px] h-[14px] max-h-[14px] max-w-[14px]' src="/img/filterdot.png" alt="" />:""}
                     </div>
                 }
                 {/* <div className="flex font-bold cursor-pointer" onClick={() => setFilterModalVisible(true)}>
@@ -307,6 +323,20 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
 
                   products.length && (status == 'loading' || status == 'success')
                     ?
+                    filterAndSortApplied && status=='loading'?
+                    <>
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem />
+                          <ProductItem className={'hidden lg:block'} />
+                          <ProductItem className={'hidden xl:block'} />
+                          <ProductItem className={'hidden lg:block'} />
+                          <ProductItem className={'hidden xl:block'} />
+                        </>
+                        :
                     <>
                       {
 
@@ -435,15 +465,15 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
                   }
                     key="sort" className='h-[40vh] overflow-hidden overflow-y-scroll' >
                     <div className='mt-2'>
-                      <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} id='rel' type="radio" name='sort' value="false" />
+                      <input checked={sort == "false" ? true : false} onClick={handleSortOrder} id='rel' type="radio" name='sort' value="false" />
                       <label className='text-[18px] ml-2' htmlFor="rel">Relevance</label>
                     </div>
                     <div className='mt-2'>
-                      <input checked={sortOrder == "DESC" ? true : false} onClick={handleSortOrder} id='htl' type="radio" name='sort' value="DESC" />
+                      <input checked={sort == "DESC" ? true : false} onClick={handleSortOrder} id='htl' type="radio" name='sort' value="DESC" />
                       <label className='text-[18px] ml-2' htmlFor="htl">Price (High to Low)</label>
                     </div>
                     <div className='mt-2'>
-                      <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} id='lth' type="radio" name='sort' value="ASC" />
+                      <input checked={sort == "ASC" ? true : false} onClick={handleSortOrder} id='lth' type="radio" name='sort' value="ASC" />
                       <label className='text-[18px] ml-2' htmlFor="lth">Price (Low to High)</label>
                     </div>
                   </TabPane>
@@ -524,13 +554,13 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
             <h3 className='pt-5 pb-5 nav-bg' onClick={openMobileSort}><BsArrowLeft className={`mx-2 inline`} size={20} />Sort by</h3>
             <div className='mt-3 flex flex-wrap px-2 radio-custom'>
 
-              <input checked={sortOrder == "false" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Popularity' name="sort" value="false" />
+              <input checked={sort == "false" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Popularity' name="sort" value="false" />
               <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Popularity">Relevance</label>
 
-              <input checked={sortOrder == "DESC" ? true : false} onClick={handleSortOrder} className='hidden' type="radio" id='High' name="sort" value="DESC" />
+              <input checked={sort == "DESC" ? true : false} onClick={handleSortOrder} className='hidden' type="radio" id='High' name="sort" value="DESC" />
               <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="High">Price (High to Low)</label>
 
-              <input checked={sortOrder == "ASC" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Low' name="sort" value="ASC" />
+              <input checked={sort == "ASC" ? true : false} onClick={handleSortOrder} className='hidden ' type="radio" id='Low' name="sort" value="ASC" />
               <label className='px-2 py-2 btn-bg rounded text-white mr-1 my-2 border' htmlFor="Low">Price (Low to High)</label>
             </div>
             {Object.keys(filtersGroup).length != 0 && <h3 className='p-5 nav-bg'>Filter</h3>}

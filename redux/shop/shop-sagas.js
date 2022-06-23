@@ -157,7 +157,7 @@ function* onGetSubCategoriesStart() {
 
 function* onGetShopProductsStart() {
     yield takeLatest(shopActionType.GET_SHOP_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, page, setStatus, filterAndSortPayload, sortOrder = 'ASC', user } = payload;
+        const { storeId, page, setStatus, filterAndSortPayload, sortOrder = 'ASC', user,setFilterAndSortApplied } = payload;
         console.log("filter from saga", payload)
         try {
             const res = yield fetcher(`${filterAndSortPayload == undefined ? 'GET' : 'POST'}`, `?r=catalog/get-items&storeId=${storeId}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}${user ? `&customerId=${user.customer_id}` : ""}`, filterAndSortPayload)
@@ -178,6 +178,9 @@ function* onGetShopProductsStart() {
 
                 }
                 setStatus('success')
+                if(setFilterAndSortApplied){
+                    setFilterAndSortApplied(false)
+                }
 
             }
 
@@ -194,7 +197,7 @@ function* onGetShopProductsStart() {
 }
 function* onGetCategoryProductsStart() {
     yield takeLatest(shopActionType.GET_CATEGORY_PRODUCTS_START, function* ({ payload }) {
-        const { storeId, categoryId, subCategoryId, page, setStatus, filterAndSortPayload, sortOrder, user } = payload //status == loading || failed || success
+        const { storeId, categoryId, subCategoryId, page, setStatus, filterAndSortPayload, sortOrder, user,setFilterAndSortApplied } = payload //status == loading || failed || success
         try {
             // yield put(clearProductList());
             const query = `?r=catalog/get-items&storeId=${storeId}&categoryId=${categoryId}${subCategoryId ? `&subCategoryId=${subCategoryId}` : ''}${page ? `&pageNum=${page}` : ''}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}${user ? `&customerId=${user.customer_id}` : ""}`
@@ -213,6 +216,7 @@ function* onGetCategoryProductsStart() {
                 }
                 // yield put(getShopProductsSuccess(res.data))
                 if (setStatus) setStatus('success')
+                if(setFilterAndSortApplied) setFilterAndSortApplied(false)
             }
         } catch (error) {
             console.log(error);
@@ -223,7 +227,7 @@ function* onGetCategoryProductsStart() {
 
 function* onProductSerachStart() {
     yield takeLatest(shopActionType.GET_SEARCH_START, function* ({ payload }) {
-        const { storeId, q, setSearchResult, setStatus, page,filterAndSortPayload, sortOrder, user  } = payload //status == loading || failed || success
+        const { storeId, q, setSearchResult, setStatus, page,filterAndSortPayload, sortOrder, user,setFilterAndSortApplied  } = payload //status == loading || failed || success
         try {
             const res = yield fetcher('GET', `?r=catalog-search/search-items&storeId=${storeId}&searchKey=${q}${page ? `&pageNum=${page}` : "&pageNum=1"}${sortOrder != "false" ? sortOrder != undefined ? `&sortOrder=${sortOrder}` : "" : ""}${user ? `&customerId=${user.customer_id}` : ""}`)
             if (Array.isArray(res.data)) {
@@ -243,6 +247,10 @@ function* onProductSerachStart() {
                 // setSearchResult(res.data)
                 if (setStatus) {
                     setStatus('success')
+                    
+                }
+                if(setFilterAndSortApplied){
+                    setFilterAndSortApplied(false)
                 }
             }
         } catch (error) {
