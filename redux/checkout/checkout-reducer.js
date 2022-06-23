@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     purchaseDetails: null, //{},
     isDetailsLoading: false,
     cartError: null,// {}
-    couponInfo: null
+    couponInfo: null,
+    invalidCouponExist:null
 }
 
 
@@ -48,6 +49,11 @@ const checkoutReducer = (state = INITIAL_STATE, { type, payload }) => {
             return {
                 ...state,
                 couponInfo: payload
+            }
+        case checkoutActionType.INVALID_COUPON_APPLIED:
+            return {
+                ...state,
+                invalidCouponExist: payload
             }
         case checkoutActionType.CLEARE_CHECKOUT:
             return INITIAL_STATE

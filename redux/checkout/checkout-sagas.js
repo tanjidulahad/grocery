@@ -1,6 +1,6 @@
 import { take, put, call, fork, all, takeEvery, takeLatest } from "redux-saga/effects";
 import checkoutActionType from "./checkout-action-type";
-import fetcher from "../utility";
+import fetcher, { privateFetcher } from "../utility";
 import Router from 'next/router'
 import {
     setBackendCartStart,
@@ -9,6 +9,7 @@ import {
     createNewRzpOrderSuccess, getPurchaseFailure,
     clearCheckout,
     applyCouponCodeSuccess,
+    invalidCouponCodeApplied,
 } from './checkout-action'
 import { clearCart, updateCartSuccess } from "../cart/cart-actions";
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
@@ -285,19 +286,55 @@ function* onCreateNewRzpOrderStart() {
 
 function* onCouponCodeApplyStart() {
     yield takeLatest(checkoutActionType.APPLY_COUPON_CODE_START, function* ({ payload }) {
-        const { purchaseId, storeId, couponCode, orderId, userId, onSuccess, onError } = payload;
+        const { purchaseId, storeId, couponCode, orderId, userId, onSuccess, onError,couponInfo,setCouponCode } = payload;
         try {
             const res = yield fetcher('GET', `/?r=orders/validate-coupon&storeId=${storeId}&couponCode=${couponCode}&orderId=${orderId}&customerId=${userId}`)
-            if (typeof res.data == 'object' && res.data?.status == "INVALID_COUPON_CODE") {
-                yield put(applyCouponCodeSuccess('Invalid coupon code!'))
-                // onError('Invalid coupon code!')
-            } else if (res.data) {
-                yield put(getPurchageStart(purchaseId))
-                yield put(applyCouponCodeSuccess(`${couponCode} applied successfully!.`))
-                // onSuccess('Apllied Successfully!.')
-            } else {
-                onError('Operation Failed!.')
+            // if (typeof res.data == 'object' && res.data?.status == "INVALID_COUPON_CODE") {
+            //     yield put(applyCouponCodeSuccess('Invalid coupon code!'))
+            //     // onError('Invalid coupon code!')
+            // } else if (res.data) {
+            //     yield put(getPurchageStart(purchaseId))
+            //     yield put(applyCouponCodeSuccess(`${couponCode} applied successfully!.`))
+            //     // onSuccess('Apllied Successfully!.')
+            // } 
+            // else {
+            //     onError('Operation Failed!.')
+            // }
+            if(res.data != true){                
+                const msg=res.data.message
+                setCouponCode("")
+                yield put(invalidCouponCodeApplied(msg))
+                // if(msg!=couponInfo){
+                // yield put(applyCouponCodeSuccess(msg))
+                // yield put(getPurchageStart(purchaseId))
+                // }
             }
+            else if(res.data == true){
+                const msg=`${couponCode} applied successfully!.` 
+                if(msg!=couponInfo){            
+                yield put(applyCouponCodeSuccess(msg))
+                yield put(getPurchageStart(purchaseId))
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            onError('Operation Failed!.')
+            // yield put(orderPaymentConfirmError(error))
+        }
+    })
+}
+
+function* onCouponCodeRemoveStart() {
+    yield takeLatest(checkoutActionType.REMOVE_COUPON_CODE_START, function* ({ payload }) {
+        const { orderId,purchaseId,setCouponCode } = payload;
+        try {
+            const res = yield fetcher('GET', `/?r=orders/remove-coupon&orderId=${orderId[0]}`)
+            if(res.data==true){
+                setCouponCode("")
+                yield put(applyCouponCodeSuccess(null))
+                yield put(getPurchageStart(purchaseId))
+            }
+
         } catch (error) {
             console.log(error);
             onError('Operation Failed!.')
@@ -309,6 +346,6 @@ function* onCouponCodeApplyStart() {
 export default function* checkoutSagas() {
     yield all([call(onSetBackendCartStart), call(onGetPurchageStart), call(onSetDeliveryAddressToPurchese), call(onSetDeliveryMethodToPurchese),
     call(onPaymentMethodToPurchese), call(onInitiatePayment), call(onOrderConfirmPayment), call(onAddItemToPurchaseStart), call(onUpdateQuantityStart),
-    call(onOrderConfirmPaymentSuccess), call(onDeleteItemFromPurchaseStart), call(onCreateNewRzpOrderStart), call(onCouponCodeApplyStart), call(onSetBackendCartStoreStart)
+    call(onOrderConfirmPaymentSuccess), call(onDeleteItemFromPurchaseStart), call(onCreateNewRzpOrderStart), call(onCouponCodeApplyStart), call(onSetBackendCartStoreStart),call(onCouponCodeRemoveStart)
     ])
 }

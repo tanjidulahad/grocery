@@ -33,6 +33,28 @@ const fetcher = (method, url, body = {}) => (new Promise((resolve, reject) => {
         reject(error)
     });
 }));
+
+// export const privateFetcher = (method, url, body = {}) => (new Promise((resolve, reject) => {
+//     axios({
+//         method,
+//         url: `${process.env.NEXT_PUBLIC_PLINTO_URL}${url}`,
+//         data: body,
+//         headers: {
+//             'Ocp-Apim-Subscription-Key': process.env.NEXT_PUBLIC_SUBSCRIPTION_KEY
+//         }
+//     }).then(function (res) {
+//         if (process.env.NODE_ENV == 'development') {
+//             // console.log(res);
+//         }
+//         resolve(res)
+//     }).catch(function (error) {
+//         if (process.env.NODE_ENV == 'development') {
+//             console.error(error);
+//         }
+//         reject(error)
+//     });
+// }));
+
 export const nodefetcher = (method, url, body = {}) => (new Promise((resolve, reject) => {
     axios({
         method,

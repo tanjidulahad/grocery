@@ -5,10 +5,11 @@ import { Input } from '@components/inputs'
 import { BsChevronCompactDown, BsChevronCompactUp } from "react-icons/bs";
 
 // Actions
-import { applyCouponCodeStart } from '@redux/checkout/checkout-action'
+import { applyCouponCodeStart, invalidCouponCodeApplied, removeCouponCode } from '@redux/checkout/checkout-action'
+import { useEffect } from 'react';
 
 
-const OrderSummry = ({ user, payWithWallet, customerWallet, userAddress, info, checkout, applyCouponCode, isDetailsLoading, isBillingHidden, isTab }) => {
+const OrderSummry = ({invalidCouponCodeApplied, invalidCouponExist, removeCouponCode, user, payWithWallet, customerWallet, userAddress, info, checkout, applyCouponCode, isDetailsLoading, isBillingHidden, isTab }) => {
     const purchaseDetails = checkout.purchaseDetails
     const [cpError, setCpError] = useState(null)
     const [couponCode, setCouponCode] = useState("")
@@ -18,9 +19,19 @@ const OrderSummry = ({ user, payWithWallet, customerWallet, userAddress, info, c
         if (couponCode.length < 3) return;
         const order = Object.values(checkout.purchaseDetails.orders).find(item => item.storeId == info.store_id);
         const orderId = order?.orderId
-        applyCouponCode({ purchaseId: checkout.purchase?.purchase_id, storeId: info.store_id, couponCode, orderId, userId: user.customer_id, onSuccess: setOnSuccess, onError: setCpError })
-        setCouponCode("")
+        applyCouponCode({ purchaseId: checkout.purchase?.purchase_id, storeId: info.store_id, couponCode, orderId, userId: user.customer_id, onSuccess: setOnSuccess, onError: setCpError, couponInfo: checkout.couponInfo,setCouponCode })
+        // setCouponCode("")
     }
+
+    const removeCouponAppyHandler = () => {
+        removeCouponCode({ orderId: Object.keys(checkout?.purchaseDetails?.orders), purchaseId: checkout.purchase?.purchase_id ,setCouponCode})
+    }
+
+    useEffect(() => {
+        setTimeout(function () {
+            invalidCouponCodeApplied(null)
+        }, 4000);
+    }, [invalidCouponExist])
 
     return (
         <>
@@ -33,18 +44,28 @@ const OrderSummry = ({ user, payWithWallet, customerWallet, userAddress, info, c
                                 setOnSuccess("")
                                 setCouponCode(e.target.value)
                             }} value={couponCode} />
-                            <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
+
+                            {
+                                checkout?.couponInfo?.includes("successfully") ? <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={removeCouponAppyHandler} >Remove</Button>
+                                    :
+                                    <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
+                            }
                         </div>
                         {checkout.couponInfo ?
-                            checkout.couponInfo != "Invalid coupon code!" ?
-                                <div className='mb-4 border-green-500 border rounded text-center text-green-600 bg-green-300 bg-opacity-20 py-3'>
-                                    {checkout.couponInfo}
-                                </div>
-                                :
-                                <div className='mb-4 border-red-500 border rounded text-center text-red-600 bg-red-300 bg-opacity-20 py-3'>
-                                    {checkout.couponInfo}
-                                </div>
+                            checkout.couponInfo.includes("successfully") &&
+                            <div className='mb-4 border-green-500 border rounded text-center text-green-600 bg-green-300 bg-opacity-20 py-3'>
+                                {checkout.couponInfo}
+                            </div>
+                            // :
+                            // <div className='mb-4 border-red-500 border rounded text-center text-red-600 bg-red-300 bg-opacity-20 py-3'>
+                            //     {checkout.couponInfo}
+                            // </div>
                             : ""
+                        }
+                        {invalidCouponExist &&
+                            <div className='mb-4 border-red-500 border rounded text-center text-red-600 bg-red-300 bg-opacity-20 py-3'>
+                                {invalidCouponExist}
+                            </div>
                         }
                         {/* {
                             !!cpError &&
@@ -239,8 +260,11 @@ const mapStateToProps = (state) => ({
     checkout: state.checkout,
     isDetailsLoading: state.ui.isDetailsLoading,
     customerWallet: state.user.customerWallet,
+    invalidCouponExist: state.checkout.invalidCouponExist
 })
 const mapDispatchToProps = (dispatch) => ({
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
+    removeCouponCode: (payload) => dispatch(removeCouponCode(payload)),
+    invalidCouponCodeApplied:(payload)=>dispatch(invalidCouponCodeApplied(payload))
 })
 export default connect(mapStateToProps, mapDispatchToProps)(OrderSummry)

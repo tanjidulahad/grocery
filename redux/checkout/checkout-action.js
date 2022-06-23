@@ -123,6 +123,10 @@ export const applyCouponCodeSuccess = (payload) => ({
     type: checkoutActionType.APPLY_COUPON_CODE_SUCCESS,
     payload: payload
 })
+export const invalidCouponCodeApplied = (payload) => ({
+    type: checkoutActionType.INVALID_COUPON_APPLIED,
+    payload: payload
+})
 // RZP Order
 export const createNewRzpOrderStart = (payload) => ({
     type: checkoutActionType.CREATE_NEW_RZP_ORDER_START,
@@ -130,6 +134,10 @@ export const createNewRzpOrderStart = (payload) => ({
 })
 export const createNewRzpOrderSuccess = (payload) => ({
     type: checkoutActionType.CREATE_NEW_RZP_ORDER_SUCCESS,
+    payload: payload
+})
+export const removeCouponCode = (payload) => ({
+    type: checkoutActionType.REMOVE_COUPON_CODE_START,
     payload: payload
 })
 //  CLear Check out

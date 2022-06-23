@@ -18,7 +18,7 @@ import { clearCart, deleteItemFromCart } from '@redux/cart/cart-actions'
 import { getAddressStart, addAddressStart, updateAddressStart, authShowToggle, } from '@redux/user/user-action'
 import {
     setBackendCartStart, getPurchageStart, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod,
-    initiateOrderPymentStart, clearCheckout, createNewRzpOrderStart, applyCouponCodeStart,
+    initiateOrderPymentStart, clearCheckout, createNewRzpOrderStart, applyCouponCodeStart, removeCouponCode,
 } from '@redux/checkout/checkout-action'
 import CartList from '@components/cart-item/cart-list'
 import OrderSummry from '@components/order-summry/order-summry'
@@ -27,7 +27,7 @@ import { useMediaQuery } from 'react-responsive'
 import withAuth from '@components/auth/withAuth'
 import { getShopSettingsStart } from '@redux/shop/shop-action'
 
-const Payment = ({getShopSettings, customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
     const purchaseDetails = checkout.purchaseDetails
     const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
@@ -81,8 +81,8 @@ const Payment = ({getShopSettings, customerWallet, user, userAddress, isDetailsL
         if (couponCode.length < 3) return;
         const order = Object.values(checkout.purchaseDetails.orders).find(item => item.storeId == info.store_id);
         const orderId = order?.orderId
-        applyCouponCode({ purchaseId: checkout.purchase?.purchase_id, storeId: info.store_id, couponCode, orderId, userId: user.customer_id, onSuccess: setOnSuccess, onError: setCpError })
-        setCouponCode("")
+        applyCouponCode({ purchaseId: checkout.purchase?.purchase_id, storeId: info.store_id, couponCode, orderId, userId: user.customer_id, onSuccess: setOnSuccess, onError: setCpError,setCouponCode })
+        // setCouponCode("")
     }
 
 
@@ -267,6 +267,10 @@ const Payment = ({getShopSettings, customerWallet, user, userAddress, isDetailsL
         pending: { color: '#c5c5c5' },
         check: { color: '#fff' },
     } : {}
+
+    const removeCouponAppyHandler = () => {
+        removeCouponCode({ orderId: Object.keys(checkout?.purchaseDetails?.orders), purchaseId: checkout.purchase?.purchase_id ,setCouponCode})
+    }
     return (
         <>
             <div className="wrapper bg-[#f2f2f2] w-full ">
@@ -279,7 +283,13 @@ const Payment = ({getShopSettings, customerWallet, user, userAddress, isDetailsL
                             setCpError("");
                             setCouponCode(e.target.value)
                         }} value={couponCode} />
-                        <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
+                        {
+                            checkout?.couponInfo?.includes("successfully") ?
+                            <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={removeCouponAppyHandler} >Remove</Button>
+                            :
+                            <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
+                        }
+                        
                     </div>
                     <h3 className='text-2xl text-center sm:text-left font-semibold'>Payment Method</h3>
                     <div className='flex flex-col md:flex-row justify-between md:space-x-6'>
@@ -470,5 +480,6 @@ const mapDispatchToProps = (dispatch) => ({
     applyCouponCode: (payload) => dispatch(applyCouponCodeStart(payload)),
     authToggle: () => dispatch(authShowToggle()),
     getShopSettings: (shopId) => dispatch(getShopSettingsStart(shopId)),
+    removeCouponCode: (payload) => dispatch(removeCouponCode(payload)),
 })
 export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(withAuth(Payment)))
