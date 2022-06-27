@@ -132,3 +132,11 @@ export const getNewArrivalProducts = (storeId) => ({
     type: shopActionType.GET_NEW_ARRIVALS_PRODUCTS,
     payload: storeId
 })
+export const getShopWidgets = (storeId) => ({
+    type: shopActionType.GET_SHOP_WIDGETS,
+    payload: storeId
+})
+export const setShopWidgets = (data) => ({
+    type: shopActionType.SET_SHOP_WIDGETS,
+    payload: data
+})
