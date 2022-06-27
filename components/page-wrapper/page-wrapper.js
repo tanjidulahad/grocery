@@ -14,6 +14,7 @@ import {
     getShopInfoStart, getShopSeoStart, getShopSettingsStart, getSocialProfileStart, getShopDisplaySettingsStart, getPageCountStart, getBannerStart,
     getCategoryStart,
     getSubCategoryStart,
+    getShopWidgets,
 } from "@redux/shop/shop-action";
 import { createSeasionId } from "services/pickytoClient";
 import { getWalletBalance } from "@redux/user/user-action";
@@ -31,12 +32,13 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner, getWalletBalance }) => {
+const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner, getWalletBalance }) => {
     const router = useRouter()
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
     // console.log(router, 'router');
+    console.log("widgets from pagewraper", widgets)
     useEffect(() => {
         const { origin } = absoluteUrl()
         var myDynamicManifest = {
@@ -86,6 +88,7 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
             getSocialProfile(storeId);
             getShopDisplaySettings(storeId)
             getCategories(storeId)
+            getShopWidgets(storeId)
         }
     }, [router])
 
@@ -217,6 +220,14 @@ const verifier = ({ user, children, isLogin, store, getShopInfo, getShopSeo, get
     return (
         <>
             <Head>
+                {widgets !=null?
+                widgets?.GOOGLE_MERCHANT_CENTER?
+                widgets?.GOOGLE_MERCHANT_CENTER?.record_status=="ACTIVE"?
+                    <meta name="google-site-verification" content={widgets != null && widgets?.GOOGLE_MERCHANT_CENTER?.integration_attributes?.verificationCode} />
+                    :""
+                    :""
+                    :""
+                }
                 <title>{store ? store.info.store_name : 'GoPlinto'}</title>
                 <link rel="shortcut icon" href={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'} type="image/x-icon" />
 
@@ -239,6 +250,7 @@ const mapStateToProps = state => ({
     isReadyToGo: state.store.isReadyToGo,
     isLogin: !state.user.currentUser,
     user: state.user.currentUser,
+    widgets: state.store.widgets,
 })
 const mapDispatchToProps = dispatch => ({
     getBanner: (shopId) => dispatch(getBannerStart(shopId)),
@@ -250,7 +262,8 @@ const mapDispatchToProps = dispatch => ({
     getShopDisplaySettings: (storeId) => dispatch(getShopDisplaySettingsStart(storeId)),
     getCategories: (storeId) => dispatch(getCategoryStart(storeId)),
     getSubCategories: (storeId) => dispatch(getSubCategoryStart(storeId)),
-    getWalletBalance: (data) => dispatch(getWalletBalance(data))
+    getWalletBalance: (data) => dispatch(getWalletBalance(data)),
+    getShopWidgets: (data) => dispatch(getShopWidgets(data))
 })
 
 const HOC = connect(mapStateToProps, mapDispatchToProps)(verifier)

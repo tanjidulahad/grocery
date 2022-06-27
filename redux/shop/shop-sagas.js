@@ -10,7 +10,8 @@ import {
     getBannerSuccess,
     getShopProductsPaginationSuccess,
     errorInGo,
-    clearProductList
+    clearProductList,
+    setShopWidgets
 } from "./shop-action";
 import { riseError } from "../global-error-handler/global-error-handler-action.ts";
 
@@ -314,10 +315,23 @@ function* onGetNewArrivalProducts() {
         }
     })
 }
+function* onGetShopWidgets() {
+    yield takeLatest(shopActionType.GET_SHOP_WIDGETS, function* ({ payload }) {
+        try {
+            const res = yield fetcher('GET', `?r=stores/get-all-widget-integrations&storeId=${payload}`);
+            if(res.data){
+                yield put(setShopWidgets(res.data))
+            }
+
+        } catch (error) {
+            // yield put(errorOnProductDetailPage(error))
+        }
+    })
+}
 
 export default function* shopSagas() {
     yield all([call(getShopInfoStart), call(getShopSeoStart), call(getShopSettingsStart), call(onGetSocialProfileStart),
     call(onGetCategoriesStart), call(onGetSubCategoriesStart), call(onGetShopProductsStart), call(onGetCategoryProductsStart),
-    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart), call(onGetFiltersGroup), call(onGetBestSellerProduct), call(onGetNewArrivalProducts)
+    call(onProductSerachStart), call(getShopDisplaySettingsStart), call(getShopPageCountStart), call(getShopBannerStart), call(onGetFiltersGroup), call(onGetBestSellerProduct), call(onGetNewArrivalProducts), call(onGetShopWidgets)
     ])
 }

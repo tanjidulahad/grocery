@@ -30,6 +30,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import GoogleAnalytics from '@components/GoogleAnalytics/GoogleAnalytics';
 
 if (process.env.NODE_ENV !== 'development') {
   console.log = () => { };
@@ -37,12 +38,15 @@ if (process.env.NODE_ENV !== 'development') {
 
 function MyApp({ Component, pageProps }) {
   return (
+    <>
     <Provider store={store}>
+    <GoogleAnalytics></GoogleAnalytics>
       <Layout>
       <ToastContainer></ToastContainer>
         <Component {...pageProps} />
       </Layout>
     </Provider>
+    </>
   )
 }
 
