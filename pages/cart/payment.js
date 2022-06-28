@@ -5,6 +5,13 @@ import Link, { redirect } from '@components/link'
 import { Button } from '@components/inputs'
 import { Input } from '@components/inputs'
 
+//crypto-js
+import encHex from "crypto-js/enc-hex";
+import cryptoJs from "crypto-js/core";
+import pbkdf2 from "crypto-js/pbkdf2";
+import encUtf8 from "crypto-js/enc-utf8";
+import aes from "crypto-js/aes";
+
 // Components
 import CartItem from '@components/cart-item/cart-item'
 import { Radio } from '@components/inputs'
@@ -27,7 +34,7 @@ import { useMediaQuery } from 'react-responsive'
 import withAuth from '@components/auth/withAuth'
 import { getShopSettingsStart } from '@redux/shop/shop-action'
 
-const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
+const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, user, userAddress, isDetailsLoading, displaySettings, storeSettings, cart, info, checkout, setBackendCart, getPurchage, getAddress, setDeliveryAddressToPurchase, setPaymentMethod, setShipmentMethod, authToggle, initiateOrder, clearCheckout, createNewRzpOrder, clearCart, deleteItemFromCart, applyCouponCode }) => {
 
     const purchaseDetails = checkout.purchaseDetails
     const totalItems = cart.reduce((prev, item) => prev + item?.quantity, 0)
@@ -47,6 +54,7 @@ const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAd
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [paymentSummryHeight, setPaymentSummryHeight] = useState(100)
     const [isBillingHidden, setIsBillingHidden] = useState(true)
+    const [razorpayKey,setRazorPayKey]=useState(null)
     const isTab = useMediaQuery({ minWidth: 640 })
     const [checkoutDetails, setcheckoutDetails] = useState({
         paymentMethod: '',
@@ -81,9 +89,37 @@ const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAd
         if (couponCode.length < 3) return;
         const order = Object.values(checkout.purchaseDetails.orders).find(item => item.storeId == info.store_id);
         const orderId = order?.orderId
-        applyCouponCode({ purchaseId: checkout.purchase?.purchase_id, storeId: info.store_id, couponCode, orderId, userId: user.customer_id, onSuccess: setOnSuccess, onError: setCpError,setCouponCode })
+        applyCouponCode({ purchaseId: checkout.purchase?.purchase_id, storeId: info.store_id, couponCode, orderId, userId: user.customer_id, onSuccess: setOnSuccess, onError: setCpError, setCouponCode })
         // setCouponCode("")
     }
+
+    const decryptRazorPayKey = (RZPAccessKey) => {
+        console.log("widgets from", RZPAccessKey)
+        var passphrase = process.env.NEXT_PUBLIC_RAZORPAY_API_KEY_ENCRYPTION_PASSWORD;
+        var encrypted = RZPAccessKey.ciphertext;
+        var salt = encHex.parse(RZPAccessKey.salt);
+        var iv = encHex.parse(RZPAccessKey.iv);
+        var key = pbkdf2(passphrase, salt, {
+            hasher: cryptoJs.algo.SHA1,
+            keySize: 64 / 8,
+            iterations: 999,
+        });
+        var decrypted = aes.decrypt(encrypted, key, { iv: iv });
+        var decryptedString = decrypted.toString(encUtf8);
+        console.log("widgets from dec",decryptedString)
+        setRazorPayKey(decryptedString)
+    }
+
+    useEffect(() => {
+        // console.log("widgets from payment",widgets)
+        if (widgets != null) {
+            if (widgets.RAZORPAY_INTEGRATION) {
+                if (widgets.RAZORPAY_INTEGRATION.record_status == "ACTIVE") {
+                    decryptRazorPayKey(widgets?.RAZORPAY_INTEGRATION?.integration_attributes?.RZPAccessKey) 
+                }
+            }
+        }
+    }, [widgets])
 
 
     useEffect(() => {
@@ -126,7 +162,7 @@ const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAd
             })
         }
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
-            
+
             if (checkoutDetails.walletPay) {
                 if (confirmOrder) {
                     setInitiateStatus('loading')
@@ -167,8 +203,8 @@ const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAd
     }
     useEffect(() => {
         let encoded = ''
-        console.log("from payment",initiateStatus,checkoutDetails.walletPay)
-        if (initiateStatus == 'success' && checkoutDetails.walletPay ) {
+        console.log("from payment", initiateStatus, checkoutDetails.walletPay)
+        if (initiateStatus == 'success' && checkoutDetails.walletPay) {
             const { purchase } = checkout
             const orderId = Object.keys(purchaseDetails.orders)[0]
             const amount = initiateData?.calculatedPurchaseTotal
@@ -269,7 +305,7 @@ const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAd
     } : {}
 
     const removeCouponAppyHandler = () => {
-        removeCouponCode({ orderId: Object.keys(checkout?.purchaseDetails?.orders), purchaseId: checkout.purchase?.purchase_id ,setCouponCode})
+        removeCouponCode({ orderId: Object.keys(checkout?.purchaseDetails?.orders), purchaseId: checkout.purchase?.purchase_id, setCouponCode })
     }
     return (
         <>
@@ -285,11 +321,11 @@ const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAd
                         }} value={couponCode} />
                         {
                             checkout?.couponInfo?.includes("successfully") ?
-                            <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={removeCouponAppyHandler} >Remove</Button>
-                            :
-                            <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
+                                <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={removeCouponAppyHandler} >Remove</Button>
+                                :
+                                <Button className=' col-span-2 rounded py-3 text-white btn-bg' onClick={onCouponAppyHandler} >Apply</Button>
                         }
-                        
+
                     </div>
                     <h3 className='text-2xl text-center sm:text-left font-semibold'>Payment Method</h3>
                     <div className='flex flex-col md:flex-row justify-between md:space-x-6'>
@@ -415,7 +451,7 @@ const Payment = ({removeCouponCode,getShopSettings, customerWallet, user, userAd
                         </div>
                     </div>
                     : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y' && !checkoutDetails.walletPay
-                        ? <OnlienPayment themeColor={themeColor}  {...{ store: info, user, checkout, setConfirmPayment, rzpOrder, setInitiateStatus, setError }} />
+                        ? <OnlienPayment themeColor={themeColor}  {...{ store: info, user, checkout, setConfirmPayment, rzpOrder, setInitiateStatus, setError,razorpayKey }} />
                         : null
             }
             <div className='fixed right-0 bottom-36 sm:bottom-3 space-y-2'>
@@ -460,6 +496,7 @@ const mapStateToProps = (state) => ({
     isDetailsLoading: state.ui.isDetailsLoading,
     checkout: state.checkout,
     customerWallet: state.user.customerWallet,
+    widgets: state.store.widgets,
 })
 const mapDispatchToProps = (dispatch) => ({
     setBackendCart: (data) => dispatch(setBackendCartStart(data)),

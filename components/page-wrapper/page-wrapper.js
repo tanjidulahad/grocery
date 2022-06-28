@@ -38,7 +38,6 @@ const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, get
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
     // console.log(router, 'router');
-    console.log("widgets from pagewraper", widgets)
     useEffect(() => {
         const { origin } = absoluteUrl()
         var myDynamicManifest = {
