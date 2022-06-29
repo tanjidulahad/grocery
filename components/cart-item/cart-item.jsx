@@ -10,23 +10,30 @@ import { useState } from "react";
 
 const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteFromPurchase, isDetailsLoading }) => {
     console.log("cart item", data)
-    const [cartItemImg,setCartItemImg]=useState([])
+    const [cartItemImg, setCartItemImg] = useState([])
     useEffect(() => {
-        var img=[]
+        var img = []
         if (data.defaultVariantItem != null) {
             if (data.defaultVariantItem.variant_item_attributes) {
                 console.log("images taking from: data.defaultVariantItem.variant_item_attributes")
                 for (let i = 1; i <= Object.keys(data.defaultVariantItem.variant_item_attributes).length; i++) {
                     if (data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`] != null) {
                         if (data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images != null) {
-                            img = Object.values(data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images).filter(Boolean);
-                            setCartItemImg(img)
+                            if (typeof data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images == 'object') {
+                                img = Object.values(data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                                setCartItemImg(img)
+                            }
+                            else if (typeof data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images == 'string') {
+                                img = Object.values(JSON.parse(data.defaultVariantItem.variant_item_attributes[`variant_value_${i}`].variant_value_images)).filter(Boolean);
+                                setCartItemImg(img)
+                            }
                         }
                     }
 
                 }
-                if(!img.length){
-                    img=['/img/default.png']
+                if (!img.length) {
+                    img = ['/img/default.png']
+                    setCartItemImg(img)
                 }
 
             }
@@ -35,25 +42,32 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteF
                 for (let i = 1; i <= 5; i++) {
                     if (data.defaultVariantItem[`variant_value_${i}`] != null) {
                         if (data.defaultVariantItem[`variant_value_${i}`].variant_value_images != null) {
-                            img = Object.values(data.defaultVariantItem[`variant_value_${i}`].variant_value_images).filter(Boolean);
-                            setCartItemImg(img)
+                            if (typeof data.defaultVariantItem[`variant_value_${i}`].variant_value_images == 'string') {
+                                img = Object.values(JSON.parse(data.defaultVariantItem[`variant_value_${i}`].variant_value_images)).filter(Boolean);
+                                setCartItemImg(img)
+                            }
+                            else if (typeof data.defaultVariantItem[`variant_value_${i}`].variant_value_images == 'object') {
+                                img = Object.values(data.defaultVariantItem[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                                setCartItemImg(img)
+                            }
                         }
                     }
 
                 }
-                if(!img.length){
-                    img=['/img/default.png']
+                if (!img.length) {
+                    img = ['/img/default.png']
+                    setCartItemImg(img)
                 }
             }
         }
-        else{
+        else {
             console.log("images taking from: data")
-            img=[data.primary_img || '/img/default.png']
+            img = [data.primary_img || '/img/default.png']
             setCartItemImg(img)
         }
 
     }, [data])
-    console.log("cart item img",cartItemImg)
+    console.log("cart item img", cartItemImg)
     return (
         <div className="w-100 block space-y-3">
             <div className="flex justify-between space-x-6">
@@ -116,7 +130,7 @@ const CartItem = ({ addToCart, removeFromCart, data, deleteItemFromCart, deleteF
                         </div>
                     </div>
                     {!data.isOrderItemValid && <div>
-                        {data.invalidReason &&<p className="text-sm text-red-600 ">Currently Unavailable</p>}
+                        {data.invalidReason && <p className="text-sm text-red-600 ">Currently Unavailable</p>}
                         {data.invalidReason && <p className="text-xs text-red-600">(please remove this item to proceed)*</p>}
                     </div>}
                 </div>

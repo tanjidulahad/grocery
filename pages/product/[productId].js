@@ -166,7 +166,12 @@ const ProductDetails = ({ openAuth, store,
                 for (let i = 1; i <= 5; i++) {
                     if(success.defaultVariantItem[`variant_value_${i}`]!=null){
                     if(success.defaultVariantItem[`variant_value_${i}`].variant_value_images!=null){
+                        if(typeof success.defaultVariantItem[`variant_value_${i}`].variant_value_images == 'string'){
+                        defImg=Object.values(JSON.parse(success.defaultVariantItem[`variant_value_${i}`].variant_value_images)).filter(Boolean);
+                        }
+                        else if(typeof success.defaultVariantItem[`variant_value_${i}`].variant_value_images == 'object'){
                         defImg=Object.values(success.defaultVariantItem[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                        }
                     }
                 }
                     

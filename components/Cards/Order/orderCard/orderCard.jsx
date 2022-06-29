@@ -4,9 +4,47 @@ import { MdKeyboardArrowRight } from 'react-icons/md';
 import Rating from '@components/rating-stars/rating';
 import { useState } from 'react';
 import Link from 'next/link'
+import { useEffect } from 'react';
 function OrderCard({ status, message, data }) {
   const [first, setfirst] = useState(0)
+  const [orderCardImg, setOrderCardImg] = useState([])
 
+  useEffect(() => {
+    if (data) {
+      var item = Object.values(data.orderItems)[0]
+      if(item){
+      var img = []
+      if (item.customizationDetails != null) {
+        if (item.customizationDetails.variant_item_attributes) {
+          for (let i = 1; i <= Object.keys(item.customizationDetails.variant_item_attributes).length; i++) {
+            if (item.customizationDetails.variant_item_attributes[`variant_value_${i}`] != null) {
+              if (item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images != null) {
+                if (typeof item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images == 'string') {
+                  img = Object.values(JSON.parse(item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images)).filter(Boolean);
+                  setOrderCardImg(img)
+                }
+                else if (typeof item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images == 'object') {
+                  img = Object.values(item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                  setOrderCardImg(img)
+                }
+              }
+            }
+
+          }
+          if (!img.length) {
+            img = ['/img/default.png']
+            setOrderCardImg(img)
+          }
+
+        }
+      }
+      else {
+        img = [item.itemImg || '/img/default.png']
+        setOrderCardImg(img)
+      }
+    }
+    }
+  }, [data])
 
   const changevalue = (value) => {
     setfirst(value)
@@ -31,7 +69,8 @@ function OrderCard({ status, message, data }) {
       <div className="p-2 sm:p-4 md:mx-0 lg:mx-0 border-gray-200 flex justify-between">
         <div className='flex'>
           <div className="h-[86px] w-[86px] sm:w-[150px] sm:h-[150px] rounded bg-gray-900 shrink-0 col-span-2">
-            <img className=" w-full h-full rounded object-cover opacity-80" src={` ${Object.values(data.orderItems)[0]?.itemImg || '/img/default.png'}`} />
+            {/* <img className=" w-full h-full rounded object-cover opacity-80" src={` ${Object.values(data.orderItems)[0]?.itemImg || '/img/default.png'}`} /> */}
+            <img className=" w-full h-full rounded object-cover opacity-80" src={orderCardImg[0]} />
           </div>
           <div className="ml-8 lg:ml-4 flex flex-col justify-center">
             <p className={`font-bold  ${data?.orderStatus == 'CANCELLED_BY_CUSTOMER' || data?.orderStatus == 'ORDER_DECLINED_BY_RESTAURANT' ? " text-[red]" : `${data.orderStatus == "ORDER_DELIVERED_SUCCESS" ? "text-[green]" : "text-black"} `} `}>{orderStatus} </p>
