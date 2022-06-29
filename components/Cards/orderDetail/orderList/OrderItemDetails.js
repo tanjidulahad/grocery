@@ -12,14 +12,21 @@ const OrderItemDetails = ({ item }) => {
                 for (let i = 1; i <= Object.keys(item.customizationDetails.variant_item_attributes).length; i++) {
                     if (item.customizationDetails.variant_item_attributes[`variant_value_${i}`] != null) {
                         if (item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images != null) {
-                            img = Object.values(item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images).filter(Boolean);
-                            setOrderItemImg(img)
+                            if (typeof item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images == 'string') {
+                                img = Object.values(JSON.parse(item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images)).filter(Boolean);
+                                setOrderItemImg(img)
+                            }
+                            else if (typeof item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images == 'object') {
+                                img = Object.values(item.customizationDetails.variant_item_attributes[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                                setOrderItemImg(img)
+                            }
                         }
                     }
 
                 }
                 if (!img.length) {
                     img = ['/img/default.png']
+                    setOrderItemImg(img)
                 }
 
             }
@@ -28,14 +35,21 @@ const OrderItemDetails = ({ item }) => {
                 for (let i = 1; i <= 5; i++) {
                     if (item.customizationDetails[`variant_value_${i}`] != null) {
                         if (item.customizationDetails[`variant_value_${i}`].variant_value_images != null) {
+                            if(typeof item.customizationDetails[`variant_value_${i}`].variant_value_images=='string'){
+                            img = Object.values(JSON.parse(item.customizationDetails[`variant_value_${i}`].variant_value_images)).filter(Boolean);
+                            setOrderItemImg(img)
+                            }
+                            else if(typeof item.customizationDetails[`variant_value_${i}`].variant_value_images=='object'){
                             img = Object.values(item.customizationDetails[`variant_value_${i}`].variant_value_images).filter(Boolean);
                             setOrderItemImg(img)
+                            }
                         }
                     }
 
                 }
                 if (!img.length) {
                     img = ['/img/default.png']
+                    setOrderItemImg(img)
                 }
             }
         }

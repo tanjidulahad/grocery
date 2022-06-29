@@ -16,8 +16,42 @@ import { useEffect } from "react";
 const ProductItem = ({ openAuth, className, store, data, user, addToCart, removeFromCart, cart, offer, addItemToWishlist, removeWishlistStart }) => {
     const tip = useRef(null)
     const [wishlistAdded, setWishListAdded] = useState(data?.wishlistId)
+    const [productItemImg, setProductItemImg] = useState([])
     useEffect(() => {
         setWishListAdded(data?.wishlistId)
+
+        if(data){
+
+        if (data.is_customizable == "N") {
+            setProductItemImg([data.primary_img || '/img/default.png'])
+        }
+        else {
+            var defImg=[]
+            if (data.defaultVariantItem != null) {
+                for (let i = 1; i <= 5; i++) {
+                    if (data.defaultVariantItem[`variant_value_${i}`] != null) {
+                        if (data.defaultVariantItem[`variant_value_${i}`].variant_value_images != null) {
+                            if(typeof data.defaultVariantItem[`variant_value_${i}`].variant_value_images=='string'){
+                                defImg = Object.values(JSON.parse(data.defaultVariantItem[`variant_value_${i}`].variant_value_images)).filter(Boolean);
+                            }
+                            else if(typeof data.defaultVariantItem[`variant_value_${i}`].variant_value_images=='object'){
+                                defImg = Object.values(data.defaultVariantItem[`variant_value_${i}`].variant_value_images).filter(Boolean);
+                            }
+                            
+                        }
+                    }
+
+                }
+            }
+            // const defImg = Object.values(success?.defaultVariantItem?.variant_value_1?.variant_value_images != undefined ? success.defaultVariantItem?.variant_value_1?.variant_value_images : '').filter(Boolean)
+            if (defImg.length != 0) {
+                setProductItemImg(defImg)
+            } else {
+                setProductItemImg(['/img/default.png'])
+                // images = ['/img/default.png']
+            }
+        }
+    }
     }, [data])
     const wishlist = () => {
         if (!user.currentUser) {
@@ -126,7 +160,8 @@ const ProductItem = ({ openAuth, className, store, data, user, addToCart, remove
                         <a onMouseMove={tipFun} >
                             {/* <div className="w-8/12 mx-8 md:mx-10  md:mt-6 cursor-pointer " style={{ height: '160px' }}> */}
                             {console.log("img", data.defaultVariantItem?.variant_value_1?.variant_value_images)}
-                            <img className="w-full h-full object-cover" src={data.primary_img ? data.primary_img : data.defaultVariantItem ? data.defaultVariantItem?.variant_value_1?.variant_value_images != null ? JSON.parse(data.defaultVariantItem?.variant_value_1?.variant_value_images).img_url_1 : '/img/default.png' : '/img/default.png'} />
+                            {/* <img className="w-full h-full object-cover" src={data.primary_img ? data.primary_img : data.defaultVariantItem ? data.defaultVariantItem?.variant_value_1?.variant_value_images != null ? JSON.parse(data.defaultVariantItem?.variant_value_1?.variant_value_images).img_url_1 : '/img/default.png' : '/img/default.png'} /> */}
+                            <img className="w-full h-full object-cover" src={productItemImg[0]} />
                             {/* </div> */}
                             {
                                 data.item_name.length > 40 &&
