@@ -178,9 +178,21 @@ const ProductDetails = ({ openAuth, store,
                 }
             }
             // const defImg = Object.values(success?.defaultVariantItem?.variant_value_1?.variant_value_images != undefined ? success.defaultVariantItem?.variant_value_1?.variant_value_images : '').filter(Boolean)
+            var imgurl=[]
+            if(defImg.length==0){
+                for (let i = 1; i <= 5; i++) {
+                    if (success[`img_url_${i}`]) {
+                        imgurl.push(success[`img_url_${i}`])
+                    }
+                }
+            }
             if (defImg.length != 0) {
                 images = defImg
-            } else {
+            }
+            else if(imgurl.length!=0){
+                images = imgurl
+            }
+             else {
                 images = ['/img/default.png']
             }
         }

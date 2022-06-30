@@ -48,10 +48,10 @@ function Myorders({ user, getCurrentOrders, getPastOrders }) {
               {/* <Header display={true} topic="My Orders" /> */}
 
 
-              <div className="grid grid-cols-1 gap-4 mb-4 md:mt-5 mt-28 lg:mt-0">
+              <div className="grid grid-cols-1 gap-4 md:mt-5 mt-28 lg:mt-0 mb-[90px] md:mb-4">
                 {
                   orderList.length ? orderList.map((item, i) => (
-                    <div className="w-full rounded shadow bg-white " key={i}>
+                    <div className="w-full rounded shadow bg-white" key={i}>
                       <OrderCard data={item} />
                     </div>
                   ))
