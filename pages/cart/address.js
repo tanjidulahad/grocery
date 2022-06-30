@@ -169,7 +169,7 @@ const Address = ({getShopSettings, user, userAddress, display, isDetailsLoading,
                                             <div className="address border sm:border-0 rounded-md flex h-full" key={i + i}>
                                                 <div className="px-4 sm:px-6 py-6 sm:py-8 flex delivery-inputs spance-x-2 w-full">
                                                     <Radio
-                                                        className='mt-1'
+                                                        className='mt-1 checkoutaddress'
                                                         id={`address${i}`}
                                                         name="deliveryAddress"
                                                         checked={

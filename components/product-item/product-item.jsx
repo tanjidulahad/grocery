@@ -46,7 +46,14 @@ const ProductItem = ({ openAuth, className, store, data, user, addToCart, remove
             // const defImg = Object.values(success?.defaultVariantItem?.variant_value_1?.variant_value_images != undefined ? success.defaultVariantItem?.variant_value_1?.variant_value_images : '').filter(Boolean)
             if (defImg.length != 0) {
                 setProductItemImg(defImg)
-            } else {
+            }
+            else if(data.primary_img){
+                setProductItemImg([data.primary_img])
+            }
+            else if(data.img_url_1){
+                setProductItemImg([data.img_url_1])
+            }
+             else {
                 setProductItemImg(['/img/default.png'])
                 // images = ['/img/default.png']
             }

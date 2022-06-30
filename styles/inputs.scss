@@ -45,3 +45,9 @@ input[type='radio']:checked:after {
 input[type='radio']:checked + label {
   border-style: groove;
 }
+
+.checkoutaddress{
+  color: transparent;
+  border-color: transparent;
+  -webkit-appearance:none;
+}

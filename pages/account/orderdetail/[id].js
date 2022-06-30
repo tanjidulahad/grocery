@@ -47,14 +47,14 @@ function orderDetail({ getOrderDetails, display, info }) {
 
   const steps = [
     {
-      lable: 'Order is Placed',
+      lable: 'Order Placed',
       dsc: moment.unix(orderDetails?.orderPlacedTime).format('LLL')
     },
     {
       lable: 'Order Confirmed',
     },
     {
-      lable: 'Order Shipped',
+      lable: 'Ready for pick-up',
     },
     {
       lable: 'Order Delivered Successfully',
@@ -64,7 +64,7 @@ function orderDetail({ getOrderDetails, display, info }) {
 
   const cancledStep = [
     {
-      lable: 'Order is Placed',
+      lable: 'Order Placed',
       dsc: moment.unix(orderDetails?.orderPlacedTime).format('LLL')
     },
     {
@@ -133,111 +133,137 @@ function orderDetail({ getOrderDetails, display, info }) {
         <p className="hidden md:block lg:block text-left font-bold text-lg md:w-max">Order Details</p>
         <p className=" hidden md:block text-left font-medium text-lg text-gray-500 md:w-max ">OrderId- #{orderDetails?.orderId}</p>
       </div>
-      <section className="bg-gray-100 w-full ">
-        <div className=' mx-auto'>
+      <section className="bg-gray-100 w-full pb-1 lg:pb-0">
+        <div className='mx-auto'>
           {
             !orderDetails && !error ?
               <Loader />
               : error ?
                 <ErrorPage message={error.message} statusCode={error?.response?.status || error?.statusCode} />
                 :
-                <div className="grid grid-cols-1 lg:grid-cols-12 ">
-                  <div className="lg:col-span-12 lg:mb-10 space-y-3 ">
-                    <div className="bg-white">
-                      <List orderId={orderDetails.orderId} storeName={orderDetails.storeName} createTime={orderDetails.createTime} list={Object.values(orderDetails.orderItems)} />
-                      {/* <Ordertracker data={{ orderId: orderDetails.orderId }} details={orderDetails} openReturn={setIsReturnActive} /> */}
-                      <div className='py-8 ml-8 lg:ml-14'>
-                        <Stepper vertical={true} steps={isCanceled ? cancledStep : steps} activeStep={orderStatus + 1} sx={style} openReturn={handleCancel} details={orderDetails} isCanceled={isCanceled} />
+                <>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 ">
+                    <div className="lg:col-span-12 mb-3 lg:mb-5 space-y-3 ">
+                      <div className="bg-white">
+                        <List orderId={orderDetails.orderId} storeName={orderDetails.storeName} createTime={orderDetails.createTime} list={Object.values(orderDetails.orderItems)} />
+                        {/* <Ordertracker data={{ orderId: orderDetails.orderId }} details={orderDetails} openReturn={setIsReturnActive} /> */}
+                        <div className='py-8 ml-8 lg:ml-14'>
+                          <Stepper vertical={true} steps={isCanceled ? cancledStep : steps} activeStep={orderStatus + 1} sx={style} openReturn={handleCancel} details={orderDetails} isCanceled={isCanceled} />
+                        </div>
                       </div>
-                    </div>
-                    {
-                      !!address &&
-                      <div className='p-4 sm:p-6 bg-white'>
-                        <Address address={address} type={'order'} orderDetails={orderDetails} />
-                      </div>
-                    }
-                    <div className="p-4 sm:p-6 bg-white">
-                      {/* <FiHome className='text-red-500' size={20} /> */}
-                      <p className="text-left  text-lg sm:text-xl mb-6 font-bold text-dark ">Billing Details</p>
-
                       {
-                        !!orderDetails &&
-                        <>
-                          <div className=" text-base">
-                            <div className=" border-b-2 border-dashed space-y-2">
+                        !!address &&
+                        <div className='p-4 sm:p-6 bg-white'>
+                          <Address address={address} type={'order'} orderDetails={orderDetails} />
+                        </div>
+                      }
+                      <div className="p-4 sm:p-6 bg-white">
+                        {/* <FiHome className='text-red-500' size={20} /> */}
+                        <p className="text-left  text-lg sm:text-xl mb-6 font-bold text-dark ">Billing Details</p>
 
-                              <div className="flex justify-between space-x-2 ">
-                                <h6 className="text-base black-color font-medium">Item Total</h6>
-                                <div>
-                                  <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.orderAmount).toFixed(2)}</span>
-                                </div>
-                              </div>
-                              <div className="flex justify-between space-x-2 ">
-                                <h6 className="text-base black-color font-medium">Delivery Charge</h6>
-                                <div>
-                                  <span className="text-base black-color font-medium ml-2">{parseFloat(orderDetails.deliveryCharge) ? `₹${Number(orderDetails.deliveryCharge).toFixed(2)}` : 'Free'}</span>
-                                </div>
-                              </div>
-                              {
-                                !!Number(orderDetails.parcelCharge) &&
+                        {
+                          !!orderDetails &&
+                          <>
+                            <div className=" text-base">
+                              <div className=" border-b-2 border-dashed space-y-2">
+
                                 <div className="flex justify-between space-x-2 ">
-                                  <h6 className="text-base black-color font-medium">Parcel Charge</h6>
+                                  <h6 className="text-base black-color font-medium">Item Total</h6>
                                   <div>
-                                    <span className="text-base black-color font-medium ml-2">₹{Number(orderDetails.parcelCharge).toFixed(2)}</span>
+                                    <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.orderAmount).toFixed(2)}</span>
                                   </div>
                                 </div>
-                              }
-
-                              <div className="flex justify-between space-x-2 ">
-                                <h6 className="text-base black-color font-medium">Tax</h6>
-                                <div>
-                                  <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.taxAmount).toFixed(2)}</span>
+                                <div className="flex justify-between space-x-2 ">
+                                  <h6 className="text-base black-color font-medium">Delivery Charge</h6>
+                                  <div>
+                                    <span className="text-base black-color font-medium ml-2">{parseFloat(orderDetails.deliveryCharge) ? `₹${Number(orderDetails.deliveryCharge).toFixed(2)}` : 'Free'}</span>
+                                  </div>
                                 </div>
-                              </div>
-                              {
-                                orderDetails.convenienceFee ?
+                                {
+                                  !!Number(orderDetails.parcelCharge) &&
                                   <div className="flex justify-between space-x-2 ">
-                                    <h6 className="text-base black-color font-medium">Convenience Charge</h6>
+                                    <h6 className="text-base black-color font-medium">Parcel Charge</h6>
                                     <div>
-                                      <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.convenienceFee).toFixed(2)}</span>
+                                      <span className="text-base black-color font-medium ml-2">₹{Number(orderDetails.parcelCharge).toFixed(2)}</span>
                                     </div>
                                   </div>
-                                  : null
-                              }
-                              <div className="flex justify-between space-x-2 ">
-                                <h6 className="text-base black-color font-medium">Coupon Applied</h6>
-                                <div>
-                                  <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.couponSavingsAmount).toFixed(2)}</span>
-                                </div>
-                              </div>
-                              <div className="flex justify-between space-x-2 ">
-                                <h6 className="text-base success-color font-medium">Discount</h6>
-                                <div>
-                                  <span className="text-base success-color font-medium ml-2">- ₹ {Number(orderDetails.savingsAmount).toFixed(2)}</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex justify-between mt-4 border-dashed">
-                              <h2 className="text-lg font-bold">Total Amount</h2>
-                              <h2 className="text-lg font-bold">₹ {Number(orderDetails.calculatedOrderTotal).toFixed(2)}</h2>
-                            </div>
+                                }
 
-                            {/* <div className="text-center bg-success-color-lighter success-color py-3 mt-4">
+                                <div className="flex justify-between space-x-2 ">
+                                  <h6 className="text-base black-color font-medium">Tax</h6>
+                                  <div>
+                                    <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.taxAmount).toFixed(2)}</span>
+                                  </div>
+                                </div>
+                                {
+                                  orderDetails.convenienceFee ?
+                                    <div className="flex justify-between space-x-2 ">
+                                      <h6 className="text-base black-color font-medium">Convenience Charge</h6>
+                                      <div>
+                                        <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.convenienceFee).toFixed(2)}</span>
+                                      </div>
+                                    </div>
+                                    : null
+                                }
+                                <div className="flex justify-between space-x-2 ">
+                                  <h6 className="text-base black-color font-medium">Coupon Applied</h6>
+                                  <div>
+                                    <span className="text-base black-color font-medium ml-2">₹ {Number(orderDetails.couponSavingsAmount).toFixed(2)}</span>
+                                  </div>
+                                </div>
+                                <div className="flex justify-between space-x-2 ">
+                                  <h6 className="text-base success-color font-medium">Discount</h6>
+                                  <div>
+                                    <span className="text-base success-color font-medium ml-2">- ₹ {Number(orderDetails.savingsAmount).toFixed(2)}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="flex justify-between mt-4 border-dashed">
+                                <h2 className="text-lg font-bold">Total Amount</h2>
+                                <h2 className="text-lg font-bold">₹ {Number(orderDetails.calculatedOrderTotal).toFixed(2)}</h2>
+                              </div>
+
+                              {/* <div className="text-center bg-success-color-lighter success-color py-3 mt-4">
                           <span className="text-base fonr-medium">Savings on Bill ₹ {Number(orderDetails.savingsAmount).toFixed(2)}</span>
                         </div> */}
-                          </div>
-                        </>
+                            </div>
+                          </>
+                        }
+                      </div>
+
+
+                      {/* <div className="px-4 sm:px-6 py-0 sm:py-6 md:py-3 bg-white flex justify-between mb-96">
+                      {
+                        !!orderDetails?.paymentDetails &&
+                        <div className="flex">
+                          <p className="text-left mr-4 mb-0 font-[600]  text-base sm:text-xl  text-black"> Payment Method: </p>
+                          <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.paymentDetails[0].payment_mode == 'WALLET' ? 'Wallet' : orderDetails?.paymentDetails[0].payment_mode ? orderDetails?.paymentDetails[0].payment_mode : 'Online'}</p>
+                        </div>
                       }
+                      <div className="flex">
+                        <p className="text-left mr-4 mb-0 font-[600]  text-base sm:text-xl  text-black"> Shipping method: </p>
+                        <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">Pick Up</p>
+                      </div>
+                    </div> */}
+
                     </div>
+                  </div>
+
+                  <div className="px-4 sm:px-6 py-3 md:py-3 bg-white md:flex md:justify-between mb-[70px] md:mb-[20px]">
                     {
                       !!orderDetails?.paymentDetails &&
-                      <div className="flex px-4 sm:px-6 mb-0 sm:mb-6 py-0 sm:py-6 md:py-3 bg-white">
+                      <div className="flex">
                         <p className="text-left mr-4 mb-0 font-[600]  text-base sm:text-xl  text-black"> Payment Method: </p>
                         <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.paymentDetails[0].payment_mode == 'WALLET' ? 'Wallet' : orderDetails?.paymentDetails[0].payment_mode ? orderDetails?.paymentDetails[0].payment_mode : 'Online'}</p>
                       </div>
                     }
+                    <div className="flex mt-2 md:mt-0">
+                      <p className="text-left mr-4 mb-0 font-[600]  text-base sm:text-xl  text-black"> Shipping method: </p>
+                      <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.isDelivery=="Y" ? "Delivery":"Pick Up"}</p>
+                    </div>
                   </div>
-                </div>
+                </>
+
 
           }
         </div>
