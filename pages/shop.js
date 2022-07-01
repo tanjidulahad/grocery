@@ -113,6 +113,20 @@ const Home = ({ user, getFilterGroups, products, addWishlist, pageCount, getPage
       getShopProducts({ storeId, page, setStatus, filterAndSortPayload, sortOrder, user })
       getFilterGroups({ storeId, setFiltersGroup })
     }
+    
+    let tittleName = "All Items"
+    if (category || subCategoryId || search) {
+      const cat = categories.find(item => item.category_id == category)
+      if (cat) {
+        tittleName = cat.category_name
+
+        const subcat = cat.subCategories.find(subItem => subItem.sub_category_id == subCategoryId)
+        if (subcat) {
+          tittleName = subcat.sub_category_name
+        }
+      }
+    }
+    setTitle(search?"Search results" : tittleName)
   }, [Router.query, page])
 
   useEffect(() => {

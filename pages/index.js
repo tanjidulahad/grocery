@@ -50,7 +50,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 4000,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />
   };
@@ -101,7 +101,9 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
         <div>
           <Slider {...bannersettings}>
             {banner.map((item, idx) => <div className='max-h-[180px] lg:w-full lg:h-[500px] lg:max-h-[500px]' key={idx}>
-              <img className='w-full h-auto min-h-[180px] lg:min-h-[500px]' src={item.banner_img_url} alt="" />
+              <a target="_blank" href={item.target_url}>
+                <img className={`w-full h-auto min-h-[180px] lg:min-h-[500px] ${item.target_url?"cursor-pointer":""}`} src={item.banner_img_url} alt="" />
+                </a>
             </div>)}
           </Slider>
         </div>
@@ -112,7 +114,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
         <div className='bg-[#C0EDAB]'>
           <Slider {...settings}>
             {newArrivalProducts.map((item, idx) => <div key={idx}>
-              <img onClick={() => router.push(`/product/${item.item_id}`)} className='w-[80px] h-[80px] max-h-[80px] lg:w-[200px] lg:h-[200px] lg:max-h-[200px] ml-4 mt-2' src={`${item.primary_img || '/img/default.png'}`} alt="" />
+              <img onClick={() => router.push(`/product/${item.item_id}`)} className='cursor-pointer w-[80px] h-[80px] max-h-[80px] lg:w-[200px] lg:h-[200px] lg:max-h-[200px] ml-4 mt-2' src={`${item.primary_img || '/img/default.png'}`} alt="" />
             </div>)}
           </Slider>
         </div>
