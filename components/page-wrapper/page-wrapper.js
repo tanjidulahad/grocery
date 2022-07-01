@@ -32,12 +32,12 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner, getWalletBalance }) => {
+const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner, getWalletBalance, seo }) => {
     const router = useRouter()
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
     const { displaySettings } = store
-    // console.log(router, 'router');
+    // console.log("seo",seo);
     useEffect(() => {
         const { origin } = absoluteUrl()
         var myDynamicManifest = {
@@ -219,16 +219,23 @@ const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, get
     return (
         <>
             <Head>
-                {widgets !=null?
-                widgets?.GOOGLE_MERCHANT_CENTER?
-                widgets?.GOOGLE_MERCHANT_CENTER?.record_status=="ACTIVE"?
-                    <meta name="google-site-verification" content={widgets != null && widgets?.GOOGLE_MERCHANT_CENTER?.integration_attributes?.verificationCode} />
-                    :""
-                    :""
-                    :""
+                {widgets != null ?
+                    widgets?.GOOGLE_MERCHANT_CENTER ?
+                        widgets?.GOOGLE_MERCHANT_CENTER?.record_status == "ACTIVE" ?
+                            <meta name="google-site-verification" content={widgets != null && widgets?.GOOGLE_MERCHANT_CENTER?.integration_attributes?.verificationCode} />
+                            : ""
+                        : ""
+                    : ""
                 }
                 <title>{store ? store.info.store_name : 'GoPlinto'}</title>
                 <link rel="shortcut icon" href={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'} type="image/x-icon" />
+                <meta name="description" content={store ? store.info.store_desc : 'GoPlinto'} />
+
+                <meta property="og:title" content={seo?seo.seo_title:store ? store?.info?.store_name : 'GoPlinto'}></meta>
+                <meta property="og:description" content={seo?seo?.seo_desc: store ? store.info.store_desc : 'GoPlinto'}></meta>
+                <meta property="og:image" content={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'}></meta>
+                <meta property="og:image:secure_url" content={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'}></meta>
+
 
             </Head>
             <NavBar />
