@@ -125,7 +125,18 @@ const OrderSummry = ({invalidCouponCodeApplied, invalidCouponExist, removeCoupon
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="flex justify-between space-x-2  my-1">
+                                        {purchaseDetails?.totalDeliveryCharge !=0 && <div className="flex justify-between space-x-2  my-1">
+                                            <h6 className=" text-sm md:text-base lg:text-lg  font-medium text-gray-400">
+                                                Delivery Charge
+                                            </h6>
+                                            <div>
+                                                <span className=" text-sm md:text-base lg:text-lg black-color font-medium ml-2">
+                                                    {`₹ ${Number(purchaseDetails?.totalDeliveryCharge).toFixed(2)}`
+                                                        }
+                                                </span>
+                                            </div>
+                                        </div>}
+                                        {/* <div className="flex justify-between space-x-2  my-1">
                                             <h6 className=" text-sm md:text-base lg:text-lg  font-medium text-gray-400">
                                                 Delivery Charge
                                             </h6>
@@ -138,7 +149,7 @@ const OrderSummry = ({invalidCouponCodeApplied, invalidCouponExist, removeCoupon
                                                         : 'Free'}
                                                 </span>
                                             </div>
-                                        </div>
+                                        </div> */}
 
                                         <div className="flex justify-between space-x-2 my-1">
                                             <h6 className=" text-sm md:text-base lg:text-lg  font-medium text-gray-400">
