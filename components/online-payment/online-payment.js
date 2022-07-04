@@ -5,16 +5,16 @@ import plintoLogo from './plintoLogo.jpg'
 import { orderPaymentConfirmStart } from "../../redux/checkout/checkout-action"
 import Loader from "../loading/loader"
 
-const OnlienPayment = ({razorpayKey, store, user, themeColor = '#F64B5D', checkout, setConfirmPayment, rzpOrder, children, setInitiateStatus, setError }) => {
+const OnlienPayment = ({ razorpayKey, store, user, themeColor = '#F64B5D', checkout, setConfirmPayment, rzpOrder, children, setInitiateStatus, setError, walletPay, walletAmount }) => {
+    console.log('fsdfsdfsdf', walletPay ? checkout.purchaseDetails.calculatedPurchaseTotal - walletAmount : checkout.purchaseDetails.calculatedPurchaseTotal);
     useEffect(() => {
         // if (!checkout.rzpOrder) Router.push(`/${store.store_name.replaceAll(' ', '-').trim()}/${store.store_id}/cart`)
         // Payment details
         // console.log("razorpaykey from online order",razorpayKey || process.env.NEXT_PUBLIC_RAZORPAY_API_KEY)
-        const orderAmount = checkout.purchaseDetails.calculatedPurchaseTotal;
+        const orderAmount = walletPay ? checkout.purchaseDetails.calculatedPurchaseTotal - walletAmount : checkout.purchaseDetails.calculatedPurchaseTotal;
         const rzpOrderId = rzpOrder.id;
         const customerId = user.customer_id
-        const purchaseId = checkout.purchase.purchase_id
-        console.log(checkout);
+        const purchaseId = checkout.purchase.purchase_id;
         const options = {
             key: razorpayKey || process.env.NEXT_PUBLIC_RAZORPAY_API_KEY,
             amount: (orderAmount * 100).toFixed(2), // Accept in Paisa (₹1 = 100 paisa)
@@ -43,12 +43,16 @@ const OnlienPayment = ({razorpayKey, store, user, themeColor = '#F64B5D', checko
                 color: themeColor,
             },
             modal: {
-                "ondismiss": () => setInitiateStatus('pending')
+                "ondismiss": () => {
+                    document.body.style.overflow = 'auto'
+                    setInitiateStatus('pending');
+
+                }
             }
         };
         const rzp = new window.Razorpay(options);
         rzp.open();
-    }, [])
+    })
     return (
         <>
             {children}
