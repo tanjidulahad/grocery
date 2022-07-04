@@ -172,7 +172,7 @@ function* onOrderConfirmPayment() {
             if (method == 'COD') {
                 res = yield fetcher('POST', `?r=orders/confirm-order-payments&purchaseId=${purchaseId}&method=${method}`, { customerId, amount, })
             } else {
-                res = yield fetcher('POST', `?r=orders/confirm-order-payments&purchaseId=${purchaseId}`, { customerId, amount, useWalletAmount, id })
+                res = yield fetcher('POST', `?r=orders/confirm-order-payments&purchaseId=${purchaseId}&method=ONL`, { customerId, amount, useWalletAmount, id })
             }
             if (res.data) {
                 setStatus('success')
@@ -286,7 +286,7 @@ function* onCreateNewRzpOrderStart() {
 
 function* onCouponCodeApplyStart() {
     yield takeLatest(checkoutActionType.APPLY_COUPON_CODE_START, function* ({ payload }) {
-        const { purchaseId, storeId, couponCode, orderId, userId, onSuccess, onError,couponInfo,setCouponCode } = payload;
+        const { purchaseId, storeId, couponCode, orderId, userId, onSuccess, onError, couponInfo, setCouponCode } = payload;
         try {
             const res = yield fetcher('GET', `/?r=orders/validate-coupon&storeId=${storeId}&couponCode=${couponCode}&orderId=${orderId}&customerId=${userId}`)
             // if (typeof res.data == 'object' && res.data?.status == "INVALID_COUPON_CODE") {
@@ -300,8 +300,8 @@ function* onCouponCodeApplyStart() {
             // else {
             //     onError('Operation Failed!.')
             // }
-            if(res.data != true){                
-                const msg=res.data.message
+            if (res.data != true) {
+                const msg = res.data.message
                 setCouponCode("")
                 yield put(invalidCouponCodeApplied(msg))
                 // if(msg!=couponInfo){
@@ -309,11 +309,11 @@ function* onCouponCodeApplyStart() {
                 // yield put(getPurchageStart(purchaseId))
                 // }
             }
-            else if(res.data == true){
-                const msg=`${couponCode} applied successfully!.` 
-                if(msg!=couponInfo){            
-                yield put(applyCouponCodeSuccess(msg))
-                yield put(getPurchageStart(purchaseId))
+            else if (res.data == true) {
+                const msg = `${couponCode} applied successfully!.`
+                if (msg != couponInfo) {
+                    yield put(applyCouponCodeSuccess(msg))
+                    yield put(getPurchageStart(purchaseId))
                 }
             }
         } catch (error) {
@@ -326,10 +326,10 @@ function* onCouponCodeApplyStart() {
 
 function* onCouponCodeRemoveStart() {
     yield takeLatest(checkoutActionType.REMOVE_COUPON_CODE_START, function* ({ payload }) {
-        const { orderId,purchaseId,setCouponCode } = payload;
+        const { orderId, purchaseId, setCouponCode } = payload;
         try {
             const res = yield fetcher('GET', `/?r=orders/remove-coupon&orderId=${orderId[0]}`)
-            if(res.data==true){
+            if (res.data == true) {
                 setCouponCode("")
                 yield put(applyCouponCodeSuccess(null))
                 yield put(getPurchageStart(purchaseId))
@@ -346,6 +346,6 @@ function* onCouponCodeRemoveStart() {
 export default function* checkoutSagas() {
     yield all([call(onSetBackendCartStart), call(onGetPurchageStart), call(onSetDeliveryAddressToPurchese), call(onSetDeliveryMethodToPurchese),
     call(onPaymentMethodToPurchese), call(onInitiatePayment), call(onOrderConfirmPayment), call(onAddItemToPurchaseStart), call(onUpdateQuantityStart),
-    call(onOrderConfirmPaymentSuccess), call(onDeleteItemFromPurchaseStart), call(onCreateNewRzpOrderStart), call(onCouponCodeApplyStart), call(onSetBackendCartStoreStart),call(onCouponCodeRemoveStart)
+    call(onOrderConfirmPaymentSuccess), call(onDeleteItemFromPurchaseStart), call(onCreateNewRzpOrderStart), call(onCouponCodeApplyStart), call(onSetBackendCartStoreStart), call(onCouponCodeRemoveStart)
     ])
 }

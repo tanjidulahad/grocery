@@ -54,12 +54,13 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
     const [confirmOrder, setConfirmOrder] = useState(false)
     const [paymentSummryHeight, setPaymentSummryHeight] = useState(100)
     const [isBillingHidden, setIsBillingHidden] = useState(true)
-    const [razorpayKey,setRazorPayKey]=useState(null)
+    const [razorpayKey, setRazorPayKey] = useState(null)
     const isTab = useMediaQuery({ minWidth: 640 })
     const [checkoutDetails, setcheckoutDetails] = useState({
         paymentMethod: '',
         walletPay: false
     })
+    console.log('line', checkoutDetails, confirmOrder);
     if (!purchaseDetails) {
         redirect('/cart')
     }
@@ -106,7 +107,7 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
         });
         var decrypted = aes.decrypt(encrypted, key, { iv: iv });
         var decryptedString = decrypted.toString(encUtf8);
-        console.log("widgets from dec",decryptedString)
+        console.log("widgets from dec", decryptedString)
         setRazorPayKey(decryptedString)
     }
 
@@ -115,7 +116,7 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
         if (widgets != null) {
             if (widgets.RAZORPAY_INTEGRATION) {
                 if (widgets.RAZORPAY_INTEGRATION.record_status == "ACTIVE") {
-                    decryptRazorPayKey(widgets?.RAZORPAY_INTEGRATION?.integration_attributes?.RZPAccessKey) 
+                    decryptRazorPayKey(widgets?.RAZORPAY_INTEGRATION?.integration_attributes?.RZPAccessKey)
                 }
             }
         }
@@ -162,18 +163,38 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
             })
         }
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
-
             if (checkoutDetails.walletPay) {
                 if (confirmOrder) {
-                    setInitiateStatus('loading')
-                    initiateOrder({
-                        purchaseId: purchase?.purchase_id,
-                        method: paymentMethod,
-                        customerId: user.customer_id,
-                        setInitiateStatus,
-                        setInitiateData,
-                    })
-                    // return;
+                    if (purchaseDetails?.calculatedPurchaseTotal - (+customerWallet?.customer_wallet_balance) > 0) {
+                        setInitiateStatus('loading')
+                        initiateOrder({
+                            purchaseId: purchase?.purchase_id,
+                            method: paymentMethod,
+                            customerId: user.customer_id,
+                            // setInitiateStatus,
+                            setInitiateData,
+                        })
+                        createNewRzpOrder({
+                            purchaseId: purchase?.purchase_id,
+                            totalPurchaseAmount: purchaseDetails?.calculatedPurchaseTotal - (+customerWallet?.customer_wallet_balance),
+                            currency: purchaseDetails?.currencyCode,
+                            setRzpOrder,
+                            setError,
+                        })
+
+                    }
+                    else {
+                        setInitiateStatus('loading')
+                        initiateOrder({
+                            purchaseId: purchase?.purchase_id,
+                            method: paymentMethod,
+                            customerId: user.customer_id,
+                            setInitiateStatus,
+                            setInitiateData,
+                        })
+                        // return;
+
+                    }
                 }
                 else {
                     setConfirmOrder(true)
@@ -450,8 +471,8 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
                             </div>
                         </div>
                     </div>
-                    : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y' && !checkoutDetails.walletPay
-                        ? <OnlienPayment themeColor={themeColor}  {...{ store: info, user, checkout, setConfirmPayment, rzpOrder, setInitiateStatus, setError,razorpayKey }} />
+                    : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y' && (purchaseDetails?.calculatedPurchaseTotal - (+customerWallet?.customer_wallet_balance) > 0)
+                        ? <OnlienPayment themeColor={themeColor}  {...{ store: info, user, checkout, setConfirmPayment, rzpOrder, setInitiateStatus, setError, razorpayKey }} />
                         : null
             }
             <div className='fixed right-0 bottom-36 sm:bottom-3 space-y-2'>

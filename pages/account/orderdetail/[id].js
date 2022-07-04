@@ -249,7 +249,7 @@ function orderDetail({ getOrderDetails, display, info }) {
                     </div>
                   </div>
 
-                  <div className="px-4 sm:px-6 py-3 md:py-3 bg-white md:flex md:justify-between mb-[70px] md:mb-[20px]">
+                  <div className="px-4 sm:px-6 py-3 md:py-3 bg-white md:flex md:justify-between mb-[70px] md:mb-[20px] ">
                     {
                       !!orderDetails?.paymentDetails &&
                       <div className="flex">
@@ -259,7 +259,7 @@ function orderDetail({ getOrderDetails, display, info }) {
                     }
                     <div className="flex mt-2 md:mt-0">
                       <p className="text-left mr-4 mb-0 font-[600]  text-base sm:text-xl  text-black"> Shipping method: </p>
-                      <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.isDelivery=="Y" ? "Delivery":"Pick Up"}</p>
+                      <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.isDelivery == "Y" ? "Delivery" : "Pick Up"}</p>
                     </div>
                   </div>
                 </>
