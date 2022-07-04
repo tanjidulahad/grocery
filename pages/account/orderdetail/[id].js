@@ -254,7 +254,7 @@ function orderDetail({ getOrderDetails, display, info }) {
                       !!orderDetails?.paymentDetails &&
                       <div className="flex">
                         <p className="text-left mr-4 mb-0 font-[600]  text-base sm:text-xl  text-black"> Payment Method: </p>
-                        <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.paymentDetails[0].payment_mode == 'WALLET' ? 'Wallet' : orderDetails?.paymentDetails[0].payment_mode ? orderDetails?.paymentDetails[0].payment_mode : 'Online'}</p>
+                        <p className="text-center  mt-0 mb-0 font-[300] text-bae sm:text-xl  text-green-400 capitalize ">{orderDetails?.paymentDetails.map((item) => item.payment_mode).join('+')}</p>
                       </div>
                     }
                     <div className="flex mt-2 md:mt-0">

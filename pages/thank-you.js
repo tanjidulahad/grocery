@@ -11,7 +11,7 @@ import Tracker from "@components/Cards/tracker"
 import Stepper from "@components/stepper/stepper"
 import { clearCart } from "@redux/cart/cart-actions"
 
-const ThankYou = ({ confirmOrder, display, clearCheckout, clearCart }) => {
+const ThankYou = ({ confirmOrder, display, clearCheckout, clearCart, purchase }) => {
     const [status, setStatus] = useState('loading') // loading, success, failure
     const [orderId, setOrderId] = useState(null)
     const [mobNavHeight, setMobNavHeight] = useState(0)
@@ -23,8 +23,12 @@ const ThankYou = ({ confirmOrder, display, clearCheckout, clearCart }) => {
         const data = JSON.parse(atob(id))
         // console.log(id, data);
         // console.log();
-        setOrderId(data.orderId)
-        confirmOrder({ ...data, setStatus })
+        if (purchase) {
+            setOrderId(data.orderId)
+            confirmOrder({ ...data, setStatus })
+        } else {
+            router.push('/')
+        }
         // setPrice(data.amount)
 
     }, [router.isReady])
@@ -54,8 +58,8 @@ const ThankYou = ({ confirmOrder, display, clearCheckout, clearCart }) => {
             })
             objerver.observe(document.body)
         }
-        clearCheckout()
-        clearCart()
+        // clearCheckout()
+        // clearCart()
     }, [])
     return (
         <section >
@@ -190,7 +194,8 @@ const ThankYou = ({ confirmOrder, display, clearCheckout, clearCart }) => {
 }
 
 const mapStateToProps = state => ({
-    display: state.store.displaySettings
+    display: state.store.displaySettings,
+    purchase: state.checkout.purchase
 })
 
 const mapDispatchToProps = dispatch => ({

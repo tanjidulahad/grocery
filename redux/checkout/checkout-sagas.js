@@ -176,6 +176,8 @@ function* onOrderConfirmPayment() {
             }
             if (res.data) {
                 setStatus('success')
+                yield put(clearCheckout());
+                yield put(clearCart());
                 yield put(orderPaymentConfirmSuccess(res.data))
             }
         } catch (error) {

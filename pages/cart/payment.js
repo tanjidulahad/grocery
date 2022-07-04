@@ -229,13 +229,15 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
             const { purchase } = checkout
             const orderId = Object.keys(purchaseDetails.orders)[0]
             const amount = initiateData?.calculatedPurchaseTotal
+            const { purchaseId, customerId, id } = confirmPayment
+            console.log('confirmPayment', confirmPayment);
             encoded = btoa(
                 JSON.stringify({
                     amount,
                     purchaseId: purchase?.purchase_id,
                     method: 'ONL',
                     customerId: user.customer_id,
-                    id: '',
+                    id: id,
                     useWalletAmount: true,
                     orderId,
                 })
@@ -249,6 +251,7 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
             const paymentMethod = checkoutDetails.paymentMethod == 'Y' ? 'PAY' : 'COD'
 
             if (checkoutDetails.paymentMethod != 'Y') {
+                // For cod
                 const { purchase } = checkout
                 const amount = initiateData?.calculatedPurchaseTotal
                 encoded = btoa(
