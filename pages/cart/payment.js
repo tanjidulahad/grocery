@@ -164,6 +164,8 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
         }
         if (paymentMethod == 'PAY' && purchase?.purchase_id) {
             if (checkoutDetails.walletPay) {
+                console.log('Inside wallate pay');
+                // Wallet payment
                 if (confirmOrder) {
                     if (purchaseDetails?.calculatedPurchaseTotal - (+customerWallet?.customer_wallet_balance) > 0) {
                         setInitiateStatus('loading')
@@ -204,6 +206,7 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
 
             }
             else {
+                // Online payment
                 setInitiateStatus('loading')
                 initiateOrder({
                     purchaseId: purchase?.purchase_id,
@@ -229,7 +232,7 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
             const { purchase } = checkout
             const orderId = Object.keys(purchaseDetails.orders)[0]
             const amount = initiateData?.calculatedPurchaseTotal
-            const { purchaseId, customerId, id } = confirmPayment
+            const { id } = confirmPayment || { id: "" }
             console.log('confirmPayment', confirmPayment);
             encoded = btoa(
                 JSON.stringify({
@@ -474,7 +477,7 @@ const Payment = ({ widgets, removeCouponCode, getShopSettings, customerWallet, u
                             </div>
                         </div>
                     </div>
-                    : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y' && (purchaseDetails?.calculatedPurchaseTotal - (+customerWallet?.customer_wallet_balance) > 0)
+                    : initiateStatus == 'loading' && rzpOrder && checkoutDetails.paymentMethod == 'Y' && (purchaseDetails?.calculatedPurchaseTotal - (+customerWallet?.customer_wallet_balance) > 0 && checkoutDetails.walletPay || (!checkoutDetails.walletPay && checkoutDetails.paymentMethod == 'Y'))
                         ? <OnlienPayment themeColor={themeColor}  {...{ store: info, user, checkout, setConfirmPayment, rzpOrder, setInitiateStatus, setError, razorpayKey }} />
                         : null
             }
