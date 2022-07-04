@@ -20,7 +20,7 @@ const QuantityID = ({ value = 0, onPlush, onMinus, disabled = false, disabledPlu
     }
 
     return (
-        <div className="quantity-id" style={{
+        <div className="quantity-id relative" style={{
             ...w && { width: w },
             ...disabled && { cursor: "not-allowed", }
         }} >
