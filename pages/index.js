@@ -94,21 +94,9 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
     const { storeId } = router.query
     router.push(router.asPath)
   }, [router.isReady])
-  console.log("seo in index",seo)
+  console.log("seo in index", seo)
   return (
     <>
-      <Head>
-        <title>{seo ? seo.seo_title : store ? store?.store_name : 'GoPlinto'}</title>
-        <link rel="shortcut icon" href={store ? store.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'} type="image/x-icon" />
-        <meta name="description" content={seo ? seo?.seo_desc : store ? store.store_desc : 'GoPlinto'} />
-
-        <meta property="og:title" content={seo ? seo.seo_title : store ? store?.store_name : 'GoPlinto'}></meta>
-        <meta property="og:description" content={seo ? seo?.seo_desc : store ? store.store_desc : 'GoPlinto'}></meta>
-        <meta property="og:image" content={store ? store.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'}></meta>
-        <meta property="og:image:secure_url" content={store ? store.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'}></meta>
-
-        <meta name="keywords" content={seo? seo?.seo_tags :`Goplinto, Amazon.in, Amazon, Online Shopping, online shopping india, india shopping online, amazon india, amazn, buy online, buy mobiles online, buy books online, buy movie dvd's online, kindle, kindle fire hd, kindle e-readers, ebooks, computers, laptop, toys, trimmers, watches, fashion jewellery, home, kitchen, small appliances, beauty, Sports, Fitness &amp; Outdoors`} />
-      </Head>
       <div >
         {/* <ToastContainer /> */}
         {/* slider div */}
@@ -163,23 +151,5 @@ const mapDispatchToProps = dispatch => ({
 
 })
 
-export async function getStaticProps() {
-  // Call an external API endpoint to get posts.
-  // You can use any data fetching library
-  const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID;
-  const seoRes = await fetcher('GET', `?r=stores/get-seo-details&storeId=${storeId}`)
-  const seo = seoRes.data
-  const storeSettingsRes = await fetcher('GET', `?r=stores/get-details&storeId=${storeId}`)
-  const store = storeSettingsRes.data
-  console.log("from getstatic props",store)
-  // By returning { props: { posts } }, the Blog component
-  // will receive `posts` as a prop at build time
-  return {
-    props: {
-      seo,
-      store
-    },
-  }
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(PageWrapper(Index)));

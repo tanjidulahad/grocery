@@ -227,9 +227,11 @@ const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, get
                         : ""
                     : ""
                 }
-                <title>{store ? store.info.store_name : 'GoPlinto'}</title>
+                {/* <title>{store ? store.info.store_name : 'GoPlinto'}</title> */}
+                <title>{seo ? seo.seo_title : store ? store?.store_name : 'GoPlinto'}</title>
                 <link rel="shortcut icon" href={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'} type="image/x-icon" />
-                <meta name="description" content={store ? store.info.store_desc : 'GoPlinto'} />
+                {/* <meta name="description" content={store ? store.info.store_desc : 'GoPlinto'} /> */}
+                <meta name="description" content={seo ? seo?.seo_desc : store ? store.store_desc : 'GoPlinto'} />
 
                 {/* <meta property="og:title" content={seo?seo.seo_title:store ? store?.info?.store_name : 'GoPlinto'}></meta>
                 <meta property="og:description" content={seo?seo?.seo_desc: store ? store.info.store_desc : 'GoPlinto'}></meta>
