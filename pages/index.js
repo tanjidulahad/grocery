@@ -94,12 +94,13 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
     const { storeId } = router.query
     router.push(router.asPath)
   }, [router.isReady])
+  console.log("seo in index",seo)
   return (
     <>
       <Head>
-        <title>{store ? store.store_name : 'GoPlinto'}</title>
+        <title>{seo ? seo.seo_title : store ? store?.store_name : 'GoPlinto'}</title>
         <link rel="shortcut icon" href={store ? store.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'} type="image/x-icon" />
-        <meta name="description" content={store ? store.store_desc : 'GoPlinto'} />
+        <meta name="description" content={seo ? seo?.seo_desc : store ? store.store_desc : 'GoPlinto'} />
 
         <meta property="og:title" content={seo ? seo.seo_title : store ? store?.store_name : 'GoPlinto'}></meta>
         <meta property="og:description" content={seo ? seo?.seo_desc : store ? store.store_desc : 'GoPlinto'}></meta>
@@ -170,7 +171,7 @@ export async function getStaticProps() {
   const seo = seoRes.data
   const storeSettingsRes = await fetcher('GET', `?r=stores/get-details&storeId=${storeId}`)
   const store = storeSettingsRes.data
-  // console.log("from getstatic props",store)
+  console.log("from getstatic props",store)
   // By returning { props: { posts } }, the Blog component
   // will receive `posts` as a prop at build time
   return {
