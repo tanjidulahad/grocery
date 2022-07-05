@@ -231,10 +231,10 @@ const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, get
                 <link rel="shortcut icon" href={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'} type="image/x-icon" />
                 <meta name="description" content={store ? store.info.store_desc : 'GoPlinto'} />
 
-                <meta property="og:title" content={seo?seo.seo_title:store ? store?.info?.store_name : 'GoPlinto'}></meta>
+                {/* <meta property="og:title" content={seo?seo.seo_title:store ? store?.info?.store_name : 'GoPlinto'}></meta>
                 <meta property="og:description" content={seo?seo?.seo_desc: store ? store.info.store_desc : 'GoPlinto'}></meta>
                 <meta property="og:image" content={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'}></meta>
-                <meta property="og:image:secure_url" content={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'}></meta>
+                <meta property="og:image:secure_url" content={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'}></meta> */}
 
 
             </Head>
