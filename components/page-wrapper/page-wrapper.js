@@ -32,7 +32,7 @@ function hexToRGB(hex, alpha) {
     }
 }
 
-const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner, getWalletBalance, seo }) => {
+const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, getShopInfo, getShopSeo, getShopSettings, getSocialProfile, getShopDisplaySettings, getPageCount, getCategories, getSubCategories, getBanner, getWalletBalance, seo,storeInfo }) => {
     const router = useRouter()
     const exceptionRouteinMobile = ['/account/profile']
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 900px)' })
@@ -215,7 +215,7 @@ const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, get
 
 
 
-    console.log("global", router)
+    console.log("seo store", seo,store)
     return (
         <>
             <Head>
@@ -228,10 +228,10 @@ const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, get
                     : ""
                 }
                 {/* <title>{store ? store.info.store_name : 'GoPlinto'}</title> */}
-                <title>{seo ? seo.seo_title : store ? store?.store_name : 'GoPlinto'}</title>
+                <title>{seo ? seo.seo_title : storeInfo ? storeInfo.store_name : 'GoPlinto'}</title>
                 <link rel="shortcut icon" href={store ? store.info.logo_img_url : 'https://www.goplinto.com/assets/images/goplinto-logo-white-480x97.png'} type="image/x-icon" />
                 {/* <meta name="description" content={store ? store.info.store_desc : 'GoPlinto'} /> */}
-                <meta name="description" content={seo ? seo?.seo_desc : store ? store.store_desc : 'GoPlinto'} />
+                <meta name="description" content={seo ? seo?.seo_desc : storeInfo ? storeInfo.store_desc : 'GoPlinto'} />
 
                 {/* <meta property="og:title" content={seo?seo.seo_title:store ? store?.info?.store_name : 'GoPlinto'}></meta>
                 <meta property="og:description" content={seo?seo?.seo_desc: store ? store.info.store_desc : 'GoPlinto'}></meta>
@@ -253,6 +253,7 @@ const verifier = ({ widgets, getShopWidgets, user, children, isLogin, store, get
 
 const mapStateToProps = state => ({
     store: state.store,
+    storeInfo: state.store.info,
     seo: state.store.seo,
     // displaySettings: state.store.displaySettings,
     isReadyToGo: state.store.isReadyToGo,
