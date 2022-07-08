@@ -207,10 +207,10 @@ const ProductItem = ({ openAuth, className, store, data, user, addToCart, remove
                 {
                     !!itemInCart.inventoryDetails && <>
                         {
-                            // itemInCart.inventoryDetails.min_order_quantity > 1 &&
-                            // <div className="">
-                            //     <span className="text-sm red-color">*Minimum order quantity is {itemInCart.inventoryDetails.min_order_quantity}.</span>
-                            // </div>
+                            itemInCart.inventoryDetails.min_order_quantity > 1 &&  itemInCart.quantity>1 &&
+                            <div className="">
+                                <span className="text-sm red-color">*Minimum order quantity is {itemInCart.inventoryDetails.min_order_quantity}.</span>
+                            </div>
                         } {
                             itemInCart.inventoryDetails.max_order_quantity == itemInCart.quantity && itemInCart.inventoryDetails.max_order_quantity > 0 || itemInCart.inventoryDetails.inventory_quantity <= itemInCart.quantity &&
                             <div className="">

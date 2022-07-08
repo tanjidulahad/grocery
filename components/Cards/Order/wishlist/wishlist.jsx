@@ -38,7 +38,7 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
     }
     return (
         <div className="w-100 block  ">
-            <div className=" md:grid md:grid-cols-12 md:gap-4 mb-6 md:mt-4 lg:flex justify-between">
+            <div className=" md:grid md:grid-cols-12 md:gap-4 md:mt-4 lg:flex justify-between">
                 <div className=" bg-white md:col-span-3 flex sm:space-x-4">
                     {/* <Link href={`/product/${data?.item_id || '1234'}`}> */}
 
@@ -96,6 +96,7 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                     </div>
 
                 </div>
+                
                 <div>
                     <div className=" my-0 mx-1 md:ml-20 hidden lg:block ">
                         <AiFillHeart onClick={() => removeFromWishList(data.entry_id)} size={24} color="#F35252" />
@@ -143,20 +144,20 @@ function Wishlist({ addToCart, data, removeFromCart, removeWishlistStart, wishLi
                 </div>
             </div>
             {
-                !!data?.inventoryDetails && <>
-                    {
-                        data?.inventoryDetails.min_order_quantity > 1 &&
-                        <div className="">
-                            <span className="text-sm red-color">*Minimum order quantity is {data?.inventoryDetails.min_order_quantity}.</span>
-                        </div>
-                    } {
-                        data?.inventoryDetails.max_order_quantity == data?.quantity && data?.inventoryDetails.max_order_quantity > 0 || data?.inventoryDetails.inventory_quantity <= data?.quantity &&
-                        <div className="">
-                            <span className="text-sm success-color">*You reached to maximum order quantity.</span>
-                        </div>
-                    }
-                </>
-            }
+                    !!itemInCart.inventoryDetails && <>
+                        {
+                            itemInCart.inventoryDetails.min_order_quantity > 1 &&  itemInCart.quantity>1 &&
+                            <div className="">
+                                <span className="text-xs md:text-sm red-color">*Minimum order quantity is {itemInCart.inventoryDetails.min_order_quantity}.</span>
+                            </div>
+                        } {
+                            itemInCart.inventoryDetails.max_order_quantity == itemInCart.quantity && itemInCart.inventoryDetails.max_order_quantity > 0 || itemInCart.inventoryDetails.inventory_quantity <= itemInCart.quantity &&
+                            <div className="-mt-2 mb-2">
+                                <span className="text-xs md:text-sm success-color">*You reached to maximum order quantity.</span>
+                            </div>
+                        }
+                    </>
+                }
         </div>
     )
 }

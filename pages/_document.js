@@ -18,8 +18,8 @@ class MyDocument extends Document {
 
         // Run the parent `getInitialProps`, it now includes the custom `renderPage`
         const storeId = process.env.NEXT_PUBLIC_DEFAULT_STORE_ID;
-        try {
-            const initialProps = await Document.getInitialProps(ctx)
+        const initialProps = await Document.getInitialProps(ctx)
+        try {            
             const storeSettingsRes = await fetcher('GET', `?r=stores/get-details&storeId=${storeId}`);
             const seo = await fetcher('GET', `?r=stores/get-seo-details&storeId=${storeId}`);
             return { ...initialProps, data: storeSettingsRes.data, seo: seo.data };
