@@ -644,10 +644,10 @@ const ProductDetails = ({ openAuth, store,
                                                 visuals.inventoryDetails ?
                                                     <>
                                                         {
-                                                            // visuals.inventoryDetails.min_order_quantity > 0 &&
-                                                            // <div className="">
-                                                            //     <span className="text-sm black-color-75">*Minimum order quantity is {visuals.inventoryDetails.min_order_quantity}.</span>
-                                                            // </div>
+                                                            visuals.inventoryDetails.min_order_quantity > 0 && quantityInCart>=1 &&
+                                                            <div className="">
+                                                                <span className="text-sm black-color-75">*Minimum order quantity is {visuals.inventoryDetails.min_order_quantity}.</span>
+                                                            </div>
                                                         } {
                                                             (visuals.inventoryDetails.max_order_quantity == quantityInCart && visuals.inventoryDetails.max_order_quantity > 0) || visuals.inventoryDetails.inventory_quantity == quantityInCart &&
                                                             <div className="">
