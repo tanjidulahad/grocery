@@ -52,7 +52,7 @@ function OrderCard({ status, message, data }) {
   }
 
   let orderStatus = ""
-  if (data.orderStatus == "PAYMENT_COMPLETED") {
+  if (data.orderStatus == "PAYMENT_COMPLETED" || data.orderStatus == "ORDER_CONFIRMED_BY_REST" || data.orderStatus == "PENDING_PICKUP_BY_CUST") {
     orderStatus = "Ordered by " + moment.unix(data.orderPlacedTime).format("MMM DD, YYYY")
   }
   else if (data.orderStatus == "ORDER_DELIVERED_SUCCESS") {
