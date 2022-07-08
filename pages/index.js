@@ -125,7 +125,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
         {/* Recommended */}
         {bestSellerProducts.length != 0 && <div className='wrapper'>
           <h2 className='mt-8 mb-2 text-lg md:text-xl lg:text-2xl font-bold ml-3 sm:ml-0'>Recommended</h2>
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0'>
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 md:gap-8 gap-y-14 px-3 md:px-0 mb-[80px] md:mb-0'>
             {bestSellerProducts.map((item, idx) =>
               <ProductItem key={idx} data={item} />
             )
