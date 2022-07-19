@@ -13,16 +13,17 @@ import PageWrapper from '@components/page-wrapper/page-wrapper'
 import { useRouter } from 'next/router';
 import { BsArrowLeft } from 'react-icons/bs'
 
-function Myorders({ user, getCurrentOrders, getPastOrders }) {
+function Myorders({ user, getCurrentOrders, getPastOrders,info }) {
   const [orderList, setOrderList] = useState([]);
   const [orderListPast, setOrderListPast] = useState([]);
   const [isLoadingCurrent, setIsLoadingCurrent] = useState('loading')
   const [isLoadingPast, setIsLoadingPast] = useState('loading')
   const [error, setError] = useState("");
   const router = useRouter()
+  console.log('storeIdddd',info)
 
   useEffect(() => {
-    getCurrentOrders({ userId: user.customer_id, setOrderList, setError, setIsLoadingCurrent })
+    getCurrentOrders({ userId: user.customer_id, setOrderList, setError, setIsLoadingCurrent,storeId:info.store_id })
     // getPastOrders({ userId: user.customer_id, setOrderList: setOrderListPast, setError, status: setIsLoadingPast })
   }, [])
 
@@ -97,7 +98,11 @@ function Myorders({ user, getCurrentOrders, getPastOrders }) {
 
 const mapDispatchToProps = dispatch => ({
   getCurrentOrders: (payload) => dispatch(getCurrentOrdersListStart(payload)),
-  getPastOrders: (payload) => dispatch(getPastOrdersListStart(payload))
+  // getPastOrders: (payload) => dispatch(getPastOrdersListStart(payload))
+})
+const mapStateToProps = (state) => ({
+  info: state.store.info,
+
 })
 
-export default connect(null, mapDispatchToProps)(PageWrapper(withAuth(accountLayout(Myorders))))
+export default connect(mapStateToProps, mapDispatchToProps)(PageWrapper(withAuth(accountLayout(Myorders))))
