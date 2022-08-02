@@ -10,7 +10,7 @@ const ZendeskChat = ({ widgets }) => {
         if (widgets?.ZENDESK?.record_status == "ACTIVE" && widgets?.ZENDESK?.integration_attributes?.code) {
             const zendeskCode = parser.parseFromString(widgets?.ZENDESK?.integration_attributes?.code, "text/html")
             const key = zendeskCode.head.getElementsByTagName('script')[0].src.split("key=")[1]
-            if (!zendeskCodekey) {
+            if (!zendeskCodekey && key) {
                 setZendeskCodekey(key)
             }
         }
