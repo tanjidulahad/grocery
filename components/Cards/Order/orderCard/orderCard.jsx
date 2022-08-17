@@ -5,7 +5,9 @@ import Rating from '@components/rating-stars/rating';
 import { useState } from 'react';
 import Link from 'next/link'
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 function OrderCard({ status, message, data }) {
+  const router = useRouter()
   const [first, setfirst] = useState(0)
   const [orderCardImg, setOrderCardImg] = useState([])
 
@@ -70,9 +72,9 @@ function OrderCard({ status, message, data }) {
         <div className='flex'>
           <div className="h-[86px] w-[86px] sm:w-[150px] sm:h-[150px] rounded bg-gray-900 shrink-0 col-span-2">
             {/* <img className=" w-full h-full rounded object-cover opacity-80" src={` ${Object.values(data.orderItems)[0]?.itemImg || '/img/default.png'}`} /> */}
-            <img className=" w-full h-full rounded object-cover opacity-80" src={orderCardImg[0]} />
+            <img onClick={()=>router.push(`/account/orderdetail/${data.orderId}`)} className="cursor-pointer w-full h-full rounded object-cover opacity-80" src={orderCardImg[0]} />
           </div>
-          <div className="ml-8 lg:ml-4 flex flex-col justify-center">
+          <div onClick={()=>router.push(`/account/orderdetail/${data.orderId}`)} className="ml-8 lg:ml-4 flex flex-col justify-center cursor-pointer">
             <p className={`font-bold  ${data?.orderStatus == 'CANCELLED_BY_CUSTOMER' || data?.orderStatus == 'ORDER_DECLINED_BY_RESTAURANT' ? " text-[red]" : `${data.orderStatus == "ORDER_DELIVERED_SUCCESS" ? "text-[green]" : "text-black"} `} `}>{orderStatus} </p>
             <p className="text-left text-sm lg:text-base font-medium text-black mt-4 line-truncate-2">{Object.values(data.orderItems)[0]?.itemName}</p>
           </div>

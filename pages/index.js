@@ -59,15 +59,15 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 3,
+    slidesToShow: newArrivalProducts.length>=5?5:newArrivalProducts.length,
+    slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: newArrivalProducts.length>=3?3:newArrivalProducts.length,
           slidesToScroll: 1,
         }
       },
@@ -78,7 +78,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
           dots: false,
           nextArrow: <SampleNextArrow />,
           prevArrow: <SamplePrevArrow />,
-          slidesToShow: 3,
+          slidesToShow: newArrivalProducts.length>=3?3:newArrivalProducts.length,
           slidesToScroll: 1
         }
       }
@@ -105,7 +105,7 @@ const Index = ({ banner, getBestSellerProducts, products, info, getNewArrivalPro
             <Slider {...bannersettings}>
               {banner.map((item, idx) => <div className='max-h-[180px] lg:w-full lg:h-[500px] lg:max-h-[500px]' key={idx}>
                 <a target="_blank" href={item.target_url}>
-                  <img className={`w-full h-auto min-h-[180px] lg:min-h-[500px] ${item.target_url ? "cursor-pointer" : ""}`} src={item.banner_img_url} alt="" />
+                  <img className={`w-full h-auto min-h-[180px] max-h-[180px] lg:min-h-[500px] lg:max-h-[500px] ${item.target_url ? "cursor-pointer" : ""}`} src={item.banner_img_url} alt="" />
                 </a>
               </div>)}
             </Slider>

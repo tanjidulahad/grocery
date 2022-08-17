@@ -552,7 +552,12 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                         {
                           lists.map((item) => (
                             <li key={item.category_id} className={`lists category-item px-3 py-2 ${category == item.category_id && ' btn-color-revers bg-white font-semibold'}`} >
-                              <Link href={`/shop?category=${item.category_id}`}>
+                              <p onClick={()=>{
+                                router.push(`/shop?category=${item.category_id}`)
+                                setIsCategoryOpen(!isCategoryOpen)
+                              }} 
+                              // href={`/shop?category=${item.category_id}`}
+                              >
                                 <a>
                                   <div className="d-flex justify-content-between flex items-center justify-between space-y-2">
                                     <span className="">{item.category_name}</span>
@@ -563,7 +568,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
                                     </span>
                                   </div>
                                 </a>
-                              </Link>
+                              </p>
                             </li>
                           ))
                         }
