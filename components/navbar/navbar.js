@@ -402,7 +402,7 @@ const Navbar = ({ socialProfile, user, cart, categories, getCategoryStart, getCa
       }
       {
         Menu &&
-        <div className="w-full transition duration-150 ease-in-out bg-white h-[130vh] absolute z-[inherit] top-0">
+        <div className="w-full transition duration-150 ease-in-out bg-white h-[130vh] fixed z-[inherit] top-0">
           <div className="my-4 flex w-full">
             <AiOutlineClose onClick={() => { setmenu(false) }} className="ml-6" color={'gray'} size={40} />
             <div className="rounded-md max-h-[80px] w-full ml-24">
