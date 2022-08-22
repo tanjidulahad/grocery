@@ -17,7 +17,10 @@ const Index = ({ storePolicies }) => {
         const { policyId } = router.query
         if (policyId) {
             const content = storePolicies.filter(item => item.policy_id == policyId)
+            console.log("content",content)
+            if(content.length){
             setPolicyContent(content[0].content)
+            }
         }
 
         console.log("policyId", content)
@@ -25,12 +28,14 @@ const Index = ({ storePolicies }) => {
 
 
     return (
-        <div className='p-20'>
-            <ReactQuill
+        <div className='p-2 md:p-20'>
+            {policyContent?<ReactQuill
                 value={policyContent}
                 readOnly={true}
                 theme={'bubble'}
-            />
+            />:
+            <h2 className='text-center text-2xl flex justify-center items-center h-[60vh]'>Nothing Found</h2>
+            }
         </div>
     );
 };
