@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Button, Input } from "@components/inputs";
 import { addAddressStart, getAddressStart, removeAddressStart, updateAddressStart } from "@redux/user/user-action";
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, updateAddress, edit = null, close = () => { } }) => {
     const addressStructure = {
@@ -28,6 +30,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
         zip_code: "",
     }
 
+    const [state, setState] = useState("91")
     const [newAddress, setNewAddress] = useState(addressStructure)
     const [isAddressActive, setIsAddressActive] = useState(false);
     const [error, setError] = useState("");
@@ -88,7 +91,23 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                         </div>
                         <div className="mt-4 col-12">
                             <div className="text-base font-semibold mb-1">Mobile Number* <span className=" text-sm font-normal">( Commonly Used to Assist Delivery ) </span></div>
-                            <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3 xl:w-1/2' type="text" name='phone' placeholder="Enter Your 10 digit Mobile Number" value={newAddress.phone} />
+                            <div className='mt-2 flex space-x-1'>
+                            <div className='w-[4rem] shrink-0 relative'>
+                                <PhoneInput
+                                    inputClass='hidden'
+                                    containerClass='py-4 w-full h-full'
+                                    buttonClass='w-full flag-div'
+                                    // country={'us'}
+                                    // enableAreaCodes={true}
+                                    value={state}
+                                    onChange={phone => setState(phone)}
+                                />
+                            </div>
+                            <div className=' relative w-full'>
+                                <input className='ml-1 absolute text-center text-sm top-1/2 -translate-y-1/2 w-14 outline-none' value={'+' + state} />
+                                <Input onChange={onChangeAddress} className='addressphone rounded w-full border-static border py-3 xl:w-[46%]' type="text" name='phone' placeholder="Enter Your 10 digit Mobile Number" value={newAddress.phone} />
+                            </div>
+                            </div>
                         </div>
                         <div className="mt-4 col-12">
                             <div className="text-base font-semibold mb-1">Address Line 1*</div>
@@ -112,7 +131,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                                 <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='city' placeholder="Enter City Name" value={newAddress.city} />
                             </div>
                             <div className="mt-4 col-xl-6">
-                                <div className="text-base font-semibold mb-1">Zin code*</div>
+                                <div className="text-base font-semibold mb-1">Zip code*</div>
                                 <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='zip_code' placeholder="Enter Your Area PIN " value={newAddress.zip_code} />
                             </div>
                         </div>

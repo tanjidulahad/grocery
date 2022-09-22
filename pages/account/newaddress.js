@@ -1,3 +1,5 @@
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import accountLayout from '@components/layout/account-layout'
@@ -46,6 +48,7 @@ function Savedplaces({
     state: '',
     zip_code: '',
   }
+  const [state, setState] = useState("91")
   const [newAddress, setNewAddress] = useState({})
   const [isAddressActive, setIsAddressActive] = useState(false)
 
@@ -54,17 +57,17 @@ function Savedplaces({
   const [formError, setFormError] = useState('')
   const [mobNavHeight, setMobNavHeight] = useState(0)
 
-  useEffect(()=>{
+  useEffect(() => {
     const addressdetails = router.query;
     const isEmpty = Object.keys(addressdetails);
-    console.log("isEmpty",isEmpty)
-    if(isEmpty.length==0){            
+    console.log("isEmpty", isEmpty)
+    if (isEmpty.length == 0) {
       setNewAddress(addressStructure);
     }
-    else{
+    else {
       setNewAddress(addressdetails);
     }
-},[router.query])
+  }, [router.query])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -166,14 +169,30 @@ function Savedplaces({
                 <span className=" font-bold text-lg md:block hidden  ">
                   Mobile Number ( Commonly Used to Assist Delivery ) *
                 </span>
-                <Input
-                  onChange={onChangeAddress}
-                  type="text"
-                  name="phone"
-                  placeholder="Mobile Number*"
-                  value={newAddress.phone}
-                  className="h-[48px] my-2 rounded border border-gray-300 "
-                />
+                <div className='flex space-x-1'>
+                <div className='w-[4rem] h-[55px] shrink-0 relative pt-2'>
+                  <PhoneInput
+                    inputClass='hidden'
+                    containerClass='py-4 w-full h-full'
+                    buttonClass='w-full flag-div'
+                    // country={'us'}
+                    // enableAreaCodes={true}
+                    value={state}
+                    onChange={phone => setState(phone)}
+                  />
+                </div>
+                <div className=' relative w-full'>
+                  <input className='ml-1 absolute text-center text-sm top-1/2 -translate-y-1/2 w-14 outline-none' value={'+' + state} />
+                  <Input
+                    onChange={onChangeAddress}
+                    type="text"
+                    name="phone"
+                    placeholder="Mobile Number*"
+                    value={newAddress.phone}
+                    className="addressphone h-[48px] my-2 rounded border border-gray-300 "
+                  />
+                </div>
+                </div>
               </div>
               <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
                 <span className=" font-bold text-lg md:block hidden  ">
@@ -246,10 +265,10 @@ function Savedplaces({
                   />
                 </div>
                 <div className="pl-1 w-96">
-                    <select onChange={onChangeAddress} name="address_tag" className="h-[48px] my-2  rounded border border-gray-300 w-full text-gray-400" >
-                      <option value="Home" selected>Home</option>
-                      <option value="Work">Work</option>
-                    </select>
+                  <select onChange={onChangeAddress} name="address_tag" className="h-[48px] my-2  rounded border border-gray-300 w-full text-gray-400" >
+                    <option value="Home" selected>Home</option>
+                    <option value="Work">Work</option>
+                  </select>
                 </div>
               </div>
 
