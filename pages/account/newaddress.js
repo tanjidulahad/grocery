@@ -146,21 +146,21 @@ function Savedplaces({
                 <span className=" font-bold text-lg md:block hidden  ">
                   Country*
                 </span>
-                {/* <Input
+                <Input
                   onChange={onChangeAddress}
                   type="text"
                   name="country"
                   placeholder="Your Country/Region..."
                   value={newAddress.country}
                   className="h-[48px] my-2 rounded border border-gray-300 "
-                /> */}
-                <select name='country' onChange={onChangeAddress} className="w-full p-4 custom-input border rounded border-[#48887B]">
+                />
+                {/* <select name='country' onChange={onChangeAddress} className="w-full p-4 custom-input border rounded border-[#48887B]">
                   {countries.map(item => {
                     return (
                       <option value={item.country_name} selected={item.country_name == 'India'}>{item.country_name}</option>
                     )
                   })}
-                </select>
+                </select> */}
               </div>
               <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
                 <span className=" font-bold text-lg md:block hidden  ">
@@ -180,7 +180,15 @@ function Savedplaces({
                 <span className=" font-bold text-lg md:block hidden  ">
                   Mobile Number ( Commonly Used to Assist Delivery ) *
                 </span>
-                <div className='flex space-x-1'>
+                <Input
+                  onChange={onChangeAddress}
+                  type="text"
+                  name="phone"
+                  placeholder="Mobile Number*"
+                  value={newAddress.phone}
+                  className="h-[48px] my-2 rounded border border-gray-300 "
+                />
+                {/* <div className='flex space-x-1'>
                   <div className='w-[4rem] h-[55px] shrink-0 relative pt-2'>
                     <PhoneInput
                       inputClass='hidden'
@@ -203,7 +211,7 @@ function Savedplaces({
                       className="addressphone h-[48px] my-2 rounded border border-gray-300 "
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
                 <span className=" font-bold text-lg md:block hidden  ">
