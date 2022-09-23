@@ -5,7 +5,7 @@ import { addAddressStart, getAddressStart, removeAddressStart, updateAddressStar
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 
-const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, updateAddress, edit = null, close = () => { } }) => {
+const AddressForm = ({ countries, user, address, getAddress, addAddress, removeAddress, updateAddress, edit = null, close = () => { } }) => {
     const addressStructure = {
         address_fields: "",
         address_id: "",
@@ -29,7 +29,7 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
         state_code: "",
         zip_code: "",
     }
-
+    console.log("countries",countries)
     const [state, setState] = useState("91")
     const [newAddress, setNewAddress] = useState(addressStructure)
     const [isAddressActive, setIsAddressActive] = useState(false);
@@ -92,21 +92,21 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                         <div className="mt-4 col-12">
                             <div className="text-base font-semibold mb-1">Mobile Number* <span className=" text-sm font-normal">( Commonly Used to Assist Delivery ) </span></div>
                             <div className='mt-2 flex space-x-1'>
-                            <div className='w-[4rem] shrink-0 relative'>
-                                <PhoneInput
-                                    inputClass='hidden'
-                                    containerClass='py-4 w-full h-full'
-                                    buttonClass='w-full flag-div'
-                                    // country={'us'}
-                                    // enableAreaCodes={true}
-                                    value={state}
-                                    onChange={phone => setState(phone)}
-                                />
-                            </div>
-                            <div className=' relative w-full'>
-                                <input className='ml-1 absolute text-center text-sm top-1/2 -translate-y-1/2 w-14 outline-none' value={'+' + state} />
-                                <Input onChange={onChangeAddress} className='addressphone rounded w-full border-static border py-3 xl:w-[46%]' type="text" name='phone' placeholder="Enter Your 10 digit Mobile Number" value={newAddress.phone} />
-                            </div>
+                                <div className='w-[4rem] shrink-0 relative'>
+                                    <PhoneInput
+                                        inputClass='hidden'
+                                        containerClass='py-4 w-full h-full'
+                                        buttonClass='w-full flag-div'
+                                        // country={'us'}
+                                        // enableAreaCodes={true}
+                                        value={state}
+                                        onChange={phone => setState(phone)}
+                                    />
+                                </div>
+                                <div className=' relative w-full'>
+                                    <input className='ml-1 absolute text-center text-sm top-1/2 -translate-y-1/2 w-14 outline-none' value={'+' + state} />
+                                    <Input onChange={onChangeAddress} className='addressphone rounded w-full border-static border py-3 xl:w-[46%]' type="text" name='phone' placeholder="Enter Your 10 digit Mobile Number" value={newAddress.phone} />
+                                </div>
                             </div>
                         </div>
                         <div className="mt-4 col-12">
@@ -120,7 +120,14 @@ const AddressForm = ({ user, address, getAddress, addAddress, removeAddress, upd
                         <div className=" grid grid-cols-1 md:grid-cols-2 gap-2">
                             <div className="mt-4 col-xl-6">
                                 <div className="text-base font-semibold mb-1">Country*</div>
-                                <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='state' disabled={true} placeholder="State" value={'India'} />
+                                {/* <Input onChange={onChangeAddress} className=' rounded w-full border-static border py-3' type="text" name='state' disabled={true} placeholder="State" value={'India'} /> */}
+                                <select name='country' onChange={onChangeAddress} className="w-full p-4 custom-input border-static border rounded">
+                                    {countries.map(item => {
+                                        return (
+                                            <option value={item.country_name} selected={item.country_name == 'India'}>{item.country_name}</option>
+                                        )
+                                    })}
+                                </select>
                             </div>
                             <div className="mt-4 col-xl-6">
                                 <div className="text-base font-semibold mb-1">State*</div>

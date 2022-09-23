@@ -16,6 +16,7 @@ import {
   addAddressStart,
   updateAddressStart,
   removeAddressStart,
+  getCountryAction,
 } from '@redux/user/user-action'
 import PageWrapper from '@components/page-wrapper/page-wrapper'
 import { useRouter } from 'next/router'
@@ -30,6 +31,7 @@ function Savedplaces({
   removeAddress,
   updateAddress,
   store,
+  getCountryAction
 }) {
   const router = useRouter()
   const addressdetails = router.query;
@@ -56,6 +58,7 @@ function Savedplaces({
   const [error, setError] = useState(null)
   const [formError, setFormError] = useState('')
   const [mobNavHeight, setMobNavHeight] = useState(0)
+  const [countries, setCountries] = useState([])
 
   useEffect(() => {
     const addressdetails = router.query;
@@ -88,6 +91,7 @@ function Savedplaces({
   useEffect(() => {
     // if (!address.length) {
     getAddress({ userId: user.customer_id, setError })
+    getCountryAction(setCountries)
     // }
   }, [])
   useEffect(() => {
@@ -142,14 +146,21 @@ function Savedplaces({
                 <span className=" font-bold text-lg md:block hidden  ">
                   Country*
                 </span>
-                <Input
+                {/* <Input
                   onChange={onChangeAddress}
                   type="text"
                   name="country"
                   placeholder="Your Country/Region..."
                   value={newAddress.country}
                   className="h-[48px] my-2 rounded border border-gray-300 "
-                />
+                /> */}
+                <select name='country' onChange={onChangeAddress} className="w-full p-4 custom-input border rounded border-[#48887B]">
+                  {countries.map(item => {
+                    return (
+                      <option value={item.country_name} selected={item.country_name == 'India'}>{item.country_name}</option>
+                    )
+                  })}
+                </select>
               </div>
               <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
                 <span className=" font-bold text-lg md:block hidden  ">
@@ -170,28 +181,28 @@ function Savedplaces({
                   Mobile Number ( Commonly Used to Assist Delivery ) *
                 </span>
                 <div className='flex space-x-1'>
-                <div className='w-[4rem] h-[55px] shrink-0 relative pt-2'>
-                  <PhoneInput
-                    inputClass='hidden'
-                    containerClass='py-4 w-full h-full'
-                    buttonClass='w-full flag-div'
-                    // country={'us'}
-                    // enableAreaCodes={true}
-                    value={state}
-                    onChange={phone => setState(phone)}
-                  />
-                </div>
-                <div className=' relative w-full'>
-                  <input className='ml-1 absolute text-center text-sm top-1/2 -translate-y-1/2 w-14 outline-none' value={'+' + state} />
-                  <Input
-                    onChange={onChangeAddress}
-                    type="text"
-                    name="phone"
-                    placeholder="Mobile Number*"
-                    value={newAddress.phone}
-                    className="addressphone h-[48px] my-2 rounded border border-gray-300 "
-                  />
-                </div>
+                  <div className='w-[4rem] h-[55px] shrink-0 relative pt-2'>
+                    <PhoneInput
+                      inputClass='hidden'
+                      containerClass='py-4 w-full h-full'
+                      buttonClass='w-full flag-div'
+                      // country={'us'}
+                      // enableAreaCodes={true}
+                      value={state}
+                      onChange={phone => setState(phone)}
+                    />
+                  </div>
+                  <div className=' relative w-full'>
+                    <input className='ml-1 absolute text-center text-sm top-1/2 -translate-y-1/2 w-14 outline-none' value={'+' + state} />
+                    <Input
+                      onChange={onChangeAddress}
+                      type="text"
+                      name="phone"
+                      placeholder="Mobile Number*"
+                      value={newAddress.phone}
+                      className="addressphone h-[48px] my-2 rounded border border-gray-300 "
+                    />
+                  </div>
                 </div>
               </div>
               <div className="py-2 md:p-4 px-2 md:px-8  md:w-1/2  ">
@@ -424,6 +435,7 @@ const mapDispatchToProps = (dispatch) => ({
   addAddress: (payload) => dispatch(addAddressStart(payload)),
   updateAddress: (payload) => dispatch(updateAddressStart(payload)),
   removeAddress: (payload) => dispatch(removeAddressStart(payload)),
+  getCountryAction: (payload) => dispatch(getCountryAction(payload)),
 })
 
 export default connect(
